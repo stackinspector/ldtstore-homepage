@@ -1,0 +1,377 @@
+<!--
+  Copyright 2021 stackinspector. MIT Lincese.
+  Source code: https://github.com/stackinspector/LDTstore
+  Commit: --
+-->
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <link rel="shortcut icon" href="//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert/image/shared/laodi-64px.png">
+    <link rel="apple-touch-icon"
+          href="//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert/image/shared/laodi-512px.png">
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="//www.841973620.net:20610">
+    <meta name="description" content="本网站为B站UP主老弟一号的个人网站，用于提供文件下载与一些跳转服务">
+    <meta name="keywords" content="老弟一号,LaodiTeachTips,LDTstore">
+    <title>老弟一号&amp;LDTstore</title>
+    <link href="style.css?28" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div id="background" onclick="closeSubmenu()">
+</div>
+<div id="main-container">
+    <div id="menu-container">
+        <div class="menu-column">
+
+            <div class="menu-block l" onclick="button('home')">
+                <img src="icon/icon2.png">
+                <p>老弟一号个人空间</p>
+            </div>
+            <div class="menu-block l" onclick="button('store')">
+                <img src="icon/icon3.png">
+                <p>LDTstore淘宝店铺</p>
+            </div>
+        </div>
+        <div class="menu-column">
+
+            <div class="menu-block m" onclick="button(5)">
+                <img src="icon/icon4.png">
+                <p>直播间</p>
+            </div>
+            <div class="menu-block s" onclick="button(6)">
+                <img src="icon/icon1.png">
+                <p>阅机无数</p>
+            </div>
+            <div class="menu-block s" onclick="button(7)">
+                <img src="icon/icon1.png">
+                <p>装机ICU</p>
+            </div>
+            <div class="menu-block m" onclick="button('home-ops')">
+                <img src="icon/icon5.png">
+                <p>运营信息发布账号</p>
+            </div>
+            <div class="menu-block s" onclick="button(8)">
+                <img src="icon/icon9.png">
+                <p>硬件讨论群</p>
+            </div>
+            <div class="menu-block s" onclick="button(2)">
+                <img src="icon/icon10.png">
+                <p>商务合作</p>
+            </div>
+        </div>
+        <div class="menu-column">
+
+            <div class="menu-block m" onclick="button(1)">
+                <img src="icon/icon8.png">
+                <p>站外官方账号 -文件夹测试-</p>
+            </div>
+            <div class="menu-block m" onclick="button('afdian')">
+                <img src="icon/icon7.png">
+                <p>赞助老弟一号</p>
+            </div>
+            <!--            <div class="menu-block s"onclick="button(12)">-->
+            <!--                <img src="icon/icon1.png">-->
+            <!--                <p>2</p>-->
+            <!--            </div>-->
+            <!--            <div class="menu-block s"onclick="button(13)">-->
+            <!--                <img src="icon/icon1.png">-->
+            <!--                <p>2</p>-->
+            <!--            </div>-->
+        </div>
+
+
+        <div class="clearfix"></div>
+    </div>
+
+    <div id="submenu-container">
+        <div id="submenu-switch1" class="submenu-switch">
+        </div>
+        <div id="submenu-switch2" class="submenu-switch">
+        </div>
+    </div>
+
+</div>
+<div class="title" onclick="button(0)">
+    <img class="logo" src="laodi-64px.png">
+    老弟一号&nbsp;&amp;&nbsp;LDTstore
+</div>
+<div id="footer-container">
+    <p>
+        <span>
+            Powered by
+            <a class="link" href="/r/poweredby-1">@进栈检票</a>
+            <a class="link" href="/r/poweredby-2">@841973620</a>
+        </span>
+        <span>
+        GitHub:
+        <a class="link" href="/r/website-github">stackinspector/LDTstore</a>
+        </span>
+    </p>
+    <p>
+        <a class="hidden-link" href="//beian.miit.gov.cn/" target="_blank">
+            <span>这是备案号位置</span></a>
+    </p>
+</div>
+
+
+<script>
+    let main = document.getElementById("main-container");
+    let menu = document.getElementById("menu-container");
+    let submenu = document.getElementById("submenu-container");
+    let submenu0 = document.getElementById("submenu-switch1");
+    let submenu1 = document.getElementById("submenu-switch2");
+
+
+    let submenu_distance = 300;
+    let submenu_on = false;
+    let submenu_center = false;
+    let submenu_switch = -1;
+    let submenu_index = -1;
+    let submenu_changing = false;
+
+
+    let content = [
+        "\n" +
+        "            <div class=\"submenu-title\">关于本站</div>\n" +
+        "            <hr>\n" +
+        "            <div class=\"submenu-text\">\n" +
+        "                本网站为B站UP主老弟一号的个人网站，\n" +
+        "                <br>\n" +
+        "                用于提供文件下载与一些跳转服务。\n" +
+        "            </div>",
+        "\n" +
+        "            <div class=\"submenu-title\">文件夹测试</div>\n" +
+        "            <hr>\n" +
+        "            <div class=\"menu-block s\">\n" +
+        "                <img src=\"icon/icon1.png\">\n" +
+        "                <p>2</p>\n" +
+        "            </div>\n" +
+        "            <div class=\"menu-block s\">\n" +
+        "                <img src=\"icon/icon1.png\">\n" +
+        "                <p>2</p>\n" +
+        "            </div>\n" +
+        "            <div class=\"menu-block s\">\n" +
+        "                <img src=\"icon/icon1.png\">\n" +
+        "                <p>2</p>\n" +
+        "            </div>",
+        "\n" +
+        "            <div class=\"submenu-title\">商务合作</div>\n" +
+        "            <hr>\n" +
+        "            <div class=\"submenu-text\">\n" +
+        "                商务合作请加微信13869651328，并注明合作方与合作内容。\n" +
+        "                <br>\n" +
+        "                目前只接受数码领域相关合作，产品评测优先；\n" +
+        "                <br>\n" +
+        "                不接受干涉测评、跨领域合作以及其他平台入驻。感谢您的认可。\n" +
+        "            </div>"
+
+    ]
+    let content_test =
+        "\n" +
+        "            <div class=\"submenu-title\">标题</div>\n" +
+        "            <hr>\n" +
+        "            <div class=\"submenu-text\">\n" +
+        "                这应该是个文件夹 _(:з」∠)_ 。\n" +
+        "                <br>\n" +
+        "                参考一下文件夹测试。\n" +
+        "            </div>";
+
+
+    //左滑返回
+    let touchX = 0;
+    let touchY = 0;
+    window.ontouchstart = (e) => {
+        touchX = e.touches[0].clientX;
+        touchY = e.touches[0].clientY;
+    }
+    window.ontouchmove = (e) => {
+        let y = e.changedTouches[0].clientY;
+        if (Math.abs(touchY - y) > 10)
+            closeSubmenu();
+    }
+
+    window.ontouchend = (e) => {
+        let x = e.changedTouches[0].clientX;
+        if (touchX - x < -40) {
+            closeSubmenu();
+        }
+    }
+
+    //按钮
+    function button(e) {
+        if (typeof e === "number") {
+            change(e);
+        } else {
+            window.location.href = "https://ldtstore.com.cn/r/" + e;
+        }
+    }
+
+    function change(index) {
+        if (submenu_changing)
+            return;
+
+        if (index === submenu_index) {
+            changeSubmenu(false);
+            return;
+        }
+
+        //交换淡入淡出子菜单
+        let insert = content[index];
+        insert = insert == undefined ? content_test : insert;
+        //第一次
+        if (submenu_switch === -1) {
+            submenu_switch = 0;
+            submenu0.innerHTML = insert;
+            submenu0.style.display = "block";
+            submenu.style.opacity = 1;
+            submenu_changing = true;
+        }
+        //其余
+        else {
+            //在另一个中写入内容
+            if (submenu_switch === 0) {
+                submenu_switch = 1;
+                submenu1.innerHTML = insert;
+            } else {
+                submenu_switch = 0;
+                submenu0.innerHTML = insert;
+            }
+
+            if (submenu.style.opacity === "0") {
+                showSwitch();
+            } else {
+                submenu.style.opacity = 0;
+            }
+
+        }
+
+
+        submenu_index = index;
+        changeSubmenu(true);
+    }
+
+
+    let transitionend = function (e) {
+        if (e.propertyName === "left") {
+            recalculate();
+            return;
+        } else if (e.propertyName === "opacity")
+            if (submenu.style.opacity === "0" &&
+                submenu_index !== -1) {
+                showSwitch();
+            }
+
+        if (submenu_changing)
+            submenu_changing = false;
+    };
+
+    function showSwitch() {
+        if (submenu_switch === 0) {
+            submenu0.style.display = "block";
+            submenu1.style.display = "none";
+        } else {
+            submenu0.style.display = "none";
+            submenu1.style.display = "block";
+        }
+        submenu.style.opacity = 1;
+    }
+
+    submenu.addEventListener("transitionend", transitionend);
+
+
+    function closeSubmenu() {
+        changeSubmenu(false);
+    }
+
+    function changeSubmenu(enable) {
+        if (enable === undefined) {
+            enable = !submenu_on;
+        }
+        if (submenu_on !== enable) {
+            submenu_on = enable;
+
+            if (submenu_on) {
+                main.style.left = -submenu_distance + "px";
+                submenu.style.left = "calc(50% + " +
+                    (menu.clientWidth < 500 ? 14 : 34) +
+                    "em - " + submenu_distance + "px)";
+                // console.log(submenu.style.left);
+                if (submenu_center) {
+                    menu.style.opacity = 0;
+                }
+            } else {
+                main.style.left = "0";
+                submenu.style.left = "calc(50% + " +
+                    (menu.clientWidth < 500 ? 14 : 34) + "em)";
+
+
+                submenu_index = -1;
+                submenu.style.opacity = 0;
+                menu.style.opacity = 1;
+            }
+        }
+    }
+
+
+    //布局计算
+    function recalculate() {
+        //垂直方向 计算main间距
+        let delta = document.documentElement.clientHeight
+            - main.clientHeight;
+        delta = delta < 140 ? 140 : delta;
+        delta -= 1;
+        let heigth = document.documentElement.clientHeight - delta;
+        submenu.style.height = "calc(" + heigth + "px - 6em)";
+        main.style.marginTop = main.style.marginBottom = delta / 2 + "px";
+        submenu.style.marginTop = submenu.style.marginBottom = delta / 2 + "px";
+
+        //水平方向 计算子菜单移动的距离
+        delta = document.documentElement.clientWidth
+            - menu.clientWidth - submenu.clientWidth;
+        submenu_center = false;
+        if (delta > 0) {
+            submenu_distance = menu.offsetLeft - delta / 2;
+        } else {
+            if (document.documentElement.clientWidth > 450)
+                submenu_distance = -delta + menu.offsetLeft;
+            else {
+                delta = document.documentElement.clientWidth - submenu.clientWidth;
+                submenu_center = true;
+                submenu_distance = menu.clientWidth + menu.offsetLeft - delta / 2;
+            }
+        }
+    }
+
+    window.onresize = function () {
+        recalculate();
+
+        if (submenu_on) {
+            //缩回菜单
+            closeSubmenu();
+        } else {
+            submenu.style.left = "calc(50% + " +
+                (menu.clientWidth < 500 ? 14 : 34) + "em)";
+        }
+    };
+
+
+    function init() {
+        let d = new Date();
+        document.getElementById("background").style.backgroundImage
+            = "url('bg/" + d.getDay() + ".webp')"
+
+        recalculate();
+        submenu.style.transition = "cubic-bezier(.6,0,.4,1) 0.5s";
+    }
+
+    init();
+
+</script>
+
+
+</body>
+</html>
