@@ -3,6 +3,7 @@
 -->
 <!DOCTYPE html>
 <html lang="zh">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,114 +17,115 @@
     <title>LaodiTeachTips</title>
     <link href="style.css" rel="stylesheet">
 </head>
+
 <body>
-<div id="background" onclick="closeSubmenu()"></div>
-<div id="main-container">
-    <div id="menu-container">
-        <div class="menu-column">
-            <div class="menu-block l" onclick="link('home')">
-                <img src="icon/icon2.png">
-                <p>老弟一号个人空间</p>
+    <div id="background" onclick="closeSubmenu()"></div>
+    <div id="main-container">
+        <div id="menu-container">
+            <div class="menu-column">
+                <div class="menu-block l" onclick="link('home')">
+                    <img src="icon/icon2.png">
+                    <p>老弟一号个人空间</p>
+                </div>
+                <div class="menu-block l" onclick="link('store')">
+                    <img src="icon/icon3.png">
+                    <p>LDTstore淘宝店铺</p>
+                </div>
             </div>
-            <div class="menu-block l" onclick="link('store')">
-                <img src="icon/icon3.png">
-                <p>LDTstore淘宝店铺</p>
+            <div class="menu-column">
+                <div class="menu-block m" onclick="change(5)">
+                    <img src="icon/icon4.png">
+                    <p>直播间</p>
+                </div>
+                <div class="menu-block s" onclick="change(6)">
+                    <img src="icon/icon1.png">
+                    <p>阅机无数</p>
+                </div>
+                <div class="menu-block s" onclick="change(7)">
+                    <img src="icon/icon1.png">
+                    <p>装机ICU</p>
+                </div>
+                <div class="menu-block m" onclick="link('home-ops')">
+                    <img src="icon/icon5.png">
+                    <p>运营信息发布账号</p>
+                </div>
+                <div class="menu-block s" onclick="change(8)">
+                    <img src="icon/icon9.png">
+                    <p>硬件讨论群</p>
+                </div>
+                <div class="menu-block s" onclick="change(2)">
+                    <img src="icon/icon10.png">
+                    <p>商务合作</p>
+                </div>
             </div>
+            <div class="menu-column">
+                <div class="menu-block m" onclick="change(1)">
+                    <img src="icon/icon8.png">
+                    <p>站外官方账号</p>
+                </div>
+                <div class="menu-block m" onclick="link('afdian')">
+                    <img src="icon/icon7.png">
+                    <p>赞助老弟一号</p>
+                </div>
+                <!-- <div class="menu-block s"onclick="change(12)">
+                    <img src="icon/icon1.png">
+                    <p>2</p>
+                </div>
+                <div class="menu-block s"onclick="change(13)">
+                    <img src="icon/icon1.png">
+                    <p>2</p>
+                </div> -->
+            </div>
+            <div class="clearfix"></div>
         </div>
-        <div class="menu-column">
-            <div class="menu-block m" onclick="change(5)">
-                <img src="icon/icon4.png">
-                <p>直播间</p>
-            </div>
-            <div class="menu-block s" onclick="change(6)">
-                <img src="icon/icon1.png">
-                <p>阅机无数</p>
-            </div>
-            <div class="menu-block s" onclick="change(7)">
-                <img src="icon/icon1.png">
-                <p>装机ICU</p>
-            </div>
-            <div class="menu-block m" onclick="link('home-ops')">
-                <img src="icon/icon5.png">
-                <p>运营信息发布账号</p>
-            </div>
-            <div class="menu-block s" onclick="change(8)">
-                <img src="icon/icon9.png">
-                <p>硬件讨论群</p>
-            </div>
-            <div class="menu-block s" onclick="change(2)">
-                <img src="icon/icon10.png">
-                <p>商务合作</p>
-            </div>
+        <div id="submenu-container">
+            <div id="submenu-switch1" class="submenu-switch"></div>
+            <div id="submenu-switch2" class="submenu-switch"></div>
         </div>
-        <div class="menu-column">
-            <div class="menu-block m" onclick="change(1)">
-                <img src="icon/icon8.png">
-                <p>站外官方账号</p>
-            </div>
-            <div class="menu-block m" onclick="link('afdian')">
-                <img src="icon/icon7.png">
-                <p>赞助老弟一号</p>
-            </div>
-            <!-- <div class="menu-block s"onclick="change(12)">
-                <img src="icon/icon1.png">
-                <p>2</p>
-            </div>
-            <div class="menu-block s"onclick="change(13)">
-                <img src="icon/icon1.png">
-                <p>2</p>
-            </div> -->
-        </div>
-        <div class="clearfix"></div>
     </div>
-    <div id="submenu-container">
-        <div id="submenu-switch1" class="submenu-switch"></div>
-        <div id="submenu-switch2" class="submenu-switch"></div>
+    <div class="title" onclick="change(0)">
+        <img class="logo" src="//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert/image/shared/laodi-64px.png">
+        LaodiTeachTips
     </div>
-</div>
-<div class="title" onclick="change(0)">
-    <img class="logo" src="//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert/image/shared/laodi-64px.png">
-    LaodiTeachTips
-</div>
-<div id="footer-container">
-    <p>
-        <span>
-            Powered by
-            <a class="link" href="/r/poweredby-1">@进栈检票</a>
-            <a class="link" href="/r/poweredby-2">@841973620</a>
-        </span>
-        <span>
-            GitHub:
-            <a class="link" href="/r/website-github">stackinspector/LDTstore</a>
-        </span>
-    </p>
-    <p>
-        <!-- <a class="hidden-link" href="//www.beian.gov.cn/portal/registerSystemInfo?recordcode=" target="_blank">
-            <img src="//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert/image/shared/police.png">
-            <span>公安备案号占位符</span>
-        </a> -->
-        <a class="hidden-link" href="//beian.miit.gov.cn/" target="_blank">
-            <span>ICP备案号占位符</span>
-        </a>
-    </p>
-</div>
-<script>
-    const body = document.documentElement;
-    const main = document.getElementById("main-container");
-    const menu = document.getElementById("menu-container");
-    const submenu = document.getElementById("submenu-container");
-    const submenu0 = document.getElementById("submenu-switch1");
-    const submenu1 = document.getElementById("submenu-switch2");
-    const background = document.getElementById("background")
+    <div id="footer-container">
+        <p>
+            <span>
+                Powered by
+                <a class="link" href="/r/poweredby-1">@进栈检票</a>
+                <a class="link" href="/r/poweredby-2">@841973620</a>
+            </span>
+            <span>
+                GitHub:
+                <a class="link" href="/r/website-github">stackinspector/LDTstore</a>
+            </span>
+        </p>
+        <p>
+            <!-- <a class="hidden-link" href="//www.beian.gov.cn/portal/registerSystemInfo?recordcode=" target="_blank">
+                <img src="//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert/image/shared/police.png">
+                <span>公安备案号占位符</span>
+            </a> -->
+            <a class="hidden-link" href="//beian.miit.gov.cn/" target="_blank">
+                <span>ICP备案号占位符</span>
+            </a>
+        </p>
+    </div>
+    <script>
+        const body = document.documentElement;
+        const main = document.getElementById("main-container");
+        const menu = document.getElementById("menu-container");
+        const submenu = document.getElementById("submenu-container");
+        const submenu0 = document.getElementById("submenu-switch1");
+        const submenu1 = document.getElementById("submenu-switch2");
+        const background = document.getElementById("background")
 
-    let submenu_distance = 300;
-    let submenu_on = false;
-    let submenu_center = false;
-    let submenu_switch = -1;
-    let submenu_index = -1;
-    let submenu_changing = false;
+        let submenu_distance = 300;
+        let submenu_on = false;
+        let submenu_center = false;
+        let submenu_switch = -1;
+        let submenu_index = -1;
+        let submenu_changing = false;
 
-    const content = [
+        const content = [
 `<div class="submenu-title">关于本站</div>
 <hr>
 <div class="submenu-text">
@@ -154,184 +156,183 @@
     <br>
     不接受干涉测评、跨领域合作以及其他平台入驻。感谢您的认可。
 </div>`
-    ]
-    const content_test = `
+        ];
+        const content_test = `
 <div class="submenu-title">标题</div>
 <hr>
 <div class="submenu-text">
     这应该是个文件夹 _(:з」∠)_ 。
     <br>
     参考一下文件夹测试。
-</div>`
+</div>`;
 
-    // 左滑返回
-    let touchX = 0;
-    let touchY = 0;
+        // 左滑返回
+        let touchX = 0;
+        let touchY = 0;
 
-    window.ontouchstart = (e) => {
-        touchX = e.touches[0].clientX;
-        touchY = e.touches[0].clientY;
-    }
-
-    window.ontouchmove = (e) => {
-        let y = e.changedTouches[0].clientY;
-        if (Math.abs(touchY - y) > 10) {
-            closeSubmenu();
-        };
-    }
-
-    window.ontouchend = (e) => {
-        let x = e.changedTouches[0].clientX;
-        if (touchX - x < -40) {
-            closeSubmenu();
-        };
-    }
-
-    const link = (e) => {
-        window.location.href = "https://ldtstore.com.cn/r/" + e;
-    }
-
-    const change = (index) => {
-        if (submenu_changing) {
-            return;
-        };
-
-        if (index === submenu_index) {
-            changeSubmenu(false);
-            return;
+        window.ontouchstart = (e) => {
+            touchX = e.touches[0].clientX;
+            touchY = e.touches[0].clientY;
         }
 
-        // 交换淡入淡出子菜单
-        let insert = content[index];
-        insert = insert == undefined ? content_test : insert;
-        if (submenu_switch === -1) {
-            // 第一次
-            submenu_switch = 0;
-            submenu0.innerHTML = insert;
-            submenu0.style.display = "block";
-            submenu.style.opacity = 1;
-            submenu_changing = true;
+        window.ontouchmove = (e) => {
+            let y = e.changedTouches[0].clientY;
+            if (Math.abs(touchY - y) > 10) {
+                closeSubmenu();
+            };
         }
-        else {
-            // 其余：在另一个中写入内容
-            if (submenu_switch === 0) {
-                submenu_switch = 1;
-                submenu1.innerHTML = insert;
-            } else {
+
+        window.ontouchend = (e) => {
+            let x = e.changedTouches[0].clientX;
+            if (touchX - x < -40) {
+                closeSubmenu();
+            };
+        }
+
+        const link = (e) => {
+            window.location.href = "https://ldtstore.com.cn/r/" + e;
+        }
+
+        const change = (index) => {
+            if (submenu_changing) {
+                return;
+            };
+
+            if (index === submenu_index) {
+                changeSubmenu(false);
+                return;
+            }
+
+            // 交换淡入淡出子菜单
+            let insert = content[index];
+            insert = insert == undefined ? content_test : insert;
+            if (submenu_switch === -1) {
+                // 第一次
                 submenu_switch = 0;
                 submenu0.innerHTML = insert;
+                submenu0.style.display = "block";
+                submenu.style.opacity = 1;
+                submenu_changing = true;
+            }
+            else {
+                // 其余：在另一个中写入内容
+                if (submenu_switch === 0) {
+                    submenu_switch = 1;
+                    submenu1.innerHTML = insert;
+                } else {
+                    submenu_switch = 0;
+                    submenu0.innerHTML = insert;
+                }
+
+                if (submenu.style.opacity === "0") {
+                    showSwitch();
+                } else {
+                    submenu.style.opacity = 0;
+                }
+
             }
 
-            if (submenu.style.opacity === "0") {
-                showSwitch();
+            submenu_index = index;
+            changeSubmenu(true);
+        }
+
+        const showSwitch = () => {
+            if (submenu_switch === 0) {
+                submenu0.style.display = "block";
+                submenu1.style.display = "none";
             } else {
-                submenu.style.opacity = 0;
+                submenu0.style.display = "none";
+                submenu1.style.display = "block";
             }
-
+            submenu.style.opacity = 1;
         }
 
-        submenu_index = index;
-        changeSubmenu(true);
-    }
+        submenu.addEventListener("transitionend", (e) => {
+            if (e.propertyName === "left") {
+                recalculate();
+                return;
+            } else if (e.propertyName === "opacity") {
+                if (submenu.style.opacity === "0" && submenu_index !== -1) {
+                    showSwitch();
+                }
+            }
+            if (submenu_changing) {
+                submenu_changing = false;
+            };
+        });
 
-    let transitionend = (e) => {
-        if (e.propertyName === "left") {
+        const closeSubmenu = () => {
+            changeSubmenu(false);
+        }
+
+        const changeSubmenu = (enable) => {
+            if (enable === void 0) {
+                enable = !submenu_on;
+            }
+            if (submenu_on !== enable) {
+                submenu_on = enable;
+
+                if (submenu_on) {
+                    main.style.left = -submenu_distance + "px";
+                    submenu.style.left = `calc(50% + ${menu.clientWidth < 500 ? 14 : 34}em - ${submenu_distance}px)`;
+                    if (submenu_center) {
+                        menu.style.opacity = 0;
+                    }
+                } else {
+                    main.style.left = "0";
+                    submenu.style.left = `calc(50% + ${menu.clientWidth < 500 ? 14 : 34}em)`;
+                    submenu_index = -1;
+                    submenu.style.opacity = 0;
+                    menu.style.opacity = 1;
+                }
+            }
+        }
+
+        // 布局计算
+        const recalculate = () => {
+            // 垂直方向 计算main间距
+            let delta = body.clientHeight - main.clientHeight;
+            delta = delta < 140 ? 140 : delta;
+            delta -= 1;
+            let height = body.clientHeight - delta;
+            submenu.style.height = `calc(${height}px - 6em)`;
+            main.style.marginTop = main.style.marginBottom = delta / 2 + "px";
+            submenu.style.marginTop = submenu.style.marginBottom = delta / 2 + "px";
+
+            // 水平方向 计算子菜单移动的距离
+            delta = body.clientWidth - menu.clientWidth - submenu.clientWidth;
+            submenu_center = false;
+            if (delta > 0) {
+                submenu_distance = menu.offsetLeft - delta / 2;
+            } else {
+                if (body.clientWidth > 450) {
+                    submenu_distance = -delta + menu.offsetLeft;
+                } else {
+                    delta = body.clientWidth - submenu.clientWidth;
+                    submenu_center = true;
+                    submenu_distance = menu.clientWidth + menu.offsetLeft - delta / 2;
+                }
+            }
+        }
+
+        window.onresize = () => {
             recalculate();
-            return;
-        } else if (e.propertyName === "opacity") {
-            if (submenu.style.opacity === "0" && submenu_index !== -1) {
-                showSwitch();
-            }
-        }
-        if (submenu_changing) {
-            submenu_changing = false;
-        };
-    };
-
-    const showSwitch = () => {
-        if (submenu_switch === 0) {
-            submenu0.style.display = "block";
-            submenu1.style.display = "none";
-        } else {
-            submenu0.style.display = "none";
-            submenu1.style.display = "block";
-        }
-        submenu.style.opacity = 1;
-    }
-
-    submenu.addEventListener("transitionend", transitionend);
-
-    const closeSubmenu = () => {
-        changeSubmenu(false);
-    }
-
-    const changeSubmenu = (enable) => {
-        if (enable === void 0) {
-            enable = !submenu_on;
-        }
-        if (submenu_on !== enable) {
-            submenu_on = enable;
 
             if (submenu_on) {
-                main.style.left = -submenu_distance + "px";
-                submenu.style.left = `calc(50% + ${menu.clientWidth < 500 ? 14 : 34}em - ${submenu_distance}px)`;
-                if (submenu_center) {
-                    menu.style.opacity = 0;
-                }
+                //缩回菜单
+                closeSubmenu();
             } else {
-                main.style.left = "0";
                 submenu.style.left = `calc(50% + ${menu.clientWidth < 500 ? 14 : 34}em)`;
-                submenu_index = -1;
-                submenu.style.opacity = 0;
-                menu.style.opacity = 1;
             }
-        }
-    }
+        };
 
-    // 布局计算
-    const recalculate = () => {
-        // 垂直方向 计算main间距
-        let delta = body.clientHeight - main.clientHeight;
-        delta = delta < 140 ? 140 : delta;
-        delta -= 1;
-        let height = body.clientHeight - delta;
-        submenu.style.height = `calc(${height}px - 6em)`;
-        main.style.marginTop = main.style.marginBottom = delta / 2 + "px";
-        submenu.style.marginTop = submenu.style.marginBottom = delta / 2 + "px";
-
-        // 水平方向 计算子菜单移动的距离
-        delta = body.clientWidth - menu.clientWidth - submenu.clientWidth;
-        submenu_center = false;
-        if (delta > 0) {
-            submenu_distance = menu.offsetLeft - delta / 2;
-        } else {
-            if (body.clientWidth > 450) {
-                submenu_distance = -delta + menu.offsetLeft;
-            } else {
-                delta = body.clientWidth - submenu.clientWidth;
-                submenu_center = true;
-                submenu_distance = menu.clientWidth + menu.offsetLeft - delta / 2;
-            }
-        }
-    }
-
-    window.onresize = () => {
-        recalculate();
-
-        if (submenu_on) {
-            //缩回菜单
-            closeSubmenu();
-        } else {
-            submenu.style.left = `calc(50% + ${menu.clientWidth < 500 ? 14 : 34}em)`;
-        }
-    };
-
-    (() => {
-        let d = new Date();
-        background.style.backgroundImage = `url('bg/${d.getDay()}.webp')`
-        recalculate();
-        submenu.style.transition = "cubic-bezier(.6,0,.4,1) 0.5s";
-    })();
-</script>
+        (() => {
+            let d = new Date();
+            background.style.backgroundImage = `url('bg/${d.getDay()}.webp')`
+            recalculate();
+            submenu.style.transition = "cubic-bezier(.6,0,.4,1) 0.5s";
+        })();
+    </script>
 </body>
+
 </html>
