@@ -1,7 +1,5 @@
 <!--
-  Copyright 2021 stackinspector. MIT Lincese.
-  Source code: https://github.com/stackinspector/LDTstore
-  Commit: --
+  Copyright 2021 CarrotGeball & stackinspector. MIT Lincese.
 -->
 <!DOCTYPE html>
 <html lang="zh">
@@ -11,22 +9,18 @@
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
     <link rel="shortcut icon" href="//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert/image/shared/laodi-64px.png">
-    <link rel="apple-touch-icon"
-          href="//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert/image/shared/laodi-512px.png">
+    <link rel="apple-touch-icon" href="//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert/image/shared/laodi-512px.png">
     <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
-    <link rel="dns-prefetch" href="//www.841973620.net:20610">
     <meta name="description" content="本网站为B站UP主老弟一号的个人网站，用于提供文件下载与一些跳转服务">
     <meta name="keywords" content="老弟一号,LaodiTeachTips,LDTstore">
-    <title>老弟一号&amp;LDTstore</title>
-    <link href="style.css?28" rel="stylesheet" type="text/css">
+    <title>LaodiTeachTips</title>
+    <link href="style.css" rel="stylesheet">
 </head>
 <body>
-<div id="background" onclick="closeSubmenu()">
-</div>
+<div id="background" onclick="closeSubmenu()"></div>
 <div id="main-container">
     <div id="menu-container">
         <div class="menu-column">
-
             <div class="menu-block l" onclick="button('home')">
                 <img src="icon/icon2.png">
                 <p>老弟一号个人空间</p>
@@ -37,7 +31,6 @@
             </div>
         </div>
         <div class="menu-column">
-
             <div class="menu-block m" onclick="button(5)">
                 <img src="icon/icon4.png">
                 <p>直播间</p>
@@ -64,40 +57,33 @@
             </div>
         </div>
         <div class="menu-column">
-
             <div class="menu-block m" onclick="button(1)">
                 <img src="icon/icon8.png">
-                <p>站外官方账号 -文件夹测试-</p>
+                <p>站外官方账号</p>
             </div>
             <div class="menu-block m" onclick="button('afdian')">
                 <img src="icon/icon7.png">
                 <p>赞助老弟一号</p>
             </div>
-            <!--            <div class="menu-block s"onclick="button(12)">-->
-            <!--                <img src="icon/icon1.png">-->
-            <!--                <p>2</p>-->
-            <!--            </div>-->
-            <!--            <div class="menu-block s"onclick="button(13)">-->
-            <!--                <img src="icon/icon1.png">-->
-            <!--                <p>2</p>-->
-            <!--            </div>-->
+            <!-- <div class="menu-block s"onclick="button(12)">
+                <img src="icon/icon1.png">
+                <p>2</p>
+            </div>
+            <div class="menu-block s"onclick="button(13)">
+                <img src="icon/icon1.png">
+                <p>2</p>
+            </div> -->
         </div>
-
-
         <div class="clearfix"></div>
     </div>
-
     <div id="submenu-container">
-        <div id="submenu-switch1" class="submenu-switch">
-        </div>
-        <div id="submenu-switch2" class="submenu-switch">
-        </div>
+        <div id="submenu-switch1" class="submenu-switch"></div>
+        <div id="submenu-switch2" class="submenu-switch"></div>
     </div>
-
 </div>
 <div class="title" onclick="button(0)">
-    <img class="logo" src="laodi-64px.png">
-    老弟一号&nbsp;&amp;&nbsp;LDTstore
+    <img class="logo" src="//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert/image/shared/laodi-64px.png">
+    LaodiTeachTips
 </div>
 <div id="footer-container">
     <p>
@@ -107,17 +93,20 @@
             <a class="link" href="/r/poweredby-2">@841973620</a>
         </span>
         <span>
-        GitHub:
-        <a class="link" href="/r/website-github">stackinspector/LDTstore</a>
+            GitHub:
+            <a class="link" href="/r/website-github">stackinspector/LDTstore</a>
         </span>
     </p>
     <p>
+        <!-- <a class="hidden-link" href="//www.beian.gov.cn/portal/registerSystemInfo?recordcode=" target="_blank">
+            <img src="//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert/image/shared/police.png">
+            <span>公安备案号占位符</span>
+        </a> -->
         <a class="hidden-link" href="//beian.miit.gov.cn/" target="_blank">
-            <span>这是备案号位置</span></a>
+            <span>ICP备案号占位符</span>
+        </a>
     </p>
 </div>
-
-
 <script>
     let main = document.getElementById("main-container");
     let menu = document.getElementById("menu-container");
@@ -125,14 +114,12 @@
     let submenu0 = document.getElementById("submenu-switch1");
     let submenu1 = document.getElementById("submenu-switch2");
 
-
     let submenu_distance = 300;
     let submenu_on = false;
     let submenu_center = false;
     let submenu_switch = -1;
     let submenu_index = -1;
     let submenu_changing = false;
-
 
     let content = [
         "\n" +
@@ -249,11 +236,9 @@
 
         }
 
-
         submenu_index = index;
         changeSubmenu(true);
     }
-
 
     let transitionend = function (e) {
         if (e.propertyName === "left") {
@@ -281,7 +266,6 @@
     }
 
     submenu.addEventListener("transitionend", transitionend);
-
 
     function closeSubmenu() {
         changeSubmenu(false);
@@ -315,7 +299,6 @@
             }
         }
     }
-
 
     //布局计算
     function recalculate() {
@@ -358,7 +341,6 @@
         }
     };
 
-
     function init() {
         let d = new Date();
         document.getElementById("background").style.backgroundImage
@@ -369,9 +351,6 @@
     }
 
     init();
-
 </script>
-
-
 </body>
 </html>

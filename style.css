@@ -1,15 +1,15 @@
-div#background{
+div#background {
     position: fixed;
-    top:0px;
+    top: 0px;
     width: 100%;
     height: 100%;
     background-clip: revert;
     background-position: center;
-    background-size:cover;
+    background-size: cover;
     background-repeat: no-repeat;
 }
 
-html,body {
+body {
     background-color: black;
     position: relative;
     font-size: 1em;
@@ -20,23 +20,24 @@ html,body {
 }
 
 .title {
-
     position: fixed;
-    top:0px;
+    top: 0px;
     width: 100%;
-    /*text-align: center;*/
+    /* text-align: center; */
     font-size: 2em;
     padding: .4em 0 .4em 2em;
     background-color: #000;
     color: white;
 }
-p{
+
+p {
     margin: .7em 0;
 }
 
 a {
     text-decoration: none
 }
+
 img.logo {
     vertical-align: middle;
     width: 2em;
@@ -54,10 +55,12 @@ a.hidden-link {
     opacity: 1;
 }
 
-a.hidden-link:hover, a.link:hover {
+a.hidden-link:hover,
+a.link:hover {
     opacity: 0.75;
 }
-span{
+
+span {
     display: inline-block;
 }
 
@@ -70,53 +73,53 @@ div#footer-container {
     color: #fffa;
     text-align: center;
     background-color: black;
-
 }
 
 div#footer-container p {
     color: white;
 }
 
-
-div#main-container{
+div#main-container {
     pointer-events: none;
-    -moz-user-select:none;
-    -webkit-user-select:none;
-    user-select:none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
 
     position: relative;
     width: auto;
 
     left: 0;
-    transition: cubic-bezier(.6,0,.4,1) left 0.5s;
+    transition: cubic-bezier(.6, 0, .4, 1) left 0.5s;
 }
-div#menu-container{
+
+div#menu-container {
     display: inline-block;
     width: 60em;
     height: auto;
     padding: 2em 3em;
     position: relative;
     left: calc(50% - 34em);
-    /*background-color: #faa3;*/
-    transition: cubic-bezier(.6,0,.4,1) opacity 0.5s;
+    /* background-color: #faa3; */
+    transition: cubic-bezier(.6, 0, .4, 1) opacity 0.5s;
 }
-.menu-column{
+
+.menu-column {
     display: inline;
-    float:left;
+    float: left;
     width: 20em;
     margin: 0;
     color: white;
 }
 
-
-
-.menu-block:hover{
+.menu-block:hover {
     background-color: #fff2;
 }
-.menu-block:active{
+
+.menu-block:active {
     background-color: #fff3;
 }
-.menu-block{
+
+.menu-block {
     pointer-events: all;
     display: inline;
     float: left;
@@ -126,75 +129,83 @@ div#menu-container{
     padding: 0.5em;
     transition: background-color 0.1s;
 }
-.menu-block p{
+
+.menu-block p {
     position: relative;
     vertical-align: bottom;
-    bottom : 1.5em;
+    bottom: 1.5em;
     font-size: 1.2em;
     margin: 0 0.5em;
     text-align: right;
 }
-.menu-block img{
+
+.menu-block img {
     pointer-events: none;
 }
-.menu-block.s{
+
+.menu-block.s {
     width: 7em;
     height: 7em;
 }
-.menu-block.s img{
+
+.menu-block.s img {
     width: 6em;
     margin: 0 0.5em 1em 0.5em;
 }
-.menu-block.s p{
+
+.menu-block.s p {
     font-size: 1.1em;
 }
-.menu-block.m{
+
+.menu-block.m {
     width: 17em;
     height: 7em;
 }
-.menu-block.m img{
+
+.menu-block.m img {
     width: 6em;
     margin: 0 5.5em 1em 5.5em;
 }
-.menu-block.l{
+
+.menu-block.l {
     width: 17em;
     height: 17em;
 }
-.menu-block.l img{
+
+.menu-block.l img {
     width: 15em;
     margin: 2em 1em 0em 1em;
 }
 
-
-
-div#submenu-container{
+div#submenu-container {
     position: fixed;
     top: 0;
     font-size: 1em;
     width: 30em;
     height: 100%;
     color: #fff;
-    /*background-color: #afa3;*/
+    /* background-color: #afa3; */
     padding: 3em 4em;
-
     left: calc(50% + 34em);
     opacity: 0;
-    transition-property: left,opacity;
-
-
+    transition-property: left, opacity;
 }
-.submenu-switch{
+
+.submenu-switch {
     display: none;
 }
-.submenu-title{
+
+.submenu-title {
     font-size: 2em;
     margin: 0.4em;
 }
-.submenu-text{
+
+.submenu-text {
     font-size: 1.5em;
     padding: 0.4em;
 }
-hr{
+
+hr {
     background-color: #aaaf;
     margin: 0.5em 0;
     position: relative;
@@ -202,57 +213,75 @@ hr{
     width: calc(100% + 4em);
 }
 
-
-.clearfix{
+.clearfix {
     font: 0px/0px sans-serif;
     clear: both;
     display: block
 }
 
-
 @media screen and (max-width: 1600px) {
-    div#main-container {font-size: 0.85em;}
-    .menu-block{
+    div#main-container {
+        font-size: 0.85em;
+    }
+
+    .menu-block {
         margin: 0.75em;
         border: 0.25em solid #fff;
     }
 }
+
 @media screen and (max-width: 1200px) {
-    div#main-container {font-size: 0.7em;}
-    .menu-block{
+    div#main-container {
+        font-size: 0.7em;
+    }
+
+    .menu-block {
         margin: 0.7em;
         border: 0.3em solid #fff;
     }
 }
+
 @media screen and (max-width: 800px) {
-    div#submenu-container{
+    div#submenu-container {
         left: calc(50% + 14em);
     }
-    div#menu-container{
+
+    div#menu-container {
         width: 20em;
         left: calc(50% - 12em);
     }
-    .menu-block{
+
+    .menu-block {
         margin: 0.65em;
         border: 0.35em solid #fff;
     }
-    .menu-block.l img{
+
+    .menu-block.l img {
         width: 7em;
         margin: 0 5em;
     }
-    .menu-block.l{
+
+    .menu-block.l {
         width: 17em;
         height: 7em;
     }
+
     .title {
         padding: .4em 0 .4em 0;
         text-align: center;
     }
 }
+
 @media screen and (max-width: 420px) {
-    body{font-size: 0.8em}
-    div#main-container {font-size: 0.875em;}
-    div#submenu-container{
+    body {
+        font-size: 0.8em;
+    }
+
+    div#main-container {
+        font-size: 0.875em;
+    }
+
+    div#submenu-container {
         width: 20em;
         left: calc(50% + 14em);
     }
