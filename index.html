@@ -114,8 +114,8 @@
         const main = document.getElementById("main-container");
         const menu = document.getElementById("menu-container");
         const submenu = document.getElementById("submenu-container");
-        const submenu0 = document.getElementById("submenu-switch1");
-        const submenu1 = document.getElementById("submenu-switch2");
+        const submenu1 = document.getElementById("submenu-switch1");
+        const submenu2 = document.getElementById("submenu-switch2");
         const background = document.getElementById("background")
 
         let submenu_distance = 300;
@@ -209,8 +209,8 @@
             if (submenu_switch === -1) {
                 // 第一次
                 submenu_switch = 0;
-                submenu0.innerHTML = insert;
-                submenu0.style.display = "block";
+                submenu1.innerHTML = insert;
+                submenu1.style.display = "block";
                 submenu.style.opacity = 1;
                 submenu_changing = true;
             }
@@ -218,10 +218,10 @@
                 // 其余：在另一个中写入内容
                 if (submenu_switch === 0) {
                     submenu_switch = 1;
-                    submenu1.innerHTML = insert;
+                    submenu2.innerHTML = insert;
                 } else {
                     submenu_switch = 0;
-                    submenu0.innerHTML = insert;
+                    submenu1.innerHTML = insert;
                 }
 
                 if (submenu.style.opacity === "0") {
@@ -238,11 +238,11 @@
 
         const showSwitch = () => {
             if (submenu_switch === 0) {
-                submenu0.style.display = "block";
-                submenu1.style.display = "none";
-            } else {
-                submenu0.style.display = "none";
                 submenu1.style.display = "block";
+                submenu2.style.display = "none";
+            } else {
+                submenu1.style.display = "none";
+                submenu2.style.display = "block";
             }
             submenu.style.opacity = 1;
         }
