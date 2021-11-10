@@ -140,16 +140,37 @@ img.logo {
     border-radius: 0.2em;
     padding: 0.5em;
     transition: background-color 0.1s;
+    text-align: right;
 }
 
 .menu-block p {
     position: relative;
-    vertical-align: bottom;
+    font-size: 1.1em;
+    line-height: 1.591;
+    margin: 0 0.3em;
+}
+.menu-block h5 {
+    position: relative;
+    bottom: 1.5em;
+    font-size: 0.95em;
+    font-weight: normal;
+    margin: 0 0.3em;
+}
+.menu-block h4 {
+    position: relative;
+    bottom: 1.5em;
+    font-size: 1.1em;
+    font-weight: normal;
+    margin: 0 0.3em;
+}
+.menu-block h3 {
+    position: relative;
     bottom: 1.5em;
     font-size: 1.2em;
-    margin: 0 0.5em;
-    text-align: right;
+    font-weight: normal;
+    margin: 0 0.3em;
 }
+
 
 .menu-block img {
     pointer-events: none;
