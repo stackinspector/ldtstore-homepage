@@ -200,13 +200,9 @@ img.logo {
     color: #fff;
     /* background-color: #afa3; */
     padding: 3em 4em;
-    left: calc(50% + 34em);
+    left: calc(50% + 32em);
     opacity: 0;
     transition-property: left, opacity;
-}
-
-.submenu-switch {
-    display: none;
 }
 
 .submenu-title {
