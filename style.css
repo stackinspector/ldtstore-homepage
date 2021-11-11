@@ -52,9 +52,9 @@ a.link:hover {
     background-repeat: no-repeat;
 }
 
-/* title */
+/* header */
 
-.title {
+#header {
     position: fixed;
     top: 0px;
     width: 100%;
@@ -65,14 +65,14 @@ a.link:hover {
     color: white;
 }
 
-img.logo {
+#header img {
     vertical-align: middle;
     width: 2em;
 }
 
 /* footer */
 
-#footer-container {
+#footer {
     position: fixed;
     bottom: 0px;
     left: 0;
@@ -83,13 +83,13 @@ img.logo {
     background-color: black;
 }
 
-#footer-container p {
+#footer p {
     color: white;
 }
 
 /* content */
 
-#main-container {
+#content {
     pointer-events: none;
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -102,9 +102,9 @@ img.logo {
     transition: cubic-bezier(.6, 0, .4, 1) left 0.5s;
 }
 
-/* menu */
+/* major */
 
-#menu-container {
+#major {
     display: inline-block;
     width: 60em;
     height: auto;
@@ -115,7 +115,7 @@ img.logo {
     transition: cubic-bezier(.6, 0, .4, 1) opacity 0.5s;
 }
 
-.menu-column {
+.tile-column {
     display: inline;
     float: left;
     width: 20em;
@@ -123,15 +123,15 @@ img.logo {
     color: white;
 }
 
-.menu-block:hover {
+.tile:hover {
     background-color: #fff2;
 }
 
-.menu-block:active {
+.tile:active {
     background-color: #fff3;
 }
 
-.menu-block {
+.tile {
     pointer-events: all;
     display: inline;
     float: left;
@@ -143,27 +143,30 @@ img.logo {
     text-align: right;
 }
 
-.menu-block p {
+.tile p {
     position: relative;
     font-size: 1.1em;
     line-height: 1.591;
     margin: 0 0.3em;
 }
-.menu-block h5 {
+
+.tile h5 {
     position: relative;
     bottom: 1.5em;
     font-size: 0.95em;
     font-weight: normal;
     margin: 0 0.3em;
 }
-.menu-block h4 {
+
+.tile h4 {
     position: relative;
     bottom: 1.5em;
     font-size: 1.1em;
     font-weight: normal;
     margin: 0 0.3em;
 }
-.menu-block h3 {
+
+.tile h3 {
     position: relative;
     bottom: 1.5em;
     font-size: 1.2em;
@@ -172,47 +175,47 @@ img.logo {
 }
 
 
-.menu-block img {
+.tile img {
     pointer-events: none;
 }
 
-.menu-block.s {
+.tile.s {
     width: 7em;
     height: 7em;
 }
 
-.menu-block.s img {
+.tile.s img {
     width: 6em;
     margin: 0 0.5em 1em 0.5em;
 }
 
-.menu-block.s p {
+.tile.s p {
     font-size: 1.1em;
 }
 
-.menu-block.m {
+.tile.m {
     width: 17em;
     height: 7em;
 }
 
-.menu-block.m img {
+.tile.m img {
     width: 6em;
     margin: 0 5.5em 1em 5.5em;
 }
 
-.menu-block.l {
+.tile.l {
     width: 17em;
     height: 17em;
 }
 
-.menu-block.l img {
+.tile.l img {
     width: 15em;
     margin: 2em 1em 0em 1em;
 }
 
-/* submenu */
+/* side */
 
-#submenu-container {
+#side {
     position: fixed;
     top: 0;
     font-size: 1em;
@@ -226,12 +229,12 @@ img.logo {
     transition-property: left, opacity;
 }
 
-.submenu-title {
+.side-title {
     font-size: 2em;
     margin: 0.4em;
 }
 
-.submenu-text {
+.side-text {
     font-size: 1.5em;
     padding: 0.4em;
 }
@@ -253,48 +256,48 @@ hr {
 /* flex */
 
 @media screen and (max-width: 1600px) {
-    #main-container {
+    #content {
         font-size: 0.85em;
     }
 
-    .menu-block {
+    .tile {
         margin: 0.75em;
         border: 0.25em solid #fff;
     }
 }
 
 @media screen and (max-width: 1200px) {
-    #main-container {
+    #content {
         font-size: 0.7em;
     }
 
-    .menu-block {
+    .tile {
         margin: 0.7em;
         border: 0.3em solid #fff;
     }
 }
 
 @media screen and (max-width: 800px) {
-    #submenu-container {
+    #side {
         left: calc(50% + 14em);
     }
 
-    #menu-container {
+    #major {
         width: 20em;
         left: calc(50% - 12em);
     }
 
-    .menu-block {
+    .tile {
         margin: 0.65em;
         border: 0.35em solid #fff;
     }
 
-    .menu-block.l img {
+    .tile.l img {
         width: 7em;
         margin: 0 5em;
     }
 
-    .menu-block.l {
+    .tile.l {
         width: 17em;
         height: 7em;
     }
@@ -310,11 +313,11 @@ hr {
         font-size: 0.8em;
     }
 
-    #main-container {
+    #content {
         font-size: 0.875em;
     }
 
-    #submenu-container {
+    #side {
         width: 20em;
         left: calc(50% + 14em);
     }

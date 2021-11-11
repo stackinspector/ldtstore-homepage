@@ -19,75 +19,75 @@
 </head>
 
 <body>
-    <div id="background" onclick="closeSubmenu()"></div>
+    <div id="background" onclick="sideClose()"></div>
 
-    <div class="title" onclick="change(0)">
-        <img class="logo" src="//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert/image/shared/laodi-64px.png">
-        LaodiTeachTips
+    <div class="header" onclick="side(0)">
+        <img src="//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert/image/shared/laodi-64px.png">
+        <span>LaodiTeachTips</span>
     </div>
 
-    <div id="main-container">
-        <div id="menu-container">
-            <div class="menu-column">
-                <div class="menu-block l" onclick="link('home')">
+    <div id="content">
+        <div id="major">
+            <div class="tile-column">
+                <div class="tile l" onclick="link('home')">
                     <img src="icon/icon2.webp">
                     <h3>老弟一号个人空间</h3>
                 </div>
-                <div class="menu-block l" onclick="link('store')">
+                <div class="tile l" onclick="link('store')">
                     <img src="icon/icon3.webp">
                     <h3>LDTstore淘宝店铺</h3>
                 </div>
             </div>
-            <div class="menu-column">
-                <div class="menu-block m" onclick="change(1)">
+            <div class="tile-column">
+                <div class="tile m" onclick="side(1)">
                     <img src="icon/icon4.webp">
                     <h3>直播间(文件夹1)</h3>
                 </div>
-                <div class="menu-block s" onclick="change(6)">
+                <div class="tile s" onclick="side(6)">
                     <img src="icon/icon11.webp">
                     <h3>阅机无数</h3>
                 </div>
-                <div class="menu-block s" onclick="change(7)">
+                <div class="tile s" onclick="side(7)">
                     <img src="icon/icon6.webp">
                     <h3>装机ICU</h3>
                 </div>
-                <div class="menu-block m" onclick="link('home-ops')">
+                <div class="tile m" onclick="link('home-ops')">
                     <img src="icon/icon5.webp">
                     <h3>运营信息发布账号</h3>
                 </div>
-                <div class="menu-block s" onclick="change(8)">
+                <div class="tile s" onclick="side(8)">
                     <img src="icon/icon9.webp">
                     <h4>硬件讨论群</h4>
                 </div>
-                <div class="menu-block s" onclick="change(2)">
+                <div class="tile s" onclick="side(2)">
                     <img src="icon/icon10.webp">
                     <h3>商务合作</h3>
                 </div>
             </div>
-            <div class="menu-column">
-                <div class="menu-block m" onclick="change(2)">
+            <div class="tile-column">
+                <div class="tile m" onclick="side(2)">
                     <img src="icon/icon8.webp">
                     <h3>站外官方账号(文件夹2)</h3>
                 </div>
-                <div class="menu-block m" onclick="link('afdian')">
+                <div class="tile m" onclick="link('afdian')">
                     <img src="icon/icon7.webp">
                     <h3>赞助老弟一号</h3>
                 </div>
-                <!-- <div class="menu-block s" onclick="change(12)">
+                <!-- <div class="tile s" onclick="side(12)">
                     <img src="icon/icon1.webp">
                     <h3>2</h3>
                 </div>
-                <div class="menu-block s" onclick="change(13)">
+                <div class="tile s" onclick="side(13)">
                     <img src="icon/icon1.webp">
                     <h3>2</h3>
                 </div> -->
             </div>
             <div class="clearfix"></div>
         </div>
-        <div id="submenu-container"></div>
+        <div id="side"></div>
     </div>
 
-    <div id="footer-container">
+    <div id="footer">
         <p>
             <span>
                 Powered by
@@ -111,82 +111,82 @@
     </div>
 
     <template id="side-about">
-        <div class="submenu-title">关于本站</div>
+        <div class="side-title">关于本站</div>
         <hr>
-        <div class="submenu-text">
+        <div class="side-text">
             本网站为B站UP主老弟一号的个人网站，
             <br>
             用于提供文件下载与一些跳转服务。
         </div>
     </template>
     <template id="side-1">
-        <div class="submenu-title">文件夹测试1</div>
+        <div class="side-title">文件夹测试1</div>
         <hr>
-        <div class="menu-block s">
+        <div class="tile s">
             <p><br><br><br>进入话题</p>
         </div>
-        <div class="menu-block s">
+        <div class="tile s">
             <p><br>话题管理<br>与投稿规范<br>Rev 2.1</p>
         </div>
         </div>
-        <div class="menu-block s">
+        <div class="tile s">
             <p><br><br>投稿<br>快速指南</p>
         </div>
-        <div class="menu-block s">
+        <div class="tile s">
             <p><br><br><br>进入话题</p>
         </div>
-        <div class="menu-block s">
+        <div class="tile s">
             <p><br><br>初版<br>投稿规范</p>
         </div>
-        <div class="menu-block s">
+        <div class="tile s">
             <p><br><br><br>补充</p>
         </div>
         </div>
-        <div class="menu-block s">
+        <div class="tile s">
             <p><br><br><br>进入直播间</p>
         </div>
-        <div class="menu-block s">
+        <div class="tile s">
             <p><br><br>直播间常见<br>问题FAQ</p>
         </div>
-        <div class="menu-block s">
+        <div class="tile s">
             <p><br><br>阅机无数<br>录播</p>
         </div>
-        <div class="menu-block s">
+        <div class="tile s">
             <p><br><br>其他重要<br>录播</p>
         </div>
         </div>
-        <div class="menu-block s">
+        <div class="tile s">
             <p><br><br>一群<br>1005059704</p>
         </div>
-        <div class="menu-block s">
+        <div class="tile s">
             <img src="icon/icon1.webp">
             <h3>图标</h3>
         </div>
     </template>
     <template id="side-2">
-        <div class="submenu-title">文件夹测试2</div>
+        <div class="side-title">文件夹测试2</div>
         <hr>
-        <div class="menu-block s">
+        <div class="tile s">
             <img src="icon/icon12.webp">
             <h3>老弟一号</h3>
         </div>
-        <div class="menu-block s">
+        <div class="tile s">
             <img src="icon/icon13.webp">
             <h5>LaodiTeachTips</h5>
         </div>
-        <div class="menu-block s">
+        <div class="tile s">
             <img src="icon/icon14.webp">
             <h5>LaodiTeachTips</h5>
         </div>
-        <div class="menu-block s">
+        <div class="tile s">
             <img src="icon/icon15.webp">
             <h5>LaodiTeachTips</h5>
         </div>
     </template>
     <template id="side-business">
-        <div class="submenu-title">商务合作</div>
+        <div class="side-title">商务合作</div>
         <hr>
-        <div class="submenu-text">
+        <div class="side-text">
             商务合作请加微信13869651328，并注明合作方与合作内容。
             <br>
             目前只接受数码领域相关合作，产品评测优先；
@@ -195,9 +195,9 @@
         </div>
     </template>
     <template id="side-placeholder">
-        <div class="submenu-title">标题</div>
+        <div class="side-title">标题</div>
         <hr>
-        <div class="submenu-text">
+        <div class="side-text">
             这应该是个文件夹 _(:з」∠)_ 。
             <br>
             参考一下文件夹测试。

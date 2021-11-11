@@ -1,14 +1,14 @@
 const body = document.documentElement;
-const main = document.getElementById("main-container");
-const menu = document.getElementById("menu-container");
-const submenu = document.getElementById("submenu-container");
+const content = document.getElementById("content");
+const major = document.getElementById("major");
+const side = document.getElementById("side");
 const background = document.getElementById("background");
 
-let submenu_distance = 300;
-let submenu_on = false;
-let submenu_center = false;
-let submenu_index = -1;
-let submenu_changing = false;
+let side_distance = 300;
+let side_on = false;
+let side_center = false;
+let side_index = -1;
+let side_changing = false;
 
 const OFFSET_LIT = 14;
 const OFFSET = 32;
@@ -28,14 +28,14 @@ window.ontouchstart = (e) => {
 window.ontouchmove = (e) => {
     const y = e.changedTouches[0].clientY;
     if (Math.abs(touchY - y) > 10) {
-        closeSubmenu();
+        sideClose();
     }
 };
 
 window.ontouchend = (e) => {
     const x = e.changedTouches[0].clientX;
     if (touchX - x < -40) {
-        closeSubmenu();
+        sideClose();
     }
 };
 
@@ -43,90 +43,90 @@ const link = (e) => {
     window.location.href = "https://ldtstore.com.cn/r/" + e;
 };
 
-const closeSubmenu = () => {
-    submenu_index = -1;
-    submenuMove(false);
-    submenuChange(false);
+const sideClose = () => {
+    side_index = -1;
+    sideMove(false);
+    sideChange(false);
 };
 
-const submenuMove = (enable) => {
+const sideMove = (enable) => {
     if (enable === void 0) {
-        enable = !submenu_on;
+        enable = !side_on;
     }
-    if (submenu_on !== enable) {
-        submenu_on = enable;
+    if (side_on !== enable) {
+        side_on = enable;
 
-        if (submenu_on) {
-            main.style.left = -submenu_distance + "px";
-            submenu.style.left = `calc(50% + ${menu.clientWidth < 500 ? OFFSET_LIT : OFFSET}em - ${submenu_distance}px)`;
+        if (side_on) {
+            content.style.left = -side_distance + "px";
+            side.style.left = `calc(50% + ${major.clientWidth < 500 ? OFFSET_LIT : OFFSET}em - ${side_distance}px)`;
         } else {
-            main.style.left = "0";
-            submenu.style.left = `calc(50% + ${menu.clientWidth < 500 ? OFFSET_LIT : OFFSET}em)`;
-            submenu_index = -1;
+            content.style.left = "0";
+            side.style.left = `calc(50% + ${major.clientWidth < 500 ? OFFSET_LIT : OFFSET}em)`;
+            side_index = -1;
         }
     }
 };
 
-const submenuChange = (enable, index) => {
+const sideChange = (enable, index) => {
     if (index != void 0) {
-        submenu.innerHTML = getTemplateData(index);
+        side.innerHTML = getTemplateData(index);
     }
-    submenu.style.opacity = enable ? 1 : 0;
-    menu.style.opacity = (submenu_center && enable) ? 0 : 1;
+    side.style.opacity = enable ? 1 : 0;
+    major.style.opacity = (side_center && enable) ? 0 : 1;
 };
 
-const change = (index) => {
-    if (!submenu_on) {
-        submenu_index = index;
-        submenuMove(true);
-        submenuChange(true, submenu_index);
+const side = (index) => {
+    if (!side_on) {
+        side_index = index;
+        sideMove(true);
+        sideChange(true, side_index);
     } else {
-        if (submenu_index === index) {
-            submenu_index = -1;
-            submenuMove(false);
-            submenuChange(false);
+        if (side_index === index) {
+            side_index = -1;
+            sideMove(false);
+            sideChange(false);
         } else {
-            submenu_index = index;
-            submenuChange(false);
+            side_index = index;
+            sideChange(false);
         }
     }
 };
 
-submenu.addEventListener("transitionend", (e) => {
+side.addEventListener("transitionend", (e) => {
     if (e.propertyName === "left") {
         recalculate();
         return;
     } else if (e.propertyName === "opacity") {
-        if (submenu.style.opacity === "0" && submenu_index !== -1) {
-            submenuChange(true, submenu_index);
+        if (side.style.opacity === "0" && side_index !== -1) {
+            sideChange(true, side_index);
         }
     }
-    if (submenu_changing) {
-        submenu_changing = false;
+    if (side_changing) {
+        side_changing = false;
     }
 });
 
 const recalculate = () => {
     // 垂直方向 计算main间距
-    let delta = body.clientHeight - main.clientHeight;
+    let delta = body.clientHeight - content.clientHeight;
     delta = delta < 140 ? 140 : delta;
     delta -= 1;
-    submenu.style.height = `calc(${body.clientHeight - delta}px - 6em)`;
-    main.style.marginTop = main.style.marginBottom = delta / 2 + "px";
-    submenu.style.marginTop = submenu.style.marginBottom = delta / 2 + "px";
+    side.style.height = `calc(${body.clientHeight - delta}px - 6em)`;
+    content.style.marginTop = content.style.marginBottom = delta / 2 + "px";
+    side.style.marginTop = side.style.marginBottom = delta / 2 + "px";
 
     // 水平方向 计算子菜单移动的距离
-    delta = body.clientWidth - menu.clientWidth - submenu.clientWidth;
-    submenu_center = false;
+    delta = body.clientWidth - major.clientWidth - side.clientWidth;
+    side_center = false;
     if (delta > 0) {
-        submenu_distance = menu.offsetLeft - delta / 2;
+        side_distance = major.offsetLeft - delta / 2;
     } else {
-        if (menu.clientWidth < 500) {
-            delta = body.clientWidth - submenu.clientWidth;
-            submenu_center = true;
-            submenu_distance = menu.clientWidth + menu.offsetLeft - delta / 2;
+        if (major.clientWidth < 500) {
+            delta = body.clientWidth - side.clientWidth;
+            side_center = true;
+            side_distance = major.clientWidth + major.offsetLeft - delta / 2;
         } else {
-            submenu_distance = -delta + menu.offsetLeft;
+            side_distance = -delta + major.offsetLeft;
         }
     }
 };
@@ -134,15 +134,15 @@ const recalculate = () => {
 window.onresize = () => {
     recalculate();
 
-    if (submenu_on) {
-        closeSubmenu();
+    if (side_on) {
+        sideClose();
     } else {
-        submenu.style.left = `calc(50% + ${menu.clientWidth < 500 ? OFFSET_LIT : OFFSET}em)`;
+        side.style.left = `calc(50% + ${major.clientWidth < 500 ? OFFSET_LIT : OFFSET}em)`;
     }
 };
 
 (() => {
     background.style.backgroundImage = `url('bg/${new Date().getDay()}.webp')`;
     recalculate();
-    submenu.style.transition = "cubic-bezier(.6,0,.4,1) 0.5s";
+    side.style.transition = "cubic-bezier(.6,0,.4,1) 0.5s";
 })();
