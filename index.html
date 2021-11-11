@@ -38,15 +38,15 @@
                 </div>
             </div>
             <div class="tile-column">
-                <div class="tile m" onclick="sideClick('1')">
+                <div class="tile m" onclick="sideClick('live')">
                     <img src="IMAGE_CDN/icon/live-room.webp">
                     <h3>直播间</h3>
                 </div>
-                <div class="tile s" onclick="sideClick('placeholder')">
+                <div class="tile s" onclick="sideClick('yjws')">
                     <img src="IMAGE_CDN/icon/yjws.webp">
                     <h3>阅机无数</h3>
                 </div>
-                <div class="tile s" onclick="sideClick('placeholder')">
+                <div class="tile s" onclick="sideClick('icu')">
                     <img src="IMAGE_CDN/icon/icu.webp">
                     <h3>装机ICU</h3>
                 </div>
@@ -54,7 +54,7 @@
                     <img src="IMAGE_CDN/icon/home-ops.webp">
                     <h3>运营信息发布账号</h3>
                 </div>
-                <div class="tile s" onclick="sideClick('placeholder')">
+                <div class="tile s" onclick="sideClick('group')">
                     <img src="IMAGE_CDN/icon/group.webp">
                     <h4>硬件讨论群</h4>
                 </div>
@@ -64,7 +64,7 @@
                 </div>
             </div>
             <div class="tile-column">
-                <div class="tile m" onclick="sideClick('2')">
+                <div class="tile m" onclick="sideClick('outer')">
                     <img src="IMAGE_CDN/icon/outer.webp">
                     <h3>站外官方账号</h3>
                 </div>
@@ -72,14 +72,6 @@
                     <img src="IMAGE_CDN/icon/afdian.webp">
                     <h3>赞助老弟一号</h3>
                 </div>
-                <!-- <div class="tile s" onclick="sideClick('placeholder')">
-                    <img src="IMAGE_CDN/icon/icon1.webp">
-                    <h3>2</h3>
-                </div>
-                <div class="tile s" onclick="sideClick('placeholder')">
-                    <img src="IMAGE_CDN/icon/icon1.webp">
-                    <h3>2</h3>
-                </div> -->
             </div>
             <div class="clearfix"></div>
         </div>
@@ -105,7 +97,7 @@
                 <span>公安备案号占位符</span>
             </a> -->
             <a class="hidden-link" href="//beian.miit.gov.cn/" target="_blank">
-                <span>ICP备案号占位符</span>
+                <span>鲁ICP备2021014114号</span>
             </a>
         </p>
     </div>
@@ -120,53 +112,80 @@
         </div>
     </template>
 
-    <template id="side-1">
-        <div class="side-title">文件夹测试1</div>
+    <template id="side-live">
+        <div class="side-title">直播间</div>
         <hr>
-        <div class="tile s">
-            <p><br><br><br>进入话题</p>
+        <div class="tile m" onclick="r('live-room')">
+            <img src="IMAGE_CDN/icon/live-room.webp">
+            <h3>进入直播间</h3>
         </div>
-        <div class="tile s">
-            <p><br>话题管理<br>与投稿规范<br>Rev 2.1</p>
+        <div class="tile s" onclick="r('live-rec-yjws')">
+            <img src="IMAGE_CDN/icon/live-record.webp">
+            <h3>阅机无数</h3>
         </div>
+        <div class="tile m" onclick="r('live-faq-1')">
+            <img src="IMAGE_CDN/icon/live-faq.webp">
+            <h3>常见问题FAQ</h3>
         </div>
-        <div class="tile s">
-            <p><br><br>投稿<br>快速指南</p>
-        </div>
-        <div class="tile s">
-            <p><br><br><br>进入话题</p>
-        </div>
-        <div class="tile s">
-            <p><br><br>初版<br>投稿规范</p>
-        </div>
-        <div class="tile s">
-            <p><br><br><br>补充</p>
-        </div>
-        </div>
-        <div class="tile s">
-            <p><br><br><br>进入直播间</p>
-        </div>
-        <div class="tile s">
-            <p><br><br>直播间常见<br>问题FAQ</p>
-        </div>
-        <div class="tile s">
-            <p><br><br>阅机无数<br>录播</p>
-        </div>
-        <div class="tile s">
-            <p><br><br>其他重要<br>录播</p>
-        </div>
-        </div>
-        <div class="tile s">
-            <p><br><br>一群<br>1005059704</p>
-        </div>
-        <div class="tile s">
-            <img src="IMAGE_CDN/icon/placeholder.webp">
-            <h3>图标</h3>
+        <div class="tile s" onclick="r('live-rec-other')">
+            <img src="IMAGE_CDN/icon/live-record.webp">
+            <h3>其他</h3>
         </div>
     </template>
 
-    <template id="side-2">
-        <div class="side-title">文件夹测试2</div>
+    <template id="side-yjws">
+        <div class="side-title">阅机无数</div>
+        <hr>
+        <div class="tile m" onclick="r('yjws-newtopic')">
+            <img src="IMAGE_CDN/icon/topic.webp">
+            <h3>进入新版话题</h3>
+        </div>
+        <div class="tile s" onclick="r('yjws')">
+            <img src="IMAGE_CDN/icon/topic.webp">
+            <h3>旧版话题</h3>
+        </div>
+        <div class="tile m" onclick="r('yjws-guide-21')">
+            <img src="IMAGE_CDN/icon/spec.webp">
+            <h3>《指南》</h3>
+        </div>
+        <div class="tile s" onclick="r('yjws-spec-21')">
+            <img src="IMAGE_CDN/icon/spec.webp">
+            <h3>《规范》</h3>
+        </div>
+    </template>
+
+    <template id="side-icu">
+        <div class="side-title">装机ICU</div>
+        <hr>
+        <div class="tile m" onclick="r('icu-newtopic')">
+            <img src="IMAGE_CDN/icon/topic.webp">
+            <h3>进入新版话题</h3>
+        </div>
+        <div class="tile s" onclick="r('icu')">
+            <img src="IMAGE_CDN/icon/topic.webp">
+            <h3>旧版话题</h3>
+        </div>
+        <div class="tile m" onclick="r('icu-spec-1')">
+            <img src="IMAGE_CDN/icon/spec.webp">
+            <h3>初版投稿规范</h3>
+        </div>
+        <div class="tile s" onclick="r('icu-spec-11')">
+            <img src="IMAGE_CDN/icon/spec.webp">
+            <h3>补充</h3>
+        </div>
+    </template>
+
+    <template id="side-group">
+        <div class="side-title">硬件讨论群</div>
+        <hr>
+        <div class="side-text">
+            <p>一群：1005059704</p>
+            <p><a class="link" href="#" onclick="r('group-readme-1')">核心群入群测试</a></p>
+        </div>
+        </template>
+
+    <template id="side-outer">
+        <div class="side-title">站外官方账号</div>
         <hr>
         <div class="tile s notext">
             <img src="IMAGE_CDN/icon/outer-zh.webp">
@@ -189,18 +208,7 @@
             商务合作请加微信13869651328，并注明合作方与合作内容。
             <br>
             目前只接受数码领域相关合作，产品评测优先；
-            <br>
             不接受干涉测评、跨领域合作以及其他平台入驻。感谢您的认可。
-        </div>
-    </template>
-
-    <template id="side-placeholder">
-        <div class="side-title">标题</div>
-        <hr>
-        <div class="side-text">
-            这应该是个文件夹 _(:з」∠)_ 。
-            <br>
-            参考一下文件夹测试。
         </div>
     </template>
 
