@@ -189,6 +189,10 @@ a.link:hover {
     margin: 0 0.5em 1em 0.5em;
 }
 
+.tile.s.notext img {
+    margin: 0.5em 0.5em 0.5em 0.5em;
+}
+
 .tile.s p {
     font-size: 1.1em;
 }

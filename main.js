@@ -4,6 +4,7 @@ const content = document.getElementById("content");
 const major = document.getElementById("major");
 const side = document.getElementById("side");
 
+const IMAGE_CDN = "//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert/image";
 const OFFSET_LIT = 14;
 const OFFSET = 32;
 
@@ -96,14 +97,13 @@ const sideClick = (id) => {
 side.addEventListener("transitionend", (e) => {
     if (e.propertyName === "left") {
         recalculate();
-        return;
     } else if (e.propertyName === "opacity") {
         if (side.style.opacity === "0" && SideState.id !== null) {
             sideChange(SideState.id);
         }
-    }
-    if (SideState.changing) {
-        SideState.changing = false;
+        if (SideState.changing) {
+            SideState.changing = false;
+        }
     }
 });
 
@@ -143,6 +143,6 @@ window.onresize = () => {
 };
 
 (() => {
-    background.style.backgroundImage = `url('bg/${new Date().getDay()}.webp')`;
+    background.style.backgroundImage = `url('${IMAGE_CDN}/bg/${new Date().getDay()}.webp')`;
     recalculate();
 })();
