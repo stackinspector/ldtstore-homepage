@@ -4,7 +4,6 @@ const content = document.getElementById("content");
 const major = document.getElementById("major");
 const side = document.getElementById("side");
 
-const IMAGE_CDN = "//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert/image";
 const OFFSET_LIT = 14;
 const OFFSET = 32;
 
@@ -143,6 +142,6 @@ window.onresize = () => {
 };
 
 (() => {
-    background.style.backgroundImage = `url('${IMAGE_CDN}/bg/${new Date().getDay()}.webp')`;
+    background.style.backgroundImage = `url('/assert/bg/${new Date().getDay()}.webp')`;
     recalculate();
 })();
