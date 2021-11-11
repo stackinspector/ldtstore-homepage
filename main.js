@@ -11,11 +11,9 @@ const SideState = {
     distance: 300,
     on: false,
     center: false,
-    index: -1,
+    id: null,
     changing: false,
 };
-
-const getTemplateData = (index) => "";
 
 // 左滑返回
 
@@ -46,7 +44,7 @@ const link = (e) => {
 };
 
 const sideClose = () => {
-    SideState.index = -1;
+    SideState.id = null;
     sideMove(false);
     sideChange(false);
 };
@@ -64,31 +62,32 @@ const sideMove = (enable) => {
         } else {
             content.style.left = "0";
             side.style.left = `calc(50% + ${major.clientWidth < 500 ? OFFSET_LIT : OFFSET}em)`;
-            SideState.index = -1;
+            SideState.id = null;
         }
     }
 };
 
-const sideChange = (enable, index) => {
-    if (index != void 0) {
-        side.innerHTML = getTemplateData(index);
+const sideChange = (enable, id) => {
+    if (id != void 0) {
+        side.innerHTML = "";
+        side.appendChild(document.getElementById("side-" + id).content);
     }
     side.style.opacity = enable ? 1 : 0;
     major.style.opacity = (SideState.center && enable) ? 0 : 1;
 };
 
-const sideOn = (index) => {
+const sideOn = (id) => {
     if (!SideState.on) {
-        SideState.index = index;
+        SideState.id = id;
         sideMove(true);
-        sideChange(true, SideState.index);
+        sideChange(true, SideState.id);
     } else {
-        if (SideState.index === index) {
-            SideState.index = -1;
+        if (SideState.id === id) {
+            SideState.id = null;
             sideMove(false);
             sideChange(false);
         } else {
-            SideState.index = index;
+            SideState.id = id;
             sideChange(false);
         }
     }
@@ -99,8 +98,8 @@ side.addEventListener("transitionend", (e) => {
         recalculate();
         return;
     } else if (e.propertyName === "opacity") {
-        if (side.style.opacity === "0" && SideState.index !== -1) {
-            sideChange(true, SideState.index);
+        if (side.style.opacity === "0" && SideState.id !== null) {
+            sideChange(true, SideState.id);
         }
     }
     if (SideState.changing) {
