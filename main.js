@@ -39,24 +39,21 @@ window.ontouchend = (e) => {
     }
 };
 
-const r = (e) => {
-    window.location.href = "https://ldtstore.com.cn/r/" + e;
+const r = (key) => {
+    window.location.href = "https://ldtstore.com.cn/r/" + key;
 };
 
 const sideClose = () => {
     SideState.id = null;
     sideMove(false);
-    sideChange(false);
+    sideChange(null);
 };
 
 const sideMove = (enable) => {
-    if (enable === void 0) {
-        enable = !SideState.on;
-    }
     if (SideState.on !== enable) {
         SideState.on = enable;
 
-        if (SideState.on) {
+        if (enable) {
             content.style.left = -SideState.distance + "px";
             side.style.left = `calc(50% + ${major.clientWidth < 500 ? OFFSET_LIT : OFFSET}em - ${SideState.distance}px)`;
         } else {
@@ -67,30 +64,31 @@ const sideMove = (enable) => {
     }
 };
 
-const sideChange = (enable, id) => {
-    if (id != void 0) {
+const sideChange = (id) => {
+    const enable = id !== null;
+    if (enable) {
         while (side.firstChild) {
             side.removeChild(side.lastChild);
         }
         side.appendChild(document.getElementById("side-" + id).content);
     }
-    side.style.opacity = enable ? 1 : 0;
-    major.style.opacity = (SideState.center && enable) ? 0 : 1;
+    side.style.opacity = enable ? "1" : "0";
+    major.style.opacity = (SideState.center && enable) ? "0" : "1";
 };
 
-const sideOn = (id) => {
+const sideClick = (id) => {
     if (!SideState.on) {
         SideState.id = id;
         sideMove(true);
-        sideChange(true, SideState.id);
+        sideChange(SideState.id);
     } else {
         if (SideState.id === id) {
             SideState.id = null;
             sideMove(false);
-            sideChange(false);
+            sideChange(null);
         } else {
             SideState.id = id;
-            sideChange(false);
+            sideChange(null);
         }
     }
 };
@@ -101,7 +99,7 @@ side.addEventListener("transitionend", (e) => {
         return;
     } else if (e.propertyName === "opacity") {
         if (side.style.opacity === "0" && SideState.id !== null) {
-            sideChange(true, SideState.id);
+            sideChange(SideState.id);
         }
     }
     if (SideState.changing) {
