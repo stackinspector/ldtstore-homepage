@@ -13,92 +13,7 @@ let submenu_changing = false;
 const offsetLit = 14;
 const offset = 32;
 
-const content = [
-    `<div class="submenu-title">关于本站</div>
-<hr>
-<div class="submenu-text">
-本网站为B站UP主老弟一号的个人网站，
-<br>
-用于提供文件下载与一些跳转服务。
-</div>`,
-    `<div class="submenu-title">文件夹测试1</div>
-<hr>
-<div class="menu-block s">
-<p><br><br><br>进入话题</p>
-</div>
-<div class="menu-block s">
-<p><br>话题管理<br>与投稿规范<br>Rev 2.1</p>
-</div>
-</div>
-<div class="menu-block s">
-<p><br><br>投稿<br>快速指南</p>
-</div>
-<div class="menu-block s">
-<p><br><br><br>进入话题</p>
-</div>
-<div class="menu-block s">
-<p><br><br>初版<br>投稿规范</p>
-</div>
-<div class="menu-block s">
-<p><br><br><br>补充</p>
-</div>
-</div>
-<div class="menu-block s">
-<p><br><br><br>进入直播间</p>
-</div>
-<div class="menu-block s">
-<p><br><br>直播间常见<br>问题FAQ</p>
-</div>
-<div class="menu-block s">
-<p><br><br>阅机无数<br>录播</p>
-</div>
-<div class="menu-block s">
-<p><br><br>其他重要<br>录播</p>
-</div>
-</div>
-<div class="menu-block s">
-<p><br><br>一群<br>1005059704</p>
-</div>
-<div class="menu-block s">
-<img src="icon/icon1.webp">
-<h3>图标</h3>
-</div>`,
-    `<div class="submenu-title">文件夹测试2</div>
-<hr>
-<div class="menu-block s">
-<img src="icon/icon12.webp">
-<h3>老弟一号</h3>
-</div>
-<div class="menu-block s">
-<img src="icon/icon13.webp">
-<h5>LaodiTeachTips</h5>
-</div>
-<div class="menu-block s">
-<img src="icon/icon14.webp">
-<h5>LaodiTeachTips</h5>
-</div>
-<div class="menu-block s">
-<img src="icon/icon15.webp">
-<h5>LaodiTeachTips</h5>
-</div>`,
-    `<div class="submenu-title">商务合作</div>
-<hr>
-<div class="submenu-text">
-商务合作请加微信13869651328，并注明合作方与合作内容。
-<br>htfd
-目前只接受数码领域相关合作，产品评测优先；
-<br>
-不接受干涉测评、跨领域合作以及其他平台入驻。感谢您的认可。
-</div>`
-];
-const content_test = `
-<div class="submenu-title">标题</div>
-<hr>
-<div class="submenu-text">
-这应该是个文件夹 _(:з」∠)_ 。
-<br>
-参考一下文件夹测试。
-</div>`;
+const getTemplateData = (index) => ""
 
 // 左滑返回
 let touchX = 0;
@@ -154,9 +69,7 @@ const submenuMove = (enable) => {
 }
 const submenuChange = (enable, index) => {
     if (index != undefined) {
-        let insert = content[index];
-        insert = insert == undefined ? content_test : insert;
-        submenu.innerHTML = insert;
+        submenu.innerHTML = getTemplateData(index);
     }
     submenu.style.opacity = enable ? 1 : 0;
     menu.style.opacity = (submenu_center && enable) ? 0 : 1;
