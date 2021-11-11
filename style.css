@@ -230,7 +230,7 @@ a.link:hover {
     padding: 3em 4em;
     left: calc(50% + 32em);
     opacity: 0;
-    transition: cubic-bezier(.6,0,.4,1) 0.5s;
+    transition: cubic-bezier(.6, 0, .4, 1) 0.5s;
     transition-property: left, opacity;
 }
 
