@@ -77,7 +77,7 @@ const sideChange = (enable, index) => {
     major.style.opacity = (SideState.center && enable) ? 0 : 1;
 };
 
-const side = (index) => {
+const sideOn = (index) => {
     if (!SideState.on) {
         SideState.index = index;
         sideMove(true);
