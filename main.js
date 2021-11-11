@@ -142,6 +142,6 @@ window.onresize = () => {
 };
 
 (() => {
-    background.style.backgroundImage = `url('/assert/bg/${new Date().getDay()}.webp')`;
+    background.style.backgroundImage = `url('/assert/image/bg/${new Date().getDay()}.webp')`;
     recalculate();
 })();
