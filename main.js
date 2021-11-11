@@ -70,7 +70,7 @@ const sideChange = (id) => {
         while (side.firstChild) {
             side.removeChild(side.lastChild);
         }
-        side.appendChild(document.getElementById("side-" + id).content);
+        side.appendChild(document.getElementById("side-" + id).content.cloneNode(true));
     }
     side.style.opacity = enable ? "1" : "0";
     major.style.opacity = (SideState.center && enable) ? "0" : "1";
@@ -145,5 +145,4 @@ window.onresize = () => {
 (() => {
     background.style.backgroundImage = `url('bg/${new Date().getDay()}.webp')`;
     recalculate();
-    side.style.transition = "cubic-bezier(.6,0,.4,1) 0.5s";
 })();
