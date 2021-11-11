@@ -39,7 +39,7 @@ window.ontouchend = (e) => {
     }
 };
 
-const link = (e) => {
+const r = (e) => {
     window.location.href = "https://ldtstore.com.cn/r/" + e;
 };
 
@@ -69,7 +69,9 @@ const sideMove = (enable) => {
 
 const sideChange = (enable, id) => {
     if (id != void 0) {
-        side.innerHTML = "";
+        while (side.firstChild) {
+            side.removeChild(side.lastChild);
+        }
         side.appendChild(document.getElementById("side-" + id).content);
     }
     side.style.opacity = enable ? 1 : 0;
@@ -108,7 +110,7 @@ side.addEventListener("transitionend", (e) => {
 });
 
 const recalculate = () => {
-    // 垂直方向 计算main间距
+    // 垂直方向：计算major的间距
     let delta = body.clientHeight - content.clientHeight;
     delta = delta < 140 ? 140 : delta;
     delta -= 1;
@@ -116,7 +118,7 @@ const recalculate = () => {
     content.style.marginTop = content.style.marginBottom = delta / 2 + "px";
     side.style.marginTop = side.style.marginBottom = delta / 2 + "px";
 
-    // 水平方向 计算子菜单移动的距离
+    // 水平方向：计算side移动的距离
     delta = body.clientWidth - major.clientWidth - side.clientWidth;
     SideState.center = false;
     if (delta > 0) {
