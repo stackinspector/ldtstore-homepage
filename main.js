@@ -1,17 +1,19 @@
 const body = document.documentElement;
+const background = document.getElementById("background");
 const content = document.getElementById("content");
 const major = document.getElementById("major");
 const side = document.getElementById("side");
-const background = document.getElementById("background");
-
-let side_distance = 300;
-let side_on = false;
-let side_center = false;
-let side_index = -1;
-let side_changing = false;
 
 const OFFSET_LIT = 14;
 const OFFSET = 32;
+
+const SideState = {
+    distance: 300,
+    on: false,
+    center: false,
+    index: -1,
+    changing: false,
+};
 
 const getTemplateData = (index) => "";
 
@@ -44,25 +46,25 @@ const link = (e) => {
 };
 
 const sideClose = () => {
-    side_index = -1;
+    SideState.index = -1;
     sideMove(false);
     sideChange(false);
 };
 
 const sideMove = (enable) => {
     if (enable === void 0) {
-        enable = !side_on;
+        enable = !SideState.on;
     }
-    if (side_on !== enable) {
-        side_on = enable;
+    if (SideState.on !== enable) {
+        SideState.on = enable;
 
-        if (side_on) {
-            content.style.left = -side_distance + "px";
-            side.style.left = `calc(50% + ${major.clientWidth < 500 ? OFFSET_LIT : OFFSET}em - ${side_distance}px)`;
+        if (SideState.on) {
+            content.style.left = -SideState.distance + "px";
+            side.style.left = `calc(50% + ${major.clientWidth < 500 ? OFFSET_LIT : OFFSET}em - ${SideState.distance}px)`;
         } else {
             content.style.left = "0";
             side.style.left = `calc(50% + ${major.clientWidth < 500 ? OFFSET_LIT : OFFSET}em)`;
-            side_index = -1;
+            SideState.index = -1;
         }
     }
 };
@@ -72,21 +74,21 @@ const sideChange = (enable, index) => {
         side.innerHTML = getTemplateData(index);
     }
     side.style.opacity = enable ? 1 : 0;
-    major.style.opacity = (side_center && enable) ? 0 : 1;
+    major.style.opacity = (SideState.center && enable) ? 0 : 1;
 };
 
 const side = (index) => {
-    if (!side_on) {
-        side_index = index;
+    if (!SideState.on) {
+        SideState.index = index;
         sideMove(true);
-        sideChange(true, side_index);
+        sideChange(true, SideState.index);
     } else {
-        if (side_index === index) {
-            side_index = -1;
+        if (SideState.index === index) {
+            SideState.index = -1;
             sideMove(false);
             sideChange(false);
         } else {
-            side_index = index;
+            SideState.index = index;
             sideChange(false);
         }
     }
@@ -97,12 +99,12 @@ side.addEventListener("transitionend", (e) => {
         recalculate();
         return;
     } else if (e.propertyName === "opacity") {
-        if (side.style.opacity === "0" && side_index !== -1) {
-            sideChange(true, side_index);
+        if (side.style.opacity === "0" && SideState.index !== -1) {
+            sideChange(true, SideState.index);
         }
     }
-    if (side_changing) {
-        side_changing = false;
+    if (SideState.changing) {
+        SideState.changing = false;
     }
 });
 
@@ -117,16 +119,16 @@ const recalculate = () => {
 
     // 水平方向 计算子菜单移动的距离
     delta = body.clientWidth - major.clientWidth - side.clientWidth;
-    side_center = false;
+    SideState.center = false;
     if (delta > 0) {
-        side_distance = major.offsetLeft - delta / 2;
+        SideState.distance = major.offsetLeft - delta / 2;
     } else {
         if (major.clientWidth < 500) {
             delta = body.clientWidth - side.clientWidth;
-            side_center = true;
-            side_distance = major.clientWidth + major.offsetLeft - delta / 2;
+            SideState.center = true;
+            SideState.distance = major.clientWidth + major.offsetLeft - delta / 2;
         } else {
-            side_distance = -delta + major.offsetLeft;
+            SideState.distance = -delta + major.offsetLeft;
         }
     }
 };
@@ -134,7 +136,7 @@ const recalculate = () => {
 window.onresize = () => {
     recalculate();
 
-    if (side_on) {
+    if (SideState.on) {
         sideClose();
     } else {
         side.style.left = `calc(50% + ${major.clientWidth < 500 ? OFFSET_LIT : OFFSET}em)`;
