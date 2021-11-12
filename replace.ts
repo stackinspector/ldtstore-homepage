@@ -8,7 +8,7 @@ for (const filename of list) {
         target_dir + filename,
         Deno.readTextFileSync("./" + filename).replaceAll(
             "/assert/image",
-            "https://cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert"
+            "https://cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert/image"
         )
     )
 }
