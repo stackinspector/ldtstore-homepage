@@ -124,6 +124,8 @@ a.link:hover {
     color: white;
 }
 
+/* tile */
+
 .tile:hover {
     background-color: #fff2;
 }
@@ -174,7 +176,6 @@ a.link:hover {
     font-weight: normal;
     margin: 0 0.3em;
 }
-
 
 .tile img {
     pointer-events: none;

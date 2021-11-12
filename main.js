@@ -40,7 +40,7 @@ window.ontouchend = (e) => {
 };
 
 const r = (key) => {
-    window.location.href = "https://ldtstore.com.cn/r/" + key;
+    window.open("https://ldtstore.com.cn/r/" + key, "_blank");
 };
 
 const sideClose = () => {
