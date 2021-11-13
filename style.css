@@ -14,29 +14,30 @@ p {
     margin: .7em 0;
 }
 
-a {
-    text-decoration: none;
-}
-
 span {
     display: inline-block;
 }
 
-a.link {
+/* link */
+
+a {
+    text-decoration: none;
     transition: opacity 0.5s;
     color: #ffe5be;
     opacity: 1;
 }
 
-a.hidden-link {
-    transition: opacity 0.5s;
+a.hidden {
     color: inherit;
-    opacity: 1;
 }
 
-a.hidden-link:hover,
-a.link:hover {
+a.copy {
+    font-size: 150%;
+}
+
+a:hover {
     opacity: 0.75;
+    cursor: pointer;
 }
 
 /* background */
@@ -247,7 +248,7 @@ a.link:hover {
     padding: 0.4em;
 }
 
-hr {
+#side hr {
     background-color: #aaaf;
     margin: 0.5em 0;
     position: relative;

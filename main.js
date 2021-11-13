@@ -7,6 +7,14 @@ const side = document.getElementById("side");
 const OFFSET_LIT = 14;
 const OFFSET = 32;
 
+const r = (key) => {
+    window.open("https://ldtstore.com.cn/r/" + key, "_blank");
+};
+
+const copy = (text) => {
+    navigator.clipboard.writeText(text);
+};
+
 const SideState = {
     distance: 300,
     on: false,
@@ -37,10 +45,6 @@ window.ontouchend = (e) => {
     if (touchX - x < -40) {
         sideClose();
     }
-};
-
-const r = (key) => {
-    window.open("https://ldtstore.com.cn/r/" + key, "_blank");
 };
 
 const sideClose = () => {
