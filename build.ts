@@ -23,7 +23,7 @@ for (const filename of list) {
     (filename.substring(filename.length - 5) === ".html" ? `<!--${copyright}-->\n\n` : `/*${copyright}*/\n\n`) +
       Deno.readTextFileSync("./" + filename).replaceAll(
         "/assert/image",
-        "https://cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert/image",
+        "https://cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert@latest/image",
       ),
   )
 }
