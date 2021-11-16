@@ -30,11 +30,11 @@
             <div class="tile-column">
                 <div class="tile l" onclick="r('home')">
                     <img src="/assert/image/icon/home.webp">
-                    <h3>老弟一号个人空间</h3>
+                    <h2>老弟一号个人空间</h2>
                 </div>
                 <div class="tile l" onclick="r('store')">
                     <img src="/assert/image/icon/store.webp">
-                    <h3>LDTstore淘宝店铺</h3>
+                    <h2>LDTstore淘宝店铺</h2>
                 </div>
             </div>
             <div class="tile-column">
@@ -50,13 +50,13 @@
                     <img src="/assert/image/icon/icu.webp">
                     <h3>装机ICU</h3>
                 </div>
-                <div class="tile m" onclick="r('home-ops')">
-                    <img src="/assert/image/icon/home-ops.webp">
-                    <h3>运营信息发布账号</h3>
-                </div>
-                <div class="tile s" onclick="sideClick('group')">
+                <div class="tile m" onclick="sideClick('group')">
                     <img src="/assert/image/icon/group.webp">
-                    <h4>硬件讨论群</h4>
+                    <h3>硬件讨论群</h3>
+                </div>
+                <div class="tile s" onclick="r('home-ops')">
+                    <img src="/assert/image/icon/home-ops.webp">
+                    <h4>运营官方账号</h4>
                 </div>
                 <div class="tile s" onclick="sideClick('business')">
                     <img src="/assert/image/icon/business.webp">
@@ -121,11 +121,11 @@
         </div>
         <div class="tile s" onclick="r('live-rec-yjws')">
             <img src="/assert/image/icon/live-record.webp">
-            <h3>阅机无数</h3>
+            <h4>阅机无数录播</h4>
         </div>
         <div class="tile s" onclick="r('live-rec-other')">
             <img src="/assert/image/icon/live-record.webp">
-            <h3>其他</h3>
+            <h3>其他录播</h3>
         </div>
         <div class="tile m" onclick="r('live-faq-1')">
             <img src="/assert/image/icon/live-faq.webp">
@@ -136,38 +136,38 @@
     <template id="side-yjws">
         <div class="side-title">阅机无数</div>
         <hr>
-        <div class="tile m" onclick="r('yjws-newtopic')">
+        <div class="tile m" onclick="r('yjws')">
             <img src="/assert/image/icon/topic.webp">
-            <h3>进入新版话题</h3>
+            <h3>进入旧版话题</h3>
         </div>
-        <div class="tile s" onclick="r('yjws')">
+        <div class="tile s" onclick="r('yjws-newtopic')">
             <img src="/assert/image/icon/topic.webp">
-            <h3>旧版话题</h3>
+            <h3>新版话题*</h3>
         </div>
         <div class="tile s" onclick="r('yjws-spec-21')">
             <img src="/assert/image/icon/spec.webp">
-            <h3>《规范》</h3>
+            <h3>管理规范</h3>
         </div>
         <div class="tile m" onclick="r('yjws-guide-21')">
             <img src="/assert/image/icon/spec.webp">
-            <h3>《指南》</h3>
+            <h3>投稿指南</h3>
         </div>
         <div class="clearfix"></div>
         <div class="side-text">
-            <p>*新版话题在未登录B站状态下可能无法打开</p>
+            <p>*进入<b>新版</b>话题前<br>请确认<b>当前浏览器已登录B站</b></p>
         </div>
     </template>
 
     <template id="side-icu">
         <div class="side-title">装机ICU</div>
         <hr>
-        <div class="tile m" onclick="r('icu-newtopic')">
+        <div class="tile m" onclick="r('icu')">
             <img src="/assert/image/icon/topic.webp">
-            <h3>进入新版话题</h3>
+            <h3>进入旧版话题</h3>
         </div>
-        <div class="tile s" onclick="r('icu')">
+        <div class="tile s" onclick="r('icu-newtopic')">
             <img src="/assert/image/icon/topic.webp">
-            <h3>旧版话题</h3>
+            <h3>新版话题*</h3>
         </div>
         <div class="tile s" onclick="r('icu-spec-1')">
             <img src="/assert/image/icon/spec.webp">
@@ -179,7 +179,7 @@
         </div>
         <div class="clearfix"></div>
         <div class="side-text">
-            <p>*新版话题在未登录B站状态下可能无法打开</p>
+            <p>*进入<b>新版</b>话题前<br>请确认<b>当前浏览器已登录B站</b></p>
         </div>
     </template>
 

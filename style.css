@@ -154,7 +154,7 @@ a:hover {
     margin: 0 0.3em;
 }
 
-.tile h5 {
+.tile h4 {
     position: relative;
     bottom: 1.5em;
     font-size: 0.95em;
@@ -162,7 +162,7 @@ a:hover {
     margin: 0 0.3em;
 }
 
-.tile h4 {
+.tile h3 {
     position: relative;
     bottom: 1.5em;
     font-size: 1.1em;
@@ -170,7 +170,7 @@ a:hover {
     margin: 0 0.3em;
 }
 
-.tile h3 {
+.tile h2 {
     position: relative;
     bottom: 1.5em;
     font-size: 1.2em;
