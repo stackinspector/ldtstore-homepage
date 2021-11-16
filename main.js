@@ -11,6 +11,10 @@ const r = (key) => {
     window.open("https://ldtstore.com.cn/r/" + key, "_blank");
 };
 
+const r2 = (key) => {
+    window.open("https://ldtstore.com.cn/r2/" + key, "_blank");
+};
+
 const copy = (text) => {
     navigator.clipboard.writeText(text);
 };
