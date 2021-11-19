@@ -1,6 +1,5 @@
 /* basic */
 
-/* Chrome Safari */
 ::-webkit-scrollbar {
     display: none;
 }
@@ -75,6 +74,10 @@ a:hover {
     display: inline-block;
     font-size: 2em;
     vertical-align: middle;
+}
+
+#header span.light {
+    opacity: 0.5;
 }
 
 #header img {
@@ -176,6 +179,10 @@ a:hover {
 .tile-grid-middle .title {
     font-size: 1.8em;
     margin: 5.4em 0 .2em .4em;
+}
+
+.tile-grid-middle .title.top {
+    margin-top: .4em;
 }
 
 .tile-grid-middle hr {
@@ -369,7 +376,7 @@ a:hover {
 .clearfix {
     font: 0px/0px sans-serif;
     clear: both;
-    display: block
+    display: block;
 }
 
 /* flex */
@@ -428,6 +435,10 @@ a:hover {
 @media screen and (max-width: 420px) {
     #footer {
         font-size: 0.75em;
+    }
+
+    #header span.light {
+        display: none;
     }
 
     #header {
