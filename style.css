@@ -1,12 +1,16 @@
 /* basic */
 
+::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+}
+
 body {
     background-color: black;
     position: relative;
     font-size: 1em;
     margin: 0;
     width: 100%;
-    overflow-x: hidden;
+    overflow: hidden;
     font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif
 }
 
@@ -60,16 +64,21 @@ a:hover {
     top: 0px;
     width: 100%;
     /* text-align: center; */
-    font-size: 2em;
-    padding: .4em 0 .4em 2em;
+    padding: .8em 0 .8em 2em;
     background-color: #000;
     color: white;
     z-index: 1;
 }
 
+#header span {
+    display: inline-block;
+    font-size: 2em;
+    vertical-align: middle;
+}
+
 #header img {
     vertical-align: middle;
-    width: 2em;
+    width: 4em;
 }
 
 /* footer */
@@ -92,29 +101,42 @@ a:hover {
 /* content */
 
 #content {
-    pointer-events: none;
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
 
     position: relative;
     width: auto;
+    height: 610px;
+    overflow: scroll;
 
-    left: 0;
-    transition: cubic-bezier(.6, 0, .4, 1) left 0.5s;
+
 }
 
 /* major */
 
-#major {
+#offset {
     display: inline-block;
-    width: 60em;
+    position: relative;
+    min-width: 100%;
+    left: 0;
+    transition: cubic-bezier(.6, 0, .4, 1) left 0.5s;
+    pointer-events: none;
+}
+
+#major {
+    color: white;
+    display: inline-block;
     height: auto;
     padding: 2em 3em;
     position: relative;
-    left: calc(50% - 34em);
     /* background-color: #faa3; */
     transition: cubic-bezier(.6, 0, .4, 1) opacity 0.5s;
+}
+
+#major.old{
+    width: 60.1em;
+    left: calc(50% - 33em);
 }
 
 .tile-column {
@@ -122,7 +144,6 @@ a:hover {
     float: left;
     width: 20em;
     margin: 0;
-    color: white;
 }
 
 /* tile */
@@ -136,11 +157,11 @@ a:hover {
 }
 
 .tile {
-    pointer-events: all;
+    pointer-events: visible;
     display: inline;
     float: left;
-    margin: 0.8em;
-    border: 0.2em solid #fff;
+    margin: 0.7em;
+    border: 0.3em solid #fff;
     border-radius: 0.2em;
     padding: 0.5em;
     transition: background-color 0.1s;
@@ -159,7 +180,7 @@ a:hover {
     bottom: 1.5em;
     font-size: 0.95em;
     font-weight: normal;
-    margin: 0 0.3em;
+    margin: 0;
 }
 
 .tile h3 {
@@ -167,7 +188,7 @@ a:hover {
     bottom: 1.5em;
     font-size: 1.1em;
     font-weight: normal;
-    margin: 0 0.3em;
+    margin: 0 0.1em;
 }
 
 .tile h2 {
@@ -231,10 +252,11 @@ a:hover {
     color: #fff;
     /* background-color: #afa3; */
     padding: 3em 4em;
-    left: calc(50% + 32em);
+    left: calc(50% + 33em);
     opacity: 0;
     transition: cubic-bezier(.6, 0, .4, 1) 0.5s;
     transition-property: left, opacity;
+    pointer-events: none;
 }
 
 .side-title {
@@ -264,36 +286,14 @@ a:hover {
 
 /* flex */
 
-@media screen and (max-width: 1600px) {
-    #content {
-        font-size: 0.85em;
-    }
-
-    .tile {
-        margin: 0.75em;
-        border: 0.25em solid #fff;
-    }
-}
-
-@media screen and (max-width: 1200px) {
-    #content {
-        font-size: 0.7em;
-    }
-
-    .tile {
-        margin: 0.7em;
-        border: 0.3em solid #fff;
-    }
-}
-
 @media screen and (max-width: 800px) {
     #side {
-        left: calc(50% + 14em);
+        left: calc(50% + 13em);
     }
 
-    #major {
-        width: 20em;
-        left: calc(50% - 12em);
+    #major.old {
+        width: 20.1em;
+        left: calc(50% - 13em);
     }
 
     .tile {
@@ -311,23 +311,125 @@ a:hover {
         height: 7em;
     }
 
-    .title {
+    #header {
         padding: .4em 0 .4em 0;
         text-align: center;
+    }
+
+    #footer,#header{
+        font-size: 0.9em;
+    }
+}
+
+@media screen and (max-height: 800px) {
+    #footer,#header{
+        font-size: 0.9em;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    #side {
+        width: 20em;
+        left: calc(50% + 13em);
     }
 }
 
 @media screen and (max-width: 420px) {
-    body {
+    #footer{
+        font-size: 0.75em;
+    }
+
+    #header{
         font-size: 0.8em;
     }
+}
 
-    #content {
-        font-size: 0.875em;
-    }
+/* ldttool */
 
-    #side {
-        width: 20em;
-        left: calc(50% + 14em);
-    }
+#major.new{
+    width: 70.1em;
+    left: calc(50% - 38em);
+    /*background-color: #fff3;*/
+}
+
+.tile-type1 {
+    display: inline;
+    float: left;
+    width: 20em;
+    height: 39em;
+    margin: 0.5em;
+    /*background-color: #afa5;*/
+}
+
+.tile-type2 {
+    display: inline;
+    float: left;
+    width: 37em;
+    height: 29em;
+    margin: 0.5em 0.65em 0.15em 0.5em;
+    padding-left: 1.5em;
+    border-right: 0.3em solid #fff;
+    border-bottom: 0.3em solid #fff;
+    /*background-color: #faa5;*/
+}
+
+.tile-type2-title {
+    font-size: 1.8em;
+    margin: 5.4em 0 .2em .4em;
+}
+
+.tile-type2 hr {
+    background-color: #fff;
+    margin: 0em 0em;
+    width: calc(100% - 1em);
+    height: .1em;
+}
+
+.tile.heigh {
+    width: 17em;
+    height: 27em;
+}
+
+.tile.heigh img {
+    width: 15em;
+    margin: 6em 1em 6em 1em;
+}
+
+.tile.lit {
+    width: 17em;
+    height: 5em;
+}
+
+.tile.lit img {
+    width: 5em;
+    margin: 0 6.5em;
+}
+
+.tile.ss {
+    width: 6em;
+    height: 6em;
+}
+
+.tile.ss img {
+    width: 5em;
+    margin: 0 0.5em 1em 0.5em;
+}
+
+.tile.ssw {
+    width: 15em;
+    height: 6em;
+}
+
+.tile.ssw img {
+    width: 5em;
+    margin: 0 5em 1em 5em;
+}
+
+.tile.sss {
+    width: 5em;
+    height: 4.7em;
+}
+
+.tile.sss img {
+    width: 5em;
 }

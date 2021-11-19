@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <div id="background" onclick="sideClose()"></div>
+    <div id="background"></div>
 
     <div id="header" onclick="sideClick('about')">
         <img src="/assert/image/shared/laodi-64px.png">
@@ -24,57 +24,59 @@
     </div>
 
     <div id="content">
-        <div id="major">
-            <div class="tile-column">
-                <div class="tile l" onclick="r('home')">
-                    <img src="/assert/image/icon/home.webp">
-                    <h2>老弟一号个人空间</h2>
+        <div id="offset">
+            <div id="major" class="old">
+                <div class="tile-column">
+                    <div class="tile l" onclick="r('home')">
+                        <img src="assert/image/icon/home.webp">
+                        <h2>老弟一号个人空间</h2>
+                    </div>
+                    <div class="tile l" onclick="r('store')">
+                        <img src="assert/image/icon/store.webp">
+                        <h2>LDTstore淘宝店铺</h2>
+                    </div>
                 </div>
-                <div class="tile l" onclick="r('store')">
-                    <img src="/assert/image/icon/store.webp">
-                    <h2>LDTstore淘宝店铺</h2>
+                <div class="tile-column">
+                    <div class="tile m" onclick="sideClick('live')">
+                        <img src="assert/image/icon/live-room.webp">
+                        <h3>直播间</h3>
+                    </div>
+                    <div class="tile s" onclick="sideClick('yjws')">
+                        <img src="assert/image/icon/yjws.webp">
+                        <h3>阅机无数</h3>
+                    </div>
+                    <div class="tile s" onclick="sideClick('icu')">
+                        <img src="assert/image/icon/icu.webp">
+                        <h3>装机ICU</h3>
+                    </div>
+                    <div class="tile m" onclick="sideClick('group')">
+                        <img src="assert/image/icon/group.webp">
+                        <h3>硬件讨论群</h3>
+                    </div>
+                    <div class="tile s" onclick="r('home-ops')">
+                        <img src="assert/image/icon/home-ops.webp">
+                        <h4>运营官方账号</h4>
+                    </div>
+                    <div class="tile s" onclick="sideClick('business')">
+                        <img src="assert/image/icon/business.webp">
+                        <h3>商务合作</h3>
+                    </div>
                 </div>
+                <div class="tile-column">
+                    <div class="tile m" onclick="sideClick('outer')">
+                        <img src="assert/image/icon/outer.webp">
+                        <h3>站外官方账号</h3>
+                    </div>
+                    <div class="tile m" onclick="r('afdian')">
+                        <img src="assert/image/icon/afdian.webp">
+                        <h3>赞助老弟一号</h3>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
             </div>
-            <div class="tile-column">
-                <div class="tile m" onclick="sideClick('live')">
-                    <img src="/assert/image/icon/live-room.webp">
-                    <h3>直播间</h3>
-                </div>
-                <div class="tile s" onclick="sideClick('yjws')">
-                    <img src="/assert/image/icon/yjws.webp">
-                    <h3>阅机无数</h3>
-                </div>
-                <div class="tile s" onclick="sideClick('icu')">
-                    <img src="/assert/image/icon/icu.webp">
-                    <h3>装机ICU</h3>
-                </div>
-                <div class="tile m" onclick="sideClick('group')">
-                    <img src="/assert/image/icon/group.webp">
-                    <h3>硬件讨论群</h3>
-                </div>
-                <div class="tile s" onclick="r('home-ops')">
-                    <img src="/assert/image/icon/home-ops.webp">
-                    <h4>运营官方账号</h4>
-                </div>
-                <div class="tile s" onclick="sideClick('business')">
-                    <img src="/assert/image/icon/business.webp">
-                    <h3>商务合作</h3>
-                </div>
-            </div>
-            <div class="tile-column">
-                <div class="tile m" onclick="sideClick('outer')">
-                    <img src="/assert/image/icon/outer.webp">
-                    <h3>站外官方账号</h3>
-                </div>
-                <div class="tile m" onclick="r('afdian')">
-                    <img src="/assert/image/icon/afdian.webp">
-                    <h3>赞助老弟一号</h3>
-                </div>
-            </div>
-            <div class="clearfix"></div>
         </div>
-        <div id="side"></div>
     </div>
+    <div id="side"></div>
 
     <div id="footer">
         <p>

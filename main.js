@@ -1,11 +1,13 @@
 const body = document.documentElement;
 const background = document.getElementById("background");
 const content = document.getElementById("content");
+const offsetAnimation = document.getElementById("offset");
 const major = document.getElementById("major");
 const side = document.getElementById("side");
 
-const OFFSET_LIT = 14;
-const OFFSET = 32;
+const OFFSET_LIT = 13;
+//TODO 这里的长度和major中的left一样
+let OFFSET = 38;
 
 const r = (key) => {
     window.open("https://ldtstore.com.cn/r/" + key, "_blank");
@@ -18,6 +20,9 @@ const r2 = (key) => {
 const copy = (text) => {
     navigator.clipboard.writeText(text);
 };
+
+let majorMode = "static"
+let layoutMode = "pc";
 
 const SideState = {
     distance: 300,
@@ -51,6 +56,14 @@ window.ontouchend = (e) => {
     }
 };
 
+const backgroundClick = (e) => {
+    //背景点击事件绑定位置变了，这里用来阻止冒泡
+    console.log(e.path[0])
+    if(e.path[0] === content){
+        sideClose();
+    }
+}
+
 const sideClose = () => {
     SideState.id = null;
     sideMove(false);
@@ -62,11 +75,11 @@ const sideMove = (enable) => {
         SideState.on = enable;
 
         if (enable) {
-            content.style.left = -SideState.distance + "px";
-            side.style.left = `calc(50% + ${major.clientWidth < 500 ? OFFSET_LIT : OFFSET}em - ${SideState.distance}px)`;
+            offsetAnimation.style.left = -SideState.distance + "px";
+            side.style.left = `calc(50% + ${layoutMode === "pc" ? OFFSET : OFFSET_LIT}em - ${SideState.distance}px)`;
         } else {
-            content.style.left = "0";
-            side.style.left = `calc(50% + ${major.clientWidth < 500 ? OFFSET_LIT : OFFSET}em)`;
+            offsetAnimation.style.left = "0";
+            side.style.left = `calc(50% + ${layoutMode === "pc" ? OFFSET : OFFSET_LIT}em)`;
             SideState.id = null;
         }
     }
@@ -81,6 +94,10 @@ const sideChange = (id) => {
         side.appendChild(document.getElementById("side-" + id).content.cloneNode(true));
     }
     side.style.opacity = enable ? "1" : "0";
+
+    //防止横向的在侧边栏展开的情况下还能被点到
+    major.style.visibility = "visible";
+    content.style.pointerEvents = "auto";
     major.style.opacity = (SideState.center && enable) ? "0" : "1";
 };
 
@@ -102,6 +119,16 @@ const sideClick = (id) => {
 };
 
 side.addEventListener("transitionend", (e) => {
+    if (e.propertyName === "opacity") {
+        if (major.style.opacity === "0") {
+            //防止横向的在侧边栏展开的情况下还能被点到
+            major.style.visibility = "hidden";
+            content.style.pointerEvents = "none";
+        }
+    }
+});
+
+side.addEventListener("transitionend", (e) => {
     if (e.propertyName === "left") {
         recalculate();
     } else if (e.propertyName === "opacity") {
@@ -115,13 +142,52 @@ side.addEventListener("transitionend", (e) => {
 });
 
 const recalculate = () => {
+    //TODO 改掉major.new的名字记得修改这里+1
+    if(major.classList[0] === "new"){
+        OFFSET = 38;
+    }
+    else {
+        OFFSET = 33;
+    }
+    //判定平台，和css对应
+    if(body.clientWidth > 800){
+        layoutMode = "pc";
+    }
+    else if(body.clientWidth > 500){
+        layoutMode = "pad";
+    }
+    else{
+        layoutMode = "phone";
+    }
+
+    //设置遮罩大小为窗口大小
+    content.style.width = body.clientWidth + "px";
+    content.style.height = body.clientHeight + "px";
+
+    //计算相对大小
+    let scaleW;
+    let scaleH;
+    if(layoutMode === "pc"){
+        scaleW = body.clientWidth / 1056;
+        scaleH = body.clientHeight / 900;
+    }
+    else{
+        scaleH = body.clientHeight / 880;
+        if(layoutMode === "pad"){
+            scaleW = body.clientWidth / 600;
+        }
+        else{
+            scaleW = body.clientWidth / 450;
+        }
+    }
+    major.style.fontSize = side.style.fontSize = Math.min(scaleH, scaleW) + "em";
+
     // 垂直方向：计算major的间距
-    let delta = body.clientHeight - content.clientHeight;
-    delta = delta < 140 ? 140 : delta;
-    delta -= 1;
+    let delta = body.clientHeight - major.clientHeight;
+    delta = delta < 120 ? 120 : delta;
+    delta -= 4;
     side.style.height = `calc(${body.clientHeight - delta}px - 6em)`;
-    content.style.marginTop = content.style.marginBottom = delta / 2 + "px";
-    side.style.marginTop = side.style.marginBottom = delta / 2 + "px";
+    major.style.marginTop = side.style.marginTop = major.style.marginBottom = side.style.marginBottom = delta / 2 + "px";
 
     // 水平方向：计算side移动的距离
     delta = body.clientWidth - major.clientWidth - side.clientWidth;
@@ -129,12 +195,21 @@ const recalculate = () => {
     if (delta > 0) {
         SideState.distance = major.offsetLeft - delta / 2;
     } else {
-        if (major.clientWidth < 500) {
-            delta = body.clientWidth - side.clientWidth;
+        let delta2 = body.clientWidth - major.clientWidth;
+        //TODO 改掉major.new的名字记得修改这里
+        if(major.classList[0] === "new" && delta2 < 1){
             SideState.center = true;
-            SideState.distance = major.clientWidth + major.offsetLeft - delta / 2;
-        } else {
-            SideState.distance = -delta + major.offsetLeft;
+            delta = body.clientWidth - side.clientWidth;
+            SideState.distance = side.offsetLeft - delta / 2;
+        }
+        else {
+            if (layoutMode === "phone") {
+                delta = body.clientWidth - side.clientWidth;
+                SideState.center = true;
+                SideState.distance = major.clientWidth + major.offsetLeft - delta / 2;
+            } else {
+                SideState.distance = -delta + major.offsetLeft;
+            }
         }
     }
 };
@@ -145,11 +220,12 @@ window.onresize = () => {
     if (SideState.on) {
         sideClose();
     } else {
-        side.style.left = `calc(50% + ${major.clientWidth < 500 ? OFFSET_LIT : OFFSET}em)`;
+        side.style.left = `calc(50% + ${layoutMode === "pc" ? OFFSET : OFFSET_LIT}em)`;
     }
 };
 
 (() => {
     background.style.backgroundImage = `url('/assert/image/bg/${new Date().getDay()}.webp')`;
     recalculate();
+    content.onclick = backgroundClick;
 })();
