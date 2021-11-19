@@ -60,7 +60,7 @@ window.ontouchend = (e) => {
 
 const backgroundClick = (e) => {
     // 背景点击事件绑定位置变了，这里用来阻止冒泡
-    console.log(e.path[0]);
+    // console.log(e.path[0]);
     if (e.path[0] === content) {
         sideClose();
     }
