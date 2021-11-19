@@ -6,8 +6,11 @@ const major = document.getElementById("major");
 const side = document.getElementById("side");
 
 const OFFSET_LIT = 13;
-//TODO 这里的长度和major中的left一样
-let OFFSET = 38;
+// TODO 这里的长度和major中的left一样 改掉major.new的名字记得修改这里
+const OFFSET = {
+    "home": 33,
+    "tool": 38,
+}[PAGE_TYPE];
 
 const r = (key) => {
     window.open("https://ldtstore.com.cn/r/" + key, "_blank");
@@ -21,7 +24,6 @@ const copy = (text) => {
     navigator.clipboard.writeText(text);
 };
 
-let majorMode = "static"
 let layoutMode = "pc";
 
 const SideState = {
@@ -57,12 +59,12 @@ window.ontouchend = (e) => {
 };
 
 const backgroundClick = (e) => {
-    //背景点击事件绑定位置变了，这里用来阻止冒泡
-    console.log(e.path[0])
-    if(e.path[0] === content){
+    // 背景点击事件绑定位置变了，这里用来阻止冒泡
+    console.log(e.path[0]);
+    if (e.path[0] === content) {
         sideClose();
     }
-}
+};
 
 const sideClose = () => {
     SideState.id = null;
@@ -95,7 +97,7 @@ const sideChange = (id) => {
     }
     side.style.opacity = enable ? "1" : "0";
 
-    //防止横向的在侧边栏展开的情况下还能被点到
+    // 防止横向的在侧边栏展开的情况下还能被点到
     major.style.visibility = "visible";
     content.style.pointerEvents = "auto";
     major.style.opacity = (SideState.center && enable) ? "0" : "1";
@@ -121,7 +123,7 @@ const sideClick = (id) => {
 side.addEventListener("transitionend", (e) => {
     if (e.propertyName === "opacity") {
         if (major.style.opacity === "0") {
-            //防止横向的在侧边栏展开的情况下还能被点到
+            // 防止横向的在侧边栏展开的情况下还能被点到
             major.style.visibility = "hidden";
             content.style.pointerEvents = "none";
         }
@@ -142,41 +144,30 @@ side.addEventListener("transitionend", (e) => {
 });
 
 const recalculate = () => {
-    //TODO 改掉major.new的名字记得修改这里+1
-    if(major.classList[0] === "new"){
-        OFFSET = 38;
-    }
-    else {
-        OFFSET = 33;
-    }
-    //判定平台，和css对应
-    if(body.clientWidth > 800){
+    // 判定平台，和css对应
+    if (body.clientWidth > 800) {
         layoutMode = "pc";
-    }
-    else if(body.clientWidth > 500){
+    } else if (body.clientWidth > 500) {
         layoutMode = "pad";
-    }
-    else{
+    } else {
         layoutMode = "phone";
     }
 
-    //设置遮罩大小为窗口大小
+    // 设置遮罩大小为窗口大小
     content.style.width = body.clientWidth + "px";
     content.style.height = body.clientHeight + "px";
 
-    //计算相对大小
+    // 计算相对大小
     let scaleW;
     let scaleH;
-    if(layoutMode === "pc"){
+    if (layoutMode === "pc") {
         scaleW = body.clientWidth / 1056;
         scaleH = body.clientHeight / 900;
-    }
-    else{
+    } else {
         scaleH = body.clientHeight / 880;
-        if(layoutMode === "pad"){
+        if (layoutMode === "pad") {
             scaleW = body.clientWidth / 600;
-        }
-        else{
+        } else {
             scaleW = body.clientWidth / 450;
         }
     }
@@ -195,14 +186,13 @@ const recalculate = () => {
     if (delta > 0) {
         SideState.distance = major.offsetLeft - delta / 2;
     } else {
-        let delta2 = body.clientWidth - major.clientWidth;
-        //TODO 改掉major.new的名字记得修改这里
-        if(major.classList[0] === "new" && delta2 < 1){
+        const delta2 = body.clientWidth - major.clientWidth;
+        // TODO 改掉major.new的名字记得修改这里
+        if (major.classList[0] === "new" && delta2 < 1) {
             SideState.center = true;
             delta = body.clientWidth - side.clientWidth;
             SideState.distance = side.offsetLeft - delta / 2;
-        }
-        else {
+        } else {
             if (layoutMode === "phone") {
                 delta = body.clientWidth - side.clientWidth;
                 SideState.center = true;

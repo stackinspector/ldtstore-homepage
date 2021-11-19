@@ -1,7 +1,8 @@
 /* basic */
 
+/* Chrome Safari */
 ::-webkit-scrollbar {
-    display: none; /* Chrome Safari */
+    display: none;
 }
 
 body {
@@ -104,13 +105,10 @@ a:hover {
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
-
     position: relative;
     width: auto;
     height: 610px;
     overflow: scroll;
-
-
 }
 
 /* major */
@@ -134,7 +132,7 @@ a:hover {
     transition: cubic-bezier(.6, 0, .4, 1) opacity 0.5s;
 }
 
-#major.old{
+#major.old {
     width: 60.1em;
     left: calc(50% - 33em);
 }
@@ -316,13 +314,16 @@ a:hover {
         text-align: center;
     }
 
-    #footer,#header{
+    #footer,
+    #header {
         font-size: 0.9em;
     }
 }
 
 @media screen and (max-height: 800px) {
-    #footer,#header{
+
+    #footer,
+    #header {
         font-size: 0.9em;
     }
 }
@@ -335,18 +336,18 @@ a:hover {
 }
 
 @media screen and (max-width: 420px) {
-    #footer{
+    #footer {
         font-size: 0.75em;
     }
 
-    #header{
+    #header {
         font-size: 0.8em;
     }
 }
 
-/* ldttool */
+/* ldtools */
 
-#major.new{
+#major.new {
     width: 70.1em;
     left: calc(50% - 38em);
     /*background-color: #fff3;*/
