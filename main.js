@@ -1,12 +1,12 @@
 const body = document.documentElement;
 const background = document.getElementById("background");
 const content = document.getElementById("content");
-const offsetAnimation = document.getElementById("offset");
+const offset = document.getElementById("offset");
 const major = document.getElementById("major");
 const side = document.getElementById("side");
 
 const OFFSET_LIT = 13;
-// TODO 这里的长度和major中的left一样 改掉major.tool的名字记得修改这里
+// TODO 这里的长度和major中的left一样 添加新的pagetype记得修改这里
 const OFFSET = {
     "home": 33,
     "tool": 38,
@@ -77,10 +77,10 @@ const sideMove = (enable) => {
         SideState.on = enable;
 
         if (enable) {
-            offsetAnimation.style.left = -SideState.distance + "px";
+            offset.style.left = -SideState.distance + "px";
             side.style.left = `calc(50% + ${layoutMode === "pc" ? OFFSET : OFFSET_LIT}em - ${SideState.distance}px)`;
         } else {
-            offsetAnimation.style.left = "0";
+            offset.style.left = "0";
             side.style.left = `calc(50% + ${layoutMode === "pc" ? OFFSET : OFFSET_LIT}em)`;
             SideState.id = null;
         }
@@ -187,7 +187,7 @@ const recalculate = () => {
         SideState.distance = major.offsetLeft - delta / 2;
     } else {
         const delta2 = body.clientWidth - major.clientWidth;
-        // TODO 改掉major.tool的名字记得修改这里
+        // TODO 添加新的pagetype记得修改这里
         if (PAGE_TYPE === "tool" && delta2 < 1) {
             SideState.center = true;
             delta = body.clientWidth - side.clientWidth;
