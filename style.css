@@ -280,52 +280,52 @@ a:hover {
     margin: 2em 1em 0em 1em;
 }
 
-.tile.high {
+.tile.t.l1 {
     width: 17em;
     height: 27em;
 }
 
-.tile.high img {
+.tile.t.l1 img {
     width: 15em;
     margin: 6em 1em 6em 1em;
 }
 
-.tile.lit {
+.tile.t.l2 {
     width: 17em;
     height: 5em;
 }
 
-.tile.lit img {
+.tile.t.l2 img {
     width: 5em;
     margin: 0 6.5em;
 }
 
-.tile.ss {
+.tile.t.s1 {
     width: 6em;
     height: 6em;
 }
 
-.tile.ss img {
+.tile.t.s1 img {
     width: 5em;
     margin: 0 0.5em 1em 0.5em;
 }
 
-.tile.ssw {
+.tile.t.m {
     width: 15em;
     height: 6em;
 }
 
-.tile.ssw img {
+.tile.t.m img {
     width: 5em;
     margin: 0 5em 1em 5em;
 }
 
-.tile.sss {
+.tile.t.s2 {
     width: 5em;
     height: 4.7em;
 }
 
-.tile.sss img {
+.tile.t.s2 img {
     width: 5em;
 }
 
