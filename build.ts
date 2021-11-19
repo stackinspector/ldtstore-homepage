@@ -1,5 +1,5 @@
 // deno-lint-ignore-file camelcase
-import { decodeText } from "https://cdn.jsdelivr.net/gh/Berylsoft/DenoBase/textcodec.ts"
+import { decodeText } from "https://cdn.jsdelivr.net/gh/stackinspector/DenoBase@latest/textcodec.ts"
 
 const list = ["index.html", "style.css", "main.js", "ldtools/index.html"]
 const target_dir = Deno.args[0] as string
