@@ -300,16 +300,6 @@ a:hover {
     margin: 0 6.5em;
 }
 
-.tile.t.s1 {
-    width: 6em;
-    height: 6em;
-}
-
-.tile.t.s1 img {
-    width: 5em;
-    margin: 0 0.5em 1em 0.5em;
-}
-
 .tile.t.m {
     width: 15em;
     height: 6em;
@@ -318,6 +308,16 @@ a:hover {
 .tile.t.m img {
     width: 5em;
     margin: 0 5em 1em 5em;
+}
+
+.tile.t.s1 {
+    width: 6em;
+    height: 6em;
+}
+
+.tile.t.s1 img {
+    width: 5em;
+    margin: 0 0.5em 1em 0.5em;
 }
 
 .tile.t.s2 {
