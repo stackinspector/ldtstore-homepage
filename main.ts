@@ -225,11 +225,11 @@ interface Window {
     sideClick?: typeof sideClick;
 }
 
-(() => {
-    window.r = r;
-    window.r2 = r2;
-    window.copy = copy;
-    window.sideClick = sideClick;
-    background.style.backgroundImage = `url('/assert/image/bg/${new Date().getDay()}.webp')`;
-    recalculate();
-})();
+window.r = r;
+window.r2 = r2;
+window.copy = copy;
+window.sideClick = sideClick;
+
+background.style.backgroundImage = `url('/assert/image/bg/${new Date().getDay()}.webp')`;
+
+recalculate();

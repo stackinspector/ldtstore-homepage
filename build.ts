@@ -1,6 +1,7 @@
 // deno-lint-ignore-file camelcase
 
 // deno run -A --unstable build.ts path\to\wwwroot\
+// dev build: deno run -A --unstable build.ts
 
 import { minify } from "https://deno.land/x/minifier@v1.1.1/mod.ts"
 import { decodeText } from "https://cdn.jsdelivr.net/gh/stackinspector/DenoBase@latest/textcodec.ts"
@@ -42,7 +43,9 @@ const html = async (filename: string) => minify("html", (await Deno.readTextFile
 
 const css = async (filename: string) => minify("css", await Deno.readTextFile(filename))
 
-const js = async (filename: string) => minify("js", (await Deno.emit(filename, bundle_options)).files["deno:///bundle.js"])
+const js_inner = async (filename: string) => (await Deno.emit(filename, bundle_options)).files["deno:///bundle.js"]
+
+const js = async (filename: string) => minify("js", await js_inner(filename))
 
 const emit = async (filename: string, content: string) => {
   await Deno.writeTextFile(
@@ -55,10 +58,14 @@ const emit = async (filename: string, content: string) => {
   )
 }
 
-await Deno.writeTextFile(target_dir + "robots.txt", robots)
-await Deno.mkdir(target_dir + "ldtools")
+if (target_dir === void 0) {
+  await Deno.writeTextFile("main.js", await js_inner("main.ts"))
+} else {
+  await Deno.writeTextFile(target_dir + "robots.txt", robots)
+  await Deno.mkdir(target_dir + "ldtools")
 
-await emit("index.html", await html("index.html"))
-await emit("ldtools/index.html", await html("ldtools/index.html"))
-await emit(`style-${git}.css`, await css("style.css"))
-await emit(`main-${git}.js`, await js("main.ts"))
+  await emit("index.html", await html("index.html"))
+  await emit("ldtools/index.html", await html("ldtools/index.html"))
+  await emit(`style-${git}.css`, await css("style.css"))
+  await emit(`main-${git}.js`, await js("main.ts"))
+}
