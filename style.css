@@ -132,7 +132,7 @@ a:hover {
     transition: cubic-bezier(.6, 0, .4, 1) opacity 0.5s;
 }
 
-#major.old {
+#major.home {
     width: 60.1em;
     left: calc(50% - 33em);
 }
@@ -289,7 +289,7 @@ a:hover {
         left: calc(50% + 13em);
     }
 
-    #major.old {
+    #major.home {
         width: 20.1em;
         left: calc(50% - 13em);
     }
@@ -347,7 +347,7 @@ a:hover {
 
 /* ldtools */
 
-#major.new {
+#major.tool {
     width: 70.1em;
     left: calc(50% - 38em);
     /*background-color: #fff3;*/

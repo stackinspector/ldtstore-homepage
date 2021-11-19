@@ -6,7 +6,7 @@ const major = document.getElementById("major");
 const side = document.getElementById("side");
 
 const OFFSET_LIT = 13;
-// TODO 这里的长度和major中的left一样 改掉major.new的名字记得修改这里
+// TODO 这里的长度和major中的left一样 改掉major.tool的名字记得修改这里
 const OFFSET = {
     "home": 33,
     "tool": 38,
@@ -187,8 +187,8 @@ const recalculate = () => {
         SideState.distance = major.offsetLeft - delta / 2;
     } else {
         const delta2 = body.clientWidth - major.clientWidth;
-        // TODO 改掉major.new的名字记得修改这里
-        if (major.classList[0] === "new" && delta2 < 1) {
+        // TODO 改掉major.tool的名字记得修改这里
+        if (PAGE_TYPE === "tool" && delta2 < 1) {
             SideState.center = true;
             delta = body.clientWidth - side.clientWidth;
             SideState.distance = side.offsetLeft - delta / 2;
