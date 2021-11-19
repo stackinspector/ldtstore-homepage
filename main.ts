@@ -1,3 +1,5 @@
+declare const PAGE_TYPE: "home" | "tool";
+
 const body = document.documentElement;
 const background = document.getElementById("background");
 const content = document.getElementById("content");
@@ -12,21 +14,27 @@ const OFFSET = {
     "tool": 38,
 }[PAGE_TYPE];
 
-const r = (key) => {
+const r = (key: string) => {
     window.open("https://ldtstore.com.cn/r/" + key, "_blank");
 };
 
-const r2 = (key) => {
+const r2 = (key: string) => {
     window.open("https://ldtstore.com.cn/r2/" + key, "_blank");
 };
 
-const copy = (text) => {
+const copy = (text: string) => {
     navigator.clipboard.writeText(text);
 };
 
 let layoutMode = "pc";
 
-const SideState = {
+const SideState: {
+    distance: number,
+    on: boolean,
+    center: boolean,
+    id: string | null,
+    changing: boolean,
+} = {
     distance: 300,
     on: false,
     center: false,
@@ -39,29 +47,28 @@ const SideState = {
 let touchX = 0;
 let touchY = 0;
 
-window.ontouchstart = (e) => {
+window.ontouchstart = (e: TouchEvent) => {
     touchX = e.touches[0].clientX;
     touchY = e.touches[0].clientY;
 };
 
-window.ontouchmove = (e) => {
+window.ontouchmove = (e: TouchEvent) => {
     const y = e.changedTouches[0].clientY;
     if (Math.abs(touchY - y) > 10) {
         sideClose();
     }
 };
 
-window.ontouchend = (e) => {
+window.ontouchend = (e: TouchEvent) => {
     const x = e.changedTouches[0].clientX;
     if (touchX - x < -40) {
         sideClose();
     }
 };
 
-const backgroundClick = (e) => {
+content.onclick = (e) => {
     // 背景点击事件绑定位置变了，这里用来阻止冒泡
-    // console.log(e.path[0]);
-    if (e.path[0] === content) {
+    if (e.composedPath()[0] === content) {
         sideClose();
     }
 };
@@ -72,7 +79,7 @@ const sideClose = () => {
     sideChange(null);
 };
 
-const sideMove = (enable) => {
+const sideMove = (enable: boolean) => {
     if (SideState.on !== enable) {
         SideState.on = enable;
 
@@ -87,13 +94,13 @@ const sideMove = (enable) => {
     }
 };
 
-const sideChange = (id) => {
+const sideChange = (id: string | null) => {
     const enable = id !== null;
     if (enable) {
         while (side.firstChild) {
             side.removeChild(side.lastChild);
         }
-        side.appendChild(document.getElementById("side-" + id).content.cloneNode(true));
+        side.appendChild((document.getElementById("side-" + id) as HTMLTemplateElement).content.cloneNode(true));
     }
     side.style.opacity = enable ? "1" : "0";
 
@@ -103,7 +110,7 @@ const sideChange = (id) => {
     major.style.opacity = (SideState.center && enable) ? "0" : "1";
 };
 
-const sideClick = (id) => {
+const sideClick = (id: string | null) => {
     if (!SideState.on) {
         SideState.id = id;
         sideMove(true);
@@ -128,9 +135,6 @@ side.addEventListener("transitionend", (e) => {
             content.style.pointerEvents = "none";
         }
     }
-});
-
-side.addEventListener("transitionend", (e) => {
     if (e.propertyName === "left") {
         recalculate();
     } else if (e.propertyName === "opacity") {
@@ -158,8 +162,8 @@ const recalculate = () => {
     content.style.height = body.clientHeight + "px";
 
     // 计算相对大小
-    let scaleW;
-    let scaleH;
+    let scaleW: number;
+    let scaleH: number;
     if (layoutMode === "pc") {
         scaleW = body.clientWidth / 1056;
         scaleH = body.clientHeight / 900;
@@ -217,5 +221,4 @@ window.onresize = () => {
 (() => {
     background.style.backgroundImage = `url('/assert/image/bg/${new Date().getDay()}.webp')`;
     recalculate();
-    content.onclick = backgroundClick;
 })();
