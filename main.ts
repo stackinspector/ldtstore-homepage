@@ -1,11 +1,11 @@
 declare const PAGE_TYPE: "home" | "tool";
 
 const body = document.documentElement;
-const background = document.getElementById("background");
-const content = document.getElementById("content");
-const offset = document.getElementById("offset");
-const major = document.getElementById("major");
-const side = document.getElementById("side");
+const background = document.getElementById("background")!;
+const content = document.getElementById("content")!;
+const offset = document.getElementById("offset")!;
+const major = document.getElementById("major")!;
+const side = document.getElementById("side")!;
 
 const OFFSET_LIT = 13;
 // TODO 这里的长度和major中的left一样 添加新的pagetype记得修改这里
@@ -98,7 +98,7 @@ const sideChange = (id: string | null) => {
     const enable = id !== null;
     if (enable) {
         while (side.firstChild) {
-            side.removeChild(side.lastChild);
+            side.removeChild(side.lastChild!);
         }
         side.appendChild((document.getElementById("side-" + id) as HTMLTemplateElement).content.cloneNode(true));
     }
@@ -218,7 +218,18 @@ window.onresize = () => {
     }
 };
 
+interface Window {
+    r?: typeof r;
+    r2?: typeof r2;
+    copy?: typeof copy;
+    sideClick?: typeof sideClick;
+}
+
 (() => {
+    window.r = r;
+    window.r2 = r2;
+    window.copy = copy;
+    window.sideClick = sideClick;
     background.style.backgroundImage = `url('/assert/image/bg/${new Date().getDay()}.webp')`;
     recalculate();
 })();
