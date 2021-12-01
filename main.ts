@@ -33,12 +33,14 @@ const SideState: {
     on: boolean,
     center: boolean,
     id: string | null,
+    lastid: string | null,
     changing: boolean,
 } = {
     distance: 300,
     on: false,
     center: false,
     id: null,
+    lastid: null,
     changing: false,
 };
 
@@ -52,36 +54,46 @@ window.ontouchstart = (e: TouchEvent) => {
     touchY = e.touches[0].clientY;
 };
 
-window.ontouchmove = (e: TouchEvent) => {
-    const y = e.changedTouches[0].clientY;
-    if (Math.abs(touchY - y) > 10) {
-        sideClose();
-    }
-};
-
 window.ontouchend = (e: TouchEvent) => {
     const x = e.changedTouches[0].clientX;
-    if (touchX - x < -40) {
-        sideClose();
+    const y = e.changedTouches[0].clientY;
+    if (touchX - x < -40 && (Math.abs((touchY - y) / (touchX - x)) < .2)) {
+        sideReturn();
     }
 };
 
-content.onclick = (e) => {
+content.onclick = background.onclick = (e) => {
     // 背景点击事件绑定位置变了，这里用来阻止冒泡
-    if (e.composedPath()[0] === content) {
-        sideClose();
+    if (
+        e.composedPath()[0] === content ||
+        e.composedPath()[0] === background
+    ) {
+        sideReturn();
     }
 };
 
+/**
+ * 关闭侧边栏
+ */
 const sideClose = () => {
-    SideState.id = null;
-    sideMove(false);
-    sideChange(null);
+    sideSet(null);
 };
 
+/**
+ * 侧边栏返回上一级
+ */
+const sideReturn = () => {
+    sideSet(SideState.lastid);
+};
+
+/**
+ * 侧边栏移动
+ * @param enable true开启 false关闭
+ */
 const sideMove = (enable: boolean) => {
     if (SideState.on !== enable) {
         SideState.on = enable;
+        SideState.changing = true;
 
         if (enable) {
             offset.style.left = -SideState.distance + "px";
@@ -94,6 +106,10 @@ const sideMove = (enable: boolean) => {
     }
 };
 
+/**
+ * 侧边栏内容设置、透明度修改
+ * @param id 要设置为的目标侧边栏id
+ */
 const sideChange = (id: string | null) => {
     const enable = id !== null;
     if (enable) {
@@ -107,10 +123,48 @@ const sideChange = (id: string | null) => {
     // 防止横向的在侧边栏展开的情况下还能被点到
     major.style.visibility = "visible";
     content.style.pointerEvents = "auto";
-    major.style.opacity = (SideState.center && enable) ? "0" : "1";
+    if (SideState.center) {
+        //解决点标题major会闪回一次的问题
+        if (enable) {
+            major.style.opacity = "0";
+        } else {
+            if (SideState.id != null) {
+                major.style.opacity = "0";
+            } else {
+                major.style.opacity = "1";
+            }
+        }
+    }
 };
 
-const sideClick = (id: string | null) => {
+/**
+ * 点击侧边栏
+ * @param id 要设置为的目标侧边栏id
+ */
+const sideClick = (id: string) => {
+    sideSet(id);
+};
+
+/**
+ * 设置侧边栏
+ * @param id 要设置为的目标侧边栏id，null 关闭侧边栏
+ */
+const sideSet = (id: string | null) => {
+    if (id === null) {
+        SideState.id = null;
+        SideState.lastid = null;
+        sideMove(false);
+        sideChange(null);
+        return;
+    }
+
+    if (id.includes("second")) {
+        SideState.lastid = SideState.id;
+        // console.warn(id, SideState.id);
+    } else {
+        SideState.lastid = null;
+    }
+
     if (!SideState.on) {
         SideState.id = id;
         sideMove(true);
@@ -137,12 +191,12 @@ side.addEventListener("transitionend", (e) => {
     }
     if (e.propertyName === "left") {
         recalculate();
+        if (SideState.changing) {
+            SideState.changing = false;
+        }
     } else if (e.propertyName === "opacity") {
         if (side.style.opacity === "0" && SideState.id !== null) {
             sideChange(SideState.id);
-        }
-        if (SideState.changing) {
-            SideState.changing = false;
         }
     }
 });
@@ -212,9 +266,21 @@ window.onresize = () => {
     recalculate();
 
     if (SideState.on) {
+        SideState.id = null;
         sideClose();
     } else {
         side.style.left = `calc(50% + ${layoutMode === "pc" ? OFFSET : OFFSET_LIT}em)`;
+    }
+};
+
+const showDetail = (e: HTMLElement) => {
+    // console.log(e);
+    let content = e.getElementsByClassName("detail-content")[0] as HTMLElement;
+    if (content.clientHeight !== 0) {
+        content.style.height = 0 + "px";
+    } else {
+        let height = e.getElementsByClassName("detail")[0].clientHeight;
+        content.style.height = height + "px";
     }
 };
 
@@ -223,12 +289,14 @@ interface Window {
     r2?: typeof r2;
     copy?: typeof copy;
     side?: typeof sideClick;
+    detail?: typeof showDetail;
 }
 
 window.r = r;
 window.r2 = r2;
 window.copy = copy;
 window.side = sideClick;
+window.detail = showDetail;
 
 background.style.backgroundImage = `url('/assert/image/bg/${new Date().getDay()}.webp')`;
 
