@@ -9,12 +9,10 @@ type TileColumns = Tile[][]
 
 type TileGrid = {
     left: Tile[]
-    middle: TileGridMiddle[]
-}
-
-type TileGridMiddle = {
-    title: string
-    content: Tile[]
+    middle: {
+        title: string
+        content: Tile[]
+    }[]
 }
 
 type Tile = {
@@ -72,11 +70,14 @@ const tile_column = (input: Tile[]) => `
 
 const tile_columns = (input: TileColumns) => input.map(tile_column).join("")
 
-const tile_grid_middle = (input: TileGridMiddle[]) => {
-    if (input.length !== 3) throw new Error("unsupported grid middle count")
-    const [first, second, third] = input;
+const tile_grid = (input: TileGrid) => {
+    if (input.middle.length !== 3) throw new Error("unsupported grid middle count")
+    const [first, second, third] = input.middle;
     if (third.content.length !== 9) throw new Error("unsupported grid middle count")
     return `
+        <div class="tile-grid-left">
+            ${input.left.map(tile).join("")}
+        </div>
         <div class="tile-grid-middle">
             <div class="title top">${first.title}</div>
             <hr>
@@ -89,13 +90,6 @@ const tile_grid_middle = (input: TileGridMiddle[]) => {
         ${third.content.map(tile).join("")}
     `
 }
-
-const tile_grid = (input: TileGrid) => `
-    <div class="tile-grid-left">
-        ${input.left.map(tile).join("")}
-    </div>
-    ${tile_grid_middle(input.middle)}
-`
 
 const major_base = (inner: string, pagetype: PageType) => `
     <div id="content">
