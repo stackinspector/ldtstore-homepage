@@ -294,53 +294,63 @@ a.tile-link {
     margin: 2em 1em 0em 1em;
 }
 
-.tile.t.l1 {
+.tile.l1 {
     width: 17em;
     height: 27em;
 }
 
-.tile.t.l1 img {
+.tile.l1 img {
     width: 15em;
     margin: 6em 1em 6em 1em;
 }
 
-.tile.t.l2 {
+.tile.l2 {
     width: 17em;
     height: 5em;
 }
 
-.tile.t.l2 img {
+.tile.l2 img {
     width: 5em;
     margin: 0 6.5em;
 }
 
-.tile.t.m {
+.tile.m1 {
     width: 15em;
     height: 6em;
 }
 
-.tile.t.m img {
+.tile.m1 img {
     width: 5em;
     margin: 0 5em 1em 5em;
 }
 
-.tile.t.s1 {
+.tile.s1 {
     width: 6em;
     height: 6em;
 }
 
-.tile.t.s1 img {
+.tile.s1 img {
     width: 5em;
     margin: 0 0.5em 1em 0.5em;
 }
 
-.tile.t.s2 {
+.tile.s2 {
     width: 5em;
     height: 4.7em;
 }
 
-.tile.t.s2 img {
+.tile.s2 img {
     width: 5em;
+}
+
+.tile.m2 {
+    width: 13em;
+    height: 4.7em;
+}
+
+.tile.m2 img {
+    width: 5em;
+    margin-right: 4em;
 }
 
 /* side */
