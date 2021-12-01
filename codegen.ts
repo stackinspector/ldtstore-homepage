@@ -31,6 +31,21 @@ type Side = {
     tiles?: Tile[]
 }
 
+type ToolSide = {
+    name: string
+    title: string
+    list: Tool[]
+}
+
+type Tool = {
+    name: string
+    title: string
+    description?: string
+    website?: string
+    mirror?: string
+    notice?: string
+}
+
 const tile = (input: Tile): string => {
     const notext = input.font === void 0 || input.title === void 0
 
@@ -117,6 +132,50 @@ const side = (input: Side) => `
 
 const sides = (input: Side[]) => input.map(side).join("")
 
+const tool = (input: Tool, expand: boolean) => `
+    <div class="item"${expand ? ` onclick="detail(this)"` : ""}>
+        <img src="/assert/image/icon-tool-detail/${input.name}.webp">
+        <div class="item-title">${input.title}</div>
+        ${expand ? `<div class="detail-container">` : ""}
+            <div class="detail">
+                ${input.description === void 0 ? "" : `<p>${input.description}</p>`}
+                <p>
+                    ${input.website === void 0 ? "" : `
+                        <a class="link" href="${input.website}">
+                            <svg class="icon">
+                                <use xlink:href="#icon-link"></use>
+                            </svg>
+                            官方网站
+                        </a>
+                    `}
+                    ${input.mirror === void 0 ? "" : `
+                        <a class="link" href="${input.mirror}">
+                            <svg class="icon">
+                                <use xlink:href="#icon-download"></use>
+                            </svg>
+                            镜像
+                        </a>
+                    `}
+                </p>
+                ${input.notice === void 0 ? "" : `<p>${input.notice}</p>`}
+            </div>
+        ${expand ? `</div>` : ""}
+    </div>
+`
+
+const tool_side = (input: ToolSide) => `
+    <template id="side-${input.name}">
+        <div class="title">${input.title}</div>
+        <svg class="icon-back"><use xlink:href="#icon-arrow-left"></use></svg>
+        <hr>
+        <div class="list">
+            ${input.list.map(x => tool(x, input.list.length !== 1)).join("")}
+        </div>
+    </template>
+`
+
+const tool_sides = (input: ToolSide[]) => input.map(tool_side).join("")
+
 Deno.writeTextFileSync(
     "index.major.html",
     major_home(parseYaml(Deno.readTextFileSync("index.major.yml")) as TileColumns)
@@ -130,4 +189,9 @@ Deno.writeTextFileSync(
 Deno.writeTextFileSync(
     "ldtools/index.major.html",
     major_tool(parseYaml(Deno.readTextFileSync("ldtools/index.major.yml")) as TileGrid)
+)
+
+Deno.writeTextFileSync(
+    "ldtools/index.sides.html",
+    tool_sides(parseYaml(Deno.readTextFileSync("ldtools/index.sides.yml")) as ToolSide[])
 )

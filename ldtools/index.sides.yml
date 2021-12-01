@@ -1,0 +1,31 @@
+- name: tbtool
+  title: 详情
+  list:
+    - name: tbtool
+      title: 图吧工具箱
+      description: 起源于图吧，由DIY爱好者创造并维护的工具箱，集合了本站大部分工具，方便使用。
+      website: http://www.tbtool.cn/
+      notice: >
+        注意事项：
+        <br>
+        系统激活软件可能导致部分杀毒误报，详情见链接官网的说明。如有疑虑可以不予理会，其他工具不受影响。
+- name: info
+  title: 配置检测
+  list:
+    - name: tbinfo
+      title: 图拉丁硬件检测
+      description: 图吧工具箱衍生的硬件检测工具，完美的避开所有国产软件常见的弊端
+      website: http://www.tbtool.cc/
+    - name: aida64
+      title: AIDA64
+      description: 综合检测工具，以其全面的硬件检测以及cpu烤机经常出现在各种测评以及排障中。
+      website: a
+      mirror: a
+      notice: >
+        说明：
+        <br>
+        收费软件30天试用，许可证分发方式可以查阅官网或者搜索，有条件请支持正版。
+    - name: hwinfo
+      title: HWinfo
+    - name: speccy
+      title: SPECCY
