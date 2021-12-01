@@ -1,0 +1,121 @@
+- name: about
+  title: 关于本站
+  text: >
+    <p>
+      GitHub:
+      <br>
+      <a class="link" onclick="r('website-github')">stackinspector/LDTstore</a>
+      <br>
+      <a class="link" onclick="r('homepage-github')">stackinspector/ldtstore-homepage</a>
+    </p>
+- name: live
+  title: 直播间
+  tiles:
+    - tile: m
+      font: h3
+      action: r
+      name: live-room
+      title: 进入直播间
+    - tile: s
+      font: h4
+      action: r
+      name: live-rec-yjws
+      icon: live-record
+      title: 阅机无数录播
+    - tile: s
+      font: h3
+      action: r
+      name: live-rec-other
+      icon: live-record
+      title: 其他录播
+    - tile: m
+      font: h3
+      action: r
+      name: live-faq-1
+      icon: live-faq
+      title: 常见问题FAQ
+- name: yjws
+  title: 阅机无数
+  text: >
+    <p>*进入<b>新版</b>话题前<br>请确认<b>当前浏览器已登录B站</b></p>
+  tiles:
+    - tile: m
+      font: h3
+      action: r
+      name: yjws
+      icon: topic
+      title: 进入旧版话题
+    - tile: s
+      font: h3
+      action: r
+      name: yjws-newtopic
+      icon: topic
+      title: 新版话题*
+    - tile: s
+      font: h3
+      action: r
+      name: yjws-spec-21
+      icon: spec
+      title: 管理规范
+    - tile: m
+      font: h3
+      action: r
+      name: yjws-guide-21
+      icon: spec
+      title: 投稿指南
+- name: icu
+  title: 装机ICU
+  text: >
+    <p>*进入<b>新版</b>话题前<br>请确认<b>当前浏览器已登录B站</b></p>
+  tiles:
+    - tile: m
+      font: h3
+      action: r
+      name: icu
+      icon: topic
+      title: 进入旧版话题
+    - tile: s
+      font: h3
+      action: r
+      name: icu-newtopic
+      icon: topic
+      title: 新版话题*
+    - tile: s
+      font: h3
+      action: r
+      name: icu-spec-1
+      icon: spec
+      title: 投稿规范
+    - tile: m
+      font: h3
+      action: r
+      name: icu-spec-11
+      icon: spec
+      title: 投稿规范补充
+- name: group
+  title: 硬件讨论群
+  text: >
+    <p>一群：1005059704<a class="link copy" onclick="copy('1005059704')">📋</a></p>
+    <p><a class="link" onclick="r('group-readme-1')">核心群入群测试</a></p>
+- name: outer
+  title: 站外官方账号
+  text: >
+    <p><a class="link" onclick="r('ops-top-1')">关于站外官方账号</a></p>
+  tiles:
+    - tile: s notext
+      action: r
+      name: outer-zh
+    - tile: s notext
+      action: r
+      name: outer-yt
+    - tile: s notext
+      action: r
+      name: outer-wb
+    - tile: s notext
+      action: r
+      name: outer-mz
+- name: business
+  title: 商务合作
+  text: >
+    <p>商务合作请加微信13869651328<a class="link copy" onclick="copy('13869651328')">📋</a>，并注明合作方与合作内容。
+    目前只接受数码领域相关合作，产品评测优先；不接受干涉测评、跨领域合作以及其他平台入驻。感谢您的认可。</p>

@@ -24,24 +24,31 @@ span {
 
 /* link */
 
-a {
+a.link {
     text-decoration: none;
     transition: opacity 0.5s;
     color: #ffe5be;
     opacity: 1;
 }
 
-a.hidden {
+a.link.hidden {
     color: inherit;
 }
 
-a.copy {
+a.link.copy {
     font-size: 150%;
 }
 
-a:hover {
+a.link:hover {
     opacity: 0.75;
     cursor: pointer;
+}
+
+a.tile-link {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    text-decoration: none;
 }
 
 /* background */

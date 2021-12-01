@@ -222,13 +222,13 @@ interface Window {
     r?: typeof r;
     r2?: typeof r2;
     copy?: typeof copy;
-    sideClick?: typeof sideClick;
+    side?: typeof sideClick;
 }
 
 window.r = r;
 window.r2 = r2;
 window.copy = copy;
-window.sideClick = sideClick;
+window.side = sideClick;
 
 background.style.backgroundImage = `url('/assert/image/bg/${new Date().getDay()}.webp')`;
 

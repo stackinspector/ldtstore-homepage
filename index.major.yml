@@ -1,0 +1,56 @@
+- - tile: l
+    font: h2
+    action: r
+    name: home
+    title: 老弟一号个人空间
+  - tile: l
+    font: h2
+    action: r
+    name: store
+    title: LDTstore淘宝店铺
+- - tile: m
+    font: h3
+    action: side
+    name: live
+    icon: live-room
+    title: 直播间
+  - tile: s
+    font: h3
+    action: side
+    name: yjws
+    title: 阅机无数
+  - tile: s
+    font: h3
+    action: side
+    name: icu
+    title: 装机ICU
+  - tile: m
+    font: h3
+    action: side
+    name: group
+    title: 硬件讨论群
+  - tile: s
+    font: h4
+    action: r
+    name: home-ops
+    title: 运营官方账号
+  - tile: s
+    font: h3
+    action: side
+    name: business
+    title: 商务合作
+- - tile: m
+    font: h3
+    action: side
+    name: outer
+    title: 站外官方账号
+  - tile: l
+    font: h2
+    action: href
+    name: ldtools
+    title: LDTools（敬请期待）
+  - tile: m
+    font: h3
+    action: r
+    name: afdian
+    title: 赞助老弟一号
