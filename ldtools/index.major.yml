@@ -1,0 +1,98 @@
+left:
+  - tile: l1
+    font: h2
+    action: side
+    name: rlwj
+    title: 日理万稽
+  - tile: l2
+    font: h2
+    action: side
+    name: about
+    title: 站点说明、赞助
+middle:
+  - title: 工具集合
+    content:
+    - tile: s1
+      font: h3
+      action: side
+      name: tbtool
+      title: 图吧工具箱
+    - tile: s1
+      font: h3
+      action: side
+      name: kbtool
+      title: 卡吧工具箱
+    - tile: s1
+      font: h3
+      action: side
+      name: dismxx
+      title: Dism++
+    - tile: s1
+      font: h4
+      action: side
+      name: other
+      title: 其他工具集合
+  - title: 站点链接
+    content:
+    - tile: m
+      font: h3
+      action: side
+      name: itellyou
+      title: MSDN itellyou
+    - tile: s1
+      font: h3
+      action: side
+      name: cpu-rank
+      title: CPU天梯
+    - tile: s1
+      font: h3
+      action: side
+      name: gpu-rank
+      title: GPU天梯
+  - title: 工具下载
+    content:
+    - tile: s2
+      font: h4
+      action: side
+      name: other
+      title: 其他工具
+    - tile: s2
+      font: h4
+      action: side
+      name: peripheral
+      title: 外设工具
+    - tile: s2
+      font: h4
+      action: side
+      name: burning
+      title: 稳定性测试
+    - tile: s2
+      font: h4
+      action: side
+      name: prepare
+      title: 装机工具
+    - tile: m2
+      font: h4
+      action: side
+      name: info
+      title: 配置检测
+    - tile: s2
+      font: h4
+      action: side
+      name: cpu
+      title: CPU工具
+    - tile: s2
+      font: h4
+      action: side
+      name: memory
+      title: 内存工具
+    - tile: s2
+      font: h4
+      action: side
+      name: gpu
+      title: 显卡工具
+    - tile: s2
+      font: h4
+      action: side
+      name: disk
+      title: 硬盘工具
