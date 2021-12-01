@@ -367,11 +367,11 @@ a.tile-link {
     margin: 0.4em;
 }
 
-/* #side .text {
+#side .text {
     pointer-events: all;
     font-size: 1.5em;
     padding: 0.4em;
-} */
+}
 
 #side hr {
     background-color: #aaaf;
@@ -460,12 +460,12 @@ svg {
     fill: currentColor;
 }
 
-.icon {
+svg.icon {
     width: 1em;
     height: 1em;
 }
 
-.backicon {
+svg.icon-back {
     float: right;
     width: 2em;
     height: 2em;
@@ -473,14 +473,14 @@ svg {
     padding: 1.4em;
 }
 
-.sidelist {
+.list {
     width: 100%;
     height: calc(100% - 7em);
     overflow: auto;
     pointer-events: all;
 }
 
-.line {
+.item {
     width: 100%;
     overflow: auto;
     margin: 1em 0;
@@ -490,7 +490,7 @@ svg {
     user-select: none;
 }
 
-.lineicon {
+svg.icon-line {
     width: 1.5em;
     height: 1.5em;
     padding: .75em;
@@ -498,7 +498,7 @@ svg {
     color: white;
 }
 
-.line .name {
+.item .item-title {
     display: inline-block;
     font-size: 1.5em;
     text-align: center;
@@ -508,7 +508,7 @@ svg {
     vertical-align: top;
 }
 
-.detail-content {
+.detail-container {
     width: 100%;
     overflow-y: hidden;
     height: 0px;
@@ -524,21 +524,21 @@ svg {
     width: 100%;
 }
 
-.line img {
+.item img {
     display: inline-block;
     height: 3em;
 }
 
 @media screen and (max-width: 500px) {
-    .line {
+    .item {
         font-size: .85em;
     }
 
-    .line .name {
+    .item .title {
         margin-left: 0;
     }
 
-    .line .icon {
+    .item .icon {
         padding-right: 0em;
     }
 }

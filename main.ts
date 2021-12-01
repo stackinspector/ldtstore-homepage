@@ -275,7 +275,7 @@ window.onresize = () => {
 
 const showDetail = (e: HTMLElement) => {
     // console.log(e);
-    let content = e.getElementsByClassName("detail-content")[0] as HTMLElement;
+    let content = e.getElementsByClassName("detail-container")[0] as HTMLElement;
     if (content.clientHeight !== 0) {
         content.style.height = 0 + "px";
     } else {

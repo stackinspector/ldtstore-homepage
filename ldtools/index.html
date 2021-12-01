@@ -174,7 +174,7 @@
     </template>
     <template id="side-rlwj">
         <div class="title">日理万稽</div>
-        <svg class="backicon"><use xlink:href="#icon-arrow-left"></use></svg>
+        <svg class="icon-back"><use xlink:href="#icon-arrow-left"></use></svg>
         <hr>
         <div class="tile m" onclick="r('yjws')">
             <img src="/assert/image/icon/topic.webp">
@@ -200,12 +200,12 @@
 
     <template id="side-tbtool">
         <div class="title">详情</div>
-        <svg class="backicon"><use xlink:href="#icon-arrow-left"></use></svg>
+        <svg class="icon-back"><use xlink:href="#icon-arrow-left"></use></svg>
         <hr>
-        <div class="text">
-            <div class="line">
+        <div class="list">
+            <div class="item">
                 <img src="/assert/image/tool_icon/图吧工具箱.webp">
-                <div class="name">
+                <div class="item-title">
                     图吧工具箱
                 </div>
                 <div class="detail">
@@ -232,15 +232,15 @@
 
     <template id="side-infotool">
         <div class="title">配置检测</div>
-        <svg class="backicon"><use xlink:href="#icon-arrow-left"></use></svg>
+        <svg class="icon-back"><use xlink:href="#icon-arrow-left"></use></svg>
         <hr>
-        <div class="sidelist">
-            <div class="line" onclick="detail(this)">
+        <div class="list">
+            <div class="item" onclick="detail(this)">
                 <img src="/assert/image/tool_icon/图拉丁硬件检测.webp">
-                <div class="name">
+                <div class="item-title">
                     图拉丁硬件检测
                 </div>
-                <div class="detail-content">
+                <div class="detail-container">
                     <div class="detail">
                         <p>
                         图吧工具箱衍生的硬件检测工具，完美的避开所有国产软件常见的弊端
@@ -256,12 +256,12 @@
                     </div>
                 </div>
             </div>
-            <div class="line" onclick="detail(this)">
+            <div class="item" onclick="detail(this)">
                 <img src="/assert/image/tool_icon/aida64.webp">
-                <div class="name">
+                <div class="item-title">
                     AIDA64
                 </div>
-                <div class="detail-content">
+                <div class="detail-container">
                     <div class="detail">
                         <p>
                             综合检测工具，以其全面的硬件检测以及cpu烤机经常出现在各种测评以及排障中。
@@ -288,15 +288,15 @@
                     </div>
                 </div>
             </div>
-            <div class="line">
+            <div class="item">
                 <img src="/assert/image/tool_icon/HWiNFO.webp">
-                <div class="name">
+                <div class="item-title">
                     HWinfo
                 </div>
             </div>
-            <div class="line">
+            <div class="item">
                 <img src="/assert/image/tool_icon/Speccy.webp">
-                <div class="name">
+                <div class="item-title">
                     SPECCY
                 </div>
             </div>
@@ -305,28 +305,28 @@
 
     <template id="side-test">
         <div class="title">列表测试</div>
-        <svg class="backicon"><use xlink:href="#icon-arrow-left"></use></svg>
+        <svg class="icon-back"><use xlink:href="#icon-arrow-left"></use></svg>
         <hr>
-        <div class="sidelist">
-            <div class="line">
+        <div class="list">
+            <div class="item">
                 <img src="/assert/image/tool_icon/ASSSDBenchmark.webp">
-                <div class="name">
+                <div class="item-title">
                     注意长度不要挤到图标
                 </div>
                 <a class="link" onclick="sideSet('second-test')">
-                    <svg class="lineicon"><use xlink:href="#icon-info"></use></svg>
+                    <svg class="icon-line"><use xlink:href="#icon-info"></use></svg>
                 </a>
-                <svg class="lineicon"><use xlink:href="#icon-download"></use></svg>
+                <svg class="icon-line"><use xlink:href="#icon-download"></use></svg>
                 <div class="detail">
                     第一版设计，点击图标进入二级菜单。并且有对应的链接和下载图标
                 </div>
             </div>
-            <div class="line" onclick="detail(this)">
+            <div class="item" onclick="detail(this)">
                 <img src="/assert/image/tool_icon/aida64.webp">
-                <div class="name">
+                <div class="item-title">
                     第二版设计
                 </div>
-                <div class="detail-content">
+                <div class="detail-container">
                     <div class="detail">
                         <p>
                             详情：第二版设计，折叠菜单
@@ -358,7 +358,7 @@
 
     <template id="side-second-test">
         <div class="title">二级菜单测试</div>
-        <svg class="backicon"><use xlink:href="#icon-arrow-left"></use></svg>
+        <svg class="icon-back"><use xlink:href="#icon-arrow-left"></use></svg>
         <hr>
     </template>
 
