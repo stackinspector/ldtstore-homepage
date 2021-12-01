@@ -18,7 +18,7 @@
 <body>
     <div id="background"></div>
 
-    <div id="header" onclick="sideClick('about')">
+    <div id="header" onclick="side('about')">
         <img src="/assert/image/shared/laodi-64px.png">
         <span>LaodiTeachTips</span>
     </div>
@@ -37,19 +37,19 @@
                     </div>
                 </div>
                 <div class="tile-column">
-                    <div class="tile m" onclick="sideClick('live')">
+                    <div class="tile m" onclick="side('live')">
                         <img src="/assert/image/icon/live-room.webp">
                         <h3>直播间</h3>
                     </div>
-                    <div class="tile s" onclick="sideClick('yjws')">
+                    <div class="tile s" onclick="side('yjws')">
                         <img src="/assert/image/icon/yjws.webp">
                         <h3>阅机无数</h3>
                     </div>
-                    <div class="tile s" onclick="sideClick('icu')">
+                    <div class="tile s" onclick="side('icu')">
                         <img src="/assert/image/icon/icu.webp">
                         <h3>装机ICU</h3>
                     </div>
-                    <div class="tile m" onclick="sideClick('group')">
+                    <div class="tile m" onclick="side('group')">
                         <img src="/assert/image/icon/group.webp">
                         <h3>硬件讨论群</h3>
                     </div>
@@ -57,13 +57,13 @@
                         <img src="/assert/image/icon/home-ops.webp">
                         <h4>运营官方账号</h4>
                     </div>
-                    <div class="tile s" onclick="sideClick('business')">
+                    <div class="tile s" onclick="side('business')">
                         <img src="/assert/image/icon/business.webp">
                         <h3>商务合作</h3>
                     </div>
                 </div>
                 <div class="tile-column">
-                    <div class="tile m" onclick="sideClick('outer')">
+                    <div class="tile m" onclick="side('outer')">
                         <img src="/assert/image/icon/outer.webp">
                         <h3>站外官方账号</h3>
                     </div>
@@ -86,17 +86,17 @@
         <p>
             <span>
                 Powered by
-                <a onclick="r('poweredby-1')">@进栈检票</a>
-                <a onclick="r('poweredby-3')">@CarrotGeball</a>
-                <a onclick="r('poweredby-2')">@841973620</a>
+                <a class="link" onclick="r('poweredby-1')">@进栈检票</a>
+                <a class="link" onclick="r('poweredby-3')">@CarrotGeball</a>
+                <a class="link" onclick="r('poweredby-2')">@841973620</a>
             </span>
         </p>
         <p>
-            <!-- <a class="hidden" href="//www.beian.gov.cn/portal/registerSystemInfo?recordcode=" target="_blank">
+            <!-- <a class="link hidden" href="//www.beian.gov.cn/portal/registerSystemInfo?recordcode=" target="_blank">
                 <img src="/assert/image/shared/police.png">
                 <span>公安备案号占位符</span>
             </a> -->
-            <a class="hidden" href="//beian.miit.gov.cn/" target="_blank">
+            <a class="link hidden" href="//beian.miit.gov.cn/" target="_blank">
                 <span>鲁ICP备2021014114号</span>
             </a>
         </p>
@@ -109,9 +109,9 @@
             <p>
                 GitHub:
                 <br>
-                <a onclick="r('website-github')">stackinspector/LDTstore</a>
+                <a class="link" onclick="r('website-github')">stackinspector/LDTstore</a>
                 <br>
-                <a onclick="r('homepage-github')">stackinspector/ldtstore-homepage</a>
+                <a class="link" onclick="r('homepage-github')">stackinspector/ldtstore-homepage</a>
             </p>
         </div>
     </template>
@@ -191,8 +191,8 @@
         <div class="title">硬件讨论群</div>
         <hr>
         <div class="text">
-            <p>一群：1005059704<a class="copy" onclick="copy('1005059704')">📋</a></p>
-            <p><a onclick="r('group-readme-1')">核心群入群测试</a></p>
+            <p>一群：1005059704<a class="link copy" onclick="copy('1005059704')">📋</a></p>
+            <p><a class="link" onclick="r('group-readme-1')">核心群入群测试</a></p>
         </div>
     </template>
 
@@ -213,7 +213,7 @@
         </div>
         <div class="clearfix"></div>
         <div class="text">
-            <p><a onclick="r('ops-top-1')">关于站外官方账号</a></p>
+            <p><a class="link" onclick="r('ops-top-1')">关于站外官方账号</a></p>
         </div>
     </template>
 
@@ -221,7 +221,7 @@
         <div class="title">商务合作</div>
         <hr>
         <div class="text">
-            <p>商务合作请加微信13869651328<a class="copy" onclick="copy('13869651328')">📋</a>，并注明合作方与合作内容。目前只接受数码领域相关合作，产品评测优先；不接受干涉测评、跨领域合作以及其他平台入驻。感谢您的认可。</p>
+            <p>商务合作请加微信13869651328<a class="link copy" onclick="copy('13869651328')">📋</a>，并注明合作方与合作内容。目前只接受数码领域相关合作，产品评测优先；不接受干涉测评、跨领域合作以及其他平台入驻。感谢您的认可。</p>
         </div>
     </template>
 
