@@ -52,7 +52,10 @@ const html = async (filename: string) => minify("html", (await template(filename
 ).replaceAll(
   `<link rel="stylesheet" href="/style.css">`,
   `<link rel="stylesheet" href="/style-${git}.css">`
-))
+)).replaceAll(
+  `<a `,
+  `<a target="_blank" `
+)
 
 const css = async (filename: string) => minify("css", await Deno.readTextFile(filename))
 

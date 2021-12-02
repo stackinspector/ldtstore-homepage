@@ -14,14 +14,6 @@ const OFFSET = {
     "tool": 38,
 }[PAGE_TYPE];
 
-const r = (key: string) => {
-    window.open("https://ldtstore.com.cn/r/" + key, "_blank");
-};
-
-const r2 = (key: string) => {
-    window.open("https://ldtstore.com.cn/r2/" + key, "_blank");
-};
-
 const copy = (text: string) => {
     navigator.clipboard.writeText(text);
 };
@@ -285,15 +277,11 @@ const showDetail = (e: HTMLElement) => {
 };
 
 interface Window {
-    r?: typeof r;
-    r2?: typeof r2;
     copy?: typeof copy;
     side?: typeof sideClick;
     detail?: typeof showDetail;
 }
 
-window.r = r;
-window.r2 = r2;
 window.copy = copy;
 window.side = sideClick;
 window.detail = showDetail;
