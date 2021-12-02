@@ -4,9 +4,9 @@
     <p>
       GitHub:
       <br>
-      <a class="link" onclick="r('website-github')">stackinspector/LDTstore</a>
+      <a class="link" href="/r/website-github">stackinspector/LDTstore</a>
       <br>
-      <a class="link" onclick="r('homepage-github')">stackinspector/ldtstore-homepage</a>
+      <a class="link" href="/r/homepage-github">stackinspector/ldtstore-homepage</a>
     </p>
 - name: live
   title: 直播间
@@ -96,11 +96,11 @@
   title: 硬件讨论群
   text: >
     <p>一群：1005059704<a class="link copy" onclick="copy('1005059704')">📋</a></p>
-    <p><a class="link" onclick="r('group-readme-1')">核心群入群测试</a></p>
+    <p><a class="link" href="/r/group-readme-1">核心群入群测试</a></p>
 - name: outer
   title: 站外官方账号
   text: >
-    <p><a class="link" onclick="r('ops-top-1')">关于站外官方账号</a></p>
+    <p><a class="link" href="/r/ops-top-1">关于站外官方账号</a></p>
   tiles:
     - tile: s notext
       action: r

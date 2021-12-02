@@ -1,3 +1,37 @@
+- name: about
+  title: 关于本站
+  text: >
+    <p>
+      GitHub:
+      <br>
+      <a class="link" href="/r/website-github">stackinspector/LDTstore</a>
+      <br>
+      <a class="link" href="/r/homepage-github">stackinspector/ldtstore-homepage</a>
+    </p>
+- name: rlwj
+  title: 日理万稽
+  text: >
+    <p>目前日理万稽话题<b>建议使用旧版页面</b></p>
+    <p>*进入<b>新版</b>话题前<br>请确认<b>当前浏览器已登录B站</b></p>
+  tiles:
+    - tile: m
+      font: h3
+      action: r
+      name: rlwj
+      icon: topic
+      title: 进入旧版话题
+    - tile: s
+      font: h3
+      action: r
+      name: rlwj-newtopic
+      icon: topic
+      title: 新版话题*
+    - tile: s
+      font: h3
+      action: r
+      name: rlwj-spec-1
+      icon: spec
+      title: 投稿规范
 - name: tbtool
   title: 详情
   list:

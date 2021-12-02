@@ -29,6 +29,7 @@ type Side = {
     title: string
     text?: string
     tiles?: Tile[]
+    list?: Tool[]
 }
 
 type ToolSide = {
@@ -47,11 +48,11 @@ type Tool = {
 }
 
 const tile = (input: Tile): string => {
-    const notext = input.font === void 0 || input.title === void 0
+    const isnotext = input.font === void 0 || input.title === void 0
 
     const inner = `
         <img src="/assert/image/icon/${input.icon === void 0 ? input.name : input.icon}.webp">
-        ${notext ? "" :`<${input.font}>${input.title}</${input.font}>`}
+        ${isnotext ? "" :`<${input.font}>${input.title}</${input.font}>`}
     `
 
     const href = (path: string) => `
@@ -121,14 +122,29 @@ const major_home = (input: TileColumns) => major_base(tile_columns(input), "home
 
 const major_tool = (input: TileGrid) => major_base(tile_grid(input), "tool")
 
-const side = (input: Side) => `
-    <template id="side-${input.name}">
-        <div class="title">${input.title}</div>
-        <hr>
+const side = (input: Side) => {
+    const istool = input.list !== void 0 && input.text === void 0 && input.tiles === void 0
+
+    const tool_side = () => `
+        <div class="list">
+            ${input.list?.map(x => tool(x, input.list?.length !== 1)).join("")}
+        </div>
+    `
+
+    const common_side = () => `
         ${input.tiles === void 0 ? "" : input.tiles?.map(tile).join("") + `<div class="clearfix"></div>`}
         ${input.text === void 0 ? "" : `<div class="text">${input.text}</div>`}
-    </template>
-`
+    `
+
+    return `
+        <template id="side-${input.name}">
+            <div class="title">${input.title}</div>
+            <!-- <svg class="icon-back"><use xlink:href="#icon-arrow-left"></use></svg> -->
+            <hr>
+            ${istool ? tool_side() : common_side()}
+        </template>
+    `
+}
 
 const sides = (input: Side[]) => input.map(side).join("")
 
@@ -163,19 +179,6 @@ const tool = (input: Tool, expand: boolean) => `
     </div>
 `
 
-const tool_side = (input: ToolSide) => `
-    <template id="side-${input.name}">
-        <div class="title">${input.title}</div>
-        <svg class="icon-back"><use xlink:href="#icon-arrow-left"></use></svg>
-        <hr>
-        <div class="list">
-            ${input.list.map(x => tool(x, input.list.length !== 1)).join("")}
-        </div>
-    </template>
-`
-
-const tool_sides = (input: ToolSide[]) => input.map(tool_side).join("")
-
 Deno.writeTextFileSync(
     "index.major.html",
     major_home(parseYaml(Deno.readTextFileSync("index.major.yml")) as TileColumns)
@@ -193,5 +196,5 @@ Deno.writeTextFileSync(
 
 Deno.writeTextFileSync(
     "ldtools/index.sides.html",
-    tool_sides(parseYaml(Deno.readTextFileSync("ldtools/index.sides.yml")) as ToolSide[])
+    sides(parseYaml(Deno.readTextFileSync("ldtools/index.sides.yml")) as ToolSide[])
 )
