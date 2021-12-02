@@ -1,10 +1,11 @@
 // deno-lint-ignore-file camelcase
 
 // deno run -A --unstable build.ts path\to\wwwroot\
-// dev build: deno run -A --unstable build.ts
 
 import { minify } from "https://deno.land/x/minifier@v1.1.1/mod.ts"
 import { decodeText } from "https://cdn.jsdelivr.net/gh/stackinspector/DenoBase@latest/textcodec.ts"
+import { insert } from "https://cdn.jsdelivr.net/gh/stackinspector/DenoBase@latest/insert-string.ts"
+import { codegen } from "./codegen.ts"
 
 const target_dir = Deno.args[0] as string
 
@@ -33,7 +34,19 @@ const copyright = `
   Commit: ${git}
 `
 
-const html = async (filename: string) => minify("html", (await Deno.readTextFile(filename)).replaceAll(
+const template = async (filename: string) => {
+  const inserts: Map<string, string> = new Map()
+  for await (const item of Deno.readDir("./fragment")) {
+    if (!item.isFile) continue
+    inserts.set(`<!--{{${item.name}}}-->`, await Deno.readTextFile("./fragment/" + item.name))
+  }
+  const { major, sides } = codegen(filename)
+  inserts.set(`<!--{{major}}-->`, major)
+  inserts.set(`<!--{{sides}}-->`, sides)
+  return insert(await Deno.readTextFile(filename), inserts)
+}
+
+const html = async (filename: string) => minify("html", (await template(filename)).replaceAll(
   `<script src="/main.js"></script>`,
   `<script src="/main-${git}.js"></script>`
 ).replaceAll(
@@ -58,14 +71,10 @@ const emit = async (filename: string, content: string) => {
   )
 }
 
-if (target_dir === void 0) {
-  await Deno.writeTextFile("main.js", await js_inner("main.ts"))
-} else {
-  await Deno.writeTextFile(target_dir + "robots.txt", robots)
-  await Deno.mkdir(target_dir + "ldtools")
+await Deno.writeTextFile(target_dir + "robots.txt", robots)
+// await Deno.mkdir(target_dir + "ldtools")
 
-  await emit("index.html", await html("index.html"))
-  await emit("ldtools/index.html", await html("ldtools/index.html"))
-  await emit(`style-${git}.css`, await css("style.css"))
-  await emit(`main-${git}.js`, await js("main.ts"))
-}
+await emit("index.html", await html("index.html"))
+await emit("ldtools/index.html", await html("ldtools/index.html"))
+await emit(`style-${git}.css`, await css("style.css"))
+await emit(`main-${git}.js`, await js("main.ts"))

@@ -1,0 +1,66 @@
+<template id="side-test">
+    <div class="title">列表测试</div>
+    <svg class="icon-back">
+        <use xlink:href="#icon-arrow-left"></use>
+    </svg>
+    <hr>
+    <div class="list">
+        <div class="item">
+            <img src="/assert/image/icon-tool-detail/asssd.webp">
+            <div class="item-title">
+                注意长度不要挤到图标
+            </div>
+            <a class="link" onclick="sideSet('second-test')">
+                <svg class="icon-line">
+                    <use xlink:href="#icon-info"></use>
+                </svg>
+            </a>
+            <svg class="icon-line">
+                <use xlink:href="#icon-download"></use>
+            </svg>
+            <div class="detail">
+                第一版设计，点击图标进入二级菜单。并且有对应的链接和下载图标
+            </div>
+        </div>
+        <div class="item" onclick="detail(this)">
+            <img src="/assert/image/icon-tool-detail/aida64.webp">
+            <div class="item-title">
+                第二版设计
+            </div>
+            <div class="detail-container">
+                <div class="detail">
+                    <p>
+                        详情：第二版设计，折叠菜单
+                    </p>
+                    <p>
+                        <a class="link" href="#">
+                            <svg class="icon">
+                                <use xlink:href="#icon-link"></use>
+                            </svg>
+                            官方网站
+                        </a>
+                    </p>
+                    <p>
+                        <a class="link" href="#">
+                            <svg class="icon">
+                                <use xlink:href="#icon-link"></use>
+                            </svg>
+                            链接2
+                        </a>
+                    </p>
+                    <p>
+                        注意事项：
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="side-second-test">
+    <div class="title">二级菜单测试</div>
+    <svg class="icon-back">
+        <use xlink:href="#icon-arrow-left"></use>
+    </svg>
+    <hr>
+</template>

@@ -1,7 +1,7 @@
 // deno-lint-ignore-file camelcase
 import { parse as parseYaml } from "https://deno.land/std@0.102.0/encoding/yaml.ts"
 
-const dev = !Deno.args[0]
+const dev = true
 
 type PageType = "home" | "tool"
 
@@ -30,12 +30,6 @@ type Side = {
     text?: string
     tiles?: Tile[]
     list?: Tool[]
-}
-
-type ToolSide = {
-    name: string
-    title: string
-    list: Tool[]
 }
 
 type Tool = {
@@ -179,22 +173,10 @@ const tool = (input: Tool, expand: boolean) => `
     </div>
 `
 
-Deno.writeTextFileSync(
-    "index.major.html",
-    major_home(parseYaml(Deno.readTextFileSync("index.major.yml")) as TileColumns)
-)
-
-Deno.writeTextFileSync(
-    "index.sides.html",
-    sides(parseYaml(Deno.readTextFileSync("index.sides.yml")) as Side[])
-)
-
-Deno.writeTextFileSync(
-    "ldtools/index.major.html",
-    major_tool(parseYaml(Deno.readTextFileSync("ldtools/index.major.yml")) as TileGrid)
-)
-
-Deno.writeTextFileSync(
-    "ldtools/index.sides.html",
-    sides(parseYaml(Deno.readTextFileSync("ldtools/index.sides.yml")) as ToolSide[])
-)
+export const codegen = (filename: string) => {
+    const major = parseYaml(Deno.readTextFileSync(filename.replaceAll(".html", ".major.yml")))
+    return {
+        major: filename.includes("ldtools") ? major_tool(major as TileGrid) : major_home(major as TileColumns),
+        sides: sides(parseYaml(Deno.readTextFileSync(filename.replaceAll(".html", ".sides.yml"))) as Side[])
+    }
+}
