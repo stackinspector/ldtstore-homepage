@@ -7,7 +7,7 @@ type PageType = "home" | "tool"
 
 type TileColumns = Tile[][]
 
-type TileGrid = {
+type TileGrids = {
     left: Tile[]
     middle: {
         title: string
@@ -50,7 +50,7 @@ const tile = (input: Tile): string => {
     `
 
     const href = (path: string) => `
-        <a class="tile-link" href="${dev ? "https://ldtstore.com.cn" : ""}${path}${input.name}">
+        <a class="tile-link" href="${dev ? "//ldtstore.com.cn" : ""}${path}${input.name}">
             <div class="tile ${input.tile}">
                 ${inner}
             </div>
@@ -80,7 +80,7 @@ const tile_column = (input: Tile[]) => `
 
 const tile_columns = (input: TileColumns) => input.map(tile_column).join("")
 
-const tile_grid = (input: TileGrid) => {
+const tile_grids = (input: TileGrids) => {
     if (input.middle.length !== 3) throw new Error("unsupported grid middle count")
     const [first, second, third] = input.middle;
     if (third.content.length !== 9) throw new Error("unsupported grid middle count")
@@ -114,7 +114,7 @@ const major_base = (inner: string, pagetype: PageType) => `
 
 const major_home = (input: TileColumns) => major_base(tile_columns(input), "home")
 
-const major_tool = (input: TileGrid) => major_base(tile_grid(input), "tool")
+const major_tool = (input: TileGrids) => major_base(tile_grids(input), "tool")
 
 const side = (input: Side) => {
     const istool = input.list !== void 0 && input.text === void 0 && input.tiles === void 0
@@ -133,7 +133,7 @@ const side = (input: Side) => {
     return `
         <template id="side-${input.name}">
             <div class="title">${input.title}</div>
-            <!-- <svg class="icon-back"><use xlink:href="#icon-arrow-left"></use></svg> -->
+            <svg class="icon-back"><use xlink:href="#icon-arrow-left"></use></svg>
             <hr>
             ${istool ? tool_side() : common_side()}
         </template>
@@ -144,7 +144,7 @@ const sides = (input: Side[]) => input.map(side).join("")
 
 const tool = (input: Tool, expand: boolean) => `
     <div class="item"${expand ? ` onclick="detail(this)"` : ""}>
-        <img src="/assert/image/icon-tool-detail/${input.name}.webp">
+        <img src="/assert/image/icon-tool/${input.name}.webp">
         <div class="item-title">${input.title}</div>
         ${expand ? `<div class="detail-container">` : ""}
             <div class="detail">
@@ -176,7 +176,7 @@ const tool = (input: Tool, expand: boolean) => `
 export const codegen = (filename: string) => {
     const major = parseYaml(Deno.readTextFileSync(filename.replaceAll(".html", ".major.yml")))
     return {
-        major: filename.includes("ldtools") ? major_tool(major as TileGrid) : major_home(major as TileColumns),
+        major: filename.includes("ldtools") ? major_tool(major as TileGrids) : major_home(major as TileColumns),
         sides: sides(parseYaml(Deno.readTextFileSync(filename.replaceAll(".html", ".sides.yml"))) as Side[])
     }
 }

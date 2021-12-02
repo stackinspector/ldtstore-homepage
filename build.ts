@@ -69,7 +69,7 @@ const emit = async (filename: string, content: string) => {
     (filename.substring(filename.length - 5) === ".html" ? `<!--${copyright}-->\n\n` : `/*${copyright}*/\n\n`) +
     content.replaceAll(
       "/assert/image",
-      "https://cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert@latest/image",
+      "//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert@latest/image",
     ),
   )
 }
