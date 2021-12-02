@@ -75,7 +75,7 @@ const emit = async (filename: string, content: string) => {
 }
 
 await Deno.writeTextFile(target_dir + "robots.txt", robots)
-// await Deno.mkdir(target_dir + "ldtools")
+await Deno.mkdir(target_dir + "ldtools")
 
 await emit("index.html", await html("index.html"))
 await emit("ldtools/index.html", await html("ldtools/index.html"))

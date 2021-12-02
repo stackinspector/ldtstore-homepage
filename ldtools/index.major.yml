@@ -5,9 +5,10 @@ left:
     name: rlwj
     title: 日理万稽
   - tile: l2
-    font: h2
+    font: h3
     action: side
-    name: about
+    name: ldtools-about
+    icon: about
     title: 站点说明、赞助
 middle:
   - title: 工具集合
@@ -30,7 +31,8 @@ middle:
     - tile: s1
       font: h4
       action: side
-      name: other
+      name: other-collection
+      icon: other
       title: 其他工具集合
   - title: 站点链接
     content:
@@ -38,7 +40,7 @@ middle:
       font: h3
       action: side
       name: itellyou
-      title: MSDN itellyou
+      title: ITELLYOU（原版镜像）
     - tile: s1
       font: h3
       action: side
@@ -54,7 +56,8 @@ middle:
     - tile: s2
       font: h4
       action: side
-      name: other
+      name: other-tool
+      icon: other
       title: 其他工具
     - tile: s2
       font: h4

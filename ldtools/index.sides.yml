@@ -8,10 +8,12 @@
       <br>
       <a class="link" href="/r/homepage-github">stackinspector/ldtstore-homepage</a>
     </p>
+- name: ldtools-about
+  title: 站点说明、赞助
 - name: rlwj
   title: 日理万稽
   text: >
-    <p>目前日理万稽话题<b>建议使用旧版页面</b></p>
+    <p>目前对于日理万稽话题<b>建议使用旧版页面</b></p>
     <p>*进入<b>新版</b>话题前<br>请确认<b>当前浏览器已登录B站</b></p>
   tiles:
     - tile: m
@@ -43,6 +45,26 @@
         注意事项：
         <br>
         系统激活软件可能导致部分杀毒误报，详情见链接官网的说明。如有疑虑可以不予理会，其他工具不受影响。
+- name: kbtool
+  title: 详情
+- name: dismxx
+  title: 详情
+- name: other-collection
+  title: 其他工具集合
+- name: itellyou
+  title: ITELLYOU
+- name: cpu-rank
+  title: CPU天梯
+- name: gpu-rank
+  title: GPU天梯
+- name: other-tool
+  title: 其他工具
+- name: peripheral
+  title: 外设工具
+- name: burning
+  title: 稳定性测试
+- name: prepare
+  title: 装机工具
 - name: info
   title: 配置检测
   list:
@@ -60,6 +82,14 @@
         <br>
         收费软件30天试用，许可证分发方式可以查阅官网或者搜索，有条件请支持正版。
     - name: hwinfo
-      title: HWinfo
+      title: HWiNFO
     - name: speccy
-      title: SPECCY
+      title: Speccy
+- name: cpu
+  title: CPU工具
+- name: memory
+  title: 内存工具
+- name: gpu
+  title: 显卡工具
+- name: disk
+  title: 硬盘工具

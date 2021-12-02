@@ -50,7 +50,7 @@ const tile = (input: Tile): string => {
     `
 
     const href = (path: string) => `
-        <a class="tile-link" href="${dev ? "//ldtstore.com.cn" : ""}${path}${input.name}">
+        <a class="tile-link" href="${dev ? "//ldtstore.com.cn" : ""}${path}${input.name}/">
             <div class="tile ${input.tile}">
                 ${inner}
             </div>
