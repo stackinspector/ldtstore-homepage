@@ -49,6 +49,7 @@ a.tile-link {
     padding: 0;
     outline: none;
     text-decoration: none;
+    color: white;
 }
 
 /* background */
@@ -203,6 +204,7 @@ a.tile-link {
 
 .tile:hover {
     background-color: #fff2;
+    cursor: pointer;
 }
 
 .tile:active {
