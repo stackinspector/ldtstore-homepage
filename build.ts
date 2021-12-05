@@ -7,7 +7,8 @@ import { decodeText } from "https://cdn.jsdelivr.net/gh/stackinspector/DenoBase@
 import { insert } from "https://cdn.jsdelivr.net/gh/stackinspector/DenoBase@latest/insert-string.ts"
 import { codegen } from "./codegen.ts"
 
-const target_dir = Deno.args[0] as string
+const target_dir = Deno.args[0]!
+const release = Boolean(Deno.args[1])
 
 const bundle_options: Deno.EmitOptions = {
   bundle: "classic",
@@ -34,7 +35,21 @@ const copyright = `
   Commit: ${git}
 `
 
-const template = async (filename: string) => {
+const replace_redirect = (content: string) => content.replaceAll(
+    `<a target="_blank" class="link" href="/r/`,
+    `<a target="_blank" class="link" href="https://ldtstore.com.cn/r/`
+  ).replaceAll(
+    `<a target="_blank" class="tile-link" href="/r/`,
+    `<a target="_blank" class="tile-link" href="https://ldtstore.com.cn/r/`
+  ).replaceAll(
+    `<a target="_blank" class="link" href="/r2/`,
+    `<a target="_blank" class="link" href="https://ldtstore.com.cn/r2/`
+  ).replaceAll(
+    `<a target="_blank" class="tile-link" href="/r2/`,
+    `<a target="_blank" class="tile-link" href="https://ldtstore.com.cn/r2/`
+)
+
+const html = async (filename: string) => {
   const inserts: Map<string, string> = new Map()
   for await (const item of Deno.readDir("./fragment")) {
     if (!item.isFile) continue
@@ -43,20 +58,19 @@ const template = async (filename: string) => {
   const { major, sides } = codegen(filename)
   inserts.set(`<!--{{major}}-->`, major)
   inserts.set(`<!--{{sides}}-->`, sides)
-  return insert(await Deno.readTextFile(filename), inserts)
+  const templated = insert(await Deno.readTextFile(filename), inserts)
+  const content = templated.replaceAll(
+    `<script src="/main.js"></script>`,
+    `<script src="/main-${git}.js"></script>`
+  ).replaceAll(
+    `<link rel="stylesheet" href="/style.css">`,
+    `<link rel="stylesheet" href="/style-${git}.css">`
+  ).replaceAll(
+    `<a `,
+    `<a target="_blank" `
+  )
+  return minify("html", release ? content : replace_redirect(content))
 }
-
-const html = async (filename: string) => minify("html", (await template(filename)).replaceAll(
-  `<script src="/main.js"></script>`,
-  `<script src="/main-${git}.js"></script>`
-).replaceAll(
-  `<link rel="stylesheet" href="/style.css">`,
-  `<link rel="stylesheet" href="/style-${git}.css">`
-)).replaceAll(
-  `<a `,
-  `<a target="_blank" `
-)
-
 const css = async (filename: string) => minify("css", await Deno.readTextFile(filename))
 
 const js_inner = async (filename: string) => (await Deno.emit(filename, bundle_options)).files["deno:///bundle.js"]

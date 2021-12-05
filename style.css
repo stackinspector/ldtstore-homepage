@@ -1,9 +1,5 @@
 /* basic */
 
-::-webkit-scrollbar {
-    display: none;
-}
-
 body {
     background-color: black;
     position: relative;
@@ -120,6 +116,11 @@ a.tile-link {
     width: auto;
     height: 610px;
     overflow: scroll;
+    scrollbar-width: none;
+}
+
+#content::-webkit-scrollbar {
+    display: none;
 }
 
 /* major */
@@ -385,6 +386,10 @@ a.tile-link {
     padding: 0.4em;
 }
 
+#side .text.small {
+    font-size: 1.3em;
+}
+
 #side hr {
     background-color: #aaaf;
     margin: 0.5em 0;
@@ -485,7 +490,7 @@ svg.icon-back {
     padding: 1.4em;
 }
 
-.list {
+#side .content {
     width: 100%;
     height: calc(100% - 7em);
     overflow: auto;

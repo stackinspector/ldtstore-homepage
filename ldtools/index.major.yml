@@ -73,7 +73,7 @@ middle:
       font: h4
       action: side
       name: prepare
-      title: 装机工具
+      title: 系统准备
     - tile: m2
       font: h4
       action: side
