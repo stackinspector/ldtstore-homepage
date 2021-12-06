@@ -291,8 +291,8 @@
       website: 4
       description: >
         常见的“SSD跑分三件套”1号。可较为直观的测试固态性能。
-    - name: cdi-cdm
-      title: CrystalDiskInfo & CrystalDiskMark 
+    - name: cdm
+      title: CrystalDiskMark 
       website: 1
       description: >
         常见的“SSD跑分三件套”2号。测试结果不是非常直观。
@@ -303,6 +303,11 @@
         常见的“SSD跑分三件套”3号。可测试固态缓外性能。
       notice: >
         这是收费软件，提供30天的试用期。官方的试用下载需要邮件。
+    - name: cdi
+      title: CrystalDiskInfo
+      website: 1
+      description: >
+        硬盘信息检测软件。
     - name: hdtune
       title: HDTune
       website: 1

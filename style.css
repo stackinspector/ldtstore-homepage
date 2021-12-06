@@ -499,7 +499,8 @@ svg.icon-back {
 
 .item {
     width: 100%;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     margin: 1em 0;
 
     -moz-user-select: none;
