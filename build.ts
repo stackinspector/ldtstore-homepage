@@ -10,6 +10,8 @@ import { codegen } from "./codegen.ts"
 const target_dir = Deno.args[0]!
 const release = Boolean(Deno.args[1])
 
+const TOOL_DELIVERY_LDT = "tool-delivery-ldt-1307736292.file.myqcloud.com"
+
 const bundle_options: Deno.EmitOptions = {
   bundle: "classic",
   compilerOptions: {
@@ -68,6 +70,9 @@ const html = async (filename: string) => {
   ).replaceAll(
     `<a `,
     `<a target="_blank" `
+  ).replaceAll(
+    "{{TOOL_DELIVERY_LDT}}",
+    TOOL_DELIVERY_LDT
   )
   return minify("html", release ? content : replace_redirect(content))
 }
@@ -89,7 +94,7 @@ const emit = async (filename: string, content: string) => {
 }
 
 await Deno.writeTextFile(target_dir + "robots.txt", robots)
-await Deno.mkdir(target_dir + "ldtools")
+if (release) await Deno.mkdir(target_dir + "ldtools")
 
 await emit("index.html", await html("index.html"))
 await emit("ldtools/index.html", await html("ldtools/index.html"))

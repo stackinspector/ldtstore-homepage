@@ -38,7 +38,7 @@ type Tool = {
     outer_icon?: string
     description?: string
     website?: number
-    mirror?: boolean
+    mirror?: "active" | "locked"
     custom?: ToolLink[]
     notice?: string
 }
@@ -175,9 +175,14 @@ const tool = (input: Tool, expand: boolean) => `
                 <p>
                     ${input.website === void 0 ? "" : tool_link({
                         title: { 1: "官方网站", 2: "首发链接", 3: "网页链接", 4: "<b>非官方</b>页面", 5: "官方网站（国内无法访问）" }[input.website]!,
-                        link: `/r2/${input.name}`, icon: "link"
+                        link: `/r2/${input.name}`,
+                        icon: "link",
                     })}
-                    ${input.mirror === void 0 ? "" : tool_link({ title: "镜像下载", link: "#", icon: "download" })}
+                    ${input.mirror === void 0 ? "" : tool_link({
+                        title: "镜像下载",
+                        link: `//{{TOOL_DELIVERY_LDT}}/${input.mirror}/${input.name}.zip`,
+                        icon: "download",
+                    })}
                     ${input.custom === void 0 ? "" : input.custom.map(tool_link).join("")}
                 </p>
                 ${input.notice === void 0 ? "" : `<p><b>注意事项</b><br>${input.notice}</p>`}
