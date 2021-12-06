@@ -503,11 +503,13 @@ svg.icon-back {
 }
 
 svg.icon-line {
-    width: 1.5em;
-    height: 1.5em;
-    padding: .75em;
+    width: 2em;
+    height: 2em;
+    padding: .6em;
     float: right;
     color: white;
+    transform: rotate(0deg);
+    transition: cubic-bezier(.6, 0, .4, 1) transform 0.5s;
 }
 
 .item .item-title {

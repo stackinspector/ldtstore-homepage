@@ -268,11 +268,14 @@ window.onresize = () => {
 const showDetail = (e: HTMLElement) => {
     // console.log(e);
     const content = e.getElementsByClassName("detail-container")[0] as HTMLElement;
+    const icon = e.getElementsByClassName("icon-line")[0] as HTMLElement;
     if (content.clientHeight !== 0) {
         content.style.height = 0 + "px";
+        icon.style.transform="rotate(0deg)"
     } else {
         const height = e.getElementsByClassName("detail")[0].clientHeight;
         content.style.height = height + "px";
+        icon.style.transform="rotate(90deg)"
     }
 };
 

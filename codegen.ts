@@ -146,6 +146,11 @@ const tool = (input: Tool, expand: boolean) => `
     <div class="item"${expand ? ` onclick="detail(this)"` : ""}>
         <img src="/assert/image/icon-tool/${input.name}.webp">
         <div class="item-title">${input.title}</div>
+        ${expand ? ` 
+        <svg class="icon-line">
+            <use xlink:href="#icon-expand-right"></use>
+        </svg>
+        ` : ""}
         ${expand ? `<div class="detail-container">` : ""}
             <div class="detail">
                 ${input.description === void 0 ? "" : `<p>${input.description}</p>`}
