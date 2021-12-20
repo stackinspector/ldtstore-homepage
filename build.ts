@@ -10,6 +10,8 @@ import { codegen } from "./codegen.ts"
 const target_dir = Deno.args[0]!
 const release = Boolean(Deno.args[1])
 
+// const LDTSTORE_ASSERT = "cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert@latest"
+const LDTSTORE_ASSERT = "ldtstore-assert-1307736292.file.myqcloud.com"
 const TOOL_DELIVERY_LDT = "tool-delivery-ldt-1307736292.file.myqcloud.com"
 
 const bundle_options: Deno.EmitOptions = {
@@ -88,7 +90,7 @@ const emit = async (filename: string, content: string) => {
     (filename.substring(filename.length - 5) === ".html" ? `<!--${copyright}-->\n\n` : `/*${copyright}*/\n\n`) +
     content.replaceAll(
       "/assert/image",
-      "//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert@latest/image",
+      `//${LDTSTORE_ASSERT}/image`,
     ),
   )
 }
