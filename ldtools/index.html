@@ -18,6 +18,9 @@
     <div id="header" onclick="side('about')">
         <img src="/assert/image/shared/laodi-64px.png">
         <span>LDTools</span><span class="light">&nbsp;-&nbsp;LaodiTeachTips</span>
+        <span id="search">
+            <svg><use href="#icon-search"></use></svg>
+        </span>
     </div>
 
     <!--{{major}}-->
@@ -26,6 +29,18 @@
 
     <!--{{footer.html}}-->
 
+    <template id="side-search">
+        <div class="title">
+            <input type="text" placeholder="搜索..." class="search">
+        </div> 
+        <svg class="icon-back">
+            <use href="#icon-arrow-left"></use>
+        </svg>
+        <hr>
+        <div class="content">
+            结果 放item在这里
+        </div>
+    </template>
     <!--{{sides}}-->
 
     <script>const PAGE_TYPE = "tool";</script>

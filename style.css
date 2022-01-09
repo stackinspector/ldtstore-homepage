@@ -66,9 +66,9 @@ a.tile-link {
 #header {
     position: fixed;
     top: 0px;
-    width: 100%;
+    width: calc(100% - 4em);
     /* text-align: center; */
-    padding: .8em 0 .8em 2em;
+    padding: .8em 2em;
     background-color: #000;
     color: white;
     z-index: 1;
@@ -77,11 +77,24 @@ a.tile-link {
 #header span {
     display: inline-block;
     font-size: 2em;
+    line-height:  2em;
     vertical-align: middle;
 }
 
 #header span.light {
     opacity: 0.5;
+}
+
+#search {
+    position: fixed;
+    right: 0;
+    padding: 0 1em;
+}
+
+#search svg {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
 }
 
 #header img {
@@ -370,7 +383,7 @@ a.tile-link {
     left: calc(50% + 33em);
     opacity: 0;
     transition: cubic-bezier(.6, 0, .4, 1) 0.5s;
-    transition-property: left, opacity;
+    transition-property: left, opacity; 
     pointer-events: none;
 }
 
@@ -378,6 +391,18 @@ a.tile-link {
     display: inline-block;
     font-size: 2em;
     margin: 0.4em;
+}
+
+#side .search {
+    display: inline-block;
+    font-size: 1em;
+    width: 11em;
+    pointer-events: all;
+    border-width: 0;
+    padding: 0;
+    outline: none;
+    background-color: transparent;
+    color:white;
 }
 
 #side .text {
@@ -433,6 +458,7 @@ a.tile-link {
 
     #header {
         padding: .4em 0 .4em 0;
+        width: 100%;
         text-align: center;
     }
 
@@ -440,10 +466,13 @@ a.tile-link {
     #header {
         font-size: 0.9em;
     }
+
+    #search {
+        padding: 0 .5em;
+    }
 }
 
 @media screen and (max-height: 800px) {
-
     #footer,
     #header {
         font-size: 0.9em;
@@ -455,15 +484,19 @@ a.tile-link {
         width: 20em;
         left: calc(50% + 13em);
     }
+
+    #side .search {
+        width: 6.5em;
+    }
+    
+    #header span.light {
+        display: none;
+    }
 }
 
 @media screen and (max-width: 420px) {
     #footer {
         font-size: 0.75em;
-    }
-
-    #header span.light {
-        display: none;
     }
 
     #header {
@@ -492,9 +525,22 @@ svg.icon-back {
 
 #side .content {
     width: 100%;
-    height: calc(100% - 7em);
+    max-height: calc(100% - 7em);
     overflow: auto;
     pointer-events: all;
+}
+
+::-webkit-scrollbar-track-piece{
+	background-color:transparent;
+}
+::-webkit-scrollbar{
+	width:10px;
+}
+::-webkit-scrollbar-thumb{
+	background-color:#fff4;
+}
+::-webkit-scrollbar-thumb:hover{
+	background-color:#9f9f9f;
 }
 
 .item {

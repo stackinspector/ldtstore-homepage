@@ -175,6 +175,8 @@ const sideSet = (id: string | null) => {
         SideState.lastid = null;
     }
 
+    let equal = SideState.id === id;
+
     if (!SideState.on) {
         //直接打开
         SideState.id = id;
@@ -182,7 +184,7 @@ const sideSet = (id: string | null) => {
         sideChange(SideState.id);
         searchFocus = id === "search" ? true : false; 
     } else {
-        if (SideState.id === id) {
+        if (equal) {
             //两次点击 关闭
             SideState.id = null;
             sideMove(false);
