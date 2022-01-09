@@ -34,7 +34,7 @@ const git = decodeText(
 ).replaceAll(`"`, "")
 
 const copyright = `
-  Copyright 2021 CarrotGeball & stackinspector. MIT Lincese.
+  Copyright (c) 2021-2022 CarrotGeball & stackinspector. MIT Lincese.
   Source code: https://github.com/stackinspector/ldtstore-homepage
   Commit: ${git}
 `

@@ -37,7 +37,7 @@ type Tool = {
     icon?: string
     outer_icon?: string
     description?: string
-    website?: number
+    website?: 1 | 2 | 3 | 4 | 5
     mirror?: "active" | "locked"
     custom?: ToolLink[]
     notice?: string
@@ -174,7 +174,7 @@ const tool = (input: Tool, expand: boolean) => `
                 ${input.description === void 0 ? "" : `<p>${input.description}</p>`}
                 <p>
                     ${input.website === void 0 ? "" : tool_link({
-                        title: { 1: "官方网站", 2: "首发链接", 3: "网页链接", 4: "<b>非官方</b>页面", 5: "官方网站（国内无法访问）" }[input.website]!,
+                        title: { 1: "官方网站", 2: "首发链接", 3: "网页链接", 4: "<b>非官方</b>页面", 5: "官方网站（国内无法访问）" }[input.website],
                         link: `/r2/${input.name}`,
                         icon: "link",
                     })}
@@ -192,9 +192,10 @@ const tool = (input: Tool, expand: boolean) => `
 `
 
 export const codegen = (filename: string) => {
-    const major = parseYaml(Deno.readTextFileSync(filename.replaceAll(".html", ".major.yml")))
+    const major_input = parseYaml(Deno.readTextFileSync(filename.replaceAll(".html", ".major.yml")))
+    const sides_input = parseYaml(Deno.readTextFileSync(filename.replaceAll(".html", ".sides.yml")))
     return {
-        major: filename.includes("ldtools") ? major_tool(major as TileGrids) : major_home(major as TileColumns),
-        sides: sides(parseYaml(Deno.readTextFileSync(filename.replaceAll(".html", ".sides.yml"))) as Side[])
+        major: filename.includes("ldtools") ? major_tool(major_input as TileGrids) : major_home(major_input as TileColumns),
+        sides: sides(sides_input as Side[]),
     }
 }

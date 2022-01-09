@@ -19,7 +19,13 @@ const copy = (text: string) => {
     navigator.clipboard.writeText(text);
 };
 
-let layoutMode = "pc";
+const enum LayoutMode {
+    PC,
+    Pad,
+    Phone,
+}
+
+let layoutMode = LayoutMode.PC;
 
 const SideState: {
     distance: number,
@@ -92,10 +98,10 @@ const sideMove = (enable: boolean) => {
 
         if (enable) {
             offset.style.left = -SideState.distance + "px";
-            side.style.left = `calc(50% + ${layoutMode === "pc" ? OFFSET : OFFSET_LIT}em - ${SideState.distance}px)`;
+            side.style.left = `calc(50% + ${layoutMode === LayoutMode.PC ? OFFSET : OFFSET_LIT}em - ${SideState.distance}px)`;
         } else {
             offset.style.left = "0";
-            side.style.left = `calc(50% + ${layoutMode === "pc" ? OFFSET : OFFSET_LIT}em)`;
+            side.style.left = `calc(50% + ${layoutMode === LayoutMode.PC ? OFFSET : OFFSET_LIT}em)`;
             SideState.id = null;
         }
     }
@@ -226,11 +232,11 @@ const recalculate = () => {
 
     // 判定平台，和css对应
     if (body.clientWidth > 800) {
-        layoutMode = "pc";
+        layoutMode = LayoutMode.PC;
     } else if (body.clientWidth > 500) {
-        layoutMode = "pad";
+        layoutMode = LayoutMode.Pad;
     } else {
-        layoutMode = "phone";
+        layoutMode = LayoutMode.Phone;
     }
 
     // 设置遮罩大小为窗口大小
@@ -240,12 +246,12 @@ const recalculate = () => {
     // 计算相对大小
     let scaleW: number;
     let scaleH: number;
-    if (layoutMode === "pc") {
+    if (layoutMode === LayoutMode.PC) {
         scaleW = body.clientWidth / 1056;
         scaleH = body.clientHeight / 900;
     } else {
         scaleH = body.clientHeight / 880;
-        if (layoutMode === "pad") {
+        if (layoutMode === LayoutMode.Pad) {
             scaleW = body.clientWidth / 600;
         } else {
             scaleW = body.clientWidth / 450;
@@ -273,7 +279,7 @@ const recalculate = () => {
             delta = body.clientWidth - side.clientWidth;
             SideState.distance = side.offsetLeft - delta / 2;
         } else {
-            if (layoutMode === "phone") {
+            if (layoutMode === LayoutMode.Phone) {
                 delta = body.clientWidth - side.clientWidth;
                 SideState.center = true;
                 SideState.distance = major.clientWidth + major.offsetLeft - delta / 2;
@@ -295,7 +301,7 @@ window.onresize = () => {
         SideState.id = null;
         sideClose();
     } else {
-        side.style.left = `calc(50% + ${layoutMode === "pc" ? OFFSET : OFFSET_LIT}em)`;
+        side.style.left = `calc(50% + ${layoutMode === LayoutMode.PC ? OFFSET : OFFSET_LIT}em)`;
     }
 };
 
