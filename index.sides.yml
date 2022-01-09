@@ -48,7 +48,7 @@
       action: r
       name: yjws-newtopic
       icon: topic
-      title: 新版话题*
+      title: 新版话题
     - tile: s
       font: h3
       action: r
@@ -75,7 +75,7 @@
       action: r
       name: icu-newtopic
       icon: topic
-      title: 新版话题*
+      title: 新版话题
     - tile: s
       font: h3
       action: r
