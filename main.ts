@@ -6,6 +6,7 @@ const content = document.getElementById("content")!;
 const offset = document.getElementById("offset")!;
 const major = document.getElementById("major")!;
 const side = document.getElementById("side")!;
+const search = document.getElementById("search")!;
 
 const OFFSET_LIT = 13;
 // TODO 这里的长度和major中的left一样 添加新的pagetype记得修改这里
@@ -36,8 +37,8 @@ const SideState: {
     changing: false,
 };
 
-//在手机端输入框弹出的时候锁定缩放计算 避免画面抖动
-let searchFocus:boolean = false;
+// 在手机端输入框弹出的时候锁定缩放计算 避免画面抖动
+let searchFocus = false;
 
 // 左滑返回
 let touchX = 0;
@@ -118,7 +119,7 @@ const sideChange = (id: string | null) => {
     major.style.visibility = "visible";
     side.style.visibility = "visible";
     if (SideState.center) {
-        //解决点标题major会闪回一次的问题
+        // 解决点标题major会闪回一次的问题
         if (enable) {
             major.style.opacity = "0";
         } else {
@@ -129,9 +130,9 @@ const sideChange = (id: string | null) => {
             }
         }
     }
-    
-    if(id === "search"){
-        console.log("focus");
+
+    if (id === "search") {
+        // console.log("focus");
         let input = side.getElementsByClassName("search")[0] as HTMLInputElement;
         input.focus();
     }
@@ -146,18 +147,17 @@ const sideClick = (id: string) => {
 };
 
 /**
- * 搜索栏点击
- * @param event 用来阻止冒泡
+ * 点击搜索栏
  */
-const searchClick = (event:MouseEvent) => {
-    event.stopPropagation();
-    sideSet('search');
+search.onclick = (e: MouseEvent) => {
+    // 用来阻止冒泡
+    e.stopPropagation();
+    sideSet("search");
 };
-
 
 /**
  * 设置侧边栏
- * @param id 要设置为的目标侧边栏id，null 关闭侧边栏
+ * @param id 要设置为的目标侧边栏id，null时关闭侧边栏
  */
 const sideSet = (id: string | null) => {
     if (id === null) {
@@ -176,23 +176,23 @@ const sideSet = (id: string | null) => {
     }
 
     if (!SideState.on) {
-        //直接打开
+        // 直接打开
         SideState.id = id;
         sideMove(true);
         sideChange(SideState.id);
-        searchFocus = id === "search" ? true : false; 
+        searchFocus = id === "search";
     } else {
         if (SideState.id === id) {
-            //两次点击 关闭
+            // 两次点击 关闭
             SideState.id = null;
             sideMove(false);
             sideChange(null);
-            searchFocus = false; 
+            searchFocus = false;
         } else {
-            //点击另一个 切换
+            // 点击另一个 切换
             SideState.id = id;
             sideChange(null);
-            searchFocus = id === "search" ? true : false; 
+            searchFocus = id === "search";
         }
     }
 };
@@ -220,7 +220,7 @@ side.addEventListener("transitionend", (e) => {
 });
 
 const recalculate = () => {
-    if(searchFocus){
+    if (searchFocus) {
         return;
     }
 
@@ -285,7 +285,7 @@ const recalculate = () => {
 };
 
 window.onresize = () => {
-    if(searchFocus){
+    if (searchFocus) {
         return;
     }
 
@@ -305,11 +305,11 @@ const showDetail = (e: HTMLElement) => {
     const icon = e.getElementsByClassName("icon-line")[0] as HTMLElement;
     if (content.clientHeight !== 0) {
         content.style.height = 0 + "px";
-        icon.style.transform="rotate(0deg)"
+        icon.style.transform = "rotate(0deg)";
     } else {
         const height = e.getElementsByClassName("detail")[0].clientHeight;
         content.style.height = height + "px";
-        icon.style.transform="rotate(90deg)"
+        icon.style.transform = "rotate(90deg)";
     }
 };
 
@@ -326,5 +326,3 @@ window.detail = showDetail;
 background.style.backgroundImage = `url('/assert/image/bg/${new Date().getDay()}.webp')`;
 
 recalculate();
-
-document.getElementById("search").onclick = searchClick;

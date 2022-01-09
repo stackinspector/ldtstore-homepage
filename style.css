@@ -77,7 +77,7 @@ a.tile-link {
 #header span {
     display: inline-block;
     font-size: 2em;
-    line-height:  2em;
+    line-height: 2em;
     vertical-align: middle;
 }
 
@@ -383,7 +383,7 @@ a.tile-link {
     left: calc(50% + 33em);
     opacity: 0;
     transition: cubic-bezier(.6, 0, .4, 1) 0.5s;
-    transition-property: left, opacity; 
+    transition-property: left, opacity;
     pointer-events: none;
 }
 
@@ -402,7 +402,7 @@ a.tile-link {
     padding: 0;
     outline: none;
     background-color: transparent;
-    color:white;
+    color: white;
 }
 
 #side .text {
@@ -488,7 +488,7 @@ a.tile-link {
     #side .search {
         width: 6.5em;
     }
-    
+
     #header span.light {
         display: none;
     }
@@ -530,17 +530,20 @@ svg.icon-back {
     pointer-events: all;
 }
 
-::-webkit-scrollbar-track-piece{
-	background-color:transparent;
+::-webkit-scrollbar-track-piece {
+    background-color: transparent;
 }
-::-webkit-scrollbar{
-	width:10px;
+
+::-webkit-scrollbar {
+    width: 10px;
 }
-::-webkit-scrollbar-thumb{
-	background-color:#fff4;
+
+::-webkit-scrollbar-thumb {
+    background-color: #fff4;
 }
-::-webkit-scrollbar-thumb:hover{
-	background-color:#9f9f9f;
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #9f9f9f;
 }
 
 .item {
