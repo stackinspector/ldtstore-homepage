@@ -6,7 +6,6 @@ const content = document.getElementById("content")!;
 const offset = document.getElementById("offset")!;
 const major = document.getElementById("major")!;
 const side = document.getElementById("side")!;
-const search = document.getElementById("search")!;
 
 const OFFSET_LIT = 13;
 // TODO 这里的长度和major中的left一样 添加新的pagetype记得修改这里
@@ -152,14 +151,18 @@ const sideClick = (id: string) => {
     sideSet(id);
 };
 
-/**
- * 点击搜索栏
- */
-search.onclick = (e: MouseEvent) => {
-    // 用来阻止冒泡
-    e.stopPropagation();
-    sideSet("search");
-};
+if (PAGE_TYPE === "tool") {
+    const search = document.getElementById("search")!;
+
+    /**
+     * 点击搜索栏
+     */
+    search.onclick = (e: MouseEvent) => {
+        // 用来阻止冒泡
+        e.stopPropagation();
+        sideSet("search");
+    };
+}
 
 /**
  * 设置侧边栏
