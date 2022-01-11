@@ -52,15 +52,15 @@
     - tile: s
       font: h3
       action: r
-      name: yjws-spec-21
+      name: yjws-spec-31
       icon: spec
-      title: 管理规范
+      title: 话题规范
     - tile: m
       font: h3
       action: r
-      name: yjws-guide-21
+      name: yjws-vspec-1
       icon: spec
-      title: 投稿指南
+      title: 投稿规范
 - name: icu
   title: 装机ICU
   tiles:
