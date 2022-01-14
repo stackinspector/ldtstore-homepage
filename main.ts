@@ -96,7 +96,7 @@ const sideMove = (enable: boolean) => {
         SideState.changing = true;
 
         if (enable) {
-            offset.style.left = -SideState.distance + "px";
+            offset.style.left = `${-SideState.distance}px`;
             side.style.left = `calc(50% + ${layoutMode === LayoutMode.PC ? OFFSET : OFFSET_LIT}em - ${SideState.distance}px)`;
         } else {
             offset.style.left = "0";
@@ -116,7 +116,7 @@ const sideChange = (id: string | null) => {
         while (side.firstChild) {
             side.removeChild(side.lastChild!);
         }
-        side.appendChild((document.getElementById("side-" + id) as HTMLTemplateElement).content.cloneNode(true));
+        side.appendChild((document.getElementById(`side-${id}`) as HTMLTemplateElement).content.cloneNode(true));
     }
     side.style.opacity = enable ? "1" : "0";
 
@@ -243,8 +243,8 @@ const recalculate = () => {
     }
 
     // 设置遮罩大小为窗口大小
-    content.style.width = body.clientWidth + "px";
-    content.style.height = body.clientHeight + "px";
+    content.style.width = `${body.clientWidth}px`;
+    content.style.height = `${body.clientHeight}px`;
 
     // 计算相对大小
     let scaleW: number;
@@ -260,7 +260,7 @@ const recalculate = () => {
             scaleW = body.clientWidth / 450;
         }
     }
-    major.style.fontSize = side.style.fontSize = Math.min(scaleH, scaleW) + "em";
+    major.style.fontSize = side.style.fontSize = `${Math.min(scaleH, scaleW)}em`;
 
     // 垂直方向：计算major的间距
     let delta = body.clientHeight - major.clientHeight;
@@ -313,11 +313,11 @@ const showDetail = (e: HTMLElement) => {
     const content = e.getElementsByClassName("detail-container")[0] as HTMLElement;
     const icon = e.getElementsByClassName("icon-line")[0] as HTMLElement;
     if (content.clientHeight !== 0) {
-        content.style.height = 0 + "px";
+        content.style.height = "0px";
         icon.style.transform = "rotate(0deg)";
     } else {
         const height = e.getElementsByClassName("detail")[0].clientHeight;
-        content.style.height = height + "px";
+        content.style.height = `${height}"px`;
         icon.style.transform = "rotate(90deg)";
     }
 };
