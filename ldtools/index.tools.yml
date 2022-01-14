@@ -1,5 +1,4 @@
-- name: tbtool
-  list:
+- list:
     - name: tbtool
       title: 图吧工具箱
       website: 1
@@ -7,8 +6,7 @@
         起源于图吧，由DIY爱好者创造并维护的工具箱。集合了本站大部分工具，方便使用。
       notice: >
         内含系统激活工具，可能导致部分杀毒软件（尤其是Windows Defender）误报，详情见官网说明。如有疑虑可以不予理会或者不使用激活工具。其他工具不受影响。
-- name: kbtool
-  list:
+- list:
     - name: kbtool
       title: 卡吧工具箱
       website: 1
@@ -16,8 +14,7 @@
         起源于卡吧的工具箱，现名卡硬工具箱，集合了本站大部分工具，方便使用，但版本相对较老。因制作组多为用爱发电，已许久未更新。部分工具比图吧工具箱更加全面。
       notice: >
         内含系统激活工具，可能导致部分杀毒软件（尤其是Windows Defender）误报，详情见官网说明。如有疑虑可以不予理会或者不使用激活工具。其他工具不受影响。
-- name: dismxx
-  list:
+- list:
     - name: dismxx
       title: Dism++
       website: 1
@@ -46,8 +43,7 @@
       website: 3
       description: >
         Guru3D网站的工具下载页面。提供了不少有用的驱动程序及实用工具的下载。
-- name: itellyou
-  list:
+- list:
     - name: itellyou
       title: ITELLYOU
       outer_icon: itellyou

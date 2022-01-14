@@ -317,7 +317,7 @@ const showDetail = (e: HTMLElement) => {
         icon.style.transform = "rotate(0deg)";
     } else {
         const height = e.getElementsByClassName("detail")[0].clientHeight;
-        content.style.height = `${height}"px`;
+        content.style.height = `${height}px`;
         icon.style.transform = "rotate(90deg)";
     }
 };
