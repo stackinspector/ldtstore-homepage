@@ -205,13 +205,6 @@ a.tile-link {
     margin-top: 0;
 }
 
-.tile-grid-middle hr {
-    background-color: transparent;
-    border-width: 0;
-    margin: 0em 0em;
-    height: 0;
-}
-
 /* tile */
 
 .tile:hover {

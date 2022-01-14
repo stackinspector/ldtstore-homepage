@@ -99,10 +99,8 @@ const tile_grids = (input: TileGrids) => {
         </div>
         <div class="tile-grid-middle">
             <div class="title top">${first.title}</div>
-            <hr>
             ${first.content.map(tile).join("")}
             <div class="title">${second.title}</div>
-            <hr>
             ${second.content.map(tile).join("")}
             <div class="title">${third.title}</div>
         </div>
