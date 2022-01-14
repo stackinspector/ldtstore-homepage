@@ -3,6 +3,8 @@ import { parse as parseYaml } from "https://deno.land/std@0.102.0/encoding/yaml.
 
 type PageType = "home" | "tool"
 
+type InputType = "major" | "sides" | "tools"
+
 type TileColumns = Tile[][]
 
 type TileGrids = {
@@ -86,7 +88,7 @@ const tile = (input: Tile): string => {
     }
 }
 
-const tile_columns = (input: TileColumns) => input.map(input => `
+const tile_columns = (input: TileColumns) => input.map((input) => `
     <div class="tile-column">
         ${input.map(tile).join("")}
     </div>
@@ -183,10 +185,8 @@ const tool = (input: Tool) => `
     </div>
 `
 
-type InputTypes = "major" | "sides" | "tools"
-
 export const codegen = (filename: string) => {
-    const load = (type: InputTypes) => parseYaml(Deno.readTextFileSync(filename.replaceAll(".html", `.${type}.yml`)))
+    const load = (type: InputType) => parseYaml(Deno.readTextFileSync(filename.replaceAll(".html", `.${type}.yml`)))
 
     if (!filename.includes("ldtools")) {
         return {

@@ -121,8 +121,7 @@ const sideChange = (id: string | null) => {
     side.style.opacity = enable ? "1" : "0";
 
     // 防止横向的在侧边栏展开的情况下还能被点到
-    major.style.visibility = "visible";
-    side.style.visibility = "visible";
+    major.style.visibility = side.style.visibility = "visible";
     if (SideState.center) {
         // 解决点标题major会闪回一次的问题
         if (enable) {
@@ -138,7 +137,7 @@ const sideChange = (id: string | null) => {
 
     if (id === "search") {
         // console.log("focus");
-        let input = side.getElementsByClassName("search")[0] as HTMLInputElement;
+        const input = side.getElementsByClassName("search")[0] as HTMLInputElement;
         input.focus();
     }
 };
