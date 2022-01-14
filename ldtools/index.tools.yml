@@ -1,0 +1,413 @@
+- name: tbtool
+  list:
+    - name: tbtool
+      title: 图吧工具箱
+      website: 1
+      description: >
+        起源于图吧，由DIY爱好者创造并维护的工具箱。集合了本站大部分工具，方便使用。
+      notice: >
+        内含系统激活工具，可能导致部分杀毒软件（尤其是Windows Defender）误报，详情见官网说明。如有疑虑可以不予理会或者不使用激活工具。其他工具不受影响。
+- name: kbtool
+  list:
+    - name: kbtool
+      title: 卡吧工具箱
+      website: 1
+      description: >
+        起源于卡吧的工具箱，现名卡硬工具箱，集合了本站大部分工具，方便使用，但版本相对较老。因制作组多为用爱发电，已许久未更新。部分工具比图吧工具箱更加全面。
+      notice: >
+        内含系统激活工具，可能导致部分杀毒软件（尤其是Windows Defender）误报，详情见官网说明。如有疑虑可以不予理会或者不使用激活工具。其他工具不受影响。
+- name: dismxx
+  list:
+    - name: dismxx
+      title: Dism++
+      website: 1
+      mirror: active
+      custom:
+        - title: GitHub release
+          link: /r2/ghr-dismxx
+          icon: link
+      description: >
+        优秀的Windows工具箱。集合了映像工具、系统清理、更新管理等功能，还集合了一些常用的个人习惯相关的系统设置。
+- name: other-collection
+  title: 其他工具集合
+  list:
+    - name: techpowerup
+      title: TechPowerUp下载页面
+      website: 3
+      description: >
+        TechPowerUp的工具下载页面。除了自家著名的GPU-Z下载，还提供了不少有用的工具下载链接。
+    - name: geeks3d
+      title: Geeks3D下载页面
+      website: 3
+      description: >
+        Geeks3D的工具下载页面。除了自家著名的FurMark下载，还提供了不少有用的工具下载链接。
+    - name: guru3d
+      title: Guru3D下载页面
+      website: 3
+      description: >
+        Guru3D网站的工具下载页面。提供了不少有用的驱动程序及实用工具的下载。
+- name: itellyou
+  list:
+    - name: itellyou
+      title: ITELLYOU
+      outer_icon: itellyou
+      custom:
+        - title: 新站
+          link: /r2/itellyou-next
+          icon: link
+        - title: 旧站
+          link: /r2/itellyou-old
+          icon: link
+      description: >
+        原版软件镜像提供网站，可下载Windows及其他常见操作系统的镜像。
+      notice: >
+        旧站以MSDN资源收集为主，基本停止更新，不包含Windows 10 2004及以后的Windows。
+        新站不仅包括最新的Windows，而且将收录范围扩展到了除了Windows之外的更多操作系统，同时还加入了BT链接和一些增值服务，建议使用。不过新站需要登录。
+        <br>检票的私货时间：<a class="link" href="/r2/p-itellyou-msdn">关于ITELLYOU与MSDN关系的科普</a>
+- name: cpu-rank
+  title: CPU天梯图
+  list:
+    - name: cpu-rank-qdy
+      outer_icon: cpu-rank
+      title: CPU天梯图 秋刀鱼半藏版本
+      website: 2
+      description: >
+        贴吧著名CPU天梯图。作者为秋刀鱼半藏。
+- name: gpu-rank
+  title: GPU天梯图
+  list:
+    - name: gpu-rank-qdy
+      outer_icon: gpu-rank
+      title: GPU天梯图 秋刀鱼半藏版本
+      website: 2
+      description: >
+        贴吧著名GPU天梯图。作者为秋刀鱼半藏。
+- name: info
+  title: 配置检测
+  list:
+    - name: tbinfo
+      title: 图拉丁硬件检测
+      website: 1
+      description: >
+        图吧工具箱衍生的硬件检测工具。完美的避开所有国产软件常见的弊端。
+    - name: aida64
+      title: AIDA64
+      website: 1
+      mirror: active
+      description: >
+        综合系统检测工具。以其全面的软硬件检测以及CPU烤机经常出现在各种测评以及排障中。
+      notice: >
+        这是收费软件，提供30天的试用期。
+    - name: hwinfo
+      title: HWiNFO
+      website: 1
+      description: >
+        综合硬件检测工具。基于全面收集系统传感器上报的信息，免费且全面。但其使用门槛比AIDA64更高。
+      notice: >
+        这个软件对个人使用免费。如需商业使用请前往官网查询。
+    - name: speccy
+      title: Speccy
+      website: 1
+      description: >
+        轻量级的硬件检测工具。
+      notice: >
+        这是收费软件，提供30天的试用期。
+- name: cpu
+  title: CPU工具
+  list:
+    - name: cpuz
+      title: CPU-Z
+      website: 1
+      description: >
+        最常用的CPU检测工具。除了显示CPU和平台参数信息之外，还内置了单核/多核跑分测试。
+    - name: cinebench
+      title: Cinebench
+      website: 1
+      custom:
+        - title: R20官网下载直链
+          link: /r2/d-cinebench-r20
+          icon: download
+        - title: R23官网下载直链
+          link: /r2/d-cinebench-r23
+          icon: download
+      description: >
+        基于Cinema4D引擎渲染对CPU进行性能测试的软件。<br>R23/R20/R15各自有各自的性能偏重特点，故评测及测试基本需要全部测试一遍，而测试超频稳定性的话仅使用R23即可。
+    - name: fritz-chess
+      title: Fritz Chess Benchmark
+      website: 4
+      mirror: locked
+      description: >
+        基于国际象棋步法预测对CPU进行性能测试的软件。常用于CPU性能与稳定性测试。
+    - name: superpi
+      title: SuperPi
+      website: 1
+      mirror: locked
+      description: >
+        基于计算圆周率的CPU单线程基准测试。常用于CPU性能与稳定性测试。
+    - name: wprime
+      title: wPrime
+      website: 1
+      mirror: locked
+      description: >
+        基于计算质数的CPU多线程基准测试。常用于CPU性能与稳定性测试。
+    - name: intel-xtu
+      title: Intel XTU
+      website: 1
+      description: >
+        Intel处理器官方超频调整工具。具体使用教程可在B站自行搜索。
+    - name: amd-ryzen-master
+      title: AMD Ryzen Master
+      website: 1
+      description: >
+        AMD处理器官方超频调整工具。具体使用教程可在B站自行搜索。
+    - name: throttle-stop
+      title: ThrottleStop
+      website: 1
+      description: >
+        轻量级的CPU频率与功率限制控制工具。现多用于移动平台功耗控制。
+    - name: hydra
+      title: HYDRA
+      website: 2
+      description: >
+        第三方开发的AMD处理器超频工具，还具有体质分查看等功能。具体使用教程可在B站自行搜索。
+      notice: >
+        这个软件的官方分发渠道可能需要赞助以查看下载链接。
+- name: memory
+  title: 内存工具
+  list:
+    - name: memtest
+      title: Memtest
+      website: 1
+      mirror: locked
+      description: >
+        常用内存稳定性测试软件。使用较为麻烦，建议下载下面的RunMemtestPro。
+    - name: rmtp
+      title: RunMemtestPro
+      website: 4
+      mirror: locked
+      description: >
+        可以自动运行多个Memtest并统计错误数量的辅助软件。
+    - name: tm5
+      title: TestMemory5
+      website: 4
+      mirror: locked
+      description: >
+        压力可高可低的内存稳定性测试。需要配置文件才能发挥实力。
+    - name: thaiphoon
+      title: ThaiPhoon
+      website: 5
+      mirror: locked
+      description: >
+        常用内存SPD检测/编辑工具，可查看颗粒型号。
+      notice: >
+        这个软件的基础功能免费，可能含有收费的附加功能，详见软件官网。
+- name: gpu
+  title: 显卡工具
+  list:
+    - name: gpuz
+      title: GPU-Z
+      website: 1
+      description: >
+        常用显卡信息检测工具。带有适配较广泛的检测功能。
+    - name: gpuinfo
+      title: GpuInfo
+      website: 1
+      mirror: locked
+      description: >
+        通过核心代号、显存位宽等信息识别假卡的工具。
+      notice: >
+        由于作者已停止更新，故只能识别9系列之前的显卡。不过对于识别假卡来说已经够用，大部分假卡都是9系列之前刷的。
+    - name: gpucaps
+      title: GPU Caps Viewer
+      website: 1
+      mirror: active
+      description: >
+        显卡检测工具。还可以进行简单的压力测试。
+    - name: ddu
+      title: Display Driver Uninstaller
+      website: 1
+      description: >
+        显卡驱动强力卸载工具。更换显卡及排除故障时使用，可避免因驱动残留导致的系统问题。
+    - name: msi-afterburner
+      title: MSI Afterburner（小飞机）
+      website: 1
+      description: >
+        微星开发的显卡超频工具。简单实用，覆盖监测功能，在测评中常见。
+    - name: nvidia-inspector
+      title: NVIDIA Inspector
+      website: 1
+      description: >
+        第三方开发的NVIDIA显卡检测与超频工具。目前已不常用。
+- name: disk
+  title: 硬盘工具
+  list:
+    - name: diskgen
+      title: DiskGenius
+      website: 1
+      description: >
+        老牌硬盘管理与分区操作软件，简单易用。
+      notice: >
+        这个软件的基础功能免费，可能含有收费的附加功能，详见软件官网。
+    - name: asssd
+      title: AS SSD Benchmark
+      website: 4
+      mirror: locked
+      description: >
+        常见的“SSD跑分三件套”1号。可较为直观的测试固态性能。
+    - name: cdm
+      title: CrystalDiskMark 
+      website: 1
+      description: >
+        常见的“SSD跑分三件套”2号。测试结果不是非常直观。
+    - name: atto
+      title: AttoDiskMark
+      website: 1
+      mirror: locked
+      description: >
+        常见的“SSD跑分三件套”3号。可测试固态缓外性能。
+      notice: >
+        这是收费软件，提供30天的试用期。官方的试用下载需要邮件。
+    - name: cdi
+      title: CrystalDiskInfo
+      website: 1
+      description: >
+        硬盘信息检测软件。
+    - name: hdtune
+      title: HDTune
+      website: 1
+      description: >
+        老牌硬盘检测工具。混合写入测试中常用。
+      notice: >
+        这是收费软件，提供15天的试用期。
+    - name: mydisktest
+      title: MyDiskTest
+      website: 2
+      description: >
+        U盘扩容检测软件。
+    - name: ssdz
+      title: SSD-Z
+      website: 1
+      description: >
+        “过气的”硬盘检测工具。
+    - name: llf
+      title: LLFTOOL
+      website: 1
+      description: >
+        硬盘低级格式化工具。
+      notice: >
+        这个软件可能会对不购买的用户限制擦除速度。
+    - name: h2testw
+      title: H2testw
+      website: 4
+      mirror: locked
+      description: >
+        硬盘容量测试工具。
+    - name: urwtest
+      title: urwtest
+      # website: 
+      mirror: locked
+      description: >
+        硬盘测试软件。提供容量测试，老化测试等功能。
+    - name: anvil
+      title: AnvilPro
+      website: 4
+      description: >
+        硬盘测试软件。
+- name: prepare
+  title: 系统安装工具
+  list:
+    - name: rufus
+      title: Rufus
+      website: 1
+      description: >
+        最好用的镜像写入工具之一。
+    - name: ventoy
+      title: Ventoy
+      website: 1
+      description: >
+        直接从镜像启动，支持多种格式，添加系统无需格式化。
+    - name: winnt-setup
+      title: WinNT Setup
+      # website: 
+      mirror: locked
+      description: >
+        方便的WIM/ESD解压安装工具。
+    - name: bootice
+      title: BOOTICE
+      # website: 
+      mirror: locked
+      description: >
+        引导修改工具。
+    - name: cmwtat
+      title: CMWTAT
+      website: 1
+      mirror: active
+      description: >
+        伪造升级残留激活Windows的开源工具。
+- name: burning
+  title: 稳定性测试
+  list:
+    - name: p95
+      title: PRIME95
+      website: 1
+      mirror: locked
+      description: >
+        利用AVX指令集，有时比AIDA64 FPU压力测试负载更高的CPU压力测试。
+    - name: furmark
+      title: FurMark（甜甜圈）
+      website: 1
+      description: >
+        经典的显卡压力测试软件。
+- name: peripheral
+  title: 外设工具
+  list:
+    - name: cru
+      title: CRU
+      website: 1
+      mirror: locked
+      description: >
+        不依赖显卡驱动的高级自定义分辨率工具。
+    - name: ufotest
+      title: UFO Test
+      website: 3
+      description: >
+        刷新率测试。可以同时测试屏幕刷新率真实性和拖影。
+    - name: monitorgamut
+      title: 显示器色域检测
+      # website: 
+      mirror: locked
+      custom:
+        - title: 图吧工具箱内置
+          action: side('tbtool')
+          icon: link
+      description: >
+        通过检测EDID信息获取显示器标称色域参数的软件。
+      notice:
+        读取的是显示器的标称值，结果仅供参考。
+    - name: keyboard-trigger
+      title: 键盘触发测试
+      website: 3
+      description: >
+        键盘触发测试。可测试接触不良，坏轴等。
+- name: other-tool
+  title: 其他工具
+  list:
+    - name: chipgenius
+      title: ChipGenius
+      website: 2
+      mirror: locked
+      description: >
+        一款能够识别部分USB设备主控芯片与设备路径的工具。
+      notice: >
+        这个软件的官方分发渠道可能需要首发地账号以查看下载链接。
+    - name: geekuninstaller
+      title: Geek Uninstaller
+      website: 1
+      description: >
+        轻量级的软件卸载、卸载残留删除工具。
+    - name: windirstat
+      title: WinDirStat
+      website: 1
+      mirror: locked
+      description: >
+        目录大小可视化工具。常用于整理文件。
