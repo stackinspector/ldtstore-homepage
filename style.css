@@ -388,7 +388,7 @@ a.tile-link {
     margin: .4em .2em;
 }
 
-#side .search {
+#keyword {
     display: inline-block;
     font-size: 1em;
     width: 11em;
@@ -481,7 +481,7 @@ a.tile-link {
         left: calc(50% + 13em);
     }
 
-    #side .search {
+    #keyword {
         width: 6.5em;
     }
 

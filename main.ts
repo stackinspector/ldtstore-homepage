@@ -10,6 +10,7 @@ const major = document.getElementById("major")!;
 const side = document.getElementById("side")!;
 const search = document.getElementById("search");
 const tools_index = document.getElementById("tools_index")?.innerText;
+const tools_all = document.getElementById("tools_all")?.innerText;
 
 const OFFSET_LIT = 13;
 // TODO 这里的长度和major中的left一样 添加新的pagetype记得修改这里
@@ -136,6 +137,23 @@ const renderSide = (id: string) => {
     }
 };
 
+const renderSearch = (keywordText: string) => {
+    const all = JSON.parse(tools_all!) as Record<string, string>;
+    const content = document.getElementById("search-content");
+    while (content.firstChild) {
+        content.removeChild(content.lastChild!);
+    }
+    for (const tool of Object.keys(all)) {
+        if (tool.toLowerCase().includes(keywordText.toLowerCase())) {
+            // console.log(`OK at ${keywordText}`)
+            content.appendChild(cloneTemplate(`tool-${all[tool]}`));
+            // showDetail(side.getElementsByClassName("item")[0] as HTMLElement);
+            // return;
+        }
+    }
+    // console.log(`NO at ${keywordText}`)
+}
+
 /**
  * 侧边栏内容设置、透明度修改
  * @param id 要设置为的目标侧边栏id
@@ -164,8 +182,11 @@ const sideChange = (id: string | null) => {
 
     if (id === "search") {
         // console.log("focus");
-        const input = side.getElementsByClassName("search")[0] as HTMLInputElement;
-        input.focus();
+        const keyword = document.getElementById("keyword") as HTMLInputElement;
+        // keyword.focus();
+        keyword.addEventListener("keyup", () => {
+            renderSearch(keyword.value);
+        });
     }
 };
 

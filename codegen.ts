@@ -157,14 +157,16 @@ const tool_side = (input: ToolGroup) => `
 
 const gen_tool_group = (groups: ToolGroup[]) => {
     const fragments = []
-    const indexs: Map<string, ToolIndexItemType> = new Map()
+    const index: Map<string, ToolIndexItemType> = new Map()
+    const all: Map<string, string> = new Map()
     for (const group of groups) {
         const list = []
         for (const tool of group.list) {
             list.push(tool.name)
+            all.set(tool.title, tool.name)
             fragments.push(gen_tool(tool))
         }
-        indexs.set(
+        index.set(
             ((group.name === void 0 && group.list.length === 1) ? group.list[0].name : group.name!),
             {
                 title: ((group.title === void 0 && group.list.length === 1) ? group.list[0].title : group.title!),
@@ -174,7 +176,8 @@ const gen_tool_group = (groups: ToolGroup[]) => {
     }
     return {
         fragments,
-        index: Object.fromEntries(indexs),
+        index: Object.fromEntries(index),
+        all: Object.fromEntries(all),
     }
 }
 
@@ -232,7 +235,7 @@ export const codegen = (filename: string): Map<string, string> => {
             (load("sides") as Side[]).map(gen_side).join(""),
         )
     } else {
-        const { fragments, index } = gen_tool_group(load("tools") as ToolGroup[])
+        const { fragments, index, all } = gen_tool_group(load("tools") as ToolGroup[])
         dynamic_inserts.set(
             "<!--{{major}}-->",
             gen_major(gen_tile_grids(load("major") as TileGrids), "tool"),
@@ -243,7 +246,8 @@ export const codegen = (filename: string): Map<string, string> => {
         )
         dynamic_inserts.set(
             "<!--{{tools_index}}-->",
-            `<script type="application/json" id="tools_index">${JSON.stringify(index)}</script>`
+            `<script type="application/json" id="tools_index">${JSON.stringify(index)}</script>
+            <script type="application/json" id="tools_all">${JSON.stringify(all)}</script>`
         )
     }
 
