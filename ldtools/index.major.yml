@@ -15,22 +15,22 @@ middle:
     content:
     - tile: s1
       font: h3
-      action: side
+      action: tool
       name: tbtool
       title: 图吧工具箱
     - tile: s1
       font: h3
-      action: side
+      action: tool
       name: kbtool
       title: 卡吧工具箱
     - tile: s1
       font: h3
-      action: side
+      action: tool
       name: dismxx
       title: Dism++
     - tile: s1
       font: h4
-      action: side
+      action: tool
       name: other-collection
       icon: other
       title: 其他工具集合
@@ -38,64 +38,64 @@ middle:
     content:
     - tile: m1
       font: h3
-      action: side
+      action: tool
       name: itellyou
       title: ITELLYOU（原版镜像）
     - tile: s1
       font: h3
-      action: side
+      action: tool
       name: cpu-rank
       title: CPU天梯
     - tile: s1
       font: h3
-      action: side
+      action: tool
       name: gpu-rank
       title: GPU天梯
   - title: 工具下载
     content:
     - tile: s2
       font: h4
-      action: side
+      action: tool
       name: other-tool
       icon: other
       title: 其他工具
     - tile: s2
       font: h4
-      action: side
+      action: tool
       name: peripheral
       title: 外设工具
     - tile: s2
       font: h4
-      action: side
+      action: tool
       name: burning
       title: 稳定性测试
     - tile: s2
       font: h4
-      action: side
+      action: tool
       name: prepare
       title: 系统安装
     - tile: m2
       font: h4
-      action: side
+      action: tool
       name: info
       title: 配置检测
     - tile: s2
       font: h4
-      action: side
+      action: tool
       name: cpu
       title: CPU工具
     - tile: s2
       font: h4
-      action: side
+      action: tool
       name: memory
       title: 内存工具
     - tile: s2
       font: h4
-      action: side
+      action: tool
       name: gpu
       title: 显卡工具
     - tile: s2
       font: h4
-      action: side
+      action: tool
       name: disk
       title: 硬盘工具

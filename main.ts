@@ -324,11 +324,13 @@ const showDetail = (e: HTMLElement) => {
 interface Window {
     copy?: typeof copy;
     side?: typeof sideClick;
+    tool?: typeof sideClick;
     detail?: typeof showDetail;
 }
 
 window.copy = copy;
 window.side = sideClick;
+window.tool = sideClick;
 window.detail = showDetail;
 
 background.style.backgroundImage = `url('/assert/image/bg/${new Date().getDay()}.webp')`;

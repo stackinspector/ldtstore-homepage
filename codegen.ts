@@ -73,14 +73,15 @@ const tile = (input: Tile): string => {
         </a>
     `
 
-    const side = () => `
-        <div class="tile ${input.tile}" onclick="side('${input.name}')">
+    const call = (func: string) => `
+        <div class="tile ${input.tile}" onclick="${func}('${input.name}')">
             ${inner}
         </div>
     `
 
     switch (input.action) {
-        case "side": return side()
+        case "side": return call("side")
+        case "tool": return call("tool")
         case "href": return href("/")
         case "r": return href("/r/")
         case "r2": return href("/r2/")
