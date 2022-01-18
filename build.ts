@@ -53,17 +53,17 @@ const replace_redirect = (content: string) => content.replaceAll(
     `<a target="_blank" class="tile-link" href="https://ldtstore.com.cn/r2/`
 )
 
+const static_inserts: Map<string, string> = new Map()
+for await (const item of Deno.readDir("./fragment")) {
+  if (!item.isFile) continue
+  static_inserts.set(`<!--{{${item.name}}}-->`, await Deno.readTextFile("./fragment/" + item.name))
+}
+
 const html = async (filename: string) => {
-  const inserts: Map<string, string> = new Map()
-  for await (const item of Deno.readDir("./fragment")) {
-    if (!item.isFile) continue
-    inserts.set(`<!--{{${item.name}}}-->`, await Deno.readTextFile("./fragment/" + item.name))
-  }
-  const { major, sides } = codegen(filename)
-  inserts.set(`<!--{{major}}-->`, major)
-  inserts.set(`<!--{{sides}}-->`, sides)
-  const templated = insert(await Deno.readTextFile(filename), inserts)
-  const content = templated.replaceAll(
+  const source = await Deno.readTextFile(filename)
+  const static_templated = insert(source, static_inserts)
+  const dynamic_templated = insert(static_templated, codegen(filename))
+  const content = dynamic_templated.replaceAll(
     `<script src="/main.js"></script>`,
     `<script src="/main-${git}.js"></script>`
   ).replaceAll(
@@ -78,6 +78,7 @@ const html = async (filename: string) => {
   )
   return minify("html", release ? content : replace_redirect(content))
 }
+
 const css = async (filename: string) => minify("css", await Deno.readTextFile(filename))
 
 const js_inner = async (filename: string) => (await Deno.emit(filename, bundle_options)).files["deno:///bundle.js"]

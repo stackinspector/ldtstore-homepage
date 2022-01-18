@@ -45,12 +45,12 @@ middle:
       font: h3
       action: tool
       name: cpu-rank
-      title: CPU天梯
+      title: CPU天梯图
     - tile: s1
       font: h3
       action: tool
       name: gpu-rank
-      title: GPU天梯
+      title: GPU天梯图
   - title: 工具下载
     content:
     - tile: s2
@@ -73,7 +73,7 @@ middle:
       font: h4
       action: tool
       name: prepare
-      title: 系统安装
+      title: 系统安装 # 工具
     - tile: m2
       font: h4
       action: tool

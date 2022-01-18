@@ -1,3 +1,5 @@
+import type { ToolIndexItemType } from "./codegen.ts";
+
 declare const PAGE_TYPE: "home" | "tool";
 
 const body = document.documentElement;
@@ -6,6 +8,8 @@ const content = document.getElementById("content")!;
 const offset = document.getElementById("offset")!;
 const major = document.getElementById("major")!;
 const side = document.getElementById("side")!;
+const search = document.getElementById("search");
+const tools_index = document.getElementById("tools_index")?.innerText;
 
 const OFFSET_LIT = 13;
 // TODO 这里的长度和major中的left一样 添加新的pagetype记得修改这里
@@ -106,6 +110,32 @@ const sideMove = (enable: boolean) => {
     }
 };
 
+const cloneTemplate = (template: string) => {
+    return (document.getElementById(template) as HTMLTemplateElement).content.cloneNode(true);
+};
+
+const renderSide = (id: string) => {
+    while (side.firstChild) {
+        side.removeChild(side.lastChild!);
+    }
+    if (id.startsWith("tool-")) {
+        const name = id.substring(5);
+        const index = (JSON.parse(tools_index!) as Record<string, ToolIndexItemType>)[name];
+        side.appendChild(cloneTemplate("side-tools-base"));
+        const title = side.getElementsByClassName("title")[0] as HTMLElement;
+        title.innerText = index.title;
+        const content = side.getElementsByClassName("content")[0];
+        for (const tool of index.list) {
+            content.appendChild(cloneTemplate(`tool-${tool}`));
+        }
+        if (index.list.length === 1) {
+            showDetail(side.getElementsByClassName("item")[0] as HTMLElement);
+        }
+    } else {
+        side.appendChild(cloneTemplate(`side-${id}`));
+    }
+};
+
 /**
  * 侧边栏内容设置、透明度修改
  * @param id 要设置为的目标侧边栏id
@@ -113,10 +143,7 @@ const sideMove = (enable: boolean) => {
 const sideChange = (id: string | null) => {
     const enable = id !== null;
     if (enable) {
-        while (side.firstChild) {
-            side.removeChild(side.lastChild!);
-        }
-        side.appendChild((document.getElementById(`side-${id}`) as HTMLTemplateElement).content.cloneNode(true));
+        renderSide(id!);
     }
     side.style.opacity = enable ? "1" : "0";
 
@@ -150,13 +177,15 @@ const sideClick = (id: string) => {
     sideSet(id);
 };
 
-if (PAGE_TYPE === "tool") {
-    const search = document.getElementById("search")!;
+const toolSideClick = (id: string) => {
+    sideSet(`tool-${id}`);
+};
 
+if (PAGE_TYPE === "tool") {
     /**
      * 点击搜索栏
      */
-    search.onclick = (e: MouseEvent) => {
+    search!.onclick = (e: MouseEvent) => {
         // 用来阻止冒泡
         e.stopPropagation();
         sideSet("search");
@@ -176,12 +205,7 @@ const sideSet = (id: string | null) => {
         return;
     }
 
-    if (id.includes("second")) {
-        SideState.lastid = SideState.id;
-        // console.warn(id, SideState.id);
-    } else {
-        SideState.lastid = null;
-    }
+    SideState.lastid = null;
 
     if (!SideState.on) {
         // 直接打开
@@ -324,13 +348,13 @@ const showDetail = (e: HTMLElement) => {
 interface Window {
     copy?: typeof copy;
     side?: typeof sideClick;
-    tool?: typeof sideClick;
+    tool?: typeof toolSideClick;
     detail?: typeof showDetail;
 }
 
 window.copy = copy;
 window.side = sideClick;
-window.tool = sideClick;
+window.tool = toolSideClick;
 window.detail = showDetail;
 
 background.style.backgroundImage = `url('/assert/image/bg/${new Date().getDay()}.webp')`;
