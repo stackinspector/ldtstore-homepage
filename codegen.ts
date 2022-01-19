@@ -210,7 +210,7 @@ const gen_tool = (input: Tool) => `
                         title: o[1],
                         link: `/r2/${input.name}-${o[0]}`,
                         icon: "link",
-                    }))}
+                    })).join("")}
                     ${input.mirror === void 0 ? "" : gen_tool_link({
                         title: "镜像下载",
                         link: `//{{TOOL_DELIVERY_LDT}}/${input.mirror}/${input.name}.zip`,

@@ -60,8 +60,8 @@
         旧站以MSDN资源收集为主，基本停止更新，不包含Windows 10 2004及以后的Windows。
         新站不仅包括最新的Windows，而且将收录范围扩展到了除了Windows之外的更多操作系统，同时还加入了BT链接和一些增值服务，建议使用。不过新站需要登录。
         <br>检票的私货时间：<a class="link" href="/r2/p-itellyou-msdn">关于ITELLYOU与MSDN关系的科普</a>
-- name: cpu-rank
-  title: CPU天梯图
+- name: rank
+  title: 天梯图
   list:
     - name: cpu-rank-qdy
       outer_icon: cpu-rank
@@ -69,15 +69,68 @@
       website: 2
       description: >
         贴吧著名CPU天梯图。作者为秋刀鱼半藏。
-- name: gpu-rank
-  title: GPU天梯图
-  list:
     - name: gpu-rank-qdy
       outer_icon: gpu-rank
       title: GPU天梯图 秋刀鱼半藏版本
       website: 2
       description: >
         贴吧著名GPU天梯图。作者为秋刀鱼半藏。
+    - name: rank-expreview
+      title: 超能网天梯图
+      website: 1
+      description: >
+        超能网天梯图。详情做的很细致。
+    - name: rank-passmark
+      title: Passmark天梯图
+      websites:
+        cpu: CPU天梯图
+        gpu: GPU天梯图
+        ssd: SSD天梯图
+      description: >
+        带量化数据的天梯图，因为收录的型号丰富十分适合作为服务器处理器选择的参考。
+    - name: rank-techpowerup
+      title: TechPowerUp显卡资料库
+      icon: techpowerup
+      website: 1
+      description: >
+        食用方法：点击任何你感兴趣的型号，在Relative Performance一栏查看相对性能关系。同时收录了大量非公版的显卡尺寸参数等重要的信息，非常有用。
+    - name: rank-kkj
+      title: 快科技天梯图
+      website: 1
+      description: >
+        收录了类别较为丰富的天梯图，但是部分参考性不大。
+    - name: rank-zol
+      title: 中关村天梯图
+      website: 1
+      description: >
+        收录了类别较为丰富的天梯图，但是部分参考性不大。
+    - name: rank-socpk
+      title: 极客湾天梯图（手机SoC）
+      website: 1
+      description: >
+        著名的手机天梯图，制作精良。
+    - name: rank-p-pccomp
+      title: PC综合天梯图
+      website: 2
+      description: >
+        比较全面的天梯图，账号已注销，可能存在一些问题，请适度参考。
+    - name: rank-p-supergsg
+      title: Supergsg电源天梯
+      websites:
+        v1: 较旧版本
+        v2: 较新版本
+      description: >
+        著名的PC电源天梯图，停更已久。
+    - name: rank-fcp
+      title: FCP电源天梯
+      website: 1
+      description: >
+        FCPOWERUP上的电源天梯，仅包含了测试过的电源，内容靠谱。
+    - name: rank-p-mem
+      title: 内存天梯
+      website: 2
+      description: >
+        简单的内存颗粒天梯图，重在科普。
 - name: info
   title: 配置检测
   list:
@@ -146,6 +199,18 @@
       mirror: locked
       description: >
         基于计算质数的CPU多线程基准测试。常用于CPU性能与稳定性测试。
+    - name: baiyan
+      title: 白眼
+      website: 1
+      description: >
+        轻量级CPU跑分、排名，扩容盘检测软件。
+    - name: blender-test
+      title: Blender Open Data
+      website: 1
+      description: >
+        基于Blender渲染的测试软件。
+      notice: >
+        仅为下载器，下载速度受网络影响，请确定自己的使用需求后再去下载。
     - name: intel-xtu
       title: Intel XTU
       website: 1
@@ -161,6 +226,11 @@
       website: 1
       description: >
         轻量级的CPU频率与功率限制控制工具。现多用于移动平台功耗控制。
+    - name: ctr
+      title: ClockTuner for Ryzen
+      website: 1
+      description: >
+        一款针对AMD Zen处理器自动超频调试，并给出高能效比的设置建议的软件。
     - name: hydra
       title: HYDRA
       website: 2
@@ -186,9 +256,16 @@
     - name: tm5
       title: TestMemory5
       website: 4
+      websites:
+        offical: 1
       mirror: locked
       description: >
         压力可高可低的内存稳定性测试。需要配置文件才能发挥实力。
+    - name: zentimings
+      title: Zentimings
+      website: 1
+      description: >
+        AMD平台独占，提供内存时序等的实时监测，内存超频便利性工具。
     - name: thaiphoon
       title: ThaiPhoon
       website: 5
@@ -219,6 +296,13 @@
       mirror: active
       description: >
         显卡检测工具。还可以进行简单的压力测试。
+    - name: easymats
+      title: EasyMats显存检测
+      website: 2
+      description: >
+        显存检测工具，适合检测一些特殊来路的显卡的真伪。
+      notice: >
+        一键安装脚本需要额外的U盘等设备等用来安装系统，请确定自己的使用需求后再去下载。
     - name: ddu
       title: Display Driver Uninstaller
       website: 1
@@ -251,7 +335,7 @@
       description: >
         常见的“SSD跑分三件套”1号。可较为直观的测试固态性能。
     - name: cdm
-      title: CrystalDiskMark 
+      title: CrystalDiskMark
       website: 1
       description: >
         常见的“SSD跑分三件套”2号。测试结果不是非常直观。
@@ -280,6 +364,18 @@
       website: 2
       description: >
         U盘扩容检测软件。
+    - name: partassist
+      title: 分区助手
+      website: 1
+      description: >
+        国产免费无广告的优秀分区软件。
+      notice: >
+        收费服务为技术支持，自用免费。官方下载的版本需关注公众号才能使用。
+    - name: victoria
+      title: Victoria
+      website: 1
+      description: >
+        硬盘扫描，坏道坏块检测软件。
     - name: ssdz
       title: SSD-Z
       website: 1
@@ -328,6 +424,13 @@
       mirror: locked
       description: >
         方便的WIM/ESD解压安装工具。
+    - name: wmct
+      title: Windows媒体创建工具
+      websites:
+        10: 适用于Win10
+        11: 适用于Win11
+      description: >
+        官方的镜像生成工具，(MSDN) ITELLYOU镜像源之外最方便的系统获取方式。
     - name: bootice
       title: BOOTICE
       # website: 
@@ -340,6 +443,13 @@
       mirror: active
       description: >
         伪造升级残留激活Windows的开源工具。
+    - name: vcrtpack
+      title: VC运行库打包
+      website: 1
+      description: >
+        VC运行库打包，解决Windows中大多数缺少运行库（丢失DLL）的情况。
+      notice: >
+        脚本右键管理员运行更方便。
 - name: burning
   title: 稳定性测试
   list:
@@ -378,13 +488,18 @@
           icon: link
       description: >
         通过检测EDID信息获取显示器标称色域参数的软件。
-      notice:
+      notice: >
         读取的是显示器的标称值，结果仅供参考。
     - name: keyboard-trigger
       title: 键盘触发测试
       website: 3
       description: >
         键盘触发测试。可测试接触不良，坏轴等。
+    - name: mouse-test
+      title: 鼠标检测工具
+      mirror: locked
+      description: >
+        鼠标测试。可测试按键、滚轮、回报率。
 - name: other-tool
   title: 其他工具
   list:
