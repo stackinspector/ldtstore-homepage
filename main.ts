@@ -152,7 +152,7 @@ const renderSearch = (keywordText: string) => {
         }
     }
     // console.log(`NO at ${keywordText}`)
-}
+};
 
 /**
  * 侧边栏内容设置、透明度修改
@@ -378,6 +378,6 @@ window.side = sideClick;
 window.tool = toolSideClick;
 window.detail = showDetail;
 
-background.style.backgroundImage = `url('/assert/image/bg/${new Date().getDay()}.webp')`;
+background.style.backgroundImage = `url('/assert/image/bg/${Math.floor(Math.random() * 7)}.webp')`;
 
 recalculate();

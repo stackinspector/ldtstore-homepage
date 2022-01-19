@@ -41,6 +41,7 @@ type ToolGroup = {
 type Tool = {
     name: string
     title: string
+    keywords?: string[]
     icon?: string
     outer_icon?: string
     description?: string
