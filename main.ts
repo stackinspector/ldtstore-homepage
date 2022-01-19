@@ -2,13 +2,16 @@ import type { ToolIndexItemType } from "./codegen.ts";
 
 declare const PAGE_TYPE: "home" | "tool";
 
+// all
 const body = document.documentElement;
 const background = document.getElementById("background")!;
 const content = document.getElementById("content")!;
 const offset = document.getElementById("offset")!;
 const major = document.getElementById("major")!;
 const side = document.getElementById("side")!;
+// tool only
 const search = document.getElementById("search");
+const back = document.getElementById("back");
 const tools_index = document.getElementById("tools_index")?.innerText;
 const tools_all = document.getElementById("tools_all")?.innerText;
 
@@ -211,6 +214,12 @@ if (PAGE_TYPE === "tool") {
         // 用来阻止冒泡
         e.stopPropagation();
         sideSet("search");
+    };
+
+    back!.onclick = (e: MouseEvent) => {
+        // 用来阻止冒泡
+        e.stopPropagation();
+        location.href = "/";
     };
 }
 

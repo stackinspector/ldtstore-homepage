@@ -495,7 +495,7 @@
       mirror: locked
       custom:
         - title: 图吧工具箱内置
-          action: side('tbtool')
+          action: tool('tbtool')
           icon: link
       description: >
         通过检测EDID信息获取显示器标称色域参数的软件。

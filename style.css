@@ -85,13 +85,20 @@ a.tile-link {
     opacity: 0.5;
 }
 
-#search {
+#search, #back {
     position: fixed;
-    right: 0;
     padding: 0 1em;
 }
 
-#search svg {
+#search {
+    right: 0;
+}
+
+#back {
+    right: 2em;
+}
+
+#search svg, #back svg {
     width: 1em;
     height: 1em;
     vertical-align: middle;
@@ -463,7 +470,7 @@ a.tile-link {
         font-size: 0.9em;
     }
 
-    #search {
+    #search, #back {
         padding: 0 .5em;
     }
 }
