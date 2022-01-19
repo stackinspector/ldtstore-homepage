@@ -46,6 +46,7 @@
 - list:
     - name: itellyou
       title: ITELLYOU
+      # keywords: [msdn]
       outer_icon: itellyou
       custom:
         - title: 新站
@@ -101,11 +102,13 @@
         收录了类别较为丰富的天梯图，但是部分参考性不大。
     - name: rank-zol
       title: 中关村天梯图
+      # keywords: [zol]
       website: 1
       description: >
         收录了类别较为丰富的天梯图，但是部分参考性不大。
     - name: rank-socpk
       title: 极客湾天梯图（手机SoC）
+      # keywords: [socpk]
       website: 1
       description: >
         著名的手机天梯图，制作精良。
@@ -229,6 +232,7 @@
     - name: ctr
       title: ClockTuner for Ryzen
       website: 1
+      mirror: active
       description: >
         一款针对AMD Zen处理器自动超频调试，并给出高能效比的设置建议的软件。
     - name: hydra
@@ -259,11 +263,16 @@
       websites:
         offical: 1
       mirror: locked
+      custom:
+        - title: 配置文件
+          link: //{{TOOL_DELIVERY_LDT}}/locked/tm5-config.zip
+          icon: download
       description: >
         压力可高可低的内存稳定性测试。需要配置文件才能发挥实力。
     - name: zentimings
       title: Zentimings
       website: 1
+      mirror: locked
       description: >
         AMD平台独占，提供内存时序等的实时监测，内存超频便利性工具。
     - name: thaiphoon
@@ -374,6 +383,7 @@
     - name: victoria
       title: Victoria
       website: 1
+      mirror: locked
       description: >
         硬盘扫描，坏道坏块检测软件。
     - name: ssdz
@@ -446,6 +456,7 @@
     - name: vcrtpack
       title: VC运行库打包
       website: 1
+      mirror: locked
       description: >
         VC运行库打包，解决Windows中大多数缺少运行库（丢失DLL）的情况。
       notice: >
