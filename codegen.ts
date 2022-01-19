@@ -38,6 +38,8 @@ type ToolGroup = {
     list: Tool[]
 }
 
+type ToolLinkTitle = keyof typeof tool_website_type | string
+
 type Tool = {
     name: string
     title: string
@@ -45,14 +47,15 @@ type Tool = {
     icon?: string
     outer_icon?: string
     description?: string
-    website?: 1 | 2 | 3 | 4 | 5
+    website?: ToolLinkTitle
+    websites?: Record<string, ToolLinkTitle>
     mirror?: "active" | "locked"
     custom?: ToolLink[]
     notice?: string
 }
 
 type ToolLink = {
-    title: string
+    title: ToolLinkTitle
     link?: string
     action?: string
     icon: "link" | "download"
@@ -61,6 +64,14 @@ type ToolLink = {
 export type ToolIndexItemType = {
     title: string
     list: string[]
+}
+
+const tool_website_type = {
+    1: "官方网站",
+    2: "首发链接",
+    3: "网页链接",
+    4: "<b>非官方</b>页面",
+    5: "官方网站（国内无法访问）",
 }
 
 const gen_tile = (input: Tile): string => {
@@ -143,19 +154,6 @@ const gen_side = (input: Side) => `
     </template>
 `
 
-/*
-const tool_side = (input: ToolGroup) => `
-    <template id="side-${(input.name === void 0 && input.list.length === 1) ? input.list[0].name : input.name}">
-        <div class="title">${input.title === void 0 ? "详情" : input.title}</div>
-        <svg class="icon-back"><use href="#icon-arrow-left"></use></svg>
-        <hr>
-        <div class="content">
-            ${input.list?.map(tool).join("")}
-        </div>
-    </template>
-`
-*/
-
 const gen_tool_group = (groups: ToolGroup[]) => {
     const fragments = []
     const index: Map<string, ToolIndexItemType> = new Map()
@@ -187,7 +185,7 @@ const gen_tool_link = (input: ToolLink) => `
         <svg class="icon">
             <use href="#icon-${input.icon}"></use>
         </svg>
-        ${input.title}
+        ${(typeof input.title === "string") ? input.title : tool_website_type[input.title]}
     </a>
 `
 
@@ -204,10 +202,15 @@ const gen_tool = (input: Tool) => `
                 ${input.description === void 0 ? "" : `<p>${input.description}</p>`}
                 <p>
                     ${input.website === void 0 ? "" : gen_tool_link({
-                        title: { 1: "官方网站", 2: "首发链接", 3: "网页链接", 4: "<b>非官方</b>页面", 5: "官方网站（国内无法访问）" }[input.website],
+                        title: input.website,
                         link: `/r2/${input.name}`,
                         icon: "link",
                     })}
+                    ${input.websites === void 0 ? "" : Object.entries(input.websites).map(o => gen_tool_link({
+                        title: o[1],
+                        link: `/r2/${input.name}-${o[0]}`,
+                        icon: "link",
+                    }))}
                     ${input.mirror === void 0 ? "" : gen_tool_link({
                         title: "镜像下载",
                         link: `//{{TOOL_DELIVERY_LDT}}/${input.mirror}/${input.name}.zip`,

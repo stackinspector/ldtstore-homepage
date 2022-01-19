@@ -122,14 +122,15 @@ const renderSide = (id: string) => {
     if (id.startsWith("tool-")) {
         const name = id.substring(5);
         const index = (JSON.parse(tools_index!) as Record<string, ToolIndexItemType>)[name];
+        const single = index.list.length === 1;
         side.appendChild(cloneTemplate("side-tools-base"));
         const title = side.getElementsByClassName("title")[0] as HTMLElement;
-        title.innerText = index.title;
+        title.innerText = single ? "详情" : index.title;
         const content = side.getElementsByClassName("content")[0];
         for (const tool of index.list) {
             content.appendChild(cloneTemplate(`tool-${tool}`));
         }
-        if (index.list.length === 1) {
+        if (single) {
             showDetail(side.getElementsByClassName("item")[0] as HTMLElement);
         }
     } else {
