@@ -89,6 +89,7 @@ a.tile-link {
     position: fixed;
     right: 0;
     padding: 0 1em;
+    cursor: pointer;
 }
 
 #search svg {
@@ -582,6 +583,14 @@ svg.icon-line {
     overflow-y: hidden;
     height: 0px;
     transition: cubic-bezier(.6, 0, .4, 1) height .5s;
+}
+
+.noexpand .detail-container {
+    height: auto;
+}
+
+.noexpand svg.icon-line {
+    display: none;
 }
 
 .detail a {

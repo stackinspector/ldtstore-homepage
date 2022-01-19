@@ -24,6 +24,7 @@ type Tile = {
 
 type Side = {
     name: string
+    keywords: string[]
     title?: string
     text?: string
     text_small?: boolean
@@ -33,6 +34,7 @@ type Side = {
 
 type Tool = {
     name: string
+    keywords: string[]
     title: string
     icon?: string
     outer_icon?: string
@@ -129,24 +131,31 @@ const side = (input: Side) => {
     const istool = input.list !== void 0 && input.text === void 0 && input.tiles === void 0
 
     const tool_expand = input.list?.length !== 1
-
-    const tool_side = () => input.list?.map(x => tool(x, tool_expand)).join("")
+    
+    const tool_side = () => input.list?.map(x => tool(x)).join("")
 
     const common_side = () => `
         ${input.tiles === void 0 ? "" : input.tiles?.map(tile).join("") + `<div class="clearfix"></div>`}
         ${input.text === void 0 ? "" : `<div class="${input.text_small ? "text small" : "text"}">${input.text}</div>`}
     `
 
-    return `
+    const common = `
         <template id="side-${input.name}">
             <div class="title">${(istool && !tool_expand && input.title === void 0) ? "详情" : input.title}</div>
             <svg class="icon-back"><use href="#icon-arrow-left"></use></svg>
             <hr>
-            <div class="content">
-                ${istool ? tool_side() : common_side()}
+            <div class="content ${tool_expand ? "":"noexpand"}">
+             ${istool ? "" : common_side()}
             </div>
         </template>
+        
     `
+    const list_hide = istool ? `
+        <div id="list-${input.name}" class="list-hide">
+            ${istool ? tool_side() : common_side()}
+        </div>
+    ` : "";
+    return common + list_hide;
 }
 
 const sides = (input: Side[]) => input.map(side).join("")
@@ -160,42 +169,79 @@ const tool_link = (input: ToolLink) => `
     </a>
 `
 
-const tool = (input: Tool, expand: boolean) => `
-    <div class="item"${expand ? ` onclick="detail(this)"` : ""}>
-        <img src="/assert/image/${input.icon === void 0 && input.outer_icon === void 0 ? `icon-tool/${input.name}` : (input.outer_icon === void 0 ? `icon-tool/${input.icon}` : `icon/${input.outer_icon}`)}.webp">
-        <div class="item-title">${input.title}</div>
-        ${expand ? ` 
-        <svg class="icon-line">
-            <use xlink:href="#icon-expand-right"></use>
-        </svg>
-        ` : ""}
-        ${expand ? `<div class="detail-container">` : ""}
-            <div class="detail">
-                ${input.description === void 0 ? "" : `<p>${input.description}</p>`}
-                <p>
-                    ${input.website === void 0 ? "" : tool_link({
-                        title: { 1: "官方网站", 2: "首发链接", 3: "网页链接", 4: "<b>非官方</b>页面", 5: "官方网站（国内无法访问）" }[input.website],
-                        link: `/r2/${input.name}`,
-                        icon: "link",
-                    })}
-                    ${input.mirror === void 0 ? "" : tool_link({
-                        title: "镜像下载",
-                        link: `//{{TOOL_DELIVERY_LDT}}/${input.mirror}/${input.name}.zip`,
-                        icon: "download",
-                    })}
-                    ${input.custom === void 0 ? "" : input.custom.map(tool_link).join("")}
-                </p>
-                ${input.notice === void 0 ? "" : `<p><b>注意事项</b><br>${input.notice}</p>`}
-            </div>
-        ${expand ? `</div>` : ""}
-    </div>
+const tool = (input: Tool) => `
+    <template  id="item-${input.name}">
+        <div class="item" onclick="detail(this)"}>
+            <img src="/assert/image/${input.icon === void 0 && input.outer_icon === void 0 ? `icon-tool/${input.name}` : (input.outer_icon === void 0 ? `icon-tool/${input.icon}` : `icon/${input.outer_icon}`)}.webp">
+            <div class="item-title">${input.title}</div>
+            <svg class="icon-line">
+                <use xlink:href="#icon-expand-right"></use>
+            </svg>
+                <div class="detail-container">
+                    <div class="detail">
+                        ${input.description === void 0 ? "" : `<p>${input.description}</p>`}
+                        <p>
+                            ${input.website === void 0 ? "" : tool_link({
+                                title: { 1: "官方网站", 2: "首发链接", 3: "网页链接", 4: "<b>非官方</b>页面", 5: "官方网站（国内无法访问）", 6: "作者空间" }[input.website],
+                                link: `/r2/${input.name}`,
+                                icon: "link",
+                            })}
+                            ${input.mirror === void 0 ? "" : tool_link({
+                                title: "镜像下载",
+                                link: `//{{TOOL_DELIVERY_LDT}}/${input.mirror}/${input.name}.zip`,
+                                icon: "download",
+                            })}
+                            ${input.custom === void 0 ? "" : input.custom.map(tool_link).join("")}
+                        </p>
+                        ${input.notice === void 0 ? "" : `<p><b>注意事项</b><br>${input.notice}</p>`}
+                    </div>
+                </div>
+        </div>
+    </template>
 `
+
+type relation = {
+    name : string
+    keywords : string
+}
+const secrchObject = (input: Side[]) => {
+    let arr :Array<relation> = [];
+    for (let i = 0; i < input.length; i++) {
+        const side = input[i];
+        if(side.list){
+            for (let j = 0; j < side.list.length; j++) {
+                const item = side.list[j];
+                let temp : string = "";
+                if(side.keywords){
+                    side.keywords.forEach((str) => temp += " "+str);
+                }
+                if(item.keywords){
+                    item.keywords.forEach((str) => temp +=" "+str);
+                }
+                if(temp.length === 0)
+                    continue;
+                arr.push(
+                    {
+                        name: item.name,
+                        keywords : temp
+                    }
+                );
+            }
+        }
+    }
+    return arr;
+};
+
 
 export const codegen = (filename: string) => {
     const major_input = parseYaml(Deno.readTextFileSync(filename.replaceAll(".html", ".major.yml")))
-    const sides_input = parseYaml(Deno.readTextFileSync(filename.replaceAll(".html", ".sides.yml")))
+    const sides_input = parseYaml(Deno.readTextFileSync(filename.replaceAll(".html", ".sides.yml"))) as Side[]
+    const object = secrchObject(sides_input);
+    const jsonstr = JSON.stringify(object);
+    const json = object.length === 0 ? "" :
+    `<script type="text/javascript">window.test = ${jsonstr} </script>`;
     return {
         major: filename.includes("ldtools") ? major_tool(major_input as TileGrids) : major_home(major_input as TileColumns),
-        sides: sides(sides_input as Side[]),
+        sides: sides(sides_input) +  json,
     }
 }

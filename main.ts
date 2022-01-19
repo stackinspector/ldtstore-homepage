@@ -7,6 +7,14 @@ const offset = document.getElementById("offset")!;
 const major = document.getElementById("major")!;
 const side = document.getElementById("side")!;
 
+const searchState: {
+    count: number,  //input事件计数器，用来
+    lastList: string[]  //列表增删字符串索引
+} = {
+    count: 0,
+    lastList: []
+}
+
 const OFFSET_LIT = 13;
 // TODO 这里的长度和major中的left一样 添加新的pagetype记得修改这里
 const OFFSET = {
@@ -117,6 +125,15 @@ const sideChange = (id: string | null) => {
             side.removeChild(side.lastChild!);
         }
         side.appendChild((document.getElementById("side-" + id) as HTMLTemplateElement).content.cloneNode(true));
+
+        if (document.getElementById("list-" + id)) {
+            let list_hide = document.getElementById("list-" + id) as HTMLElement;
+            let list_content = side.getElementsByClassName("content")[0] as HTMLInputElement;
+            for (let i = 0; i < list_hide.childNodes.length; i++) {
+                const element = list_hide.childNodes[i] as HTMLTemplateElement;
+                list_content.appendChild(element.content.cloneNode(true));
+            }
+        }
     }
     side.style.opacity = enable ? "1" : "0";
 
@@ -138,8 +155,10 @@ const sideChange = (id: string | null) => {
 
     if (id === "search") {
         // console.log("focus");
+        searchState.lastList = ["请输入关键字"];
         let input = side.getElementsByClassName("search")[0] as HTMLInputElement;
         input.focus();
+        input.addEventListener("input", search_onchange)
     }
 };
 
@@ -206,7 +225,7 @@ const sideSet = (id: string | null) => {
     }
 };
 
-side.addEventListener("transitionend", (e) => {
+side.addEventListener("transitionend", (e: TransitionEvent) => {
     if (e.propertyName === "opacity") {
         if (major.style.opacity === "0") {
             // 防止透明后还能被点到
@@ -309,7 +328,10 @@ window.onresize = () => {
 };
 
 const showDetail = (e: HTMLElement) => {
-    // console.log(e);
+    if (e.parentElement.classList.contains("noexpand")) {
+        return;
+    }
+    console.log(e)
     const content = e.getElementsByClassName("detail-container")[0] as HTMLElement;
     const icon = e.getElementsByClassName("icon-line")[0] as HTMLElement;
     if (content.clientHeight !== 0) {
@@ -322,7 +344,87 @@ const showDetail = (e: HTMLElement) => {
     }
 };
 
+
+type relation = {
+    name: string
+    keywords: string
+}
+
+const search_onchange = (e: any) => {
+    setTimeout(() => {
+        search_callback(++searchState.count,e.srcElement.value as string)
+    }, 500);
+}
+
+const search_callback = (count: number, value: string) => {
+    if (count === searchState.count) {
+        search(value.toLowerCase());
+    }
+}
+
+const search = (value: string) => {
+    let search_list = window.test;
+
+    value = value.replace("-","").replace(" ","");
+
+    let result_content = side.getElementsByClassName("content")[0] as HTMLElement;
+    if(value === ""){
+        result_content.innerHTML = "<div class='text'>请输入关键字</div>"
+        searchState.lastList = ["请输入关键字"];
+        return;
+    }
+    
+    let list: string[] = [];
+    for (let i = 0; i < search_list.length; i++) {
+        const relation = search_list[i];
+        
+        if (search_list[i].keywords.indexOf(value) !== -1) {
+            list.push(relation.name);
+        }
+    }
+
+    
+    if(list.length === 0){
+        result_content.innerHTML = "<div class='text'>什么都没有找到呢<br><br>┑(￣Д ￣)┍</div>"
+        searchState.lastList = ["什么都没有找到呢"];
+    }
+    else{
+        searchAppend(result_content,list);
+    }
+}
+
+const searchAppend = (result_content : HTMLElement,arr: string[]) => {
+
+    let i = 0;
+    while (i < searchState.lastList.length) {
+        const str = searchState.lastList[i];
+        if (arr.indexOf(str) === -1) {
+            result_content.removeChild(result_content.children[i]);
+            searchState.lastList.splice(i, 1);
+        }
+        else {
+            i++
+        }
+    }
+    i = 0;
+    while (i < arr.length) {
+        const str = arr[i];
+        if (str !== searchState.lastList[i]) {
+            let template = document.getElementById("item-" + str) as HTMLTemplateElement
+            if (i < searchState.lastList.length) {
+                result_content.insertBefore(template.content.cloneNode(true), result_content.children[i]);
+            }
+            else {
+                result_content.appendChild(template.content.cloneNode(true));
+            }
+            searchState.lastList.splice(i, 0, str);
+        }
+        i++
+    }
+}
+
 interface Window {
+    test: relation[];
     copy?: typeof copy;
     side?: typeof sideClick;
     detail?: typeof showDetail;
@@ -332,6 +434,6 @@ window.copy = copy;
 window.side = sideClick;
 window.detail = showDetail;
 
-background.style.backgroundImage = `url('/assert/image/bg/${new Date().getDay()}.webp')`;
+background.style.backgroundImage = `url('/assert/image/bg/${Math.floor(Math.random() * 7)}.webp')`;
 
 recalculate();

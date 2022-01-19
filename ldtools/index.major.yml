@@ -41,16 +41,11 @@ middle:
       action: side
       name: itellyou
       title: ITELLYOU（原版镜像）
-    - tile: s1
+    - tile: m1
       font: h3
       action: side
-      name: cpu-rank
-      title: CPU天梯
-    - tile: s1
-      font: h3
-      action: side
-      name: gpu-rank
-      title: GPU天梯
+      name: rank
+      title: 天梯图集合
   - title: 工具下载
     content:
     - tile: s2

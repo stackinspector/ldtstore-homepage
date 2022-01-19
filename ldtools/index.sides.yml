@@ -2,6 +2,12 @@
   title: 关于本站
   text: >
     <p>
+      <a class="link" href="/">
+        <svg class="icon"><use href="#icon-home"></use></svg>
+        &nbsp;返回主站 LaodiTeachTips
+      </a>
+      <br>
+      <br>
       GitHub:
       <br>
       <a class="link" href="/r/website-github">stackinspector/LDTstore</a>
@@ -51,6 +57,7 @@
 - name: tbtool
   list:
     - name: tbtool
+      keywords: [tbgjx, tuladin, tuba, 图吧工具箱]
       title: 图吧工具箱
       website: 1
       description: >
@@ -60,6 +67,7 @@
 - name: kbtool
   list:
     - name: kbtool
+      keywords: [kbgjx, kaba, 卡吧工具箱]
       title: 卡吧工具箱
       website: 1
       description: >
@@ -69,6 +77,7 @@
 - name: dismxx
   list:
     - name: dismxx
+      keywords: [dism]
       title: Dism++
       website: 1
       mirror: active
@@ -82,16 +91,19 @@
   title: 其他工具集合
   list:
     - name: techpowerup
+      keywords: [techpowerup]
       title: TechPowerUp下载页面
       website: 3
       description: >
         TechPowerUp的工具下载页面。除了自家著名的GPU-Z下载，还提供了不少有用的工具下载链接。
     - name: geeks3d
+      keywords: [geeks3d]
       title: Geeks3D下载页面
       website: 3
       description: >
         Geeks3D的工具下载页面。除了自家著名的FurMark下载，还提供了不少有用的工具下载链接。
     - name: guru3d
+      keywords: [guru3d]
       title: Guru3D下载页面
       website: 3
       description: >
@@ -99,6 +111,7 @@
 - name: itellyou
   list:
     - name: itellyou
+      keywords: [msdn]
       title: ITELLYOU
       outer_icon: itellyou
       custom:
@@ -114,33 +127,98 @@
         旧站以MSDN资源收集为主，基本停止更新，不包含Windows 10 2004及以后的Windows。
         新站不仅包括最新的Windows，而且将收录范围扩展到了除了Windows之外的更多操作系统，同时还加入了BT链接和一些增值服务，建议使用。不过新站需要登录。
         <br>检票的私货时间：<a class="link" href="/r2/p-itellyou-msdn">关于ITELLYOU与MSDN关系的科普</a>
-- name: cpu-rank
+- name: rank
   title: CPU天梯
+  keywords: [天梯,tianti]
   list:
     - name: cpu-rank-qdy
+      keywords: [cputianti]
       outer_icon: cpu-rank
       title: 秋刀鱼半藏版本
       website: 2
       description: >
         贴吧著名CPU天梯图。作者为秋刀鱼半藏。
-- name: gpu-rank
-  title: GPU天梯
-  list:
-    - name: gpu-rank-qdy
+    - name: rank-expreview
+      keywords: [超能网,cnw,chaonengwang]
       outer_icon: gpu-rank
-      title: 秋刀鱼半藏版本
+      title: 超能网天梯图
       website: 2
       description: >
-        贴吧著名GPU天梯图。作者为秋刀鱼半藏。
+        超能网天梯图。详情做的很细致。
+    - name: rank-passmark
+      keywords: [passmark]
+      outer_icon: gpu-rank
+      title: Passmark天梯图
+      website: 2
+      description: >
+        带量化数据的天梯图，因为收录的型号丰富十分适合作为服务器处理器选择的参考。
+    - name: rank-techpowerup
+      keywords: [techpowerup]
+      outer_icon: gpu-rank
+      title: techpowerup显卡资料库
+      website: 2
+      description: >
+        食用方法：点击任何你感兴趣的型号，在Relative Performance一栏查看相对性能关系。同时收录了大量非公版的显卡尺寸参数等重要的信息，非常有用。
+    - name: rank-kkj
+      keywords: [快科技,kuaikeji, kkj]
+      outer_icon: gpu-rank
+      title: 快科技天梯图
+      website: 2
+      description: >
+        收录了类别较为丰富的天梯图，但是部分参考性不大。
+    - name: rank-zol
+      keywords: [中关村,zhongguancun,zgc,zol]
+      outer_icon: gpu-rank
+      title: 中关村天梯图
+      website: 2
+      description: >
+        收录了类别较为丰富的天梯图，但是部分参考性不大。
+    - name: rank-socpk
+      keywords: [socpk,极客湾,jkw,jikewan]
+      outer_icon: gpu-rank
+      title: 极客湾天梯图（手机soc）
+      website: 2
+      description: >
+        著名的手机天梯图，制作精良。
+    - name: rank-pc
+      keywords: []
+      outer_icon: gpu-rank
+      title: pc综合天梯图
+      website: 2
+      description: >
+        比较全面的天梯图，账号已注销，可能存在一些问题，请适度参考。
+    - name: rank-supergsg
+      keywords: [supergsg,power,电源,dianyuan]
+      outer_icon: gpu-rank
+      title: Supergsg 电源天梯
+      website: 2
+      description: >
+        著名的PC电源天梯图，停更已久。
+    - name: rank-fcp
+      keywords: [fcp,power,电源,dianyuan]
+      outer_icon: gpu-rank
+      title: FCP电源天梯
+      website: 2
+      description: >
+        fcpowerup上的电源天梯，仅包含了测试过的电源，内容靠谱。
+    - name: rank-expreview
+      keywords: [内存,memory, ram, 超频]
+      outer_icon: gpu-rank
+      title: 内存天梯
+      website: 2
+      description: >
+        简单的内存颗粒天梯图，重在科普。
 - name: info
   title: 配置检测
   list:
     - name: tbinfo
+      keywords: [图拉丁硬件检测, tuba, tuladin, tld]
       title: 图拉丁硬件检测
       website: 1
       description: >
         图吧工具箱衍生的硬件检测工具。完美的避开所有国产软件常见的弊端。
     - name: aida64
+      keywords: [aida64, 温度监控, wendujiankong, 跑分, bench, paofen, 烤机, 烤鸡]
       title: AIDA64
       website: 1
       mirror: active
@@ -149,6 +227,7 @@
       notice: >
         这是收费软件，提供30天的试用期。
     - name: hwinfo
+      keywords: [hwinfo, 温度监控, wendujiankong]
       title: HWiNFO
       website: 1
       description: >
@@ -156,6 +235,7 @@
       notice: >
         这个软件对个人使用免费。如需商业使用请前往官网查询。
     - name: speccy
+      keywords: [speccy, 温度监控, wendujiankong]
       title: Speccy
       website: 1
       description: >
@@ -164,13 +244,16 @@
         这是收费软件，提供30天的试用期。
 - name: cpu
   title: CPU工具
+  keywords: [cpu]
   list:
     - name: cpuz
+      keywords: [cpuz, 处理器]
       title: CPU-Z
       website: 1
       description: >
         最常用的CPU检测工具。除了显示CPU和平台参数信息之外，还内置了单核/多核跑分测试。
     - name: cinebench
+      keywords: [cinebench, 跑分, bench, paofen]
       title: Cinebench
       website: 1
       custom:
@@ -183,39 +266,67 @@
       description: >
         基于Cinema4D引擎渲染对CPU进行性能测试的软件。<br>R23/R20/R15各自有各自的性能偏重特点，故评测及测试基本需要全部测试一遍，而测试超频稳定性的话仅使用R23即可。
     - name: fritz-chess
+      keywords: [fritzchess, 跑分, bench, paofen]
       title: Fritz Chess Benchmark
       website: 4
       mirror: locked
       description: >
         基于国际象棋步法预测对CPU进行性能测试的软件。常用于CPU性能与稳定性测试。
     - name: superpi
+      keywords: [superpi, 跑分, bench, paofen]
       title: SuperPi
       website: 1
       mirror: locked
       description: >
         基于计算圆周率的CPU单线程基准测试。常用于CPU性能与稳定性测试。
     - name: wprime
+      keywords: [wprime, 跑分, bench, paofen]
       title: wPrime
       website: 1
       mirror: locked
       description: >
         基于计算质数的CPU多线程基准测试。常用于CPU性能与稳定性测试。
+    - name: byakuganpc
+      keywords: [baiyan, 白眼, 跑分, bench, paofen]
+      title: 白眼
+      website: 1
+      description: >
+        轻量级CPU跑分、排名，扩容盘检测软件。
+    - name: blenderopendata
+      keywords: [blenderopendata, 跑分, bench, paofen]
+      title: Blender Open Data
+      website: 1
+      description: >
+        基于Blender渲染的测试软件。
+      notice: >
+        仅为下载器，下载速度受网络影响，请确定自己的使用需求后再去下载。
     - name: intel-xtu
+      keywords: [intelxtu, 超频]
       title: Intel XTU
       website: 1
       description: >
         Intel处理器官方超频调整工具。具体使用教程可在B站自行搜索。
     - name: amd-ryzen-master
+      keywords: [amdryzenmaster, 超频]
       title: AMD Ryzen Master
       website: 1
       description: >
         AMD处理器官方超频调整工具。具体使用教程可在B站自行搜索。
     - name: throttle-stop
+      keywords: [throttlestop, 温度监控, wendujiankong, 超频]
       title: ThrottleStop
       website: 1
       description: >
         轻量级的CPU频率与功率限制控制工具。现多用于移动平台功耗控制。
+    - name: clocktunerforryzen
+      keywords: [clocktunerforryzen, CTR, 超频]
+      title: ClockTuner for Ryzen
+      website: 1
+      mirror: locked
+      description: >
+        一款针对AMD Zen处理器自动超频调试，并给出高能效比的设置建议的软件。
     - name: hydra
+      keywords: [hydra, 超频]
       title: HYDRA
       website: 2
       description: >
@@ -224,26 +335,38 @@
         这个软件的官方分发渠道可能需要赞助以查看下载链接。
 - name: memory
   title: 内存工具
+  keywords: [内存,memory, ram, 超频]
   list:
     - name: memtest
+      keywords: [memtest, 烤机, 烤鸡, kaoji]
       title: Memtest
       website: 1
       mirror: locked
       description: >
         常用内存稳定性测试软件。使用较为麻烦，建议下载下面的RunMemtestPro。
     - name: rmtp
+      keywords: [rmtp, runmemtestpro, 烤机, 烤鸡, kaoji]
       title: RunMemtestPro
       website: 4
       mirror: locked
       description: >
         可以自动运行多个Memtest并统计错误数量的辅助软件。
     - name: tm5
+      keywords: [tm5, 烤机, 烤鸡, kaoji]
       title: TestMemory5
       website: 4
       mirror: locked
       description: >
         压力可高可低的内存稳定性测试。需要配置文件才能发挥实力。
+    - name:   
+      keywords: [zentimings]
+      title: Zentimings
+      website: 1
+      mirror: locked
+      description: >
+        AMD平台独占，提供内存时序等的实时监测，内存超频便利性工具。
     - name: thaiphoon
+      keywords: [thaiphoon, 台风, spd]
       title: ThaiPhoon
       website: 5
       mirror: locked
@@ -253,13 +376,16 @@
         这个软件的基础功能免费，可能含有收费的附加功能，详见软件官网。
 - name: gpu
   title: 显卡工具
+  keywords: [gpu, 显卡, xianka]
   list:
     - name: gpuz
+      keywords: [gpuz, 温度监控, wendujiankong]
       title: GPU-Z
       website: 1
       description: >
         常用显卡信息检测工具。带有适配较广泛的检测功能。
     - name: gpuinfo
+      keywords: [gpuinfo]
       title: GpuInfo
       website: 1
       mirror: locked
@@ -268,30 +394,44 @@
       notice: >
         由于作者已停止更新，故只能识别9系列之前的显卡。不过对于识别假卡来说已经够用，大部分假卡都是9系列之前刷的。
     - name: gpucaps
+      keywords: [gpucapsview]
       title: GPU Caps Viewer
       website: 1
       mirror: active
       description: >
         显卡检测工具。还可以进行简单的压力测试。
+    - name: easymats
+      keywords: [easymats]
+      title: Easy Mats
+      website: 1
+      description: >
+        显存检测工具，适合检测一些特殊来路的显卡的真伪。
+      notice: >
+        一键安装脚本需要额外的U盘等设备等用来安装系统，请确定自己的使用需求后再去下载。
     - name: ddu
+      keywords: [ddu]
       title: Display Driver Uninstaller
       website: 1
       description: >
         显卡驱动强力卸载工具。更换显卡及排除故障时使用，可避免因驱动残留导致的系统问题。
     - name: msi-afterburner
+      keywords: [msiafterburner, 小飞机, 温度监控, wendujiankong, 超频]
       title: MSI Afterburner（小飞机）
       website: 1
       description: >
         微星开发的显卡超频工具。简单实用，覆盖监测功能，在测评中常见。
     - name: nvidia-inspector
+      keywords: [nvidiainspector]
       title: NVIDIA Inspector
       website: 1
       description: >
         第三方开发的NVIDIA显卡检测与超频工具。目前已不常用。
 - name: disk
   title: 硬盘工具
+  keywords: [硬盘, disk, upan, u盘]
   list:
     - name: diskgen
+      keywords: [diskgen, 分区]
       title: DiskGenius
       website: 1
       description: >
@@ -299,17 +439,20 @@
       notice: >
         这个软件的基础功能免费，可能含有收费的附加功能，详见软件官网。
     - name: asssd
+      keywords: [asssd, 跑分, bench, paofen]
       title: AS SSD Benchmark
       website: 4
       mirror: locked
       description: >
         常见的“SSD跑分三件套”1号。可较为直观的测试固态性能。
     - name: cdm
-      title: CrystalDiskMark 
+      title: CrystalDiskMark
+      keywords: [crystaldiskmark, cdm, 跑分, bench, paofen]
       website: 1
       description: >
         常见的“SSD跑分三件套”2号。测试结果不是非常直观。
     - name: atto
+      keywords: [attodiskmark, 跑分, bench, paofen]
       title: AttoDiskMark
       website: 1
       mirror: locked
@@ -318,11 +461,13 @@
       notice: >
         这是收费软件，提供30天的试用期。官方的试用下载需要邮件。
     - name: cdi
+      keywords: [crystaldiskinfo, cdi, 温度监控, wendujiankong]
       title: CrystalDiskInfo
       website: 1
       description: >
         硬盘信息检测软件。
     - name: hdtune
+      keywords: [hdtune, 跑分, bench, paofen, 温度监控, wendujiankong]
       title: HDTune
       website: 1
       description: >
@@ -330,16 +475,34 @@
       notice: >
         这是收费软件，提供15天的试用期。
     - name: mydisktest
+      keywords: [mydisktest, 扩容, kuorong]
       title: MyDiskTest
       website: 2
       description: >
         U盘扩容检测软件。
+    - name: partassist
+      keywords: [分区助手, fenquzhushou,PA,partassist]
+      title: 分区助手
+      website: 1
+      description: >
+        国产免费无广告的优秀分区软件。
+      notice: >
+        收费服务为技术支持，自用免费。官方下载的版本需关注公众号才能使用。
+    - name: victoria
+      keywords: [victoria]
+      title: Victoria
+      website: 1
+      mirror: locked
+      description: >
+        硬盘扫描，坏道坏块检测软件。
     - name: ssdz
+      keywords: [ssdz]
       title: SSD-Z
       website: 1
       description: >
         “过气的”硬盘检测工具。
     - name: llf
+      keywords: [llftool, 低格]
       title: LLFTOOL
       website: 1
       description: >
@@ -347,14 +510,16 @@
       notice: >
         这个软件可能会对不购买的用户限制擦除速度。
     - name: h2testw
+      keywords: [h2testw, 扩容, kuorong]
       title: H2testw
       website: 4
       mirror: locked
       description: >
         硬盘容量测试工具。
     - name: urwtest
+      keywords: [urwtest, 烤机, 烤鸡, kaoji, 扩容, kuorong]
       title: urwtest
-      # website: 
+      # website:
       mirror: locked
       description: >
         硬盘测试软件。提供容量测试，老化测试等功能。
@@ -365,45 +530,69 @@
         硬盘测试软件。
 - name: prepare
   title: 系统安装工具
+  keywords: [安装工具, intstall]
   list:
     - name: rufus
+      keywords: [rufus, 光驱镜像]
       title: Rufus
       website: 1
       description: >
         最好用的镜像写入工具之一。
     - name: ventoy
+      keywords: [ventoy, 光驱镜像]
       title: Ventoy
       website: 1
       description: >
         直接从镜像启动，支持多种格式，添加系统无需格式化。
     - name: winnt-setup
+      keywords: [winntsetup]
       title: WinNT Setup
-      # website: 
+      # website:
       mirror: locked
       description: >
         方便的WIM/ESD解压安装工具。
+    - name: wmct
+      keywords: [windows, 媒体创建工具, meitichuangjian]
+      title: Windows 媒体创建工具
+      website: 1
+      description: >
+        官方的镜像生成工具，msdn镜像源之外最方便的系统获取方式。
     - name: bootice
+      keywords: [bootice, 引导修复]
       title: BOOTICE
-      # website: 
+      # website:
       mirror: locked
       description: >
         引导修改工具。
     - name: cmwtat
+      keywords: [cmwtat, 激活, jihuo, kms]
       title: CMWTAT
       website: 1
       mirror: active
       description: >
         伪造升级残留激活Windows的开源工具。
+    - name: packedvc
+      keywords: [vc++,运行库,yunxinku]
+      title: VC++运行库打包
+      website: 1
+      mirror: active
+      description: >
+        vc综合运行库，解决Windows中大多数丢失dll情况。
+      notice: >
+        脚本右键管理员运行更方便。
 - name: burning
   title: 稳定性测试
+  keywords: [烤机, 烤鸡, kaoji, 稳定性测试]
   list:
     - name: p95
+      keywords: [p95, prime95]
       title: PRIME95
       website: 1
       mirror: locked
       description: >
         利用AVX指令集，有时比AIDA64 FPU压力测试负载更高的CPU压力测试。
     - name: furmark
+      keywords: [furmark, 甜甜圈]
       title: FurMark（甜甜圈）
       website: 1
       description: >
@@ -412,19 +601,22 @@
   title: 外设工具
   list:
     - name: cru
+      keywords: [cru, customresolution, 自定义分辨率]
       title: CRU
       website: 1
       mirror: locked
       description: >
         不依赖显卡驱动的高级自定义分辨率工具。
     - name: ufotest
+      keywords: [ufotest, 显示器刷新率]
       title: UFO Test
       website: 3
       description: >
         刷新率测试。可以同时测试屏幕刷新率真实性和拖影。
     - name: monitorgamut
+      keywords: [monitorgamut, 显示器色域检测]
       title: 显示器色域检测
-      # website: 
+      # website:
       mirror: locked
       custom:
         - title: 图吧工具箱内置
@@ -432,17 +624,25 @@
           icon: link
       description: >
         通过检测EDID信息获取显示器标称色域参数的软件。
-      notice:
-        读取的是显示器的标称值，结果仅供参考。
+      notice: 读取的是显示器的标称值，结果仅供参考。
     - name: keyboard-trigger
+      keywords: [keyboard, 键盘检测, jianpan]
       title: 键盘触发测试
       website: 3
       description: >
         键盘触发测试。可测试接触不良，坏轴等。
+    - name: mousetest
+      keywords: [mousetest, 鼠标检测, shubiao, dpi]
+      title: 鼠标检测工具
+      # website:
+      mirror: locked
+      description: >
+        鼠标测试。可测试按键、滚轮、回报率。
 - name: other-tool
   title: 其他工具
   list:
     - name: chipgenius
+      keywords: [chipgenius, 主控颗粒]
       title: ChipGenius
       website: 2
       mirror: locked
@@ -451,11 +651,13 @@
       notice: >
         这个软件的官方分发渠道可能需要首发地账号以查看下载链接。
     - name: geekuninstaller
+      keywords: [geekuninstaller, 卸载]
       title: Geek Uninstaller
       website: 1
       description: >
         轻量级的软件卸载、卸载残留删除工具。
     - name: windirstat
+      keywords: [windirstat]
       title: WinDirStat
       website: 1
       mirror: locked
