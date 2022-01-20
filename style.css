@@ -459,12 +459,6 @@ a.tile-link {
         height: 7em;
     }
 
-    #header {
-        padding: .4em 0 .4em 0;
-        width: 100%;
-        text-align: center;
-    }
-
     #footer,
     #header {
         font-size: 0.9em;
@@ -475,10 +469,9 @@ a.tile-link {
     }
 }
 
-@media screen and (max-height: 800px) {
-    #footer,
-    #header {
-        font-size: 0.9em;
+@media screen and (max-width: 580px) {
+    #header span.light {
+        display: none;
     }
 }
 
@@ -490,10 +483,6 @@ a.tile-link {
 
     #keyword {
         width: 6.5em;
-    }
-
-    #header span.light {
-        display: none;
     }
 }
 
