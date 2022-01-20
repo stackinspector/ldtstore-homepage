@@ -87,11 +87,12 @@ a.tile-link {
 
 #search, #back {
     position: fixed;
-    padding: 0 1em;
+    padding: 0 .35em;
+    cursor:pointer;
 }
 
 #search {
-    right: 0;
+    right: .15em;
 }
 
 #back {
