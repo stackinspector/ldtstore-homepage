@@ -85,10 +85,11 @@ a.tile-link {
     opacity: 0.5;
 }
 
-#search, #back {
+#search,
+#back {
     position: fixed;
     padding: 0 .35em;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 #search {
@@ -99,7 +100,8 @@ a.tile-link {
     right: 2em;
 }
 
-#search svg, #back svg {
+#search svg,
+#back svg {
     width: 1em;
     height: 1em;
     vertical-align: middle;
@@ -232,7 +234,7 @@ a.tile-link {
     float: left;
     margin: 0.35em;
     border: 0.15em solid rgba(255, 255, 255, 0.7);
-    border-radius: .2em;
+    border-radius: .3em;
     padding: 0.5em;
     transition: border-color 0.2s, background-color 0.1s;
     background-color: rgba(0, 0, 0, 0.45);
@@ -465,7 +467,8 @@ a.tile-link {
         font-size: 0.9em;
     }
 
-    #search, #back {
+    #search,
+    #back {
         padding: 0 .5em;
     }
 }

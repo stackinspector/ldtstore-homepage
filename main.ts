@@ -64,7 +64,7 @@ window.ontouchend = (e: TouchEvent) => {
     const x = e.changedTouches[0].clientX;
     const y = e.changedTouches[0].clientY;
     if (touchX - x < -40 && (Math.abs((touchY - y) / (touchX - x)) < .2)) {
-        sideReturn();
+        sideClose();
     }
 };
 
@@ -74,7 +74,7 @@ content.onclick = background.onclick = (e) => {
         e.composedPath()[0] === content ||
         e.composedPath()[0] === background
     ) {
-        sideReturn();
+        sideClose();
     }
 };
 
@@ -82,13 +82,6 @@ content.onclick = background.onclick = (e) => {
  * 关闭侧边栏
  */
 const sideClose = () => {
-    sideSet(null);
-};
-
-/**
- * 侧边栏关闭
- */
-const sideReturn = () => {
     sideSet(null);
 };
 
