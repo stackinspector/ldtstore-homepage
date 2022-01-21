@@ -39,14 +39,12 @@ const SideState: {
     on: boolean,
     center: boolean,
     id: string | null,
-    lastid: string | null,
     changing: boolean,
 } = {
     distance: 300,
     on: false,
     center: false,
     id: null,
-    lastid: null,
     changing: false,
 };
 
@@ -88,10 +86,10 @@ const sideClose = () => {
 };
 
 /**
- * 侧边栏返回上一级
+ * 侧边栏关闭
  */
 const sideReturn = () => {
-    sideSet(SideState.lastid);
+    sideSet(null);
 };
 
 /**
@@ -230,13 +228,10 @@ if (PAGE_TYPE === "tool") {
 const sideSet = (id: string | null) => {
     if (id === null) {
         SideState.id = null;
-        SideState.lastid = null;
         sideMove(false);
         sideChange(null);
         return;
     }
-
-    SideState.lastid = null;
 
     if (!SideState.on) {
         // 直接打开
