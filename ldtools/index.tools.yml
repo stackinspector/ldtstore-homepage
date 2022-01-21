@@ -501,16 +501,36 @@
         通过检测EDID信息获取显示器标称色域参数的软件。
       notice: >
         读取的是显示器的标称值，结果仅供参考。
+    - name: monitor-test
+      title: 显示器检测
+      website: 3
+      description: >
+        通过各种测试图像测试显示器的网页工具。
+    - name: displayx
+      title: DisplayX
+      mirror: locked
+      description: >
+        经典的显示器测试工具。
     - name: keyboard-trigger
       title: 键盘触发测试
       website: 3
       description: >
-        键盘触发测试。可测试接触不良，坏轴等。
+        网页版键盘触发测试。可测试接触不良，坏轴等。
+    - name: keyboard-test
+      title: Keyboard Test Utility
+      mirror: locked
+      description: >
+        键盘触发测试工具。可测试接触不良，坏轴等。
     - name: mouse-test
       title: 鼠标检测工具
       mirror: locked
       description: >
-        鼠标测试。可测试按键、滚轮、回报率。
+        鼠标测试工具。可测试按键、滚轮、回报率。
+    - name: mouse-drag-test
+      title: 鼠标拖拽测试
+      website: 3
+      description: >
+        网页版鼠标测试。检测鼠标或者触控板拖拽是否灵敏。
 - name: other-tool
   title: 其他工具
   list:
