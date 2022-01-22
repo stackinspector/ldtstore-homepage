@@ -1,6 +1,7 @@
 - list:
     - name: tbtool
       title: 图吧工具箱
+      keywords: 集合图拉丁
       website: 1
       description: >
         起源于图吧，由DIY爱好者创造并维护的工具箱。集合了本站大部分工具，方便使用。
@@ -9,6 +10,7 @@
 - list:
     - name: kbtool
       title: 卡吧工具箱
+      keywords: 卡硬工具箱集合
       website: 1
       description: >
         起源于卡吧的工具箱，现名卡硬工具箱，集合了本站大部分工具，方便使用，但版本相对较老。因制作组多为用爱发电，已许久未更新。部分工具比图吧工具箱更加全面。
@@ -17,6 +19,7 @@
 - list:
     - name: dismxx
       title: Dism++
+      keywords: Windows映像系统清理更新管理设置安装
       website: 1
       websites:
         ghr: GitHub release
@@ -44,7 +47,7 @@
 - list:
     - name: itellyou
       title: ITELLYOU
-      # keywords: [msdn]
+      keywords: Windows系统镜像下载资源MSDN我告诉你
       outer_icon: itellyou
       websites:
         next: 新站
@@ -96,13 +99,13 @@
         收录了类别较为丰富的天梯图，但是部分参考性不大。
     - name: rank-zol
       title: 中关村天梯图
-      # keywords: [zol]
+      keywords: ZOL
       website: 1
       description: >
         收录了类别较为丰富的天梯图，但是部分参考性不大。
     - name: rank-socpk
       title: 极客湾天梯图（手机SoC）
-      # keywords: [socpk]
+      keywords: socpk
       website: 1
       description: >
         著名的手机天梯图，制作精良。
@@ -120,6 +123,7 @@
         著名的PC电源天梯图，停更已久。
     - name: rank-fcp
       title: FCP电源天梯
+      keywords: 大魔王FCP
       website: 1
       description: >
         FCPOWERUP上的电源天梯，仅包含了测试过的电源，内容靠谱。
@@ -139,6 +143,7 @@
     - name: aida64
       title: AIDA64
       cross: [cpu, memory, burning]
+      keywords: 硬件检测烤机烤鸡CPU内存
       website: 1
       mirror: active
       description: >
@@ -147,6 +152,7 @@
         这是收费软件，提供30天的试用期。
     - name: hwinfo
       title: HWiNFO
+      keywords: 硬件检测
       website: 1
       description: >
         综合硬件检测工具。基于全面收集系统传感器上报的信息，免费且全面。但其使用门槛比AIDA64更高。
@@ -154,6 +160,7 @@
         这个软件对个人使用免费。如需商业使用请前往官网查询。
     - name: speccy
       title: Speccy
+      keywords: 硬件检测
       website: 1
       description: >
         轻量级的硬件检测工具。
@@ -170,6 +177,7 @@
         最常用的CPU检测工具。除了显示CPU和平台参数信息之外，还内置了单核/多核跑分测试。
     - name: cinebench
       title: Cinebench
+      cross: [burning]
       website: 1
       downloads:
         r23: R23官网下载直链
@@ -185,12 +193,14 @@
         基于Cinema4D引擎渲染对CPU进行性能测试的软件。<br>R23/R20/R15各自有各自的性能偏重特点，故评测及测试基本需要全部测试一遍，而测试超频稳定性的话仅使用R23即可。
     - name: fritz-chess
       title: Fritz Chess Benchmark
+      keywords: 国际象棋
       website: 4
       mirror: locked
       description: >
         基于国际象棋步法预测对CPU进行性能测试的软件。常用于CPU性能与稳定性测试。
     - name: superpi
       title: SuperPi
+      keywords: 圆周率稳定单核性能单线程
       website: 1
       mirror: locked
       description: >
@@ -204,6 +214,7 @@
     - name: baiyan
       title: 白眼
       cross: [disk]
+      keywords: CPU硬盘跑分扩容盘山寨机
       website: 1
       description: >
         轻量级CPU跑分、排名，扩容盘检测软件。
@@ -217,28 +228,33 @@
         仅为下载器，下载速度受网络影响，请确定自己的使用需求后再去下载。
     - name: intel-xtu
       title: Intel XTU
-      cross: [memory]
+      cross: [memory, burning]
+      keywords: CPU内存超频功耗墙功耗控制
       website: 1
       description: >
         Intel处理器官方超频调整工具。具体使用教程可在B站自行搜索。
     - name: amd-ryzen-master
       title: AMD Ryzen Master
+      keywords: CPU内存超频功耗墙功耗控制
       website: 1
       description: >
         AMD处理器官方超频调整工具。具体使用教程可在B站自行搜索。
     - name: throttle-stop
       title: ThrottleStop
+      keywords: CPU超频功耗墙功耗控制
       website: 1
       description: >
         轻量级的CPU频率与功率限制控制工具。现多用于移动平台功耗控制。
     - name: ctr
       title: ClockTuner for Ryzen
+      keywords: CPU超频功耗墙功耗控制自动超频
       website: 1
       mirror: active
       description: >
         一款针对AMD Zen处理器自动超频调试，并给出高能效比的设置建议的软件。
     - name: hydra
       title: HYDRA
+      keywords: AMDCPU超频
       website: 2
       description: >
         第三方开发的AMD处理器超频工具，还具有体质分查看等功能。具体使用教程可在B站自行搜索。
@@ -249,18 +265,23 @@
   list:
     - name: memtest
       title: Memtest
+      keywords: 内存稳定性烤机烤鸡
       website: 1
       mirror: locked
       description: >
         常用内存稳定性测试软件。使用较为麻烦，建议下载下面的RunMemtestPro。
     - name: rmtp
       title: RunMemtestPro
+      cross: [burning]
+      keywords: 自动内存稳定性烤机烤鸡
       website: 4
       mirror: locked
       description: >
         可以自动运行多个Memtest并统计错误数量的辅助软件。
     - name: tm5
       title: TestMemory5
+      cross: [burning]
+      keywords: 内存稳定性内存压力烤机烤鸡
       website: 4
       websites:
         offical: 1
@@ -271,12 +292,14 @@
         压力可高可低的内存稳定性测试。需要配置文件才能发挥实力。
     - name: zentimings
       title: Zentimings
+      keywords: AMD内存超频监测
       website: 1
       mirror: locked
       description: >
         AMD平台独占，提供内存时序等的实时监测，内存超频便利性工具。
     - name: thaiphoon
       title: ThaiPhoon
+      keywords: 内存SPD编辑
       website: 5
       mirror: locked
       description: >
@@ -288,11 +311,13 @@
   list:
     - name: gpuz
       title: GPU-Z
+      keywords: 显卡信息检测
       website: 1
       description: >
         常用显卡信息检测工具。带有适配较广泛的检测功能。
     - name: gpuinfo
       title: GpuInfo
+      keywords: 显卡核心代号假卡识别
       website: 1
       mirror: locked
       description: >
@@ -301,12 +326,14 @@
         由于作者已停止更新，故只能识别9系列之前的显卡。不过对于识别假卡来说已经够用，大部分假卡都是9系列之前刷的。
     - name: gpucaps
       title: GPU Caps Viewer
+      keywords: 显卡信息压力测试
       website: 1
       mirror: active
       description: >
         显卡检测工具。还可以进行简单的压力测试。
     - name: easymats
       title: EasyMats显存检测
+      keywords: 显卡显存
       website: 2
       description: >
         由B站UP制作的简化 显存检测工具MATS 使用的辅助工具，用于检测显卡显存是否有故障。依赖PE运行。
@@ -314,16 +341,20 @@
         一键安装脚本需要额外的U盘等设备等用来安装系统，请确定自己的使用需求后再去下载。
     - name: ddu
       title: Display Driver Uninstaller
+      keywords: 显卡驱动卸载
       website: 1
+      mirror: active
       description: >
         显卡驱动强力卸载工具。更换显卡及排除故障时使用，可避免因驱动残留导致的系统问题。
     - name: msi-afterburner
       title: MSI Afterburner（小飞机）
+      keywords: 微星显卡超频
       website: 1
       description: >
         微星开发的显卡超频工具。简单实用，覆盖监测功能，在测评中常见。
     - name: nvidia-inspector
       title: NVIDIA Inspector
+      keywords: N卡检测N卡超频
       website: 1
       description: >
         第三方开发的NVIDIA显卡检测与超频工具。目前已不常用。
@@ -332,6 +363,7 @@
   list:
     - name: diskgen
       title: DiskGenius
+      keywords: 硬盘分区管理分区调整坏道坏块数据恢复
       website: 1
       description: >
         老牌硬盘管理与分区操作软件，简单易用。
@@ -339,17 +371,21 @@
         这个软件的基础功能免费，可能含有收费的附加功能，详见软件官网。
     - name: asssd
       title: AS SSD Benchmark
+      keywords: SSD跑分三件套
       website: 4
       mirror: locked
       description: >
         常见的“SSD跑分三件套”1号。可较为直观的测试固态性能。
     - name: cdm
       title: CrystalDiskMark
+      keywords: SSD跑分三件套CDM
       website: 1
+      mirror: active
       description: >
         常见的“SSD跑分三件套”2号。测试结果不是非常直观。
     - name: atto
       title: AttoDiskMark
+      keywords: SSD跑分三件套
       website: 1
       mirror: locked
       description: >
@@ -358,11 +394,14 @@
         这是收费软件，提供30天的试用期。官方的试用下载需要邮件。
     - name: cdi
       title: CrystalDiskInfo
+      keywords: 硬盘信息CDI
       website: 1
+      mirror: active
       description: >
         硬盘信息检测软件。
     - name: hdtune
       title: HDTune
+      keywords: 硬盘检测
       website: 1
       description: >
         老牌硬盘检测工具。混合写入测试中常用。
@@ -370,11 +409,14 @@
         这是收费软件，提供15天的试用期。
     - name: mydisktest
       title: MyDiskTest
+      keywords: U盘扩容坏块
       website: 2
+      mirror: locked
       description: >
         U盘扩容检测软件。
     - name: partassist
       title: 分区助手
+      keywords: 硬盘分区管理分区调整
       website: 1
       description: >
         国产免费无广告的优秀分区软件。
@@ -382,17 +424,20 @@
         收费服务为技术支持，自用免费。官方下载的版本需关注公众号才能使用。
     - name: victoria
       title: Victoria
+      keywords: 硬盘扫描坏道坏块
       website: 1
       mirror: locked
       description: >
         硬盘扫描，坏道坏块检测软件。
     - name: ssdz
       title: SSD-Z
+      keywords: 固态硬盘
       website: 1
       description: >
         “过气的”硬盘检测工具。
     - name: llf
       title: LLFTOOL
+      keywords: 低级格式化低格
       website: 1
       description: >
         硬盘低级格式化工具。
@@ -400,17 +445,20 @@
         这个软件可能会对不购买的用户限制擦除速度。
     - name: h2testw
       title: H2testw
+      keywords: 硬盘容量
       website: 4
       mirror: locked
       description: >
         硬盘容量测试工具。
     - name: urwtest
       title: urwtest
+      keywords: 硬盘容量老化
       mirror: locked
       description: >
         硬盘测试软件。提供容量测试，老化测试等功能。
     - name: anvil
       title: AnvilPro
+      keywords: 硬盘
       website: 4
       description: >
         硬盘测试软件。
@@ -419,21 +467,43 @@
   list:
     - name: rufus
       title: Rufus
+      keywords: U盘启动镜像写入
       website: 1
       description: >
         最好用的镜像写入工具之一。
     - name: ventoy
       title: Ventoy
+      keywords: U盘启动镜像
       website: 1
       description: >
         直接从镜像启动，支持多种格式，添加系统无需格式化。
     - name: winnt-setup
       title: WinNT Setup
+      keywords: WIMESD释放Windows
       mirror: locked
       description: >
         方便的WIM/ESD解压安装工具。
+    - name: easyu
+      title: 优启通PE
+      keywords: IT天空U盘启动PE
+      website: 1
+      description: >
+        由IT天空论坛开发的知名PE工具，用户口碑较好。
+    - name: wepe
+      title: 微PE
+      keywords: U盘启动PE
+      website: 1
+      description: >
+        知名PE工具，用户口碑较好。
+    - name: edgeless
+      title: Edgeless PE
+      keywords: U盘启动PE
+      website: 1
+      description: >
+        半开源的新型PE工具，仍不稳定，较高水平的用户可以尝试使用。
     - name: wmct
       title: Windows媒体创建工具
+      keywords: 微软Windows系统下载获取镜像U盘安装
       websites:
         10: 适用于Win10
         11: 适用于Win11
@@ -441,17 +511,20 @@
         官方的镜像生成工具，(MSDN) ITELLYOU镜像源之外最方便的系统获取方式。
     - name: bootice
       title: BOOTICE
+      keywords: Windows引导启动
       mirror: locked
       description: >
         引导修改工具。
     - name: cmwtat
       title: CMWTAT
+      keywords: Windows激活
       website: 1
       mirror: active
       description: >
         伪造升级残留激活Windows的开源工具。
     - name: vcrtpack
       title: VC运行库打包
+      keywords: 缺少丢失DLL
       website: 1
       mirror: locked
       description: >
@@ -463,12 +536,14 @@
   list:
     - name: p95
       title: PRIME95
+      keywords: 烤机烤鸡CPU压力
       website: 1
       mirror: locked
       description: >
         利用AVX指令集，有时比AIDA64 FPU压力测试负载更高的CPU压力测试。
     - name: furmark
       title: FurMark（甜甜圈）
+      keywords: 烤机烤鸡GPU显卡压力
       website: 1
       description: >
         经典的显卡压力测试软件。
@@ -478,11 +553,13 @@
     - name: cru
       title: CRU
       website: 1
+      keywords: 显示器分辨率自定义
       mirror: locked
       description: >
         不依赖显卡驱动的高级自定义分辨率工具。
     - name: ufotest
       title: UFO Test
+      keywords: 显示器刷新率拖影
       website: 3
       description: >
         刷新率测试。可以同时测试屏幕刷新率真实性和拖影。
@@ -495,11 +572,13 @@
         读取的是显示器的标称值，结果仅供参考。
     - name: monitor-test
       title: 显示器检测
+      keywords: 坏点
       website: 3
       description: >
         通过各种测试图像测试显示器的网页工具。
     - name: displayx
       title: DisplayX
+      keywords: 显示器坏点
       mirror: locked
       description: >
         经典的显示器测试工具。
@@ -510,16 +589,19 @@
         网页版键盘触发测试。可测试接触不良，坏轴等。
     - name: keyboard-test
       title: Keyboard Test Utility
+      keywords: 键盘触发
       mirror: locked
       description: >
         键盘触发测试工具。可测试接触不良，坏轴等。
     - name: mouse-test-web
       title: 网页版鼠标检测工具
+      keywords: 拖拽灵敏
       website: 3
       description: >
         网页版鼠标测试。检测鼠标或者触控板拖拽是否灵敏。
     - name: mouse-test
       title: 鼠标检测工具
+      keywords: 拖拽灵敏按键滚轮
       mirror: locked
       description: >
         鼠标测试工具。可测试按键、滚轮、回报率。
@@ -528,6 +610,7 @@
   list:
     - name: chipgenius
       title: ChipGenius
+      keywords: USB主控芯片USB设备路径
       website: 2
       mirror: locked
       description: >
@@ -536,11 +619,13 @@
         这个软件的官方分发渠道可能需要首发地账号以查看下载链接。
     - name: geekuninstaller
       title: Geek Uninstaller
+      keywords: 软件卸载残留清理
       website: 1
       description: >
         轻量级的软件卸载、卸载残留删除工具。
     - name: windirstat
       title: WinDirStat
+      keywords: 目录大小可视化
       website: 1
       mirror: locked
       description: >

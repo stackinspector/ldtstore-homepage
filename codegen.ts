@@ -44,7 +44,7 @@ type Tool = {
     name: string
     title: string
     cross?: string[]
-    keywords?: string[]
+    keywords?: string
     icon?: string
     outer_icon?: string
     description?: string
@@ -166,7 +166,7 @@ const gen_tool_group = (groups: ToolGroup[]) => {
         const list = []
         for (const tool of group.list) {
             list.push(tool.name)
-            all[tool.title] = tool.name
+            all[tool.keywords === void 0 ? tool.title : tool.title + tool.keywords!] = tool.name
             fragments.push(gen_tool(tool))
         }
         index[group_name] = {
@@ -187,12 +187,12 @@ const gen_tool_group = (groups: ToolGroup[]) => {
 }
 
 const gen_tool_link = (input: ToolLink) => `
-    <a class="link" ${input.link === void 0 ? "" : `href="${input.link}"`} ${input.action === void 0 ? "" : `onclick="${input.action}"`}>
+    <span><a class="link" ${input.link === void 0 ? "" : `href="${input.link}"`} ${input.action === void 0 ? "" : `onclick="${input.action}"`}>
         <svg class="icon">
             <use href="#icon-${input.icon}"></use>
         </svg>
         ${(typeof input.title === "string") ? input.title : tool_website_type[input.title]}
-    </a>
+    </a></span>
 `
 
 const gen_tool = (input: Tool) => `
