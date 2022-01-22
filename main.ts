@@ -12,8 +12,10 @@ const side = document.getElementById("side")!;
 // tool only
 const search = document.getElementById("search");
 const back = document.getElementById("back");
+// 说明：加载时就取json文本值，无需担心注入
 const tools_index = document.getElementById("tools_index")?.innerText;
 const tools_all = document.getElementById("tools_all")?.innerText;
+const tools_cross = document.getElementById("tools_cross")?.innerText;
 
 const OFFSET_LIT = 13;
 // TODO 这里的长度和major中的left一样 添加新的pagetype记得修改这里
@@ -106,7 +108,7 @@ const sideMove = (enable: boolean) => {
 };
 
 const cloneTemplate = (template: string) => {
-    return (document.getElementById(template) as HTMLTemplateElement).content.cloneNode(true);
+    return (document.getElementById(template) as HTMLTemplateElement).content.cloneNode(true) as DocumentFragment;
 };
 
 const renderSide = (id: string) => {
@@ -116,13 +118,21 @@ const renderSide = (id: string) => {
     if (id.startsWith("tool-")) {
         const name = id.substring(5);
         const index = (JSON.parse(tools_index!) as Record<string, ToolIndexItemType>)[name];
+        const cross = (JSON.parse(tools_cross!) as Record<string, string>)[name];
         const single = index.list.length === 1;
         side.appendChild(cloneTemplate("side-tools-base"));
         const title = side.getElementsByClassName("title")[0] as HTMLElement;
         title.innerText = single ? "详情" : index.title;
         const content = side.getElementsByClassName("content")[0];
         for (const tool of index.list) {
-            content.appendChild(cloneTemplate(`tool-${tool}`));
+            const item = cloneTemplate(`tool-${tool}`).firstElementChild;
+            const cross_notice = cross[tool];
+            if (cross_notice !== void 0) {
+                const p = document.createElement("p");
+                p.innerHTML = cross_notice;
+                item.getElementsByClassName("detail")[0].appendChild(p);
+            }
+            content.appendChild(item);
         }
         if (single) {
             showDetail(side.getElementsByClassName("item")[0] as HTMLElement);

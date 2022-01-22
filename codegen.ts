@@ -35,6 +35,7 @@ type Side = {
 type ToolGroup = {
     name?: string
     title?: string
+    cross_notice?: string
     list: Tool[]
 }
 
@@ -47,7 +48,7 @@ type Tool = {
     keywords?: string
     icon?: string
     outer_icon?: string
-    description?: string
+    description: string
     website?: ToolLinkTitle
     websites?: Record<string, ToolLinkTitle>
     downloads?: Record<string, string>
@@ -55,6 +56,7 @@ type Tool = {
     mirrors?: Record<string, string>
     custom?: ToolLink[]
     notice?: string
+    cross_notice?: Record<string, string>
 }
 
 type ToolLink = {
@@ -161,6 +163,14 @@ const gen_tool_group = (groups: ToolGroup[]) => {
     const fragments = []
     const index: Record<string, ToolIndexItemType> = {}
     const all: Record<string, string> = {}
+    const cross: Record<string, Record<string, string>> = {}
+    const cross_notice_title: Record<string, string> = {}
+    for (const group of groups) {
+        if (group.name !== void 0 && group.cross_notice !== void 0) {
+            cross_notice_title[group.name] = group.cross_notice
+            cross[group.name] = {}
+        }
+    }
     for (const group of groups) {
         const group_name = (group.name === void 0 && group.list.length === 1) ? group.list[0].name : group.name!
         const list = []
@@ -168,6 +178,11 @@ const gen_tool_group = (groups: ToolGroup[]) => {
             list.push(tool.name)
             all[tool.keywords === void 0 ? tool.title : tool.title + tool.keywords!] = tool.name
             fragments.push(gen_tool(tool))
+            if (tool.cross_notice !== void 0) {
+                for (const [group, content] of Object.entries(tool.cross_notice)) {
+                    cross[group]![tool.name] = `<b>${cross_notice_title[group]}</b><br>${content}`
+                }
+            }
         }
         index[group_name] = {
             title: ((group.title === void 0 && group.list.length === 1) ? group.list[0].title : group.title!),
@@ -183,7 +198,7 @@ const gen_tool_group = (groups: ToolGroup[]) => {
             }
         }
     }
-    return { fragments, index, all }
+    return { fragments, index, all, cross }
 }
 
 const gen_tool_link = (input: ToolLink) => `
@@ -205,7 +220,7 @@ const gen_tool = (input: Tool) => `
         </svg>
         <div class="detail-container">
             <div class="detail">
-                ${input.description === void 0 ? "" : `<p>${input.description}</p>`}
+                <p>${input.description}</p>
                 <p>
                     ${input.website === void 0 ? "" : gen_tool_link({
                         title: input.website,
@@ -255,7 +270,7 @@ export const codegen = (filename: string): Map<string, string> => {
             (load("sides") as Side[]).map(gen_side).join(""),
         )
     } else {
-        const { fragments, index, all } = gen_tool_group(load("tools") as ToolGroup[])
+        const { fragments, index, all, cross } = gen_tool_group(load("tools") as ToolGroup[])
         dynamic_inserts.set(
             "<!--{{major}}-->",
             gen_major(gen_tile_grids(load("major") as TileGrids), "tool"),
@@ -267,7 +282,8 @@ export const codegen = (filename: string): Map<string, string> => {
         dynamic_inserts.set(
             "<!--{{tools_index}}-->",
             `<script type="application/json" id="tools_index">${JSON.stringify(index)}</script>
-            <script type="application/json" id="tools_all">${JSON.stringify(all)}</script>`
+            <script type="application/json" id="tools_all">${JSON.stringify(all)}</script>
+            <script type="application/json" id="tools_cross">${JSON.stringify(cross)}</script>`
         )
     }
 

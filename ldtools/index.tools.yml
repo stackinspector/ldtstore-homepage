@@ -147,9 +147,12 @@
       website: 1
       mirror: active
       description: >
-        综合系统检测工具。以其全面的软硬件检测以及CPU烤机经常出现在各种测评以及排障中。
+        综合系统检测工具。以其全面的软硬件检测以及CPU烤机经常出现在各种测评以及排障中
       notice: >
         这是收费软件，提供30天的试用期。
+      cross_notice:
+        burning:
+          界面右上角的折线图图标为压力测试。提供多种烤机模式，其中FPU烤机作为检测CPU散热与持续稳定性的基准常用。
     - name: hwinfo
       title: HWiNFO
       keywords: 硬件检测
@@ -191,6 +194,9 @@
         r115: R11.5镜像下载
       description: >
         基于Cinema4D引擎渲染对CPU进行性能测试的软件。<br>R23/R20/R15各自有各自的性能偏重特点，故评测及测试基本需要全部测试一遍，而测试超频稳定性的话仅使用R23即可。
+      cross_notice:
+        burning:
+          R23可作为检测CPU超频稳定性的基准。一般来说能过五六圈R23的频率，打游戏就没什么问题了。
     - name: fritz-chess
       title: Fritz Chess Benchmark
       keywords: 国际象棋
@@ -233,6 +239,9 @@
       website: 1
       description: >
         Intel处理器官方超频调整工具。具体使用教程可在B站自行搜索。
+      cross_notice:
+        burning:
+          内置稳定性测试功能，偏向动态响应测试而非负载测试，对主板供电的性能有极高要求。如出现能过FPU甚至P95烤机，但使用中仍有黑屏死机的话，可以尝试XTU测试。
     - name: amd-ryzen-master
       title: AMD Ryzen Master
       keywords: CPU内存超频功耗墙功耗控制
@@ -277,7 +286,7 @@
       website: 4
       mirror: locked
       description: >
-        可以自动运行多个Memtest并统计错误数量的辅助软件。
+        可以自动运行多个Memtest并统计错误数量的内存稳定性测试工具。操作较为简单，测试需要较长时间。
     - name: tm5
       title: TestMemory5
       cross: [burning]
@@ -289,7 +298,7 @@
       mirrors:
         config: 配置文件
       description: >
-        压力可高可低的内存稳定性测试。需要配置文件才能发挥实力。
+        更为高级的内存稳定性测试工具，依靠不同的配置文件达到不同的测试效果，小白请先看教程后使用。
     - name: zentimings
       title: Zentimings
       keywords: AMD内存超频监测
@@ -486,18 +495,21 @@
     - name: easyu
       title: 优启通PE
       keywords: IT天空U盘启动PE
+      outer_icon: placeholder
       website: 1
       description: >
         由IT天空论坛开发的知名PE工具，用户口碑较好。
     - name: wepe
       title: 微PE
       keywords: U盘启动PE
+      outer_icon: placeholder
       website: 1
       description: >
         知名PE工具，用户口碑较好。
     - name: edgeless
       title: Edgeless PE
       keywords: U盘启动PE
+      outer_icon: placeholder
       website: 1
       description: >
         半开源的新型PE工具，仍不稳定，较高水平的用户可以尝试使用。
@@ -533,6 +545,7 @@
         脚本右键管理员运行更方便。
 - name: burning
   title: 稳定性测试
+  cross_notice: 烤机相关说明
   list:
     - name: p95
       title: PRIME95
