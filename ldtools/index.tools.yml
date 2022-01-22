@@ -18,11 +18,9 @@
     - name: dismxx
       title: Dism++
       website: 1
+      websites:
+        ghr: GitHub release
       mirror: active
-      custom:
-        - title: GitHub release
-          link: /r2/ghr-dismxx
-          icon: link
       description: >
         优秀的Windows工具箱。集合了映像工具、系统清理、更新管理等功能，还集合了一些常用的个人习惯相关的系统设置。
 - name: other-collection
@@ -48,13 +46,9 @@
       title: ITELLYOU
       # keywords: [msdn]
       outer_icon: itellyou
-      custom:
-        - title: 新站
-          link: /r2/itellyou-next
-          icon: link
-        - title: 旧站
-          link: /r2/itellyou-old
-          icon: link
+      websites:
+        next: 新站
+        old: 旧站
       description: >
         原版软件镜像提供网站，可下载Windows及其他常见操作系统的镜像。
       notice: >
@@ -171,18 +165,22 @@
     - name: cpuz
       title: CPU-Z
       website: 1
+      mirror: active
       description: >
         最常用的CPU检测工具。除了显示CPU和平台参数信息之外，还内置了单核/多核跑分测试。
     - name: cinebench
       title: Cinebench
       website: 1
-      custom:
-        - title: R20官网下载直链
-          link: /r2/d-cinebench-r20
-          icon: download
-        - title: R23官网下载直链
-          link: /r2/d-cinebench-r23
-          icon: download
+      downloads:
+        r23: R23官网下载直链
+        r20: R20官网下载直链
+        r15: R15官网下载直链
+        r115: R11.5官网下载直链
+      mirrors:
+        r23: R23镜像下载
+        r20: R20镜像下载
+        r15: R15镜像下载
+        r115: R11.5镜像下载
       description: >
         基于Cinema4D引擎渲染对CPU进行性能测试的软件。<br>R23/R20/R15各自有各自的性能偏重特点，故评测及测试基本需要全部测试一遍，而测试超频稳定性的话仅使用R23即可。
     - name: fritz-chess
@@ -267,10 +265,8 @@
       websites:
         offical: 1
       mirror: locked
-      custom:
-        - title: 配置文件
-          link: //{{TOOL_DELIVERY_LDT}}/locked/tm5-config.zip
-          icon: download
+      mirrors:
+        config: 配置文件
       description: >
         压力可高可低的内存稳定性测试。需要配置文件才能发挥实力。
     - name: zentimings
@@ -410,7 +406,6 @@
         硬盘容量测试工具。
     - name: urwtest
       title: urwtest
-      # website: 
       mirror: locked
       description: >
         硬盘测试软件。提供容量测试，老化测试等功能。
@@ -434,7 +429,6 @@
         直接从镜像启动，支持多种格式，添加系统无需格式化。
     - name: winnt-setup
       title: WinNT Setup
-      # website: 
       mirror: locked
       description: >
         方便的WIM/ESD解压安装工具。
@@ -447,7 +441,6 @@
         官方的镜像生成工具，(MSDN) ITELLYOU镜像源之外最方便的系统获取方式。
     - name: bootice
       title: BOOTICE
-      # website: 
       mirror: locked
       description: >
         引导修改工具。
@@ -495,23 +488,20 @@
         刷新率测试。可以同时测试屏幕刷新率真实性和拖影。
     - name: monitorgamut
       title: 显示器色域检测
-      # website: 
       mirror: locked
-      custom:
-        - title: 图吧工具箱内置
-          action: tool('tbtool')
-          icon: link
       description: >
         通过检测EDID信息获取显示器标称色域参数的软件。
       notice: >
         读取的是显示器的标称值，结果仅供参考。
     - name: monitor-test
       title: 显示器检测
+      icon: monitorgamut
       website: 3
       description: >
         通过各种测试图像测试显示器的网页工具。
     - name: displayx
       title: DisplayX
+      icon: monitorgamut
       mirror: locked
       description: >
         经典的显示器测试工具。
@@ -522,19 +512,21 @@
         网页版键盘触发测试。可测试接触不良，坏轴等。
     - name: keyboard-test
       title: Keyboard Test Utility
+      icon: keyboard-trigger
       mirror: locked
       description: >
         键盘触发测试工具。可测试接触不良，坏轴等。
+    - name: mouse-test-web
+      title: 网页版鼠标检测工具
+      icon: mouse-test
+      website: 3
+      description: >
+        网页版鼠标测试。检测鼠标或者触控板拖拽是否灵敏。
     - name: mouse-test
       title: 鼠标检测工具
       mirror: locked
       description: >
         鼠标测试工具。可测试按键、滚轮、回报率。
-    - name: mouse-drag-test
-      title: 鼠标拖拽测试
-      website: 3
-      description: >
-        网页版鼠标测试。检测鼠标或者触控板拖拽是否灵敏。
 - name: other-tool
   title: 其他工具
   list:

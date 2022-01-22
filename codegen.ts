@@ -50,6 +50,7 @@ type Tool = {
     description?: string
     website?: ToolLinkTitle
     websites?: Record<string, ToolLinkTitle>
+    downloads?: Record<string, string>
     mirror?: "active" | "locked"
     mirrors?: Record<string, string>
     custom?: ToolLink[]
@@ -216,11 +217,21 @@ const gen_tool = (input: Tool) => `
                         link: `/r2/${input.name}-${o[0]}`,
                         icon: "link",
                     })).join("")}
+                    ${input.downloads === void 0 ? "" : Object.entries(input.downloads).map(o => gen_tool_link({
+                        title: o[1],
+                        link: `/r2/${input.name}-d-${o[0]}`,
+                        icon: "download",
+                    })).join("")}
                     ${input.mirror === void 0 ? "" : gen_tool_link({
                         title: "镜像下载",
                         link: `//{{TOOL_DELIVERY_LDT}}/${input.mirror}/${input.name}.zip`,
                         icon: "download",
                     })}
+                    ${input.mirrors === void 0 ? "" : Object.entries(input.mirrors).map(o => gen_tool_link({
+                        title: o[1],
+                        link: `//{{TOOL_DELIVERY_LDT}}/locked/${input.name}-${o[0]}.zip`,
+                        icon: "download",
+                    })).join("")}
                     ${input.custom === void 0 ? "" : input.custom.map(gen_tool_link).join("")}
                 </p>
                 ${input.notice === void 0 ? "" : `<p><b>注意事项</b><br>${input.notice}</p>`}
