@@ -126,7 +126,7 @@ const renderSide = (id: string) => {
         const content = side.getElementsByClassName("content")[0];
         for (const tool of index.list) {
             const item = cloneTemplate(`tool-${tool}`).firstElementChild;
-            const cross_notice = cross[tool];
+            const cross_notice = cross?.[tool];
             if (cross_notice !== void 0) {
                 const p = document.createElement("p");
                 p.innerHTML = cross_notice;
