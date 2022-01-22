@@ -392,21 +392,21 @@
         这个软件的基础功能免费，可能含有收费的附加功能，详见软件官网。
     - name: asssd
       title: AS SSD Benchmark
-      keywords: SSD跑分三件套
+      keywords: SSD跑分三件套固态硬盘
       website: 4
       mirror: locked
       description: >
         常见的“SSD跑分三件套”1号。可较为直观的测试固态性能。
     - name: cdm
       title: CrystalDiskMark
-      keywords: SSD跑分三件套CDM
+      keywords: SSD跑分三件套固态硬盘CDM
       website: 1
       mirror: active
       description: >
         常见的“SSD跑分三件套”2号。测试结果不是非常直观。
     - name: atto
       title: AttoDiskMark
-      keywords: SSD跑分三件套
+      keywords: SSD跑分三件套固态硬盘
       website: 1
       mirror: locked
       description: >
@@ -456,6 +456,14 @@
       website: 1
       description: >
         “过气的”硬盘检测工具。
+    - name: txbench
+      title: TxBENCH
+      keywords: SSD安全擦除固态硬盘跑分
+      outer_icon: placeholder
+      website: 1
+      mirror: synced
+      description: >
+        不常用的固态硬盘检测和跑分软件，但却是常用的固态硬盘安全擦除软件。
     - name: llf
       title: LLFTOOL
       keywords: 低级格式化低格
@@ -655,3 +663,26 @@
       mirror: locked
       description: >
         目录大小可视化工具。常用于整理文件。
+    - name: 7zip
+      title: 7-Zip
+      keywords: 压缩解压校验RAR
+      outer_icon: placeholder
+      website: 1
+      mirror: synced
+      description: >
+        简洁、强大、多用途的压缩软件。除常规压缩解压外还适用于校验及各种打包格式解析。
+    - name: fastcopy
+      title: FastCopy
+      keywords: 复制拷贝
+      outer_icon: placeholder
+      website: 1
+      mirror: synced
+      description: >
+        强大的Windows文件复制工具。可用于在大规模（文件总大小及文件数量上）文件复制时代替资源管理器自带的文件复制，稳定性和速度优势明显。
+    - name: freefilesync
+      title: FreeFileSync
+      keywords: 文件比对比较文件同步
+      outer_icon: placeholder
+      website: 1
+      description: >
+        文件夹对比和同步工具，操作简单。

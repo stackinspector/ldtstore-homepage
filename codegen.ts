@@ -52,7 +52,7 @@ type Tool = {
     website?: ToolLinkTitle
     websites?: Record<string, ToolLinkTitle>
     downloads?: Record<string, string>
-    mirror?: "active" | "locked"
+    mirror?: "active" | "locked" | "synced"
     mirrors?: Record<string, string>
     custom?: ToolLink[]
     notice?: string
