@@ -184,9 +184,11 @@ const gen_tool_group = (groups: ToolGroup[]) => {
                 }
             }
         }
-        index[group_name] = {
-            title: ((group.title === void 0 && group.list.length === 1) ? group.list[0].title : group.title!),
-            list,
+        if (group.name !== "non-catalog") {
+            index[group_name] = {
+                title: ((group.title === void 0 && group.list.length === 1) ? group.list[0].title : group.title!),
+                list,
+            }
         }
     }
     for (const group of groups) {
