@@ -167,7 +167,7 @@ const sideChange = (id: string | null) => {
         if (enable) {
             major.style.opacity = "0";
         } else {
-            if (SideState.id != null) {
+            if (SideState.id !== null) {
                 major.style.opacity = "0";
             } else {
                 major.style.opacity = "1";

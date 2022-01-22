@@ -43,6 +43,7 @@ type ToolLinkTitle = keyof typeof tool_website_type | string
 type Tool = {
     name: string
     title: string
+    cross?: string[]
     keywords?: string[]
     icon?: string
     outer_icon?: string
@@ -50,6 +51,7 @@ type Tool = {
     website?: ToolLinkTitle
     websites?: Record<string, ToolLinkTitle>
     mirror?: "active" | "locked"
+    mirrors?: Record<string, string>
     custom?: ToolLink[]
     notice?: string
 }
@@ -156,28 +158,31 @@ const gen_side = (input: Side) => `
 
 const gen_tool_group = (groups: ToolGroup[]) => {
     const fragments = []
-    const index: Map<string, ToolIndexItemType> = new Map()
-    const all: Map<string, string> = new Map()
+    const index: Record<string, ToolIndexItemType> = {}
+    const all: Record<string, string> = {}
     for (const group of groups) {
+        const group_name = (group.name === void 0 && group.list.length === 1) ? group.list[0].name : group.name!
         const list = []
         for (const tool of group.list) {
             list.push(tool.name)
-            all.set(tool.title, tool.name)
+            all[tool.title] = tool.name
             fragments.push(gen_tool(tool))
         }
-        index.set(
-            ((group.name === void 0 && group.list.length === 1) ? group.list[0].name : group.name!),
-            {
-                title: ((group.title === void 0 && group.list.length === 1) ? group.list[0].title : group.title!),
-                list
+        index[group_name] = {
+            title: ((group.title === void 0 && group.list.length === 1) ? group.list[0].title : group.title!),
+            list,
+        }
+    }
+    for (const group of groups) {
+        for (const tool of group.list) {
+            if (tool.cross !== void 0) {
+                for (const cross_group_name of tool.cross) {
+                    index[cross_group_name].list.push(tool.name)
+                }
             }
-        )
+        }
     }
-    return {
-        fragments,
-        index: Object.fromEntries(index),
-        all: Object.fromEntries(all),
-    }
+    return { fragments, index, all }
 }
 
 const gen_tool_link = (input: ToolLink) => `

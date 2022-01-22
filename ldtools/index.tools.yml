@@ -144,6 +144,7 @@
         图吧工具箱衍生的硬件检测工具。完美的避开所有国产软件常见的弊端。
     - name: aida64
       title: AIDA64
+      cross: [cpu, memory, burning]
       website: 1
       mirror: active
       description: >
@@ -204,11 +205,13 @@
         基于计算质数的CPU多线程基准测试。常用于CPU性能与稳定性测试。
     - name: baiyan
       title: 白眼
+      cross: [disk]
       website: 1
       description: >
         轻量级CPU跑分、排名，扩容盘检测软件。
     - name: blender-test
       title: Blender Open Data
+      cross: [gpu]
       website: 1
       description: >
         基于Blender渲染的测试软件。
@@ -216,6 +219,7 @@
         仅为下载器，下载速度受网络影响，请确定自己的使用需求后再去下载。
     - name: intel-xtu
       title: Intel XTU
+      cross: [memory]
       website: 1
       description: >
         Intel处理器官方超频调整工具。具体使用教程可在B站自行搜索。
