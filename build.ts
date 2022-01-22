@@ -3,6 +3,7 @@
 // deno run -A --unstable build.ts path\to\wwwroot\
 
 import { minify } from "https://deno.land/x/minifier@v1.1.1/mod.ts"
+import { transform } from "https://deno.land/x/esbuild@v0.14.13/mod.js"
 import { decodeText } from "https://cdn.jsdelivr.net/gh/stackinspector/DenoBase@latest/textcodec.ts"
 import { insert } from "https://cdn.jsdelivr.net/gh/stackinspector/DenoBase@latest/insert-string.ts"
 import { codegen } from "./codegen.ts"
@@ -83,7 +84,11 @@ const css = async (filename: string) => minify("css", await Deno.readTextFile(fi
 
 const js_inner = async (filename: string) => (await Deno.emit(filename, bundle_options)).files["deno:///bundle.js"]
 
-const js = async (filename: string) => minify("js", await js_inner(filename))
+const js = async (filename: string) => (await transform(await js_inner(filename), {
+  minifyWhitespace: true,
+  minifySyntax: true,
+  target: ["es6"],
+})).code
 
 const emit = async (filename: string, content: string) => {
   await Deno.writeTextFile(
@@ -103,3 +108,5 @@ await emit("index.html", await html("index.html"))
 await emit("ldtools/index.html", await html("ldtools/index.html"))
 await emit(`style-${git}.css`, await css("style.css"))
 await emit(`main-${git}.js`, await js("main.ts"))
+
+Deno.exit(0)
