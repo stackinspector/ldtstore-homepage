@@ -309,7 +309,7 @@
       title: EasyMats显存检测
       website: 2
       description: >
-        显存检测工具，适合检测一些特殊来路的显卡的真伪。
+        由B站UP制作的简化 显存检测工具MATS 使用的辅助工具，用于检测显卡显存是否有故障。依赖PE运行。
       notice: >
         一键安装脚本需要额外的U盘等设备等用来安装系统，请确定自己的使用需求后再去下载。
     - name: ddu
@@ -495,13 +495,11 @@
         读取的是显示器的标称值，结果仅供参考。
     - name: monitor-test
       title: 显示器检测
-      icon: monitorgamut
       website: 3
       description: >
         通过各种测试图像测试显示器的网页工具。
     - name: displayx
       title: DisplayX
-      icon: monitorgamut
       mirror: locked
       description: >
         经典的显示器测试工具。
@@ -512,13 +510,11 @@
         网页版键盘触发测试。可测试接触不良，坏轴等。
     - name: keyboard-test
       title: Keyboard Test Utility
-      icon: keyboard-trigger
       mirror: locked
       description: >
         键盘触发测试工具。可测试接触不良，坏轴等。
     - name: mouse-test-web
       title: 网页版鼠标检测工具
-      icon: mouse-test
       website: 3
       description: >
         网页版鼠标测试。检测鼠标或者触控板拖拽是否灵敏。
