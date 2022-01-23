@@ -4,7 +4,6 @@
     - name: memes
       title: 表情包下载
       keywords: bqb
-      outer_icon: placeholder
       downloads:
         noncdn: 合集网盘下载
       description: >
@@ -459,7 +458,6 @@
     - name: txbench
       title: TxBENCH
       keywords: SSD安全擦除固态硬盘跑分
-      outer_icon: placeholder
       website: 1
       mirror: synced
       description: >
@@ -515,21 +513,18 @@
     - name: easyu
       title: 优启通PE
       keywords: IT天空U盘启动PE
-      outer_icon: placeholder
       website: 1
       description: >
         由IT天空论坛开发的知名PE工具，用户口碑较好。
     - name: wepe
       title: 微PE
       keywords: U盘启动PE
-      outer_icon: placeholder
       website: 1
       description: >
         知名PE工具，用户口碑较好。
     - name: edgeless
       title: Edgeless PE
       keywords: U盘启动PE
-      outer_icon: placeholder
       website: 1
       description: >
         半开源的新型PE工具，仍不稳定，较高水平的用户可以尝试使用。
@@ -663,10 +658,22 @@
       mirror: locked
       description: >
         目录大小可视化工具。常用于整理文件。
+    - name: desktopok
+      title: DesktopOK
+      keywords: 系统桌面图标整理图标排列Windows
+      website: 1
+      mirror: locked
+      description: >
+        可以方便地恢复桌面图标排列的小工具。
+    - name: ccleaner
+      title: CCleaner
+      keywords: 系统清理垃圾
+      website: 1
+      description: >
+        知名系统清理工具。
     - name: 7zip
       title: 7-Zip
       keywords: 压缩解压校验RAR
-      outer_icon: placeholder
       website: 1
       mirror: synced
       description: >
@@ -674,7 +681,6 @@
     - name: fastcopy
       title: FastCopy
       keywords: 复制拷贝
-      outer_icon: placeholder
       website: 1
       mirror: synced
       description: >
@@ -682,7 +688,6 @@
     - name: freefilesync
       title: FreeFileSync
       keywords: 文件比对比较文件同步
-      outer_icon: placeholder
       website: 1
       description: >
         文件夹对比和同步工具，操作简单。
