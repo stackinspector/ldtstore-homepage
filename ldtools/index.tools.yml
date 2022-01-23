@@ -1,14 +1,6 @@
 - name: non-catalog
   title: ""
-  list:
-    - name: memes
-      title: 表情包下载
-      keywords: bqb
-      downloads:
-        noncdn: 合集网盘下载
-      description: >
-        提取码：ldts
-        <br>（也许未来会有表情包搜索功能）
+  list: []
 - list:
     - name: tbtool
       title: 图吧工具箱
@@ -636,6 +628,14 @@
 - name: other-tool
   title: 其他工具
   list:
+    - name: memes
+      title: 表情包下载
+      keywords: bqb
+      downloads:
+        noncdn: 合集网盘下载
+      description: >
+        提取码：ldts
+        <br>（也许未来会有表情包搜索功能）
     - name: chipgenius
       title: ChipGenius
       keywords: USB主控芯片USB设备路径
