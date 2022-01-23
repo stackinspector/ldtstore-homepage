@@ -1,7 +1,5 @@
 // deno-lint-ignore-file camelcase
 
-// deno run -A --unstable build.ts path\to\wwwroot\
-
 import { minify } from "https://deno.land/x/minifier@v1.1.1/mod.ts"
 import { transform } from "https://deno.land/x/esbuild@v0.14.13/mod.js"
 import { decodeText } from "https://cdn.jsdelivr.net/gh/stackinspector/DenoBase@latest/textcodec.ts"
