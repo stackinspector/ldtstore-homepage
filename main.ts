@@ -1,4 +1,4 @@
-import type { ToolIndexItemType } from "./codegen.ts";
+import type { ToolIndexType, ToolCrossType, ToolAllType } from "./codegen.ts";
 
 declare const PAGE_TYPE: "home" | "tool";
 
@@ -12,10 +12,17 @@ const side = document.getElementById("side")!;
 // tool only
 const search = document.getElementById("search");
 const back = document.getElementById("back");
-// 说明：加载时就取json文本值，无需担心注入
-const tools_index = document.getElementById("tools_index")?.innerText;
-const tools_all = document.getElementById("tools_all")?.innerText;
-const tools_cross = document.getElementById("tools_cross")?.innerText;
+
+// json随js加载，无需担心通过dom注入
+
+const load_json = (id: string) => {
+    const el = document.getElementById(id);
+    return el === null ? null : JSON.parse(el.innerText);
+}
+
+const tools_index = load_json("tools_index")
+const tools_all = load_json("tools_all");
+const tools_cross = load_json("tools_cross");
 
 const OFFSET_LIT = 13;
 // TODO 这里的长度和major中的left一样 添加新的pagetype记得修改这里
@@ -117,16 +124,16 @@ const renderSide = (id: string) => {
     }
     if (id.startsWith("tool-")) {
         const name = id.substring(5);
-        const index = (JSON.parse(tools_index!) as Record<string, ToolIndexItemType>)[name];
-        const cross = (JSON.parse(tools_cross!) as Record<string, string>)[name];
+        const index = (tools_index! as ToolIndexType)[name];
+        const cross = (tools_cross! as ToolCrossType)[name];
         const single = index.list.length === 1;
         side.appendChild(cloneTemplate("side-tools-base"));
         const title = side.getElementsByClassName("title")[0] as HTMLElement;
         title.innerText = single ? "详情" : index.title;
         const content = side.getElementsByClassName("content")[0];
         for (const tool of index.list) {
-            const item = cloneTemplate(`tool-${tool}`).firstElementChild;
-            const cross_notice = cross?.[tool];
+            const item = cloneTemplate(`tool-${tool}`).firstElementChild!;
+            const cross_notice = cross[tool];
             if (cross_notice !== void 0) {
                 const p = document.createElement("p");
                 p.innerHTML = cross_notice;
@@ -143,8 +150,8 @@ const renderSide = (id: string) => {
 };
 
 const renderSearch = (keywordText: string) => {
-    const all = JSON.parse(tools_all!) as Record<string, string>;
-    const content = document.getElementById("search-content");
+    const all = tools_all! as ToolAllType;
+    const content = document.getElementById("search-content")!;
     while (content.firstChild) {
         content.removeChild(content.lastChild!);
     }
@@ -374,11 +381,13 @@ const showDetail = (e: HTMLElement) => {
     }
 };
 
-interface Window {
-    copy?: typeof copy;
-    side?: typeof sideClick;
-    tool?: typeof toolSideClick;
-    detail?: typeof showDetail;
+declare global {
+    interface Window {
+        copy?: typeof copy;
+        side?: typeof sideClick;
+        tool?: typeof toolSideClick;
+        detail?: typeof showDetail;
+    }
 }
 
 window.copy = copy;

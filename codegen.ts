@@ -66,10 +66,14 @@ type ToolLink = {
     icon: "link" | "download"
 }
 
-export type ToolIndexItemType = {
+export type ToolIndexType = Record<string, {
     title: string
     list: string[]
-}
+}>
+
+export type ToolAllType = Record<string, string>
+
+export type ToolCrossType = Record<string, Record<string, string>>
 
 const tool_website_type = {
     1: "官方网站",
@@ -161,9 +165,9 @@ const gen_side = (input: Side) => `
 
 const gen_tool_group = (groups: ToolGroup[]) => {
     const fragments = []
-    const index: Record<string, ToolIndexItemType> = {}
-    const all: Record<string, string> = {}
-    const cross: Record<string, Record<string, string>> = {}
+    const index: ToolIndexType = {}
+    const all: ToolAllType = {}
+    const cross: ToolCrossType = {}
     const cross_notice_title: Record<string, string> = {}
     for (const group of groups) {
         if (group.name !== void 0 && group.cross_notice !== void 0) {
