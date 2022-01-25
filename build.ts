@@ -9,18 +9,6 @@ import { codegen } from "./codegen.ts"
 const target_dir = Deno.args[0]!
 const release = Boolean(Deno.args[1])
 
-// const LDTSTORE_ASSERT = "cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert@latest"
-const LDTSTORE_ASSERT = "ldtstore-assert-1307736292.file.myqcloud.com"
-const TOOL_DELIVERY_LDT = "tool-delivery-ldt-1307736292.file.myqcloud.com"
-
-const replace_cdn = (content: string) => content.replaceAll(
-  "{{TOOL_DELIVERY_LDT}}",
-  TOOL_DELIVERY_LDT
-).replaceAll(
-  "/assert/image",
-  `//${LDTSTORE_ASSERT}/image`,
-)
-
 const robots = `User-agent: *
 Allow: /
 Allow: /index.html
@@ -104,17 +92,17 @@ const emit = async (filename: string) => {
   if (ext === "html") {
     await Deno.writeTextFile(
       `${target_dir}/${name}.html`,
-      `<!--${copyright}-->\n\n${replace_cdn(await html(filename))}`,
+      `<!--${copyright}-->\n\n${await html(filename)}`,
     )
   } else if (ext === "css") {
     await Deno.writeTextFile(
       `${target_dir}/${name}-${git}.css`,
-      `/*${copyright}*/\n\n${replace_cdn(await css(filename))}`,
+      `/*${copyright}*/\n\n${await css(filename)}`,
     )
   } else if (ext === "ts") {
     await Deno.writeTextFile(
       `${target_dir}/${name}-${git}.js`,
-      `/*${copyright}*/\n\n${replace_cdn(await ts(filename))}`,
+      `/*${copyright}*/\n\n${await ts(filename)}`,
     )
   } else {
     throw new Error("unknown file type");
