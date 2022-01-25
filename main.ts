@@ -1,4 +1,4 @@
-import type { ToolIndexType, ToolCrossType, ToolAllType } from "./codegen.ts";
+import type { ToolIndexType, ToolCrossType, ToolAllType } from "./shared.ts";
 
 declare const PAGE_TYPE: "home" | "tool";
 

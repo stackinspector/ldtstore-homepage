@@ -13,12 +13,13 @@ const release = Boolean(Deno.args[1])
 const LDTSTORE_ASSERT = "ldtstore-assert-1307736292.file.myqcloud.com"
 const TOOL_DELIVERY_LDT = "tool-delivery-ldt-1307736292.file.myqcloud.com"
 
-const bundle_options: Deno.EmitOptions = {
-  bundle: "classic",
-  compilerOptions: {
-    lib: ["esnext", "dom"]
-  }
-}
+const replace_cdn = (content: string) => content.replaceAll(
+  "{{TOOL_DELIVERY_LDT}}",
+  TOOL_DELIVERY_LDT
+).replaceAll(
+  "/assert/image",
+  `//${LDTSTORE_ASSERT}/image`,
+)
 
 const robots = `User-agent: *
 Allow: /
@@ -39,17 +40,17 @@ const copyright = `
 `
 
 const replace_redirect = (content: string) => content.replaceAll(
-    `<a target="_blank" class="link" href="/r/`,
-    `<a target="_blank" class="link" href="https://ldtstore.com.cn/r/`
-  ).replaceAll(
-    `<a target="_blank" class="tile-link" href="/r/`,
-    `<a target="_blank" class="tile-link" href="https://ldtstore.com.cn/r/`
-  ).replaceAll(
-    `<a target="_blank" class="link" href="/r2/`,
-    `<a target="_blank" class="link" href="https://ldtstore.com.cn/r2/`
-  ).replaceAll(
-    `<a target="_blank" class="tile-link" href="/r2/`,
-    `<a target="_blank" class="tile-link" href="https://ldtstore.com.cn/r2/`
+  `<a target="_blank" class="link" href="/r/`,
+  `<a target="_blank" class="link" href="https://ldtstore.com.cn/r/`
+).replaceAll(
+  `<a target="_blank" class="tile-link" href="/r/`,
+  `<a target="_blank" class="tile-link" href="https://ldtstore.com.cn/r/`
+).replaceAll(
+  `<a target="_blank" class="link" href="/r2/`,
+  `<a target="_blank" class="link" href="https://ldtstore.com.cn/r2/`
+).replaceAll(
+  `<a target="_blank" class="tile-link" href="/r2/`,
+  `<a target="_blank" class="tile-link" href="https://ldtstore.com.cn/r2/`
 )
 
 const static_inserts: Map<string, string> = new Map()
@@ -71,40 +72,61 @@ const html = async (filename: string) => {
   ).replaceAll(
     `<a `,
     `<a target="_blank" `
-  ).replaceAll(
-    "{{TOOL_DELIVERY_LDT}}",
-    TOOL_DELIVERY_LDT
   )
   return minify("html", release ? content : replace_redirect(content))
 }
 
 const css = async (filename: string) => minify("css", await Deno.readTextFile(filename))
 
-const js_inner = async (filename: string) => (await Deno.emit(filename, bundle_options)).files["deno:///bundle.js"]
+const ts = async (filename: string) => {
+  const bundle_result = await Deno.emit(filename, {
+    bundle: "classic",
+    compilerOptions: {
+      lib: ["esnext", "dom"],
+    }
+  })
+  const transform_result = await transform(bundle_result.files["deno:///bundle.js"], {
+    minifyWhitespace: true,
+    minifySyntax: true,
+    target: ["es6"],
+  })
+  console.log({
+    bundle: bundle_result,
+    transform: transform_result,
+  })
+  return transform_result.code
+}
 
-const js = async (filename: string) => (await transform(await js_inner(filename), {
-  minifyWhitespace: true,
-  minifySyntax: true,
-  target: ["es6"],
-})).code
-
-const emit = async (filename: string, content: string) => {
-  await Deno.writeTextFile(
-    target_dir + filename,
-    (filename.substring(filename.length - 5) === ".html" ? `<!--${copyright}-->\n\n` : `/*${copyright}*/\n\n`) +
-    content.replaceAll(
-      "/assert/image",
-      `//${LDTSTORE_ASSERT}/image`,
-    ),
-  )
+const emit = async (filename: string) => {
+  const splited = filename.split(".")
+  const ext = splited.pop()!
+  const name = splited.join("")
+  if (ext === "html") {
+    await Deno.writeTextFile(
+      `${target_dir}/${name}.html`,
+      `<!--${copyright}-->\n\n${replace_cdn(await html(filename))}`,
+    )
+  } else if (ext === "css") {
+    await Deno.writeTextFile(
+      `${target_dir}/${name}-${git}.css`,
+      `/*${copyright}*/\n\n${replace_cdn(await css(filename))}`,
+    )
+  } else if (ext === "ts") {
+    await Deno.writeTextFile(
+      `${target_dir}/${name}-${git}.js`,
+      `/*${copyright}*/\n\n${replace_cdn(await ts(filename))}`,
+    )
+  } else {
+    throw new Error("unknown file type");
+  }
 }
 
 await Deno.writeTextFile(target_dir + "robots.txt", robots)
 if (release) await Deno.mkdir(target_dir + "ldtools")
 
-await emit("index.html", await html("index.html"))
-await emit("ldtools/index.html", await html("ldtools/index.html"))
-await emit(`style-${git}.css`, await css("style.css"))
-await emit(`main-${git}.js`, await js("main.ts"))
+await emit("index.html")
+await emit("ldtools/index.html")
+await emit("style.css")
+await emit("main.ts")
 
 Deno.exit(0)

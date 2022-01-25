@@ -1,5 +1,6 @@
 // deno-lint-ignore-file camelcase
 import { parse as parseYaml } from "https://deno.land/std@0.102.0/encoding/yaml.ts"
+import type { ToolIndexType, ToolCrossType, ToolAllType } from "./shared.ts";
 
 type PageType = "home" | "tool"
 
@@ -65,15 +66,6 @@ type ToolLink = {
     action?: string
     icon: "link" | "download"
 }
-
-export type ToolIndexType = Record<string, {
-    title: string
-    list: string[]
-}>
-
-export type ToolAllType = Record<string, string>
-
-export type ToolCrossType = Record<string, Record<string, string>>
 
 const tool_website_type = {
     1: "官方网站",
