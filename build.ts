@@ -2,8 +2,6 @@
 
 import { minify } from "https://deno.land/x/minifier@v1.1.1/mod.ts"
 import { transform } from "https://deno.land/x/esbuild@v0.14.13/mod.js"
-import { decodeText } from "https://cdn.jsdelivr.net/gh/stackinspector/DenoBase@latest/textcodec.ts"
-import { insert } from "https://cdn.jsdelivr.net/gh/stackinspector/DenoBase@latest/insert-string.ts"
 import { codegen } from "./codegen.ts"
 
 const target_dir = Deno.args[0]!
@@ -14,7 +12,7 @@ Allow: /
 Allow: /index.html
 Disallow: /*`
 
-const git = decodeText(
+const git = new TextDecoder().decode(
   await Deno.run({
     cmd: `git log -1 --pretty=format:"%h"`.split(" "),
     stdout: "piped",
@@ -46,6 +44,11 @@ for await (const item of Deno.readDir("./fragment")) {
   if (!item.isFile) continue
   static_inserts.set(`<!--{{${item.name}}}-->`, await Deno.readTextFile("./fragment/" + item.name))
 }
+
+const insert = (template: string, content: Map<string, string>) => template.replaceAll(
+  new RegExp([...content.keys()].join("|"),"gi"),
+  (matched) => content.get(matched)!
+)
 
 const html = async (filename: string) => {
   const source = await Deno.readTextFile(filename)
@@ -109,8 +112,8 @@ const emit = async (filename: string) => {
   }
 }
 
-await Deno.writeTextFile(target_dir + "robots.txt", robots)
-if (release) await Deno.mkdir(target_dir + "ldtools")
+await Deno.writeTextFile(target_dir + "/robots.txt", robots)
+if (release) await Deno.mkdir(target_dir + "/ldtools")
 
 await emit("index.html")
 await emit("ldtools/index.html")
