@@ -5,7 +5,6 @@ import { transform } from "https://deno.land/x/esbuild@v0.14.13/mod.js"
 import { codegen } from "./codegen.ts"
 
 const target_dir = Deno.args[0]!
-const release = Boolean(Deno.args[1])
 
 const robots = `User-agent: *
 Allow: /
@@ -24,20 +23,6 @@ const copyright = `
   Source code: https://github.com/stackinspector/ldtstore-homepage
   Commit: ${git}
 `
-
-const replace_redirect = (content: string) => content.replaceAll(
-  `<a target="_blank" class="link" href="/r/`,
-  `<a target="_blank" class="link" href="https://ldtstore.com.cn/r/`
-).replaceAll(
-  `<a target="_blank" class="tile-link" href="/r/`,
-  `<a target="_blank" class="tile-link" href="https://ldtstore.com.cn/r/`
-).replaceAll(
-  `<a target="_blank" class="link" href="/r2/`,
-  `<a target="_blank" class="link" href="https://ldtstore.com.cn/r2/`
-).replaceAll(
-  `<a target="_blank" class="tile-link" href="/r2/`,
-  `<a target="_blank" class="tile-link" href="https://ldtstore.com.cn/r2/`
-)
 
 const static_inserts: Map<string, string> = new Map()
 for await (const item of Deno.readDir("./fragment")) {
@@ -64,7 +49,7 @@ const html = async (filename: string) => {
     `<a `,
     `<a target="_blank" `
   )
-  return minify("html", release ? content : replace_redirect(content))
+  return minify("html", content)
 }
 
 const css = async (filename: string) => minify("css", await Deno.readTextFile(filename))
@@ -108,12 +93,16 @@ const emit = async (filename: string) => {
       `/*${copyright}*/\n\n${await ts(filename)}`,
     )
   } else {
-    throw new Error("unknown file type");
+    throw new Error("unknown file type")
   }
 }
 
 await Deno.writeTextFile(target_dir + "/robots.txt", robots)
-if (release) await Deno.mkdir(target_dir + "/ldtools")
+try {
+  await Deno.mkdir(target_dir + "/ldtools")
+} catch (e) {
+  console.log(e)
+}
 
 await emit("index.html")
 await emit("ldtools/index.html")

@@ -4,12 +4,12 @@
     <p>
       GitHub:
       <br>
-      <a class="link" href="/r/website-github">stackinspector/LDTstore</a>
+      <a class="link" href="//r.ldtstore.com.cn/r/website-github">stackinspector/LDTstore</a>
       <br>
-      <a class="link" href="/r/homepage-github">stackinspector/ldtstore-homepage</a>
+      <a class="link" href="//r.ldtstore.com.cn/r/homepage-github">stackinspector/ldtstore-homepage</a>
     </p>
     <p>
-      对于Changelog及技术细节说明，详见<a class="link" href="/r/poweredby-1">@进栈检票</a>的动态。请善用PC Web端搜索动态功能查找你想知道的内容。
+      对于Changelog及技术细节说明，详见<a class="link" href="//r.ldtstore.com.cn/r/poweredby-1">@进栈检票</a>的动态。请善用PC Web端搜索动态功能查找你想知道的内容。
       <br>如果想进行任何技术交流或者想加入帮忙，欢迎私信检票或者联系<a class="link" href="mailto:ldtstore@126.com">ldtstore@126.com</a>，都会回复的。
       <br>（就是说各位有能man不用自己摸着黑到处瞎试探了
     </p>
@@ -97,11 +97,11 @@
   title: 硬件讨论群
   text: >
     <p>一群：1005059704<a class="link copy" onclick="copy('1005059704')">📋</a></p>
-    <p><a class="link" href="/r/group-readme-1">核心群入群测试</a></p>
+    <p><a class="link" href="//r.ldtstore.com.cn/r/group-readme-1">核心群入群测试</a></p>
 - name: outer
   title: 站外官方账号
   text: >
-    <p><a class="link" href="/r/ops-top-1">关于站外官方账号</a></p>
+    <p><a class="link" href="//r.ldtstore.com.cn/r/ops-top-1">关于站外官方账号</a></p>
   tiles:
     - tile: s notext
       action: r

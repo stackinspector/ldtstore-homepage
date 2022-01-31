@@ -101,8 +101,8 @@ const gen_tile = (input: Tile): string => {
         case "side": return call("side")
         case "tool": return call("tool")
         case "href": return href("/")
-        case "r": return href("/r/")
-        case "r2": return href("/r2/")
+        case "r": return href("//r.ldtstore.com.cn/r/")
+        case "r2": return href("//r.ldtstore.com.cn/r2/")
         default: throw new Error("unknown action type")
     }
 }
@@ -222,17 +222,17 @@ const gen_tool = (input: Tool) => `
                 <p>
                     ${input.website === void 0 ? "" : gen_tool_link({
                         title: input.website,
-                        link: `/r2/${input.name}`,
+                        link: `//r.ldtstore.com.cn/r2/${input.name}`,
                         icon: "link",
                     })}
                     ${input.websites === void 0 ? "" : Object.entries(input.websites).map(o => gen_tool_link({
                         title: o[1],
-                        link: `/r2/${input.name}-${o[0]}`,
+                        link: `//r.ldtstore.com.cn/r2/${input.name}-${o[0]}`,
                         icon: "link",
                     })).join("")}
                     ${input.downloads === void 0 ? "" : Object.entries(input.downloads).map(o => gen_tool_link({
                         title: o[1],
-                        link: `/r2/${input.name}-d-${o[0]}`,
+                        link: `//r.ldtstore.com.cn/r2/${input.name}-d-${o[0]}`,
                         icon: "download",
                     })).join("")}
                     ${input.mirror === void 0 ? "" : gen_tool_link({
