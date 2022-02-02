@@ -214,7 +214,7 @@ const gen_tool = (input: Tool) => `
         <img src="//s0.ldtstore.com.cn/${input.icon === void 0 && input.outer_icon === void 0 ? `icon-tool/${input.name}` : (input.outer_icon === void 0 ? `icon-tool/${input.icon}` : `icon/${input.outer_icon}`)}.webp">
         <div class="item-title">${input.title}</div>
         <svg class="icon-line">
-            <use xlink:href="#icon-expand-right"></use>
+            <use href="#icon-expand-right"></use>
         </svg>
         <div class="detail-container">
             <div class="detail">
