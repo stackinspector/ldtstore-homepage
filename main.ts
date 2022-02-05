@@ -395,6 +395,6 @@ window.side = sideClick;
 window.tool = toolSideClick;
 window.detail = showDetail;
 
-background.style.backgroundImage = `url('//s0.ldtstore.com.cn/bg/${Math.floor(Math.random() * 7)}.webp')`;
+background.style.backgroundImage = `url('{{IMAGE}}/bg/${Math.floor(Math.random() * 7)}.webp')`;
 
 recalculate();

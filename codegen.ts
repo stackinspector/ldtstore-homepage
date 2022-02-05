@@ -79,7 +79,7 @@ const gen_tile = (input: Tile): string => {
     const isnotext = input.font === void 0 || input.title === void 0
 
     const inner = `
-        <img src="//s0.ldtstore.com.cn/icon/${input.icon === void 0 ? input.name : input.icon}.webp">
+        <img src="{{IMAGE}}/icon/${input.icon === void 0 ? input.name : input.icon}.webp">
         ${isnotext ? "" : `<${input.font}>${input.title}</${input.font}>`}
     `
 
@@ -211,7 +211,7 @@ const gen_tool_link = (input: ToolLink) => `
 const gen_tool = (input: Tool) => `
     <template id="tool-${input.name}">
     <div class="item" onclick="detail(this)">
-        <img src="//s0.ldtstore.com.cn/${input.icon === void 0 && input.outer_icon === void 0 ? `icon-tool/${input.name}` : (input.outer_icon === void 0 ? `icon-tool/${input.icon}` : `icon/${input.outer_icon}`)}.webp">
+        <img src="{{IMAGE}}/${input.icon === void 0 && input.outer_icon === void 0 ? `icon-tool/${input.name}` : (input.outer_icon === void 0 ? `icon-tool/${input.icon}` : `icon/${input.outer_icon}`)}.webp">
         <div class="item-title">${input.title}</div>
         <svg class="icon-line">
             <use href="#icon-expand-right"></use>
@@ -237,12 +237,12 @@ const gen_tool = (input: Tool) => `
                     })).join("")}
                     ${input.mirror === void 0 ? "" : gen_tool_link({
                         title: "镜像下载",
-                        link: `//d1.ldtstore.com.cn/${input.mirror}/${input.name}.zip`,
+                        link: `{{MIRROR}}/${input.mirror}/${input.name}.zip`,
                         icon: "download",
                     })}
                     ${input.mirrors === void 0 ? "" : Object.entries(input.mirrors).map(o => gen_tool_link({
                         title: o[1],
-                        link: `//d1.ldtstore.com.cn/locked/${input.name}-${o[0]}.zip`,
+                        link: `{{MIRROR}}/locked/${input.name}-${o[0]}.zip`,
                         icon: "download",
                     })).join("")}
                     ${input.custom === void 0 ? "" : input.custom.map(gen_tool_link).join("")}

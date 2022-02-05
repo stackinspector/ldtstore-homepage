@@ -6,6 +6,17 @@ import { codegen } from "./codegen.ts"
 
 const target_dir = Deno.args[0]!
 
+const Addr = {
+  IMAGE: "//s0.ldtstore.com.cn",
+  MIRROR: "//d1.ldtstore.com.cn",
+}
+
+const global_replace = (input: string) => input.replaceAll(
+  "{{IMAGE}}", Addr.IMAGE
+).replaceAll(
+  "{{MIRROR}}", Addr.MIRROR
+)
+
 const robots = `User-agent: *
 Allow: /
 Allow: /index.html
@@ -80,17 +91,17 @@ const emit = async (filename: string) => {
   if (ext === "html") {
     await Deno.writeTextFile(
       `${target_dir}/${name}.html`,
-      `<!--${copyright}-->\n\n${await html(filename)}`,
+      `<!--${copyright}-->\n\n${global_replace(await html(filename))}`,
     )
   } else if (ext === "css") {
     await Deno.writeTextFile(
       `${target_dir}/${name}-${git}.css`,
-      `/*${copyright}*/\n\n${await css(filename)}`,
+      `/*${copyright}*/\n\n${global_replace(await css(filename))}`,
     )
   } else if (ext === "ts") {
     await Deno.writeTextFile(
       `${target_dir}/${name}-${git}.js`,
-      `/*${copyright}*/\n\n${await ts(filename)}`,
+      `/*${copyright}*/\n\n${global_replace(await ts(filename))}`,
     )
   } else {
     throw new Error("unknown file type")
