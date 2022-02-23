@@ -118,7 +118,7 @@ const gen_tile_grids = (input: TileGrids) => {
     const [first, second, third] = input.middle;
     if (third.content.length !== 9) throw new Error("unsupported grid middle count")
     return `
-        <div class="tile-grid-left">
+        <div class="tile-grid-vertical">
             ${input.left.map(gen_tile).join("")}
         </div>
         <div class="tile-grid-middle">
