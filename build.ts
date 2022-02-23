@@ -95,11 +95,11 @@ await Deno.mkdir(target_dir + "/ldtools", { recursive: true })
 
 await Deno.writeTextFile(
   `${target_dir}/index.html`,
-  `<!--${copyright}-->\n\n${global_replace(await html(`index.html`))}`,
+  `<!--${copyright}-->\n\n${global_replace(await html("index.html"))}`,
 )
 await Deno.writeTextFile(
   `${target_dir}/ldtools/index.html`,
-  `<!--${copyright}-->\n\n${global_replace(await html(`ldtools/index.html`))}`,
+  `<!--${copyright}-->\n\n${global_replace(await html("ldtools/index.html"))}`,
 )
 await Deno.writeTextFile(
   `${target_dir}/style-${git}.css`,

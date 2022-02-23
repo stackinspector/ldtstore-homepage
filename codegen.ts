@@ -255,8 +255,10 @@ const gen_tool = (input: Tool) => `
 `
 
 export const codegen = (filename: string): Map<string, string> => {
-    const load = (type: InputType) => parseYaml(Deno.readTextFileSync(filename.replaceAll(".html", `.${type}.yml`)))
+    const load_base = (file: string) => parseYaml(Deno.readTextFileSync(file))
+    const load = (type: InputType) => load_base(filename.replaceAll(".html", `.${type}.yml`))
     const dynamic_inserts = new Map()
+    const sides = [...(load("sides") as Side[]), ...(load_base("public.sides.yml") as Side[])]
 
     if (!filename.includes("ldtools")) {
         dynamic_inserts.set(
@@ -265,7 +267,7 @@ export const codegen = (filename: string): Map<string, string> => {
         )
         dynamic_inserts.set(
             "<!--{{sides}}-->",
-            (load("sides") as Side[]).map(gen_side).join(""),
+            sides.map(gen_side).join(""),
         )
     } else {
         const { fragments, index, all, cross } = gen_tool_group(load("tools") as ToolGroup[])
@@ -275,7 +277,7 @@ export const codegen = (filename: string): Map<string, string> => {
         )
         dynamic_inserts.set(
             "<!--{{sides}}-->",
-            [...(load("sides") as Side[]).map(gen_side), ...fragments].join(""),
+            [...sides.map(gen_side), ...fragments].join(""),
         )
         dynamic_inserts.set(
             "<!--{{tools_index}}-->",
