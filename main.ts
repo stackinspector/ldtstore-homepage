@@ -14,13 +14,12 @@ const search = document.getElementById("search");
 const back = document.getElementById("back");
 
 // json随js加载，无需担心通过dom注入
-
 const load_json = (id: string) => {
     const el = document.getElementById(id);
     return el === null ? null : JSON.parse(el.innerText);
-}
+};
 
-const tools_index = load_json("tools_index")
+const tools_index = load_json("tools_index");
 const tools_all = load_json("tools_all");
 const tools_cross = load_json("tools_cross");
 
@@ -36,20 +35,25 @@ const enum LayoutMode {
 
 let layoutMode = LayoutMode.PC;
 
-//与改recalculate有关的数据
-const recalculateResult : {
-    sidePosition: number,           //side的位置
-    distance: number,               //打开侧边栏时需要移动的距离
-    center: boolean                 //侧边栏居中模式（居中时主栏隐藏）
+// 与recalculate有关的数据
+const RecalculateState: {
+    /// side的位置
+    sidePosition: number;
+    /// 打开侧边栏时需要移动的距离
+    distance: number;
+    /// 侧边栏居中模式（居中时主栏隐藏）
+    center: boolean;
 } = {
     sidePosition: 0,
     distance: 300,
-    center: false
+    center: false,
 };
 
 const SideState: {
-    on: boolean,                    //侧边栏是否打开
-    id: string | null,              //侧边栏当前id
+    /// 侧边栏是否打开
+    on: boolean;
+    /// 侧边栏当前id
+    id: string | null;
 } = {
     on: false,
     id: null,
@@ -70,7 +74,7 @@ window.ontouchend = (e: TouchEvent) => {
     }
 };
 
-//点击背景事件绑定
+// 点击背景事件绑定
 content.onclick = background.onclick = (e) => {
     if (
         e.composedPath()[0] === content ||
@@ -80,7 +84,7 @@ content.onclick = background.onclick = (e) => {
     }
 };
 
-//右上角图标事件绑定 （tool only）
+// 右上角图标事件绑定 (tool only)
 if (PAGE_TYPE === "tool") {
     search!.onclick = (e: MouseEvent) => {
         // 用来阻止冒泡
@@ -110,23 +114,22 @@ const sideMove = (enable: boolean) => {
     }
 };
 
-const setTransitionDuration = (time : number = 0.4) => {
+const setTransitionDuration = (time = 0.4) => {
     offset.style.transitionDuration = side.style.transitionDuration = time + "s";
-}
+};
 
 /**
  * 侧边栏、主栏位置设置
  */
-const positionSet = () =>{
-    if(SideState.on){
-        offset.style.left = `${-recalculateResult.distance}px`;
-        side.style.left = `${recalculateResult.sidePosition - recalculateResult.distance}px`;
-    }
-    else{
+const positionSet = () => {
+    if (SideState.on) {
+        offset.style.left = `${-RecalculateState.distance}px`;
+        side.style.left = `${RecalculateState.sidePosition - RecalculateState.distance}px`;
+    } else {
         offset.style.left = "0";
-        side.style.left = `${recalculateResult.sidePosition}px`;
+        side.style.left = `${RecalculateState.sidePosition}px`;
     }
-}
+};
 
 /**
  * 侧边栏内容设置、透明度修改
@@ -141,18 +144,19 @@ const sideChange = (id: string | null) => {
 
     // 防止横向的在侧边栏展开的情况下还能被点到
     offset.style.visibility = side.style.visibility = "visible";
-    if (recalculateResult.center) {
+    if (RecalculateState.center) {
         offset.style.opacity = SideState.id === null ? "1" : "0";
-    }
-    else{
+    } else {
         offset.style.opacity = "1";
     }
 
     if (id === "search") {
         // console.log("focus");
-        let keyword = document.getElementById("keyword") as HTMLInputElement;
+        const keyword = document.getElementById("keyword") as HTMLInputElement;
         const inputTrigger = document.getElementById("inputTrigger") as HTMLElement;
-        inputTrigger.onclick = (e) => { keyword.focus(); };
+        inputTrigger.onclick = () => {
+            keyword.focus();
+        };
         keyword.addEventListener("keyup", () => {
             renderSearch(keyword.value);
         });
@@ -169,7 +173,7 @@ const sideClick = (id: string) => {
 };
 
 /**
- * 点击侧边栏(tool)
+ * 点击侧边栏 (tool)
  * @param id 要设置为的目标侧边栏id
  */
 const toolSideClick = (id: string) => {
@@ -179,7 +183,7 @@ const toolSideClick = (id: string) => {
 /**
  * 关闭侧边栏
  */
- const sideClose = () => {
+const sideClose = () => {
     sideSet(null);
 };
 
@@ -191,7 +195,7 @@ const sideSet = (id: string | null) => {
     setTransitionDuration();
 
     if (id === null) {
-        //1 关闭
+        // 1 关闭
         SideState.id = null;
         sideMove(false);
         sideChange(null);
@@ -199,16 +203,16 @@ const sideSet = (id: string | null) => {
     }
 
     if (!SideState.on) {
-        //2 直接打开
+        // 2 直接打开
         SideState.id = id;
         sideMove(true);
         sideChange(SideState.id);
     } else {
         if (SideState.id === id) {
-            //3 两次点击 关闭
+            // 3 两次点击 关闭
             sideSet(null);
         } else {
-            //4 点击另一个 切换
+            // 4 点击另一个 切换
             SideState.id = id;
             sideChange(null);
         }
@@ -220,7 +224,7 @@ side.addEventListener("transitionend", (e) => {
         // 防止横向的在侧边栏展开的情况下还能被点到
         offset.style.visibility = offset.style.opacity === "0" ? "hidden" : "visible";
         side.style.visibility = side.style.opacity === "0" ? "hidden" : "visible";
-        //完成切换的操作
+        // 完成切换的操作
         if (side.style.opacity === "0" && SideState.id !== null) {
             sideChange(SideState.id);
         }
@@ -309,46 +313,42 @@ const recalculate = () => {
     const delta_major = body.clientWidth - major.clientWidth;
     const delta_side = body.clientWidth - side.clientWidth;
     const delta = body.clientWidth - major.clientWidth - side.clientWidth;
-    //计算side的位置，保证其在major右边，并且最多不超过屏幕宽度
-    if(delta_major < 0){
-        recalculateResult.sidePosition = body.clientWidth;
+    // 计算side的位置，保证其在major右边，并且最多不超过屏幕宽度
+    if (delta_major < 0) {
+        RecalculateState.sidePosition = body.clientWidth;
+    } else {
+        RecalculateState.sidePosition = major.clientWidth + delta_major / 2;
     }
-    else{
-        recalculateResult.sidePosition = major.clientWidth + delta_major / 2;
-    }
-    
-    //计算side移动的距离
-    recalculateResult.center = false;
+
+    // 计算side移动的距离
+    RecalculateState.center = false;
     if (delta > 0) {
-        recalculateResult.distance = major.offsetLeft - delta / 2;
+        RecalculateState.distance = major.offsetLeft - delta / 2;
     } else {
         if (PAGE_TYPE === "tool" && delta_major < 1) {
-            recalculateResult.center = true;
-            recalculateResult.distance = side.clientWidth + delta_side / 2;
+            RecalculateState.center = true;
+            RecalculateState.distance = side.clientWidth + delta_side / 2;
         } else {
             if (delta_side < 200) {
-                recalculateResult.center = true;
-                recalculateResult.distance = major.clientWidth + (- major.clientWidth + side.clientWidth) / 2;
+                RecalculateState.center = true;
+                RecalculateState.distance = major.clientWidth + (-major.clientWidth + side.clientWidth) / 2;
             } else {
-                recalculateResult.distance = -delta + major.offsetLeft;
+                RecalculateState.distance = -delta + major.offsetLeft;
             }
         }
     }
 
-    //立即对布局做出响应
+    // 立即对布局做出响应
     setTransitionDuration(0);
     positionSet();
-    if(SideState.on){
-        offset.style.opacity = recalculateResult.center ? "0" : "1";
+    if (SideState.on) {
+        offset.style.opacity = RecalculateState.center ? "0" : "1";
         offset.style.visibility = offset.style.opacity === "0" ? "hidden" : "visible";
     }
-    
 };
 
 window.onresize = () => {
-
     recalculate();
-    
 };
 
 /**
@@ -360,27 +360,28 @@ const showDetail = (e: HTMLElement) => {
     const content = e.getElementsByClassName("detail-container")[0] as HTMLElement;
     const icon = e.getElementsByClassName("icon-line")[0] as HTMLElement;
     const height = e.getElementsByClassName("detail")[0].clientHeight;
-    
-    if(content.style.height === "")
-        //第一次操作
+
+    if (content.style.height === "") {
+        // 第一次操作
         content.style.height = "0px";
-    //使用百分比高度-无法应用渐变动画，不使用百分比高度-无法自适应行数变化
-    //这里只能投机取巧在无法被察觉的情况下进行切换
+    }
+    // 使用百分比高度-无法应用渐变动画，不使用百分比高度-无法自适应行数变化
+    // 这里只能投机取巧在无法被察觉的情况下进行切换
     if (content.style.height === "100%") {
-        //展开 -> 关闭
+        // 展开 -> 关闭
         content.style.transitionDuration = ".01s";
         content.style.height = `${height}px`;
-        content.ontransitionend = () =>{
+        content.ontransitionend = () => {
             content.style.transitionDuration = ".3s";
             content.style.height = "0px";
-        }
+        };
         icon.style.transform = "rotate(0deg)";
     }
     if (content.style.height === "0px") {
-        //关闭 -> 展开
+        // 关闭 -> 展开
         content.style.transitionDuration = ".3s";
         content.style.height = `${height}px`;
-        content.ontransitionend = () =>{
+        content.ontransitionend = () => {
             content.style.height = "100%";
         };
         icon.style.transform = "rotate(90deg)";
