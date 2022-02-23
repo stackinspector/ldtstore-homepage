@@ -18,7 +18,6 @@ const load_json = (id: string) => {
     const el = document.getElementById(id);
     return el === null ? null : JSON.parse(el.innerText);
 };
-
 const tools_index = load_json("tools_index");
 const tools_all = load_json("tools_all");
 const tools_cross = load_json("tools_cross");
@@ -388,6 +387,17 @@ const showDetail = (e: HTMLElement) => {
     }
 };
 
+/*
+const renderDispatchBanner = () => {
+    const msg = {
+        "?fw=intl": "检测到你的IP地址不在中国大陆，已调度到国际站。",
+        "?fw=intl-root": "检测到你的IP地址不在中国大陆，已调度到国际站。",
+        "?fw=emerg-root": "由于国内站遭受攻击，已调度到国际站。",
+    }[location.search];
+    if (msg === void 0) return;
+}
+*/
+
 declare global {
     interface Window {
         copy?: typeof copy;
@@ -400,7 +410,9 @@ declare global {
 window.copy = copy;
 window.side = sideClick;
 window.tool = toolSideClick;
-window.detail = showDetail;
+if (PAGE_TYPE === "tool") {
+    window.detail = showDetail;
+}
 
 background.style.backgroundImage = `url('{{IMAGE}}/bg/${Math.floor(Math.random() * 7)}.webp')`;
 

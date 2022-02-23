@@ -47,7 +47,7 @@ for await (const item of Deno.readDir("./fragment")) {
 static_inserts.set(`<!--{{footer}}-->`, await Deno.readTextFile(cfg === "intl" ? "./fragment/footer-intl.html" : "./fragment/footer.html"))
 
 const insert = (template: string, content: Map<string, string>) => template.replaceAll(
-  new RegExp([...content.keys()].join("|"),"gi"),
+  new RegExp([...content.keys()].join("|"), "gi"),
   (matched) => content.get(matched)!
 )
 
