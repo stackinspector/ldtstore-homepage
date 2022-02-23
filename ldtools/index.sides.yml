@@ -38,3 +38,26 @@
       name: rlwj-spec-1
       icon: spec
       title: 投稿规范
+- name: drv
+  title: 各厂商官网驱动下载页面
+  templated:
+    template:
+      tile: s
+      font: h3
+      action: r2
+    tiles:
+      intel: Intel
+      amd: AMD
+      nvidia-new: NVIDIA（新）
+      nvidia-old: NVIDIA（旧） # 图标做一个就行 但是要复制两份
+      asus: 华硕
+      msi: 微星
+      asrock: 华擎
+      maxsun: 铭瑄
+      biostar: 映泰
+      gigabyte: 技嘉
+      colorful: 七彩虹
+      galaxy: 影驰
+      soyo: 梅捷
+      shengqi: 圣旗
+      onda: 昂达

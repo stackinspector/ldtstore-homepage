@@ -36,16 +36,21 @@ middle:
       title: 其他工具集合
   - title: 站点链接
     content:
-    - tile: m1
+    - tile: s1
       font: h3
       action: tool
-      name: itellyou
-      title: ITELLYOU（原版镜像）
+      name: os-images
+      title: 系统镜像
+    - tile: s1
+      font: h3
+      action: side
+      name: drv
+      title: 官网驱动
     - tile: m1
       font: h3
       action: tool
       name: rank
-      title: 天梯图
+      title: 天梯图与数据
   - title: 工具下载
     content:
     - tile: s2
