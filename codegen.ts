@@ -79,7 +79,7 @@ const gen_tile = (input: Tile): string => {
     const isnotext = input.font === void 0 || input.title === void 0
 
     const inner = `
-        <img src="{{IMAGE}}/icon/${input.icon === void 0 ? input.name : input.icon}.webp" alt="${input.title}">
+        <img src="{{IMAGE}}/icon/${input.icon === void 0 ? input.name : input.icon}.webp" ${input.title === void 0 ? "" : `alt="${input.title}"`}>
         ${isnotext ? "" : `<${input.font}>${input.title}</${input.font}>`}
     `
 
