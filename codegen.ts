@@ -25,12 +25,22 @@ type Tile = {
     title?: string
 }
 
+type TileTemplate = {
+    template: {
+        tile: string
+        font?: string
+        action: string
+    }
+    tiles: Record<string, string>
+}
+
 type Side = {
     name: string
     title: string
     text?: string
     text_small?: boolean
     tiles?: Tile[]
+    templated?: TileTemplate
 }
 
 type ToolGroup = {
@@ -79,7 +89,11 @@ const gen_tile = (input: Tile): string => {
     const isnotext = input.font === void 0 || input.title === void 0
 
     const inner = `
-        <img src="{{IMAGE}}/icon/${input.icon === void 0 ? input.name : input.icon}.webp" ${input.title === void 0 ? "" : `alt="${input.title}"`}>
+        <img src="{{IMAGE}}/icon/${
+            input.icon === void 0 ? input.name : input.icon
+        }.webp" ${
+            input.title === void 0 ? "" : `alt="${input.title}"`
+        }>
         ${isnotext ? "" : `<${input.font}>${input.title}</${input.font}>`}
     `
 
@@ -143,14 +157,28 @@ const gen_major = (inner: string, pagetype: PageType) => `
     </div>
 `
 
+const tile_template = (input: TileTemplate): Tile[] => Object.entries(input.tiles).map(o => ({
+    ...input.template,
+    name: o[0],
+    title: o[1] === "" ? void 0 : o[1],
+}))
+
 const gen_side = (input: Side) => `
     <template id="side-${input.name}">
         <div class="title">${input.title}</div>
         <svg class="icon-back"><use href="#icon-arrow-left"></use></svg>
         <hr>
         <div class="content">
-            ${input.tiles === void 0 ? "" : input.tiles?.map(gen_tile).join("") + `<div class="clearfix"></div>`}
-            ${input.text === void 0 ? "" : `<div class="${input.text_small ? "text small" : "text"}">${input.text}</div>`}
+            ${
+                input.tiles === void 0 && input.templated === void 0
+                    ? ""
+                    : (input.templated === void 0
+                        ? input.tiles!
+                        : tile_template(input.templated!)).map(gen_tile).join("") + `<div class="clearfix"></div>`
+            }
+            ${
+                input.text === void 0 ? "" : `<div class="${input.text_small ? "text small" : "text"}">${input.text}</div>`
+            }
         </div>
     </template>
 `
@@ -200,7 +228,11 @@ const gen_tool_group = (groups: ToolGroup[]) => {
 }
 
 const gen_tool_link = (input: ToolLink) => `
-    <span><a class="link" ${input.link === void 0 ? "" : `href="${input.link}"`} ${input.action === void 0 ? "" : `onclick="${input.action}"`}>
+    <span><a class="link" ${
+        input.link === void 0 ? "" : `href="${input.link}"`
+    } ${
+        input.action === void 0 ? "" : `onclick="${input.action}"`
+    }>
         <svg class="icon">
             <use href="#icon-${input.icon}"></use>
         </svg>
@@ -211,7 +243,13 @@ const gen_tool_link = (input: ToolLink) => `
 const gen_tool = (input: Tool) => `
     <template id="tool-${input.name}">
     <div class="item" onclick="detail(this)">
-        <img src="{{IMAGE}}/${input.icon === void 0 && input.outer_icon === void 0 ? `icon-tool/${input.name}` : (input.outer_icon === void 0 ? `icon-tool/${input.icon}` : `icon/${input.outer_icon}`)}.webp" alt="${input.title}">
+        <img src="{{IMAGE}}/${
+            input.icon === void 0 && input.outer_icon === void 0
+                ? `icon-tool/${input.name}`
+                : (input.outer_icon === void 0
+                    ? `icon-tool/${input.icon}`
+                    : `icon/${input.outer_icon}`)
+        }.webp" alt="${input.title}">
         <div class="item-title">${input.title}</div>
         <svg class="icon-line">
             <use href="#icon-expand-right"></use>

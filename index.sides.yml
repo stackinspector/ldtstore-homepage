@@ -87,19 +87,15 @@
   title: 站外官方账号
   text: >
     <p><a class="link" href="//r.ldtstore.com.cn/r/ops-top-1">关于站外官方账号</a></p>
-  tiles:
-    - tile: s notext
+  templated:
+    template:
+      tile: s notext
       action: r
-      name: outer-zh
-    - tile: s notext
-      action: r
-      name: outer-yt
-    - tile: s notext
-      action: r
-      name: outer-wb
-    - tile: s notext
-      action: r
-      name: outer-mz
+    tiles:
+      outer-zh: ""
+      outer-yt: ""
+      outer-wb: ""
+      outer-mz: ""
 - name: business
   title: 商务合作
   text: >
