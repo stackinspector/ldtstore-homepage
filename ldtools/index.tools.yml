@@ -47,11 +47,6 @@
       website: 3
       description: >
         Guru3D网站的工具下载页面。提供了不少有用的驱动程序及实用工具的下载。
-    - name: nirsoft
-      title: NirSoft官方网站
-      website: 3
-      description: >
-        提供了大量开源工具，适用于较高水平的用户。
 - name: os-images
   title: 系统镜像 # [todo] 图标也要单独做一个 就Windows图标就行
   list:
@@ -236,13 +231,6 @@
         轻量级的硬件检测工具。
       notice: >
         这是收费软件，提供30天的试用期。
-    - name: sisoft
-      title: SiSoftware Sandra
-      cross: [cpu, gpu, memory, disk]
-      keywords: 跑分
-      website: 1
-      description: >
-        综合硬件基准测试工具。可以检测CPU、显卡、内存、硬盘的性能以及系统的整体性能。
     - name: hwmon
       title: HWMonitor
       keywords: 温度监控
@@ -342,6 +330,21 @@
       cross_notice:
         burning:
           内置稳定性测试功能，偏向动态响应测试而非负载测试，对主板供电的性能有极高要求。如出现能过FPU甚至P95烤机，但使用中仍有黑屏死机的话，可以尝试XTU测试。
+    - name: intel-burnTest
+      title: Intel BurnTest
+      keywords: linpack烤鸡
+      website: 1
+      description: >
+        基于Intel官方的linpack性能测试制作的烤机工具，压力极高
+    - name: vray
+      title: Vray Benchmark
+      cross: [gpu]
+      keywords: vray渲染测试
+      website: 1
+      description: >
+        基于Vray渲染器的测试软件，包含CPU、混合、RTX测试。在测试速度和易用性有优势。
+      notice: >
+        下载需要注册和登录。
     - name: amd-ryzen-master
       title: AMD Ryzen Master
       keywords: CPU内存超频功耗墙功耗控制
@@ -375,11 +378,6 @@
         第三方开发的AMD处理器超频工具，还具有体质分查看等功能。具体使用教程可在B站自行搜索。
       notice: >
         这个软件的官方分发渠道可能需要赞助以查看下载链接。
-    - name: setfsb
-      title: SetFSB
-      website: 4
-      description: > # [todo]
-       这是一个给电脑在系统中软超外频的软件，在bios中设置好电压倍频和内存倍率就可以实现超频，即使不支持超频的窄版x58 x79 x99 和 老旧的intel非k x处理器 也可以进行超频，十分使用。
 - name: memory
   title: 内存工具
   list:
@@ -426,6 +424,13 @@
         常用内存SPD检测/编辑工具，可查看颗粒型号。
       notice: >
         这个软件的基础功能免费，可能含有收费的附加功能，详见软件官网。
+    - name: intel-mlc
+      title: Intel mlc
+      keywords: Intel内存延迟测试
+      website: 1
+      mirror: locked
+      description: >
+        Intel官方的轻量化跨平台内存测试工具。
 - name: gpu
   title: 显卡工具
   list:
@@ -479,11 +484,7 @@
       website: 1
       description: >
         微星开发的显卡超频工具。简单实用，覆盖监测功能，在测评中常见。
-    - name: nvidia-profile-inspector
-      title: NVIDIA Profile Inspector
-      website: 2
-      description: >
-        第三方开发的NVIDIA显卡参数调整工具。
+      # [todo] Profile Inspector/ Inspector 出于同一个作者 
     - name: nvidia-inspector
       title: NVIDIA Inspector
       keywords: N卡检测N卡超频
@@ -858,6 +859,14 @@
       website: 1
       description: >
         轻量级的软件卸载、卸载残留删除工具。
+    - name: windbg
+      title: Windbg
+      keywords: 文件搜索
+      website: 1
+      description: >
+        常用于用于蓝屏分析，简单调试只需要找到引起蓝屏的软件/驱动即可。
+      notice: >
+        出于易用性考虑建议下载应用商店版。
     - name: everything
       title: Everything
       keywords: 文件搜索
@@ -958,13 +967,6 @@
       website: 1
       description: >
         微软官方推出的自动启动管理工具，功能比任务管理器的启动管理全面得多。
-    - name: snipaste
-      title: snipaste
-      website: 1
-      websites:
-        msstore: 微软应用商店
-      description: >
-        强大的截图和贴图工具。
     - name: eartrumpet
       title: EarTrumpet
       website: 1
@@ -972,56 +974,25 @@
         msstore: 微软应用商店
       description: >
         强大的Windows 10/11音量设置辅助工具，可以直接调节各个应用音量。
-    - name: ditto
-      title: Ditto
-      website: 1
-      websites:
-        msstore: 微软应用商店
-      description: >
-        强大的Windows剪贴板管理工具，支持保存多种类型的剪贴板历史记录。
     - name: quicklook
       title: QuickLook
       websites:
         msstore: 微软应用商店
       description: >
         Windows资源管理器的文件快速预览工具。
-    - name: revo-uninst
-      title: Revo Uninstaller
+    - name: winaero-tweaker
+      title: Winaero tweaker
       website: 1
       description: >
-        软件卸载工具。
-    - name: uninstall-tool
-      title: Uninstall Tool
-      website: 1
-      description: >
-        软件卸载工具。
+        系统微调软件，整合了许多新系统需要调整的优化选项，并且可以保存和加载配置文件。
     - name: utools
       title: uTools
       website: 1
       description: >
         一个实用工具集合平台。
-    - name: landrop
-      title: LANDrop
-      website: 1
-      description: >
-        快捷的多设备（电脑和移动设备）文件传输工具。
-    - name: duplicatecleaner
-      title: Duplicate Cleaner
-      website: 1
-      description: >
-        查找重复文件的工具。
     - name: autosizer
       title: AutoSizer
       website: 1
       description: >
         强制调整Windows窗口大小的工具。
-    - name: uninst-adobe-cc
-      title: 卸载Creative Cloud桌面应用程序
-      website: 1
-      description: >
-        Adobe官方提供的Creative Cloud桌面应用程序卸载工具及操作流程。
-    - name: lenovo-winupdate
-      title: 关闭Win10自动更新
-      website: 1
-      description: >
-        联想推出的关闭或开启Win10系统自动更新的工具。按需谨慎使用。
+        
