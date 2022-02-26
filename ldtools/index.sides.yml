@@ -45,6 +45,7 @@
       tile: s
       font: h3
       action: r2
+      icon_type: tool
     tiles:
       drv-intel: Intel
       drv-amd: AMD

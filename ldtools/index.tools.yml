@@ -48,12 +48,11 @@
       description: >
         Guru3D网站的工具下载页面。提供了不少有用的驱动程序及实用工具的下载。
 - name: os-images
-  title: 系统镜像 # [todo] 图标也要单独做一个 就Windows图标就行
+  title: 系统镜像
   list:
     - name: itellyou
       title: ITELLYOU
       keywords: Windows系统镜像下载资源MSDN我告诉你
-      outer_icon: itellyou
       websites:
         next: 新站
         old: 旧站
@@ -74,14 +73,12 @@
 - name: rank
   title: 天梯图与数据
   list:
-    - name: cpu-rank-qdy
-      outer_icon: cpu-rank
+    - name: rank-cpu-qdy
       title: CPU天梯图 秋刀鱼半藏版本
       website: 2
       description: >
         贴吧著名CPU天梯图。作者为秋刀鱼半藏。
-    - name: gpu-rank-qdy
-      outer_icon: gpu-rank
+    - name: rank-gpu-qdy
       title: GPU天梯图 秋刀鱼半藏版本
       website: 2
       description: >
@@ -330,10 +327,10 @@
       cross_notice:
         burning:
           内置稳定性测试功能，偏向动态响应测试而非负载测试，对主板供电的性能有极高要求。如出现能过FPU甚至P95烤机，但使用中仍有黑屏死机的话，可以尝试XTU测试。
-    - name: intel-burnTest
+    - name: intel-burntest
       title: Intel BurnTest
       keywords: linpack烤鸡
-      website: 1
+      website: 4
       description: >
         基于Intel官方的linpack性能测试制作的烤机工具，压力极高
     - name: vray
@@ -368,6 +365,7 @@
       title: ClockTuner for Ryzen
       keywords: CPU超频功耗墙功耗控制自动超频
       website: 1
+      mirror: active
       description: >
         针对笔记本AMD锐龙处理器的超频工具。官方的Ryzen Master仅适用于台式机CPU。
     - name: hydra
@@ -723,7 +721,6 @@
       title: VC运行库打包（Dreamcast版本）
       keywords: 缺少丢失DLL
       website: 2
-      mirror: locked
       description: >
         由国内大佬维护的VC运行库打包，使用更为方便。
     - name: dx-repair
@@ -995,4 +992,3 @@
       website: 1
       description: >
         强制调整Windows窗口大小的工具。
-        

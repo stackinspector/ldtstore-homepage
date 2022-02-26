@@ -20,9 +20,10 @@ type Tile = {
     tile: string
     font?: string
     action: string
+    icon_type?: string
     name: string
-    icon?: string
     title?: string
+    icon?: string
 }
 
 type TileTemplate = {
@@ -30,6 +31,7 @@ type TileTemplate = {
         tile: string
         font?: string
         action: string
+        icon_type?: string
     }
     tiles: Record<string, string>
 }
@@ -58,7 +60,6 @@ type Tool = {
     cross?: string[]
     keywords?: string
     icon?: string
-    outer_icon?: string
     description: string
     website?: ToolLinkTitle
     websites?: Record<string, ToolLinkTitle>
@@ -89,7 +90,9 @@ const gen_tile = (input: Tile): string => {
     const isnotext = input.font === void 0 || input.title === void 0
 
     const inner = `
-        <img src="{{IMAGE}}/icon/${
+        <img src="{{IMAGE}}/icon${
+            input.icon_type === void 0 ? "" : `-${input.icon_type}`
+        }/${
             input.icon === void 0 ? input.name : input.icon
         }.webp" ${
             input.title === void 0 ? "" : `alt="${input.title}"`
@@ -243,12 +246,8 @@ const gen_tool_link = (input: ToolLink) => `
 const gen_tool = (input: Tool) => `
     <template id="tool-${input.name}">
     <div class="item" onclick="detail(this)">
-        <img src="{{IMAGE}}/${
-            input.icon === void 0 && input.outer_icon === void 0
-                ? `icon-tool/${input.name}`
-                : (input.outer_icon === void 0
-                    ? `icon-tool/${input.icon}`
-                    : `icon/${input.outer_icon}`)
+        <img src="{{IMAGE}}/icon-tool/${
+            input.icon === void 0 ? input.name : input.icon
         }.webp" alt="${input.title}">
         <div class="item-title">${input.title}</div>
         <svg class="icon-line">
