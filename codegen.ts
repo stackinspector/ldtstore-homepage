@@ -1,6 +1,6 @@
 // deno-lint-ignore-file camelcase
 import { parse as parseYaml } from "https://deno.land/std@0.102.0/encoding/yaml.ts"
-import type { ToolIndexType, ToolCrossType, ToolAllType } from "./shared.ts";
+import type { ToolIndexType, ToolCrossType, ToolAllType, GlobalData } from "./shared.ts";
 
 type PageType = "home" | "tool"
 
@@ -149,10 +149,10 @@ const gen_tile_grids = (input: TileGrids) => {
     `
 }
 
-const gen_major = (inner: string, pagetype: PageType) => `
+const gen_major = (inner: string, page_type: PageType) => `
     <div id="content">
         <div id="offset">
-            <div id="major" class="${pagetype}">
+            <div id="major" class="${page_type}">
                 ${inner}
                 <div class="clearfix"></div>
             </div>
@@ -227,7 +227,7 @@ const gen_tool_group = (groups: ToolGroup[]) => {
             }
         }
     }
-    return { fragments, index, all, cross }
+    return { fragments, tool: { index, all, cross } }
 }
 
 const gen_tool_link = (input: ToolLink) => `
@@ -297,30 +297,35 @@ export const codegen = (filename: string): Map<string, string> => {
     const dynamic_inserts = new Map()
     const sides = [...(load("sides") as Side[]), ...(load_base("public.sides.yml") as Side[])]
 
-    if (!filename.includes("ldtools")) {
+    const page_type: PageType = filename.includes("ldtools") ? "tool" : "home";
+    if (page_type === "home") {
+        const data: GlobalData = { page_type }
         dynamic_inserts.set(
             "<!--{{major}}-->",
-            gen_major(gen_tile_columns(load("major") as TileColumns), "home"),
+            gen_major(gen_tile_columns(load("major") as TileColumns), page_type),
         )
         dynamic_inserts.set(
             "<!--{{sides}}-->",
             sides.map(gen_side).join(""),
         )
-    } else {
-        const { fragments, index, all, cross } = gen_tool_group(load("tools") as ToolGroup[])
+        dynamic_inserts.set(
+            "<!--{{include-data}}-->",
+            `<script>window.__DATA__=${JSON.stringify(data)}</script>`
+        )
+    } else if (page_type === "tool") {
+        const { fragments, tool } = gen_tool_group(load("tools") as ToolGroup[])
+        const data: GlobalData = { page_type, tool }
         dynamic_inserts.set(
             "<!--{{major}}-->",
-            gen_major(gen_tile_grids(load("major") as TileGrids), "tool"),
+            gen_major(gen_tile_grids(load("major") as TileGrids), page_type),
         )
         dynamic_inserts.set(
             "<!--{{sides}}-->",
             [...sides.map(gen_side), ...fragments].join(""),
         )
         dynamic_inserts.set(
-            "<!--{{tools_index}}-->",
-            `<script type="application/json" id="tools_index">${JSON.stringify(index)}</script>
-            <script type="application/json" id="tools_all">${JSON.stringify(all)}</script>
-            <script type="application/json" id="tools_cross">${JSON.stringify(cross)}</script>`
+            "<!--{{include-data}}-->",
+            `<script>window.__DATA__=${JSON.stringify(data)}</script>`
         )
     }
 

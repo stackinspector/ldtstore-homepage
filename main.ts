@@ -1,6 +1,18 @@
-import type { ToolIndexType, ToolCrossType, ToolAllType } from "./shared.ts";
+import type { GlobalData } from "./shared.ts";
 
-declare const PAGE_TYPE: "home" | "tool";
+declare global {
+    interface Window {
+        __DATA__?: GlobalData;
+        copy?: typeof copy;
+        side?: typeof sideClick;
+        tool?: typeof toolSideClick;
+        detail?: typeof showDetail;
+    }
+}
+
+// 本地化常量和数据 防止注入
+const DATA = window.__DATA__!;
+delete window.__DATA__;
 
 // all
 const body = document.documentElement;
@@ -12,15 +24,6 @@ const side = document.getElementById("side")!;
 // tool only
 const search = document.getElementById("search");
 const back = document.getElementById("back");
-
-// json随js加载，无需担心通过dom注入
-const load_json = (id: string) => {
-    const el = document.getElementById(id);
-    return el === null ? null : JSON.parse(el.innerText);
-};
-const tools_index = load_json("tools_index");
-const tools_all = load_json("tools_all");
-const tools_cross = load_json("tools_cross");
 
 const copy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -34,28 +37,21 @@ const enum LayoutMode {
 
 let layoutMode = LayoutMode.PC;
 
-// 与recalculate有关的数据
-const RecalculateState: {
-    /// side的位置
-    sidePosition: number;
-    /// 打开侧边栏时需要移动的距离
-    distance: number;
-    /// 侧边栏居中模式（居中时主栏隐藏）
-    center: boolean;
-} = {
+/** 与recalculate有关的数据 */
+const RecalculateState = {
+    /** side的位置 */
     sidePosition: 0,
+    /** 打开侧边栏时需要移动的距离 */
     distance: 300,
+    /** 侧边栏居中模式（居中时主栏隐藏） */
     center: false,
 };
 
-const SideState: {
-    /// 侧边栏是否打开
-    on: boolean;
-    /// 侧边栏当前id
-    id: string | null;
-} = {
+const SideState = {
+    /** 侧边栏是否打开 */ 
     on: false,
-    id: null,
+    /** 侧边栏当前id */
+    id: null as string | null,
 };
 
 // 左滑返回
@@ -84,7 +80,7 @@ content.onclick = background.onclick = (e) => {
 };
 
 // 右上角图标事件绑定 (tool only)
-if (PAGE_TYPE === "tool") {
+if (DATA.page_type === "tool") {
     search!.onclick = (e: MouseEvent) => {
         // 用来阻止冒泡
         e.stopPropagation();
@@ -238,10 +234,10 @@ const renderSide = (id: string) => {
     while (side.firstChild) {
         side.removeChild(side.lastChild!);
     }
-    if (id.startsWith("tool-")) {
+    if (id.startsWith("tool-") && DATA.page_type === "tool") {
         const name = id.substring(5);
-        const index = (tools_index! as ToolIndexType)[name];
-        const cross = (tools_cross! as ToolCrossType)[name];
+        const index = DATA.tool.index[name];
+        const cross = DATA.tool.cross[name];
         const single = index.list.length === 1;
         side.appendChild(cloneTemplate("side-tools-base"));
         const title = side.getElementsByClassName("title")[0] as HTMLElement;
@@ -266,20 +262,22 @@ const renderSide = (id: string) => {
 };
 
 const renderSearch = (keywordText: string) => {
-    const all = tools_all! as ToolAllType;
-    const content = document.getElementById("search-content")!;
-    while (content.firstChild) {
-        content.removeChild(content.lastChild!);
-    }
-    for (const tool of Object.keys(all)) {
-        if (tool.toLowerCase().includes(keywordText.toLowerCase())) {
-            // console.log(`OK at ${keywordText}`)
-            content.appendChild(cloneTemplate(`tool-${all[tool]}`));
-            // showDetail(side.getElementsByClassName("item")[0] as HTMLElement);
-            // return;
+    if (DATA.page_type === "tool") {
+        const all = DATA.tool.all;
+        const content = document.getElementById("search-content")!;
+        while (content.firstChild) {
+            content.removeChild(content.lastChild!);
         }
+        for (const tool of Object.keys(all)) {
+            if (tool.toLowerCase().includes(keywordText.toLowerCase())) {
+                // console.log(`OK at ${keywordText}`)
+                content.appendChild(cloneTemplate(`tool-${all[tool]}`));
+                // showDetail(side.getElementsByClassName("item")[0] as HTMLElement);
+                // return;
+            }
+        }
+        // console.log(`NO at ${keywordText}`)
     }
-    // console.log(`NO at ${keywordText}`)
 };
 
 const recalculate = () => {
@@ -324,7 +322,7 @@ const recalculate = () => {
     if (delta > 0) {
         RecalculateState.distance = major.offsetLeft - delta / 2;
     } else {
-        if (PAGE_TYPE === "tool" && delta_major < 1) {
+        if (DATA.page_type === "tool" && delta_major < 1) {
             RecalculateState.center = true;
             RecalculateState.distance = side.clientWidth + delta_side / 2;
         } else {
@@ -398,19 +396,10 @@ const renderDispatchBanner = () => {
 }
 */
 
-declare global {
-    interface Window {
-        copy?: typeof copy;
-        side?: typeof sideClick;
-        tool?: typeof toolSideClick;
-        detail?: typeof showDetail;
-    }
-}
-
 window.copy = copy;
 window.side = sideClick;
 window.tool = toolSideClick;
-if (PAGE_TYPE === "tool") {
+if (DATA.page_type === "tool") {
     window.detail = showDetail;
 }
 
