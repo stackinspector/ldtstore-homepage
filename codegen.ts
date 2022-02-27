@@ -74,7 +74,6 @@ type Tool = {
 type ToolLink = {
     title: ToolLinkTitle
     link?: string
-    action?: string
     icon: "link" | "download"
 }
 
@@ -179,23 +178,21 @@ const gen_side = (input: Side) => `
                         ? input.tiles!
                         : tile_template(input.templated!)).map(gen_tile).join("") + `<div class="clearfix"></div>`
             }
-            ${
-                input.text === void 0 ? "" : `<div class="${input.text_small ? "text small" : "text"}">${input.text}</div>`
-            }
+            ${input.text === void 0 ? "" : `<div class="${input.text_small ? "text small" : "text"}">${input.text}</div>`}
         </div>
     </template>
 `
 
 const gen_tool_group = (groups: ToolGroup[]) => {
     const fragments = []
-    const index: ToolIndexType = {}
-    const all: ToolAllType = {}
-    const cross: ToolCrossType = {}
-    const cross_notice_title: Record<string, string> = {}
+    const index: ToolIndexType = Object.create(null)
+    const all: ToolAllType = Object.create(null)
+    const cross: ToolCrossType = Object.create(null)
+    const cross_notice_title: Record<string, string> = Object.create(null)
     for (const group of groups) {
         if (group.name !== void 0 && group.cross_notice !== void 0) {
             cross_notice_title[group.name] = group.cross_notice
-            cross[group.name] = {}
+            cross[group.name] = Object.create(null)
         }
     }
     for (const group of groups) {
@@ -231,11 +228,7 @@ const gen_tool_group = (groups: ToolGroup[]) => {
 }
 
 const gen_tool_link = (input: ToolLink) => `
-    <span><a class="link" ${
-        input.link === void 0 ? "" : `href="${input.link}"`
-    } ${
-        input.action === void 0 ? "" : `onclick="${input.action}"`
-    }>
+    <span><a class="link" ${input.link === void 0 ? "" : `href="${input.link}"`}>
         <svg class="icon">
             <use href="#icon-${input.icon}"></use>
         </svg>
@@ -246,9 +239,7 @@ const gen_tool_link = (input: ToolLink) => `
 const gen_tool = (input: Tool) => `
     <template id="tool-${input.name}">
     <div class="item" onclick="detail(this)">
-        <img src="{{IMAGE}}/icon-tool/${
-            input.icon === void 0 ? input.name : input.icon
-        }.webp" alt="${input.title}">
+        <img src="{{IMAGE}}/icon-tool/${input.icon === void 0 ? input.name : input.icon}.webp" alt="${input.title}">
         <div class="item-title">${input.title}</div>
         <svg class="icon-line">
             <use href="#icon-expand-right"></use>
