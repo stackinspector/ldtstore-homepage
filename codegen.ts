@@ -73,7 +73,7 @@ type Tool = {
 
 type ToolLink = {
     title: ToolLinkTitle
-    link?: string
+    link: string
     icon: "link" | "download"
 }
 
@@ -228,7 +228,7 @@ const gen_tool_group = (groups: ToolGroup[]) => {
 }
 
 const gen_tool_link = (input: ToolLink) => `
-    <span><a class="link" ${input.link === void 0 ? "" : `href="${input.link}"`}>
+    <span><a class="link" href="${input.link}>
         <svg class="icon">
             <use href="#icon-${input.icon}"></use>
         </svg>
@@ -236,7 +236,48 @@ const gen_tool_link = (input: ToolLink) => `
     </a></span>
 `
 
-const gen_tool = (input: Tool) => `
+const gen_tool = (input: Tool) => {
+    const links: ToolLink[] = [] 
+    if (input.website !== void 0) {
+        links.push({
+            title: input.website,
+            link: `//r.ldtstore.com.cn/r2/${input.name}`,
+            icon: "link",
+        })
+    }
+    if (input.websites !== void 0) {
+        links.push(...Object.entries(input.websites).map(([link, title]): ToolLink => ({
+            title,
+            link: `//r.ldtstore.com.cn/r2/${input.name}-${link}`,
+            icon: "link",
+        })))
+    }
+    if (input.downloads !== void 0) {
+        links.push(...Object.entries(input.downloads).map(([link, title]): ToolLink => ({
+            title,
+            link: `//r.ldtstore.com.cn/r2/${input.name}-d-${link}`,
+            icon: "download",
+        })))
+    }
+    if (input.mirror !== void 0) {
+        links.push({
+            title: "镜像下载",
+            link: `{{MIRROR}}/${input.mirror}/${input.name}.zip`,
+            icon: "download",
+        })
+    }
+    if (input.mirrors !== void 0) {
+        links.push(...Object.entries(input.mirrors).map(([link, title]): ToolLink => ({
+            title,
+            link: `{{MIRROR}}/locked/${input.name}-${link}.zip`,
+            icon: "download",
+        })))
+    }
+    if (input.custom !== void 0) {
+        links.push(...input.custom)
+    }
+
+    return `
     <template id="tool-${input.name}">
     <div class="item" onclick="detail(this)">
         <img src="{{IMAGE}}/icon-tool/${input.icon === void 0 ? input.name : input.icon}.webp" alt="${input.title}">
@@ -247,40 +288,14 @@ const gen_tool = (input: Tool) => `
         <div class="detail-container">
             <div class="detail">
                 <p>${input.description}</p>
-                <p>
-                    ${input.website === void 0 ? "" : gen_tool_link({
-                        title: input.website,
-                        link: `//r.ldtstore.com.cn/r2/${input.name}`,
-                        icon: "link",
-                    })}
-                    ${input.websites === void 0 ? "" : Object.entries(input.websites).map(o => gen_tool_link({
-                        title: o[1],
-                        link: `//r.ldtstore.com.cn/r2/${input.name}-${o[0]}`,
-                        icon: "link",
-                    })).join("")}
-                    ${input.downloads === void 0 ? "" : Object.entries(input.downloads).map(o => gen_tool_link({
-                        title: o[1],
-                        link: `//r.ldtstore.com.cn/r2/${input.name}-d-${o[0]}`,
-                        icon: "download",
-                    })).join("")}
-                    ${input.mirror === void 0 ? "" : gen_tool_link({
-                        title: "镜像下载",
-                        link: `{{MIRROR}}/${input.mirror}/${input.name}.zip`,
-                        icon: "download",
-                    })}
-                    ${input.mirrors === void 0 ? "" : Object.entries(input.mirrors).map(o => gen_tool_link({
-                        title: o[1],
-                        link: `{{MIRROR}}/locked/${input.name}-${o[0]}.zip`,
-                        icon: "download",
-                    })).join("")}
-                    ${input.custom === void 0 ? "" : input.custom.map(gen_tool_link).join("")}
-                </p>
+                <p>${links.map(gen_tool_link).join("")}</p>
                 ${input.notice === void 0 ? "" : `<p><b>注意事项</b><br>${input.notice}</p>`}
             </div>
         </div>
     </div>
     </template>
-`
+    `
+}
 
 export const codegen = (filename: string): Map<string, string> => {
     const load_base = (file: string) => parseYaml(Deno.readTextFileSync(file))
