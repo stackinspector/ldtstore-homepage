@@ -340,8 +340,8 @@ const gen_tool = (input: Tool) => `
     </template>
 `
 
-const gen_tool_plain = (input: Tool, cross: boolean) => `
-    <h3>${input.title} <i>${input.name}${cross ? " [cross]" : ""}</i></h3>
+const gen_tool_plain = (input: Tool, cross: boolean, title = true) => `
+    ${title ? `<h3 id="${input.name}">${input.title} <i>${input.name}${cross ? " [cross]" : ""}</i></h3>` : ""}
     <p>${input.description}</p>
     <p>${gen_tool_links(input, true)}</p>
     ${input.notice === void 0 ? "" : `<p><b>注意事项</b><br>${input.notice}</p>`}
@@ -349,8 +349,11 @@ const gen_tool_plain = (input: Tool, cross: boolean) => `
 
 const gen_tools_plain = ({ tools, tool_data: { index, cross } }: ProcessedToolGroups) => Object.entries(index)
     .map(([ name, { title, list, cross_list } ]) => `
-        <h2>${title} <i>${name}</i></h2>
-        ${list.map(tool => gen_tool_plain(tools[tool], false)).join("")}
+        <h2 id="${name}">${title} <i>${name}</i></h2>
+        ${list.length !== 1
+            ? list.map(tool => gen_tool_plain(tools[tool], false)).join("")
+            : gen_tool_plain(tools[list[0]], false, false)
+        }
         ${cross_list.map(tool => {
             const text = gen_tool_plain(tools[tool], true)
             const cross_notice = cross[name]?.[tool];
@@ -361,6 +364,17 @@ const gen_tools_plain = ({ tools, tool_data: { index, cross } }: ProcessedToolGr
             }
         }).join("")}
     `).join("")
+
+const gen_tools_plain_toc = (groups: ToolGroup[]) => `
+    <h2 id="toc">目录</h2>
+    ${groups.map(group => {
+        const name = group.name !== void 0 ? group.name : group.list[0].name
+        const title = group.name === "non-catalog" ? "[已隐藏]" : (
+            group.title !== void 0 ? group.title : group.list[0].title
+        )
+        return `<p><a href="#${name}">${title}&nbsp;<i>${name}</i></a></p>`
+    }).join("")}
+`
 
 export const codegen = (filename: string): Map<string, string> => {
     const load_base = (file: string) => parseYaml(Deno.readTextFileSync(file))
@@ -402,9 +416,14 @@ export const codegen = (filename: string): Map<string, string> => {
             `<script>window.__DATA__=${JSON.stringify(data)}</script>`
         )
     } else if (filename === "ldtools/plain.html") {
+        const tool_groups = load_base("ldtools/index.tools.yml") as ToolGroup[]
+        dynamic_inserts.set(
+            "<!--{{toc}}-->",
+            gen_tools_plain_toc(tool_groups)
+        )
         dynamic_inserts.set(
             "<!--{{main}}-->",
-            gen_tools_plain(proc_tool_groups(load_base("ldtools/index.tools.yml") as ToolGroup[]))
+            gen_tools_plain(proc_tool_groups(tool_groups))
         )
     }
 

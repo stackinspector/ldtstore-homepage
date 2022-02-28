@@ -462,7 +462,6 @@
       mirror: active
       description: >
         显卡检测工具。还可以进行简单的压力测试。
-      # [todo] Profile Inspector/ Inspector 出于同一个作者 
     - name: nvidia-inspector
       title: NVIDIA Inspector
       keywords: N卡检测N卡超频
@@ -693,7 +692,7 @@
       notice: >
         脚本右键管理员运行更方便。
     - name: vcrtpack-ya
-      title: VC运行库打包（Dreamcast版本）
+      title: VC运行库打包（Dreamcast版）
       keywords: 缺少丢失DLL
       website: 2
       description: >
