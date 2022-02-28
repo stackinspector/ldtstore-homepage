@@ -38,6 +38,8 @@ const copyright = `
   Commit: ${git}
 `
 
+const css = async (filename: string) => minify("css", await Deno.readTextFile(filename))
+
 const static_inserts: Map<string, string> = new Map()
 for await (const item of Deno.readDir("./fragment")) {
   if (!item.isFile) continue
@@ -45,6 +47,7 @@ for await (const item of Deno.readDir("./fragment")) {
 }
 
 static_inserts.set(`<!--{{footer}}-->`, await Deno.readTextFile(cfg === "intl" ? "./fragment/footer-intl.html" : "./fragment/footer.html"))
+static_inserts.set(`<!--{{plain.css}}-->`, `<style>${await css("fragment/plain.css")}</style>`)
 
 const insert = (template: string, content: Map<string, string>) => template.replaceAll(
   new RegExp([...content.keys()].join("|"), "gi"),
@@ -67,8 +70,6 @@ const html = async (filename: string) => {
   )
   return minify("html", content)
 }
-
-const css = async (filename: string) => minify("css", await Deno.readTextFile(filename))
 
 const ts = async (filename: string) => {
   const bundle_result = await Deno.emit(filename, {
