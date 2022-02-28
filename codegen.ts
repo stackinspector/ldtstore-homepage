@@ -349,7 +349,7 @@ const gen_tool_plain = (input: Tool, cross: boolean, title = true) => `
 
 const gen_tools_plain = ({ tools, tool_data: { index, cross } }: ProcessedToolGroups) => Object.entries(index)
     .map(([ name, { title, list, cross_list } ]) => `
-        <h2 id="${name}">${title} <i>${name}</i></h2>
+        <h2 id="${name}">${title} <i>${name}</i> <a class="toc" href="#toc">[目录]</a></h2>
         ${list.length !== 1
             ? list.map(tool => gen_tool_plain(tools[tool], false)).join("")
             : gen_tool_plain(tools[list[0]], false, false)
@@ -369,10 +369,10 @@ const gen_tools_plain_toc = (groups: ToolGroup[]) => `
     <h2 id="toc">目录</h2>
     ${groups.map(group => {
         const name = group.name !== void 0 ? group.name : group.list[0].name
-        const title = group.name === "non-catalog" ? "[已隐藏]" : (
+        const title = group.name === "non-catalog" ? "[隐藏的项目]（并没有）" : (
             group.title !== void 0 ? group.title : group.list[0].title
         )
-        return `<p><a href="#${name}">${title}&nbsp;<i>${name}</i></a></p>`
+        return `<p><a href="#${name}">${title}</a>&nbsp;<i>${name}</i></p>`
     }).join("")}
 `
 

@@ -90,7 +90,7 @@ if (DATA.page_type === "tool") {
     back!.onclick = (e: MouseEvent) => {
         // 用来阻止冒泡
         e.stopPropagation();
-        location.href = "/";
+        window.open("/", "_blank");
     };
 }
 
