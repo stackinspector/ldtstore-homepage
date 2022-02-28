@@ -47,18 +47,18 @@
       action: r2
       icon_type: tool
     tiles:
-      drv-intel: ""
-      drv-amd: ""
-      drv-nvidia-new: ""
-      drv-nvidia-old: "" # 图标做一个就行 但是要复制两份
-      drv-asus: ""
-      drv-msi: ""
-      drv-asrock: ""
-      drv-maxsun: ""
-      drv-biostar: ""
-      drv-gigabyte: ""
-      drv-colorful: ""
-      drv-galaxy: ""
-      drv-soyo: ""
-      drv-shengqi: ""
-      drv-onda: ""
+      - drv-intel
+      - drv-amd
+      - drv-nvidia-new
+      - drv-nvidia-old
+      - drv-asus
+      - drv-msi
+      - drv-asrock
+      - drv-maxsun
+      - drv-biostar
+      - drv-gigabyte
+      - drv-colorful
+      - drv-galaxy
+      - drv-soyo
+      - drv-shengqi
+      - drv-onda

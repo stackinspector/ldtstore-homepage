@@ -33,7 +33,7 @@ type TileTemplate = {
         action: string
         icon_type?: string
     }
-    tiles: Record<string, string>
+    tiles: Record<string, string> | string[]
 }
 
 type Side = {
@@ -159,11 +159,16 @@ const gen_major = (inner: string, page_type: PageType) => `
     </div>
 `
 
-const tile_template = (input: TileTemplate): Tile[] => Object.entries(input.tiles).map(o => ({
-    ...input.template,
-    name: o[0],
-    title: o[1] === "" ? void 0 : o[1],
-}))
+const tile_template = (input: TileTemplate): Tile[] => Array.isArray(input.tiles)
+    ? input.tiles.map(name => ({
+        ...input.template,
+        name,
+    }))
+    : Object.entries(input.tiles).map(([name, title]) => ({
+        ...input.template,
+        name,
+        title: title === "" ? void 0 : title,
+    }))
 
 const gen_side = (input: Side) => `
     <template id="side-${input.name}">

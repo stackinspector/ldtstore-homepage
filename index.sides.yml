@@ -92,10 +92,10 @@
       tile: s notext
       action: r
     tiles:
-      outer-zh: ""
-      outer-yt: ""
-      outer-wb: ""
-      outer-mz: ""
+      - outer-zh
+      - outer-yt
+      - outer-wb
+      - outer-mz
 - name: business
   title: 商务合作
   text: >
