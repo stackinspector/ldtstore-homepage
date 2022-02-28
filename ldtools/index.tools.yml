@@ -95,7 +95,7 @@
         gpu: GPU天梯图
         ssd: SSD天梯图
       description: >
-        带量化数据的天梯图，因为收录的型号丰富，十分适合作为服务器处理器选择的参考。
+        带量化数据的天梯图，因为收录的型号丰富，十分适合作为冷门处理器选择的参考。
     - name: rank-techpowerup
       title: TechPowerUp显卡资料库
       icon: techpowerup
@@ -241,9 +241,12 @@
       website: 1
       description: >
         在任务栏托盘监控硬件温度的小工具。
+      notice: >
+        官网下载的安装包有捆绑，请注意取消勾选。
     - name: traffic-monitor
       title: TrafficMonitor
       keywords: 网速温度监控显示插件
+      # [todo] 需要添加镜像
       website: 2
       description: >
         在任务栏托盘监控网速、硬件温度的小工具，支持多种皮肤。
@@ -349,8 +352,10 @@
       description: >
         轻量级的CPU频率与功率限制控制工具。现多用于移动平台功耗控制。
     - name: ryzen-controller
-      title: ClockTuner for Ryzen
+      #这名字错了。。。。
+      title: Ryzen Controller
       keywords: CPU超频功耗墙功耗控制自动超频
+      # [todo] 需要添加镜像
       website: 1
       mirror: active
       description: >
@@ -401,6 +406,7 @@
       website: 4
       websites:
         offical: 1
+      # [todo] 这里的跳转打不开
       mirror: locked
       mirrors:
         config: 配置文件
@@ -465,7 +471,7 @@
       keywords: N卡检测N卡超频
       website: 1
       description: >
-        第三方开发的NVIDIA显卡检测与超频工具。目前已不常用。
+        第三方开发的NVIDIA显卡检测与超频工具。目前已不常用。显卡配置文件修改功能目前被独立到软件NVIDIA Profile Inspector中，可能与部分网上的教程有所差异。
     - name: vgabios
       title: TechPowerUp VBIOS下载
       keywords: 显卡驱动
@@ -610,14 +616,19 @@
       title: 磁盘哨兵
       website: 1
       websites:
+        # [todo] 汉化版带破解功能
         zh: 论坛汉化版
       description: >
         知名硬盘寿命监测软件。
+      notice: >
+        这是收费软件，提供30天的试用期。
     - name: rstudio
       title: R-Studio
       website: 1
       description: >
-        强大的专业数据恢复软件。免费的演示版有恢复文件大小限制。
+        强大的专业数据恢复软件。
+      notice: >
+        免费的演示版有恢复文件大小限制。
     - name: recuva
       title: Recuva
       website: 1
@@ -628,6 +639,8 @@
       website: 1
       description: >
         固态硬盘优化工具。
+      notice: >
+        安装后需要注册和登录，免费版功能可能略有限制。
     # [todo] Blackmagic Disk Speed Test
 - name: prepare
   title: 系统安装工具
@@ -737,6 +750,8 @@
       title: 英特尔驱动支持助理
       keywords: intel驱动
       website: 1
+      # [todo] 英特尔® 驱动程序和支持助理 应当为下载界面
+      # https://www.intel.cn/content/www/cn/zh/support/detect.html
       description: >
         Intel官方推出的驱动检测与升级服务。使用前需要安装一个本地程序，然后在网页端操作。
 - name: burning
@@ -808,8 +823,8 @@
       description: >
         键盘触发测试工具。可测试接触不良，坏轴等。
     # [todo] 一个是JME Keyboard Test Programm，支持按下发生，FN功能测试（音量加减等），暂且找不到官网，只有网上流传的版本，简单实用。
-    - name: passmark-keytest
       title: PassMark KeyboardTest
+      # [todo] KeyboardTest需要添加镜像
       website: 1
       description: >
         PassMark出品的键盘测试工具，功能全面，支持自定义布局。
@@ -946,13 +961,16 @@
       title: SoftCnKiller
       website: 2
       description: >
-        清理流氓软件（下崽器捆绑软件）的实用工具。
+        针对流氓软件、下载器、弹窗广告等恶意软件制作的一键清理工具。
+      notice: >
+        Windows Defender误报，请自行确定是否使用。由于含有弹窗定位等功能请尽量避免在游戏反作弊引擎作用期间使用。
     - name: speedtest
       title: Speedtest
       keywords: 网络测速
       website: 3
+      # [todo] 添加speedtest.cn国内版的跳转
       description: >
-        知名网络测速工具。
+        常用网络测速站，无特殊需求请访问国内版。
     - name: powertoys
       title: PowerToys
       website: 1
@@ -986,7 +1004,7 @@
       title: uTools
       website: 1
       description: >
-        一个实用工具集合平台。
+        使用搜索框/鼠标中键菜单进行快捷操作的效率工具，通过自由选配丰富的插件，打造得心应手的工具集合。
     - name: autosizer
       title: AutoSizer
       website: 1
