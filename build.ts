@@ -102,6 +102,10 @@ await Deno.writeTextFile(
   `<!--${copyright}-->\n\n${global_replace(await html("ldtools/index.html"))}`,
 )
 await Deno.writeTextFile(
+  `${target_dir}/ldtools/plain.html`,
+  `<!--${copyright}-->\n\n${global_replace(await html("ldtools/plain.html"))}`,
+)
+await Deno.writeTextFile(
   `${target_dir}/style-${git}.css`,
   `/*${copyright}*/\n\n${global_replace(await css("style.css"))}`,
 )

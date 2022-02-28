@@ -73,8 +73,18 @@ type Tool = {
 
 type ToolLink = {
     title: ToolLinkTitle
+    link_type: "r2" | "mirror"
     link: string
     icon: "link" | "download"
+}
+
+type ProcessedToolGroups = {
+    tools: Record<string, Tool>
+    tool_data: {
+        index: ToolIndexType
+        all: ToolAllType
+        cross: ToolCrossType
+    }
 }
 
 const tool_website_type = {
@@ -83,6 +93,16 @@ const tool_website_type = {
     3: "网页链接",
     4: "<b>非官方</b>页面",
     5: "官方网站（国内无法访问）",
+}
+
+const tool_link_prefix = {
+    "r2": "//r.ldtstore.com.cn/r2/",
+    "mirror": "{{MIRROR}}",
+}
+
+const tool_icon_emoji = {
+    "link": "🔗",
+    "download": "💾",
 }
 
 const gen_tile = (input: Tile): string => {
@@ -188,8 +208,8 @@ const gen_side = (input: Side) => `
     </template>
 `
 
-const gen_tool_group = (groups: ToolGroup[]) => {
-    const fragments = []
+const proc_tool_groups = (groups: ToolGroup[]): ProcessedToolGroups => {
+    const tools = Object.create(null)
     const index: ToolIndexType = Object.create(null)
     const all: ToolAllType = Object.create(null)
     const cross: ToolCrossType = Object.create(null)
@@ -206,7 +226,7 @@ const gen_tool_group = (groups: ToolGroup[]) => {
         for (const tool of group.list) {
             list.push(tool.name)
             all[tool.keywords === void 0 ? tool.title : tool.title + tool.keywords!] = tool.name
-            fragments.push(gen_tool(tool))
+            tools[tool.name] = tool
             if (tool.cross_notice !== void 0) {
                 for (const [group, content] of Object.entries(tool.cross_notice)) {
                     cross[group]![tool.name] = `<b>${cross_notice_title[group]}</b><br>${content}`
@@ -217,6 +237,7 @@ const gen_tool_group = (groups: ToolGroup[]) => {
             index[group_name] = {
                 title: ((group.title === void 0 && group.list.length === 1) ? group.list[0].title : group.title!),
                 list,
+                cross_list: [],
             }
         }
     }
@@ -224,65 +245,83 @@ const gen_tool_group = (groups: ToolGroup[]) => {
         for (const tool of group.list) {
             if (tool.cross !== void 0) {
                 for (const cross_group_name of tool.cross) {
-                    index[cross_group_name].list.push(tool.name)
+                    index[cross_group_name].cross_list.push(tool.name)
                 }
             }
         }
     }
-    return { fragments, tool: { index, all, cross } }
+    return { tools, tool_data: { index, all, cross } }
 }
 
+const proc_tool_title = (input: ToolLink) => (typeof input.title === "string") ? input.title : tool_website_type[input.title]
+
 const gen_tool_link = (input: ToolLink) => `
-    <span><a class="link" href="${input.link}">
+    <span><a class="link" href="${tool_link_prefix[input.link_type]}${input.link}">
         <svg class="icon">
             <use href="#icon-${input.icon}"></use>
         </svg>
-        ${(typeof input.title === "string") ? input.title : tool_website_type[input.title]}
+        ${proc_tool_title(input)}
     </a></span>
 `
 
-const gen_tool = (input: Tool) => {
+const gen_tool_link_plain = (input: ToolLink) => `
+    <span><a href="${tool_link_prefix[input.link_type]}${input.link}">
+        ${tool_icon_emoji[input.icon]}
+        ${proc_tool_title(input)}
+    </a>&nbsp;<i>
+        [${input.link_type}] ${input.link}
+    </i><br></span>
+`
+
+const gen_tool_links = (input: Tool, plain: boolean) => {
     const links: ToolLink[] = [] 
     if (input.website !== void 0) {
         links.push({
             title: input.website,
-            link: `//r.ldtstore.com.cn/r2/${input.name}`,
+            link_type: "r2",
+            link: input.name,
             icon: "link",
         })
     }
     if (input.websites !== void 0) {
         links.push(...Object.entries(input.websites).map(([link, title]): ToolLink => ({
             title,
-            link: `//r.ldtstore.com.cn/r2/${input.name}-${link}`,
+            link_type: "r2",
+            link: `${input.name}-${link}`,
             icon: "link",
         })))
     }
     if (input.downloads !== void 0) {
         links.push(...Object.entries(input.downloads).map(([link, title]): ToolLink => ({
             title,
-            link: `//r.ldtstore.com.cn/r2/${input.name}-d-${link}`,
+            link_type: "r2",
+            link: `${input.name}-d-${link}`,
             icon: "download",
         })))
     }
     if (input.mirror !== void 0) {
         links.push({
             title: "镜像下载",
-            link: `{{MIRROR}}/${input.mirror}/${input.name}.zip`,
+            link_type: "mirror",
+            link: `/${input.mirror}/${input.name}.zip`,
             icon: "download",
         })
     }
     if (input.mirrors !== void 0) {
         links.push(...Object.entries(input.mirrors).map(([link, title]): ToolLink => ({
             title,
-            link: `{{MIRROR}}/locked/${input.name}-${link}.zip`,
+            link_type: "mirror",
+            link: `/locked/${input.name}-${link}.zip`,
             icon: "download",
         })))
     }
     if (input.custom !== void 0) {
         links.push(...input.custom)
     }
+    return links.map(plain ? gen_tool_link_plain : gen_tool_link).join("")
+}
 
-    return `
+const gen_tool = (input: Tool) => `
     <template id="tool-${input.name}">
     <div class="item" onclick="detail(this)">
         <img src="{{IMAGE}}/icon-tool/${input.icon === void 0 ? input.name : input.icon}.webp" alt="${input.title}">
@@ -293,23 +332,45 @@ const gen_tool = (input: Tool) => {
         <div class="detail-container">
             <div class="detail">
                 <p>${input.description}</p>
-                <p>${links.map(gen_tool_link).join("")}</p>
+                <p>${gen_tool_links(input, false)}</p>
                 ${input.notice === void 0 ? "" : `<p><b>注意事项</b><br>${input.notice}</p>`}
             </div>
         </div>
     </div>
     </template>
-    `
-}
+`
+
+const gen_tool_plain = (input: Tool, cross: boolean) => `
+    <h3>${input.title} <i>${input.name}${cross ? " [cross]" : ""}</i></h3>
+    <p>${input.description}</p>
+    <p>${gen_tool_links(input, true)}</p>
+    ${input.notice === void 0 ? "" : `<p><b>注意事项</b><br>${input.notice}</p>`}
+`
+
+const gen_tools_plain = ({ tools, tool_data: { index, cross } }: ProcessedToolGroups) => Object.entries(index)
+    .map(([ name, { title, list, cross_list }]) => `
+        <h2>${title} <i>${name}</i></h2>
+        ${list.map(tool => gen_tool_plain(tools[tool], false)).join("")}
+        ${cross_list.map(tool => {
+            const text = gen_tool_plain(tools[tool], true)
+            const cross_notice = cross[name]?.[tool];
+            if (cross_notice !== void 0) {
+                return text + cross_notice
+            } else {
+                return text
+            }
+        }).join("")}
+    `).join("")
 
 export const codegen = (filename: string): Map<string, string> => {
     const load_base = (file: string) => parseYaml(Deno.readTextFileSync(file))
     const load = (type: InputType) => load_base(filename.replaceAll(".html", `.${type}.yml`))
     const dynamic_inserts = new Map()
-    const sides = [...(load("sides") as Side[]), ...(load_base("public.sides.yml") as Side[])]
+    const public_sides = load_base("public.sides.yml") as Side[]
 
-    const page_type: PageType = filename.includes("ldtools") ? "tool" : "home";
-    if (page_type === "home") {
+    if (filename === "index.html") {
+        const page_type = "home"
+        const sides = [...(load("sides") as Side[]), ...public_sides]
         const data: GlobalData = { page_type }
         dynamic_inserts.set(
             "<!--{{major}}-->",
@@ -323,20 +384,27 @@ export const codegen = (filename: string): Map<string, string> => {
             "<!--{{include-data}}-->",
             `<script>window.__DATA__=${JSON.stringify(data)}</script>`
         )
-    } else if (page_type === "tool") {
-        const { fragments, tool } = gen_tool_group(load("tools") as ToolGroup[])
-        const data: GlobalData = { page_type, tool }
+    } else if (filename === "ldtools/index.html") {
+        const page_type = "tool"
+        const sides = [...(load("sides") as Side[]), ...public_sides]
+        const { tools, tool_data } = proc_tool_groups(load("tools") as ToolGroup[])
+        const data: GlobalData = { page_type, tool: tool_data }
         dynamic_inserts.set(
             "<!--{{major}}-->",
             gen_major(gen_tile_grids(load("major") as TileGrids), page_type),
         )
         dynamic_inserts.set(
             "<!--{{sides}}-->",
-            [...sides.map(gen_side), ...fragments].join(""),
+            [...sides.map(gen_side), ...Object.values(tools).map(gen_tool)].join(""),
         )
         dynamic_inserts.set(
             "<!--{{include-data}}-->",
             `<script>window.__DATA__=${JSON.stringify(data)}</script>`
+        )
+    } else if (filename === "ldtools/plain.html") {
+        dynamic_inserts.set(
+            "<!--{{main}}-->",
+            gen_tools_plain(proc_tool_groups(load_base("ldtools/index.tools.yml") as ToolGroup[]))
         )
     }
 

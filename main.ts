@@ -238,12 +238,13 @@ const renderSide = (id: string) => {
         const name = id.substring(5);
         const index = DATA.tool.index[name];
         const cross = DATA.tool.cross[name];
-        const single = index.list.length === 1;
+        const list = [...index.list, ...index.cross_list]
+        const single = list.length === 1;
         side.appendChild(cloneTemplate("side-tools-base"));
         const title = side.getElementsByClassName("title")[0] as HTMLElement;
         title.innerText = single ? "详情" : index.title;
         const content = side.getElementsByClassName("content")[0];
-        for (const tool of index.list) {
+        for (const tool of list) {
             const item = cloneTemplate(`tool-${tool}`).firstElementChild!;
             const cross_notice = cross?.[tool];
             if (cross_notice !== void 0) {

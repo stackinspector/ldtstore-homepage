@@ -1,6 +1,7 @@
 export type ToolIndexType = Record<string, {
     title: string
     list: string[]
+    cross_list: string[]
 }>
 
 export type ToolAllType = Record<string, string>
