@@ -233,7 +233,7 @@ const gen_tool_group = (groups: ToolGroup[]) => {
 }
 
 const gen_tool_link = (input: ToolLink) => `
-    <span><a class="link" href="${input.link}>
+    <span><a class="link" href="${input.link}">
         <svg class="icon">
             <use href="#icon-${input.icon}"></use>
         </svg>

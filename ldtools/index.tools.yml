@@ -246,7 +246,7 @@
     - name: traffic-monitor
       title: TrafficMonitor
       keywords: 网速温度监控显示插件
-      # [todo] 需要添加镜像
+      mirror: active
       website: 2
       description: >
         在任务栏托盘监控网速、硬件温度的小工具，支持多种皮肤。
@@ -352,10 +352,8 @@
       description: >
         轻量级的CPU频率与功率限制控制工具。现多用于移动平台功耗控制。
     - name: ryzen-controller
-      #这名字错了。。。。
       title: Ryzen Controller
       keywords: CPU超频功耗墙功耗控制自动超频
-      # [todo] 需要添加镜像
       website: 1
       mirror: active
       description: >
@@ -405,8 +403,7 @@
       keywords: 内存稳定性内存压力烤机烤鸡
       website: 4
       websites:
-        offical: 1
-      # [todo] 这里的跳转打不开
+        official: 1
       mirror: locked
       mirrors:
         config: 配置文件
@@ -616,12 +613,11 @@
       title: 磁盘哨兵
       website: 1
       websites:
-        # [todo] 汉化版带破解功能
         zh: 论坛汉化版
       description: >
         知名硬盘寿命监测软件。
       notice: >
-        这是收费软件，提供30天的试用期。
+        这是收费软件，提供30天的试用期。论坛汉化版带破解功能，所以我们不会提供镜像。
     - name: rstudio
       title: R-Studio
       website: 1
@@ -749,9 +745,9 @@
     - name: intel-dsa
       title: 英特尔驱动支持助理
       keywords: intel驱动
-      website: 1
-      # [todo] 英特尔® 驱动程序和支持助理 应当为下载界面
-      # https://www.intel.cn/content/www/cn/zh/support/detect.html
+      websites:
+        download: 下载页面
+        access: 下载后访问以操作
       description: >
         Intel官方推出的驱动检测与升级服务。使用前需要安装一个本地程序，然后在网页端操作。
 - name: burning
@@ -823,9 +819,10 @@
       description: >
         键盘触发测试工具。可测试接触不良，坏轴等。
     # [todo] 一个是JME Keyboard Test Programm，支持按下发生，FN功能测试（音量加减等），暂且找不到官网，只有网上流传的版本，简单实用。
+    - name: passmark-keytest
       title: PassMark KeyboardTest
-      # [todo] KeyboardTest需要添加镜像
       website: 1
+      mirror: locked
       description: >
         PassMark出品的键盘测试工具，功能全面，支持自定义布局。
     - name: mouse-test-web
@@ -968,9 +965,15 @@
       title: Speedtest
       keywords: 网络测速
       website: 3
-      # [todo] 添加speedtest.cn国内版的跳转
       description: >
-        常用网络测速站，无特殊需求请访问国内版。
+        知名网络测速站。国内网页打开速度可能较慢，但不影响测速结果。
+    - name: speedtest-cn
+      title: 测速网
+      keywords: 网络测速
+      icon: speedtest
+      website: 3
+      description: >
+        国内常用网络测速站。
     - name: powertoys
       title: PowerToys
       website: 1
