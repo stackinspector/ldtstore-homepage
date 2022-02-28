@@ -303,7 +303,8 @@ a.tile-link {
 }
 
 .tile.s.notext img {
-    margin: 1.5em;
+    width: 7em;
+    margin: .25em;
 }
 
 .tile.s p {

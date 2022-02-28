@@ -95,7 +95,7 @@
         gpu: GPU天梯图
         ssd: SSD天梯图
       description: >
-        带量化数据的天梯图，因为收录的型号丰富十分适合作为服务器处理器选择的参考。
+        带量化数据的天梯图，因为收录的型号丰富，十分适合作为冷门处理器选择的参考。
     - name: rank-techpowerup
       title: TechPowerUp显卡资料库
       icon: techpowerup
@@ -109,28 +109,12 @@
         gpu: GPU天梯图
       description: > # [todo]
         
-    - name: rank-kkj
-      title: 快科技天梯图
-      website: 1
-      description: >
-        收录了类别较为丰富的天梯图，但是部分参考性不大。
-    - name: rank-zol
-      title: 中关村天梯图
-      keywords: ZOL
-      website: 1
-      description: >
-        收录了类别较为丰富的天梯图，但是部分参考性不大。
     - name: rank-socpk
       title: 极客湾天梯图（手机SoC）
       keywords: socpk
       website: 1
       description: >
         著名的手机天梯图，制作精良。
-    - name: rank-p-pccomp
-      title: PC综合天梯图
-      website: 2
-      description: >
-        比较全面的天梯图，账号已注销，可能存在一些问题，请适度参考。
     - name: rank-p-laptop
       title: 极速空间笔记本天梯图
       websites:
@@ -151,21 +135,16 @@
       website: 1
       description: >
         FCPOWERUP上的电源天梯，仅包含了测试过的电源，内容靠谱。
-    - name: rank-p-mem
-      title: 内存天梯
-      website: 2
-      description: >
-        简单的内存颗粒天梯图，重在科普。
-    - name: data-ark
-      title: Intel ARK
-      website: 1
-      description: >
-        Intel官方的产品参数查询网站（不止包含CPU参数）。
     - name: data-cw
       title: CPU World
       website: 1
       description: >
         知名CPU数据收集网站，收录较为全面。
+    - name: rank-versus
+      title: Versus
+      website: 1
+      description: >
+        综合性对比网站。包含手机、耳机、智能手表等数码产品的对比。
     - name: data-cpumonkey
       title: CPU-Monkey
       website: 1
@@ -176,11 +155,32 @@
       website: 1
       description: >
         液晶屏信息查询的网站。可以通过屏幕型号查询到详细的屏幕信息。
-    - name: rank-versus
-      title: Versus
+    - name: rank-p-mem
+      title: 内存天梯
+      website: 2
+      description: >
+        简单的内存颗粒天梯图，重在科普。
+    - name: rank-p-pccomp
+      title: PC综合天梯图
+      website: 2
+      description: >
+        比较全面的天梯图，账号已注销，可能存在一些问题，请适度参考。
+    - name: rank-kkj
+      title: 快科技天梯图
       website: 1
       description: >
-        综合性对比网站。包含手机、耳机、智能手表等数码产品的对比。
+        收录了类别较为丰富的天梯图，但是部分参考性不大。
+    - name: rank-zol
+      title: 中关村天梯图
+      keywords: ZOL
+      website: 1
+      description: >
+        收录了类别较为丰富的天梯图，但是部分参考性不大。
+    - name: data-ark
+      title: Intel ARK
+      website: 1
+      description: >
+        Intel官方的产品参数查询网站（不止包含CPU参数）。
     - name: rank-octanebench
       title: OctaneBench跑分排行
       website: 1
@@ -241,9 +241,12 @@
       website: 1
       description: >
         在任务栏托盘监控硬件温度的小工具。
+      notice: >
+        官网下载的安装包有捆绑，请注意取消勾选。
     - name: traffic-monitor
       title: TrafficMonitor
       keywords: 网速温度监控显示插件
+      # [todo] 需要添加镜像
       website: 2
       description: >
         在任务栏托盘监控网速、硬件温度的小工具，支持多种皮肤。
@@ -317,6 +320,15 @@
         基于Blender渲染的测试软件。
       notice: >
         仅为下载器，下载速度受网络影响，请确定自己的使用需求后再去下载。
+    - name: vray
+      title: Vray Benchmark
+      cross: [gpu]
+      keywords: vray渲染测试
+      website: 1
+      description: >
+        基于Vray渲染器的测试软件，包含CPU、混合、RTX测试。在测试速度和易用性有优势。
+      notice: >
+        下载需要注册和登录。
     - name: intel-xtu
       title: Intel XTU
       cross: [memory, burning]
@@ -327,21 +339,6 @@
       cross_notice:
         burning:
           内置稳定性测试功能，偏向动态响应测试而非负载测试，对主板供电的性能有极高要求。如出现能过FPU甚至P95烤机，但使用中仍有黑屏死机的话，可以尝试XTU测试。
-    - name: intel-burntest
-      title: Intel BurnTest
-      keywords: linpack烤鸡
-      website: 4
-      description: >
-        基于Intel官方的linpack性能测试制作的烤机工具，压力极高
-    - name: vray
-      title: Vray Benchmark
-      cross: [gpu]
-      keywords: vray渲染测试
-      website: 1
-      description: >
-        基于Vray渲染器的测试软件，包含CPU、混合、RTX测试。在测试速度和易用性有优势。
-      notice: >
-        下载需要注册和登录。
     - name: amd-ryzen-master
       title: AMD Ryzen Master
       keywords: CPU内存超频功耗墙功耗控制
@@ -354,6 +351,15 @@
       website: 1
       description: >
         轻量级的CPU频率与功率限制控制工具。现多用于移动平台功耗控制。
+    - name: ryzen-controller
+      #这名字错了。。。。
+      title: Ryzen Controller
+      keywords: CPU超频功耗墙功耗控制自动超频
+      # [todo] 需要添加镜像
+      website: 1
+      mirror: active
+      description: >
+        针对笔记本AMD锐龙处理器的超频工具。官方的Ryzen Master仅适用于台式机CPU。
     - name: ctr
       title: ClockTuner for Ryzen
       keywords: CPU超频功耗墙功耗控制自动超频
@@ -361,13 +367,12 @@
       mirror: active
       description: >
         一款针对AMD Zen处理器自动超频调试，并给出高能效比的设置建议的软件。
-    - name: ryzen-controller
-      title: ClockTuner for Ryzen
-      keywords: CPU超频功耗墙功耗控制自动超频
-      website: 1
-      mirror: active
+    - name: intel-burntest
+      title: Intel BurnTest
+      keywords: linpack烤鸡
+      website: 4
       description: >
-        针对笔记本AMD锐龙处理器的超频工具。官方的Ryzen Master仅适用于台式机CPU。
+        基于Intel官方的linpack性能测试制作的烤机工具，压力极高
     - name: hydra
       title: HYDRA
       keywords: AMDCPU超频
@@ -379,13 +384,6 @@
 - name: memory
   title: 内存工具
   list:
-    - name: memtest
-      title: Memtest
-      keywords: 内存稳定性烤机烤鸡
-      website: 1
-      mirror: locked
-      description: >
-        常用内存稳定性测试软件。使用较为麻烦，建议下载下面的RunMemtestPro。
     - name: rmtp
       title: RunMemtestPro
       cross: [burning]
@@ -394,6 +392,13 @@
       mirror: locked
       description: >
         可以自动运行多个Memtest并统计错误数量的内存稳定性测试工具。操作较为简单，测试需要较长时间。
+    - name: memtest
+      title: Memtest
+      keywords: 内存稳定性烤机烤鸡
+      website: 1
+      mirror: locked
+      description: >
+        常用内存稳定性测试软件。使用较为麻烦，建议下载下面的RunMemtestPro。
     - name: tm5
       title: TestMemory5
       cross: [burning]
@@ -401,6 +406,7 @@
       website: 4
       websites:
         offical: 1
+      # [todo] 这里的跳转打不开
       mirror: locked
       mirrors:
         config: 配置文件
@@ -439,6 +445,39 @@
       website: 1
       description: >
         常用显卡信息检测工具。带有适配较广泛的检测功能。
+    - name: ddu
+      title: Display Driver Uninstaller
+      keywords: 显卡驱动卸载
+      website: 1
+      mirror: active
+      description: >
+        显卡驱动强力卸载工具。更换显卡及排除故障时使用，可避免因驱动残留导致的系统问题。
+    - name: msi-afterburner
+      title: MSI Afterburner（小飞机）
+      keywords: 微星显卡超频
+      website: 1
+      description: >
+        微星开发的显卡超频工具。简单实用，覆盖监测功能，在测评中常见。
+    - name: gpucaps
+      title: GPU Caps Viewer
+      keywords: 显卡信息压力测试
+      website: 1
+      mirror: active
+      description: >
+        显卡检测工具。还可以进行简单的压力测试。
+      # [todo] Profile Inspector/ Inspector 出于同一个作者 
+    - name: nvidia-inspector
+      title: NVIDIA Inspector
+      keywords: N卡检测N卡超频
+      website: 1
+      description: >
+        第三方开发的NVIDIA显卡检测与超频工具。目前已不常用。显卡配置文件修改功能目前被独立到软件NVIDIA Profile Inspector中，可能与部分网上的教程有所差异。
+    - name: vgabios
+      title: TechPowerUp VBIOS下载
+      keywords: 显卡驱动
+      website: 3
+      description: >
+        TechPowerUp的VBIOS收集下载站。
     - name: gpuinfo
       title: GpuInfo
       keywords: 显卡核心代号假卡识别
@@ -448,13 +487,6 @@
         通过核心代号、显存位宽等信息识别假卡的工具。
       notice: >
         由于作者已停止更新，故只能识别9系列之前的显卡。不过对于识别假卡来说已经够用，大部分假卡都是9系列之前刷的。
-    - name: gpucaps
-      title: GPU Caps Viewer
-      keywords: 显卡信息压力测试
-      website: 1
-      mirror: active
-      description: >
-        显卡检测工具。还可以进行简单的压力测试。
     - name: easymats
       title: EasyMats显存检测
       keywords: 显卡显存
@@ -463,32 +495,6 @@
         由B站UP制作的简化 显存检测工具MATS 使用的辅助工具，用于检测显卡显存是否有故障。依赖PE运行。
       notice: >
         一键安装脚本需要额外的U盘等设备等用来安装系统，请确定自己的使用需求后再去下载。
-    - name: ddu
-      title: Display Driver Uninstaller
-      keywords: 显卡驱动卸载
-      website: 1
-      mirror: active
-      description: >
-        显卡驱动强力卸载工具。更换显卡及排除故障时使用，可避免因驱动残留导致的系统问题。
-    - name: vgabios
-      title: TechPowerUp VBIOS下载
-      keywords: 显卡驱动
-      website: 3
-      description: >
-        TechPowerUp的VBIOS收集下载站。
-    - name: msi-afterburner
-      title: MSI Afterburner（小飞机）
-      keywords: 微星显卡超频
-      website: 1
-      description: >
-        微星开发的显卡超频工具。简单实用，覆盖监测功能，在测评中常见。
-      # [todo] Profile Inspector/ Inspector 出于同一个作者 
-    - name: nvidia-inspector
-      title: NVIDIA Inspector
-      keywords: N卡检测N卡超频
-      website: 1
-      description: >
-        第三方开发的NVIDIA显卡检测与超频工具。目前已不常用。
 - name: disk
   title: 硬盘工具
   list:
@@ -538,13 +544,6 @@
         老牌硬盘检测工具。混合写入测试中常用。
       notice: >
         这是收费软件，提供15天的试用期。
-    - name: mydisktest
-      title: MyDiskTest
-      keywords: U盘扩容坏块
-      website: 2
-      mirror: locked
-      description: >
-        U盘扩容检测软件。
     - name: partassist
       title: 分区助手
       keywords: 硬盘分区管理分区调整
@@ -553,19 +552,6 @@
         国产免费无广告的优秀分区软件。
       notice: >
         收费服务为技术支持，自用免费。官方下载的版本需关注公众号才能使用。
-    - name: victoria
-      title: Victoria
-      keywords: 硬盘扫描坏道坏块
-      website: 1
-      mirror: locked
-      description: >
-        硬盘扫描，坏道坏块检测软件。
-    - name: ssdz
-      title: SSD-Z
-      keywords: 固态硬盘
-      website: 1
-      description: >
-        “过气的”硬盘检测工具。
     - name: txbench
       title: TxBENCH
       keywords: SSD安全擦除固态硬盘跑分
@@ -573,6 +559,45 @@
       mirror: synced
       description: >
         不常用的固态硬盘检测和跑分软件，但却是常用的固态硬盘安全擦除软件。
+    - name: anvil
+      title: AnvilPro
+      keywords: 硬盘
+      website: 4
+      description: >
+        硬盘测试软件。
+    - name: urwtest
+      title: urwtest
+      keywords: 硬盘容量老化
+      mirror: locked
+      description: >
+        硬盘测试软件。提供容量测试，老化测试等功能。
+    - name: mydisktest
+      title: MyDiskTest
+      keywords: U盘扩容坏块
+      website: 2
+      mirror: locked
+      description: >
+        U盘扩容检测软件。
+    - name: h2testw
+      title: H2testw
+      keywords: 硬盘容量
+      website: 4
+      mirror: locked
+      description: >
+        硬盘容量测试工具。
+    - name: ssdz
+      title: SSD-Z
+      keywords: 固态硬盘
+      website: 1
+      description: >
+        “过气的”硬盘检测工具。
+    - name: victoria
+      title: Victoria
+      keywords: 硬盘扫描坏道坏块
+      website: 1
+      mirror: locked
+      description: >
+        硬盘扫描，坏道坏块检测软件。
     - name: llf
       title: LLFTOOL
       keywords: 低级格式化低格
@@ -581,43 +606,29 @@
         硬盘低级格式化工具。
       notice: >
         这个软件可能会对不购买的用户限制擦除速度。
-    - name: h2testw
-      title: H2testw
-      keywords: 硬盘容量
-      website: 4
-      mirror: locked
-      description: >
-        硬盘容量测试工具。
-    - name: urwtest
-      title: urwtest
-      keywords: 硬盘容量老化
-      mirror: locked
-      description: >
-        硬盘测试软件。提供容量测试，老化测试等功能。
     - name: iometer
       title: IOMETER
       keywords: 硬盘
       website: 1
       description: >
         最初由Intel开发的开源专业IO测试软件。
-    - name: anvil
-      title: AnvilPro
-      keywords: 硬盘
-      website: 4
-      description: >
-        硬盘测试软件。
     - name: hdsentinel
       title: 磁盘哨兵
       website: 1
       websites:
+        # [todo] 汉化版带破解功能
         zh: 论坛汉化版
       description: >
         知名硬盘寿命监测软件。
+      notice: >
+        这是收费软件，提供30天的试用期。
     - name: rstudio
       title: R-Studio
       website: 1
       description: >
-        强大的专业数据恢复软件。免费的演示版有恢复文件大小限制。
+        强大的专业数据恢复软件。
+      notice: >
+        免费的演示版有恢复文件大小限制。
     - name: recuva
       title: Recuva
       website: 1
@@ -628,6 +639,8 @@
       website: 1
       description: >
         固态硬盘优化工具。
+      notice: >
+        安装后需要注册和登录，免费版功能可能略有限制。
     # [todo] Blackmagic Disk Speed Test
 - name: prepare
   title: 系统安装工具
@@ -651,36 +664,6 @@
       mirror: locked
       description: >
         方便的WIM/ESD解压安装工具。
-    - name: easyu
-      title: 优启通PE
-      keywords: IT天空U盘启动PE
-      website: 1
-      description: >
-        由IT天空论坛开发的知名PE工具，用户口碑较好。
-    - name: wepe
-      title: 微PE
-      keywords: U盘启动PE
-      website: 1
-      description: >
-        知名PE工具，用户口碑较好。
-    - name: edgeless
-      title: Edgeless PE
-      keywords: U盘启动PE
-      website: 1
-      description: >
-        半开源的新型PE工具，仍不稳定，较高水平的用户可以尝试使用。
-    - name: firpe
-      title: FirPE
-      keywords: U盘启动PE
-      website: 1
-      description: >
-        新型PE工具，多人推荐。
-    - name: hotpe
-      title: HotPE
-      keywords: U盘启动PE
-      website: 1
-      description: >
-        B站UP主制作的新型PE工具，自带丰富的功能和模块，制作者自荐。
     - name: wmct
       title: Windows媒体创建工具
       keywords: 微软Windows系统下载获取镜像U盘安装
@@ -702,12 +685,6 @@
       mirror: active
       description: >
         伪造升级残留激活Windows的开源工具。
-    - name: intel-dsa
-      title: 英特尔驱动支持助理
-      keywords: Windows激活
-      website: 1
-      description: >
-        Intel官方推出的驱动检测与升级服务。使用前需要安装一个本地程序，然后在网页端操作。
     - name: vcrtpack
       title: VC运行库打包
       keywords: 缺少丢失DLL
@@ -739,6 +716,44 @@
       website: 1
       description: >
         另一个可启动镜像写入工具。
+    - name: easyu
+      title: 优启通PE
+      keywords: IT天空U盘启动PE
+      website: 1
+      description: >
+        由IT天空论坛开发的知名PE工具，用户口碑较好。
+    - name: wepe
+      title: 微PE
+      keywords: U盘启动PE
+      website: 1
+      description: >
+        知名PE工具，用户口碑较好。
+    - name: edgeless
+      title: Edgeless PE
+      keywords: U盘启动PE
+      website: 1
+      description: >
+        半开源的新型PE工具，仍不稳定，较高水平的用户可以尝试使用。
+    - name: firpe
+      title: FirPE
+      keywords: U盘启动PE
+      website: 1
+      description: >
+        新型PE工具，多人推荐。
+    - name: hotpe
+      title: HotPE
+      keywords: U盘启动PE
+      website: 1
+      description: >
+        B站UP主制作的新型PE工具，自带丰富的功能和模块，制作者自荐。
+    - name: intel-dsa
+      title: 英特尔驱动支持助理
+      keywords: intel驱动
+      website: 1
+      # [todo] 英特尔® 驱动程序和支持助理 应当为下载界面
+      # https://www.intel.cn/content/www/cn/zh/support/detect.html
+      description: >
+        Intel官方推出的驱动检测与升级服务。使用前需要安装一个本地程序，然后在网页端操作。
 - name: burning
   title: 稳定性测试
   cross_notice: 烤机相关说明
@@ -808,8 +823,8 @@
       description: >
         键盘触发测试工具。可测试接触不良，坏轴等。
     # [todo] 一个是JME Keyboard Test Programm，支持按下发生，FN功能测试（音量加减等），暂且找不到官网，只有网上流传的版本，简单实用。
-    - name: passmark-keytest
       title: PassMark KeyboardTest
+      # [todo] KeyboardTest需要添加镜像
       website: 1
       description: >
         PassMark出品的键盘测试工具，功能全面，支持自定义布局。
@@ -946,13 +961,16 @@
       title: SoftCnKiller
       website: 2
       description: >
-        清理流氓软件（下崽器捆绑软件）的实用工具。
+        针对流氓软件、下载器、弹窗广告等恶意软件制作的一键清理工具。
+      notice: >
+        Windows Defender误报，请自行确定是否使用。由于含有弹窗定位等功能请尽量避免在游戏反作弊引擎作用期间使用。
     - name: speedtest
       title: Speedtest
       keywords: 网络测速
       website: 3
+      # [todo] 添加speedtest.cn国内版的跳转
       description: >
-        知名网络测速工具。
+        常用网络测速站，无特殊需求请访问国内版。
     - name: powertoys
       title: PowerToys
       website: 1
@@ -986,7 +1004,7 @@
       title: uTools
       website: 1
       description: >
-        一个实用工具集合平台。
+        使用搜索框/鼠标中键菜单进行快捷操作的效率工具，通过自由选配丰富的插件，打造得心应手的工具集合。
     - name: autosizer
       title: AutoSizer
       website: 1
