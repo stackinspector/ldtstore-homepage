@@ -348,7 +348,7 @@ const gen_tool_plain = (input: Tool, cross: boolean) => `
 `
 
 const gen_tools_plain = ({ tools, tool_data: { index, cross } }: ProcessedToolGroups) => Object.entries(index)
-    .map(([ name, { title, list, cross_list }]) => `
+    .map(([ name, { title, list, cross_list } ]) => `
         <h2>${title} <i>${name}</i></h2>
         ${list.map(tool => gen_tool_plain(tools[tool], false)).join("")}
         ${cross_list.map(tool => {

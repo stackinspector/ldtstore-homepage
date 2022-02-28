@@ -466,7 +466,9 @@
     - name: nvidia-inspector
       title: NVIDIA Inspector
       keywords: N卡检测N卡超频
-      website: 1
+      website: 2
+      websites:
+        profile: NVIDIA Profile Inspector (GitHub)
       description: >
         第三方开发的NVIDIA显卡检测与超频工具。目前已不常用。显卡配置文件修改功能目前被独立到软件NVIDIA Profile Inspector中，可能与部分网上的教程有所差异。
     - name: vgabios
