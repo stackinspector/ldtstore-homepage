@@ -62,7 +62,7 @@ const html = async (filename: string) => {
     `<link rel="stylesheet" href="/style.css">`,
     `<link rel="stylesheet" href="/style-${git}.css">`
   ).replaceAll(
-    `<a `,
+    `<a  `,
     `<a target="_blank" `
   )
   return minify("html", content)

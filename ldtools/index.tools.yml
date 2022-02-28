@@ -61,7 +61,7 @@
       notice: >
         旧站以MSDN资源收集为主，基本停止更新，不包含Windows 10 2004及以后的Windows。
         新站不仅包括最新的Windows，而且将收录范围扩展到了除了Windows之外的更多操作系统，同时还加入了BT链接和一些增值服务，建议使用。不过新站需要登录。
-        <br>检票的私货时间：<a class="link" href="//r.ldtstore.com.cn/r2/p-itellyou-msdn">关于ITELLYOU与MSDN关系的科普</a>
+        <br>检票的私货时间：<a  class="link" href="//r.ldtstore.com.cn/r2/p-itellyou-msdn">关于ITELLYOU与MSDN关系的科普</a>
     - name: techbench
       title: TechBench链接生成
       keywords: Windows系统镜像下载资源

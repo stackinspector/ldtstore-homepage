@@ -120,7 +120,7 @@ const gen_tile = (input: Tile): string => {
     `
 
     const href = (path: string) => `
-        <a class="tile-link" href="${path}${input.name}/">
+        <a  class="tile-link" href="${path}${input.name}/">
             <div class="tile ${input.tile}">
                 ${inner}
             </div>
@@ -256,7 +256,7 @@ const proc_tool_groups = (groups: ToolGroup[]): ProcessedToolGroups => {
 const proc_tool_title = (input: ToolLink) => (typeof input.title === "string") ? input.title : tool_website_type[input.title]
 
 const gen_tool_link = (input: ToolLink) => `
-    <span><a class="link" href="${tool_link_prefix[input.link_type]}${input.link}">
+    <span><a  class="link" href="${tool_link_prefix[input.link_type]}${input.link}">
         <svg class="icon">
             <use href="#icon-${input.icon}"></use>
         </svg>
@@ -265,7 +265,7 @@ const gen_tool_link = (input: ToolLink) => `
 `
 
 const gen_tool_link_plain = (input: ToolLink) => `
-    <span><a href="${tool_link_prefix[input.link_type]}${input.link}">
+    <span><a  href="${tool_link_prefix[input.link_type]}${input.link}">
         ${tool_icon_emoji[input.icon]}
         ${proc_tool_title(input)}
     </a>&nbsp;<i>
