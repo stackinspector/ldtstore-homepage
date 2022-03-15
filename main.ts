@@ -110,7 +110,7 @@ const sideMove = (enable: boolean) => {
 };
 
 const setTransitionDuration = (time = 0.4) => {
-    offset.style.transitionDuration = side.style.transitionDuration = time + "s";
+    offset.style.transitionDuration = side.style.transitionDuration = `${time}s`;
 };
 
 /**
@@ -271,13 +271,11 @@ const renderSearch = (keywordText: string) => {
         }
         for (const tool of Object.keys(all)) {
             if (tool.toLowerCase().includes(keywordText.toLowerCase())) {
-                // console.log(`OK at ${keywordText}`)
                 content.appendChild(cloneTemplate(`tool-${all[tool]}`));
                 // showDetail(side.getElementsByClassName("item")[0] as HTMLElement);
                 // return;
             }
         }
-        // console.log(`NO at ${keywordText}`)
     }
 };
 

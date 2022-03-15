@@ -15,22 +15,23 @@ const ADDR = {
   },
 }
 
+const target_dir = Deno.args[0]!
+const cfg = Deno.args[1] as keyof typeof ADDR
+const raw_html = Boolean(Deno.args[2])
+const current_addr = ADDR[cfg]
+
 const global_replace = (input: string) => input.replaceAll(
   "{{IMAGE}}", current_addr.IMAGE
 ).replaceAll(
   "{{MIRROR}}", current_addr.MIRROR
 )
 
-const target_dir = Deno.args[0]!
-const cfg = Deno.args[1] as keyof typeof ADDR
-const current_addr = ADDR[cfg]
-
 const git = new TextDecoder().decode(
   await Deno.run({
-    cmd: `git log -1 --pretty=format:"%h"`.split(" "),
+    cmd: `git log -1 --pretty=format:%h`.split(" "),
     stdout: "piped",
   }).output(),
-).replaceAll(`"`, "")
+)
 
 const copyright = `
   Copyright (c) 2021-2022 CarrotGeball and stackinspector. All rights reserved. MIT license.
@@ -68,7 +69,7 @@ const html = async (filename: string) => {
     `<a  `,
     `<a target="_blank" `
   )
-  return minify("html", content)
+  return raw_html ? content : minify("html", content)
 }
 
 const ts = async (filename: string) => {

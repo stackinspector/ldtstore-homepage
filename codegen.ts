@@ -136,6 +136,7 @@ const gen_tile = (input: Tile): string => {
     switch (input.action) {
         case "side": return call("side")
         case "tool": return call("tool")
+        case "copy": return call("copy")
         case "href": return href("/")
         case "r": return href("//r.ldtstore.com.cn/r/")
         case "r2": return href("//r.ldtstore.com.cn/r2/")
