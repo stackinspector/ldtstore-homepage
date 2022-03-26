@@ -48,7 +48,7 @@ const RecalculateState = {
 };
 
 const SideState = {
-    /** 侧边栏是否打开 */ 
+    /** 侧边栏是否打开 */
     on: false,
     /** 侧边栏当前id */
     id: null as string | null,
@@ -238,7 +238,7 @@ const renderSide = (id: string) => {
         const name = id.substring(5);
         const index = DATA.tool.index[name];
         const cross = DATA.tool.cross[name];
-        const list = [...index.list, ...index.cross_list]
+        const list = [...index.list, ...index.cross_list];
         const single = list.length === 1;
         side.appendChild(cloneTemplate("side-tools-base"));
         const title = side.getElementsByClassName("title")[0] as HTMLElement;

@@ -1,5 +1,5 @@
 - name: non-catalog
-  title: ""
+  title: "[隐藏的项目]（并没有）"
   list: []
 - list:
     - name: tbtool

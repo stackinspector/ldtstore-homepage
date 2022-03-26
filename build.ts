@@ -17,7 +17,6 @@ const ADDR = {
 
 const target_dir = Deno.args[0]!
 const cfg = Deno.args[1] as keyof typeof ADDR
-const raw_html = Boolean(Deno.args[2])
 const current_addr = ADDR[cfg]
 
 const global_replace = (input: string) => input.replaceAll(
@@ -69,7 +68,7 @@ const html = async (filename: string) => {
     `<a  `,
     `<a target="_blank" `
   )
-  return raw_html ? content : minify("html", content)
+  return content
 }
 
 const ts = async (filename: string) => {
@@ -77,7 +76,7 @@ const ts = async (filename: string) => {
     bundle: "classic",
     compilerOptions: {
       lib: ["esnext", "dom"],
-    }
+    },
   })
   const transform_result = await transform(bundle_result.files["deno:///bundle.js"], {
     minifyWhitespace: true,
