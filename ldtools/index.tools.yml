@@ -264,10 +264,11 @@
       cross: [burning]
       website: 1
       downloads:
-        r23: R23官网下载直链
-        r20: R20官网下载直链
-        r15: R15官网下载直链
-        r115: R11.5官网下载直链
+        #这里需要想办法调整一下最终展现的顺序
+        r23: R23官网直链
+        r20: R20官网直链
+        r15: R15官网直链
+        r115: R11.5官网直链
       mirrors:
         r23: R23镜像下载
         r20: R20镜像下载
@@ -467,7 +468,7 @@
       keywords: N卡检测N卡超频
       website: 2
       websites:
-        profile: NVIDIA Profile Inspector (GitHub)
+        profile: Profile Inspector
       description: >
         第三方开发的NVIDIA显卡检测与超频工具。目前已不常用。显卡配置文件修改功能目前被独立到软件NVIDIA Profile Inspector中，可能与部分网上的教程有所差异。
     - name: vgabios
@@ -930,10 +931,10 @@
       website: 1
       websites:
         dl: 官网下载页面
-        v6: 官网v6下载页面
+        v6: v6官网页面
       downloads:
-        v6: 官网v6下载直链
-        v6-portable: 官网v6免安装版下载直链
+        v6: v6官网直链(exe)
+        v6-portable: v6官网直链(zip)
       description: >
         知名压缩软件。目前最新的v7免费版包含广告，官网也可以下载到完全免费无广告的v6版本，但<b>官网警告使用旧版可能存在漏洞等风险，且后果自负</b>。
     - name: fastcopy

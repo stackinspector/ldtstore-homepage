@@ -605,6 +605,11 @@ svg.icon-line {
     margin-right: 1em;
 }
 
+.detail span {
+    min-width: 10em;
+    margin: .25em 0;
+}
+
 .detail {
     display: inline-block;
     width: 100%;
