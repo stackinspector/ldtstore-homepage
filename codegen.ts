@@ -69,6 +69,7 @@ type Tool = {
   mirror?: "active" | "locked" | "synced";
   mirrors?: Record<string, string>;
   custom?: ToolLink[];
+  reorder?: number[];
   notice?: string;
   cross_notice?: Record<string, string>;
 };
@@ -253,7 +254,9 @@ const proc_tool_groups = (groups: ToolGroup[]): ProcessedToolGroups => {
 
 const proc_tool_title = (input: ToolLink) => (typeof input.title === "string") ? input.title : tool_website_type[input.title];
 
-const gen_tool_link = (input: ToolLink): Node =>
+const gen_tool_link = (input: ToolLink | null): Node =>
+  //占位空白
+  input === null ? ["span", {}, []] :
   ["span", {}, [
     ["a", {
       target: "_blank",
@@ -265,7 +268,8 @@ const gen_tool_link = (input: ToolLink): Node =>
     ]],
   ]];
 
-const gen_tool_link_plain = (input: ToolLink): Node =>
+const gen_tool_link_plain = (input: ToolLink | null): Node =>
+  input === null ? void 0 :
   ["span", {}, [
     ["a", {
       href: `${tool_link_prefix[input.link_type]}${input.link}`,
@@ -322,7 +326,19 @@ const gen_tool_links = (input: Tool, plain: boolean): Node[] => {
   if (input.custom !== void 0) {
     links.push(...input.custom);
   }
-  return links.map(plain ? gen_tool_link_plain : gen_tool_link);
+  if(input.reorder){
+    const links_reorder: (ToolLink | null)[] = [];
+    for (let i = 0; i < input.reorder.length; i++) {
+      //reorder -1代表占位空白
+      links_reorder.push(
+        (input.reorder[i] <0 || input.reorder[i] >= links.length) ? null:links[input.reorder[i]]
+      );
+    }
+    return links_reorder.map(plain ? gen_tool_link_plain : gen_tool_link);
+  }
+  else{
+    return links.map(plain ? gen_tool_link_plain : gen_tool_link);
+  }
 };
 
 const tool_notice = (notice: string): Node =>

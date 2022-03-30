@@ -584,12 +584,15 @@ svg.icon-line {
     transition: cubic-bezier(.6, 0, .4, 1) transform 0.3s;
 }
 
+.item img {
+    margin-right: .625em;
+}
+
 .item .item-title {
     display: inline-block;
     font-size: 1.25em;
     text-align: center;
     line-height: 2.4;
-    margin-left: .5em;
     width: max-content;
     vertical-align: top;
 }
