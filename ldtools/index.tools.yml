@@ -567,6 +567,7 @@
     - name: urwtest
       title: urwtest
       keywords: 硬盘容量老化
+      website: 2
       mirror: locked
       description: >
         硬盘测试软件。提供容量测试，老化测试等功能。
@@ -948,6 +949,7 @@
       title: ChoEazyCopy
       keywords: 复制拷贝
       website: 2
+      mirror: active
       description: >
         强大的Windows文件复制工具。通过调用原生RoboCopy实现，支持多线程拷贝，在一些方面相对FastCopy具备优势。
     - name: freefilesync
