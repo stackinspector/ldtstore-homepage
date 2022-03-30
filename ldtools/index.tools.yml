@@ -336,7 +336,9 @@
       keywords: CPU内存超频功耗墙功耗控制
       website: 1
       description: >
-        Intel处理器官方超频调整工具。具体使用教程可在B站自行搜索。
+        Intel处理器官方超频调整工具。本站教程集合中有收录本工具相关的教程。
+      notice: >
+          CPU调整对不同型号的硬件有针对性，尤其对应不同的笔记本型号，可调整选项/能否安装都会根据机型有所不同。
       cross_notice:
         burning:
           内置稳定性测试功能，偏向动态响应测试而非负载测试，对主板供电的性能有极高要求。如出现能过FPU甚至P95烤机，但使用中仍有黑屏死机的话，可以尝试XTU测试。
@@ -345,7 +347,7 @@
       keywords: CPU内存超频功耗墙功耗控制
       website: 1
       description: >
-        AMD处理器官方超频调整工具。具体使用教程可在B站自行搜索。
+        AMD处理器官方超频调整工具。本站教程集合中有收录本工具相关的教程。
     - name: throttle-stop
       title: ThrottleStop
       keywords: CPU超频功耗墙功耗控制
@@ -358,14 +360,14 @@
       website: 1
       mirror: active
       description: >
-        针对笔记本AMD锐龙处理器的超频工具。官方的Ryzen Master仅适用于台式机CPU。
+        针对笔记本AMD锐龙处理器的超频工具。官方的Ryzen Master仅适用于台式机CPU。本站教程集合中有收录本工具相关的教程。
     - name: ctr
       title: ClockTuner for Ryzen
       keywords: CPU超频功耗墙功耗控制自动超频
       website: 1
       mirror: active
       description: >
-        一款针对AMD Zen处理器自动超频调试，并给出高能效比的设置建议的软件。
+        一款针对AMD Zen处理器自动超频调试，并给出高能效比的设置建议的软件。本站教程集合中有收录本工具相关的教程。
     - name: intel-burntest
       title: Intel BurnTest
       keywords: linpack烤鸡
@@ -1017,3 +1019,49 @@
       website: 1
       description: >
         强制调整Windows窗口大小的工具。
+- name: guide
+  title: 教程集合
+  list:
+    - name: guide-xtu
+      icon: intel-xtu
+      title: Intel XTU 教程
+      keywords: 
+      websites:
+        video1: 视频链接
+      notice: >
+          此处只收录老弟的教程（桌面平台带K适用），笔记本相关的建议在b站搜索，同时确保自己理解超频/降压的理论后在进行。
+    - name: guide-amd-ryzen-master
+      icon: amd-ryzen-master
+      title: AMD Ryzen Master 教程
+      keywords: 
+      websites:
+        video1: 视频链接
+    - name: guide-amd-ctr
+      icon: ctr
+      title: CTR AMD 超频教程
+      keywords: 
+      websites:
+        video1: 视频链接(极客湾)
+        video2: 视频链接(KENNY)
+        text1: 知乎链接
+    - name: guide-ryzen-controller
+      icon: ryzen-controller
+      title: Ryzen Controller 教程
+      keywords: 
+      websites:
+        text1: 知乎链接
+    - name: guide-cpu-burning
+      icon: p95
+      title: CPU稳定性教程
+      keywords: 
+      websites:
+        video1: 视频链接(极客湾)
+      description: >
+        视频中同时介绍了超频的相关知识，17:29 CPU稳定性相关内容
+    - name: guide-mem-overclock
+      icon: tm5
+      title: 内存超频/稳定性测试教程
+      keywords: 
+      websites:
+        text1: 专栏链接（Intel相关）
+        text2: 专栏链接（AMD相关）

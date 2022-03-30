@@ -351,6 +351,7 @@ const tool_notice = (notice: string): Node =>
 const gen_tool = (input: Tool): Node =>
   ["template", { id: `tool-${input.name}` }, [
     ["div", { class: "item", onclick: "detail(this)" }, [
+      input.icon === null ? void 0 :
       ["img", {
         src: `{{IMAGE}}/icon-tool/${input.icon === void 0 ? input.name : input.icon}.webp`,
         alt: input.title,

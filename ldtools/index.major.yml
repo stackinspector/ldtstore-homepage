@@ -46,11 +46,16 @@ middle:
       action: side
       name: drv
       title: 官网驱动
-    - tile: m1
-      font: h3
+    - tile: s1
+      font: h4
       action: tool
       name: rank
       title: 天梯图与数据
+    - tile: s1
+      font: h3
+      action: tool
+      name: guide
+      title: 教程集合
   - title: 工具下载
     content:
     - tile: s2
