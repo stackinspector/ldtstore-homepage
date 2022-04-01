@@ -68,7 +68,7 @@ type Tool = {
   downloads?: Record<string, string>;
   mirror?: "active" | "locked" | "synced";
   mirrors?: Record<string, string>;
-  custom?: ToolLink[];
+  columns?: boolean;
   notice?: string;
   cross_notice?: Record<string, string>;
 };
@@ -261,6 +261,7 @@ const gen_tool_link = (input: ToolLink): Node =>
       href: `${tool_link_prefix[input.link_type]}${input.link}`,
     }, [
       svg_icon(input.icon),
+      " ",
       proc_tool_title(input),
     ]],
   ]];
@@ -279,6 +280,7 @@ const gen_tool_link_plain = (input: ToolLink): Node =>
 
 const gen_tool_links = (input: Tool, plain: boolean): Node[] => {
   const links: ToolLink[] = [];
+  const downloads: ToolLink[] = [];
   if (input.website !== void 0) {
     links.push({
       title: input.website,
@@ -296,7 +298,7 @@ const gen_tool_links = (input: Tool, plain: boolean): Node[] => {
     })));
   }
   if (input.downloads !== void 0) {
-    links.push(...Object.entries(input.downloads).map(([link, title]): ToolLink => ({
+    downloads.push(...Object.entries(input.downloads).map(([link, title]): ToolLink => ({
       title,
       link_type: "r2",
       link: `${input.name}-d-${link}`,
@@ -304,7 +306,7 @@ const gen_tool_links = (input: Tool, plain: boolean): Node[] => {
     })));
   }
   if (input.mirror !== void 0) {
-    links.push({
+    downloads.push({
       title: "镜像下载",
       link_type: "mirror",
       link: `/${input.mirror}/${input.name}.zip`,
@@ -312,17 +314,19 @@ const gen_tool_links = (input: Tool, plain: boolean): Node[] => {
     });
   }
   if (input.mirrors !== void 0) {
-    links.push(...Object.entries(input.mirrors).map(([link, title]): ToolLink => ({
+    downloads.push(...Object.entries(input.mirrors).map(([link, title]): ToolLink => ({
       title,
       link_type: "mirror",
       link: `/locked/${input.name}-${link}.zip`,
       icon: "download",
     })));
   }
-  if (input.custom !== void 0) {
-    links.push(...input.custom);
-  }
-  return links.map(plain ? gen_tool_link_plain : gen_tool_link);
+  const attr = { class: !plain && input.columns ? "tool-links-columns" : void 0 };
+  const proc = plain ? gen_tool_link_plain : gen_tool_link;
+  return [
+    ["p", attr, links.map(proc)],
+    ["p", attr, downloads.map(proc)],
+  ];
 };
 
 const tool_notice = (notice: string): Node =>
@@ -344,7 +348,7 @@ const gen_tool = (input: Tool): Node =>
       ["div", { class: "detail-container" }, [
         ["div", { class: "detail" }, [
           ["p", {}, [input.description]],
-          ["p", {}, gen_tool_links(input, false)],
+          ...gen_tool_links(input, false),
           input.notice === void 0 ? void 0 : tool_notice(input.notice),
         ]],
       ]],
@@ -359,7 +363,7 @@ const gen_tool_plain = (input: Tool, cross: boolean, title = true): Node[] => [
     ]]
     : void 0,
   ["p", {}, [input.description]],
-  ["p", {}, gen_tool_links(input, true)],
+  ...gen_tool_links(input, true),
   input.notice === void 0 ? void 0 : tool_notice(input.notice),
 ];
 
