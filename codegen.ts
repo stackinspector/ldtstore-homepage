@@ -321,11 +321,14 @@ const gen_tool_links = (input: Tool, plain: boolean): Node[] => {
       icon: "download",
     })));
   }
-  const attr = { class: !plain && input.columns ? "tool-links-columns" : void 0 };
-  const proc = plain ? gen_tool_link_plain : gen_tool_link;
+  const proc = (o: ToolLink[]): Node => o.length === 0
+    ? void 0
+    : ["div", {
+        class: !plain && input.columns ? "tool-links-columns" : void 0
+      }, o.map(plain ? gen_tool_link_plain : gen_tool_link)]
   return [
-    ["div", attr, links.map(proc)],
-    ["div", attr, downloads.map(proc)],
+    proc(links),
+    proc(downloads),
   ];
 };
 
