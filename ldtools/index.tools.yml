@@ -1025,43 +1025,37 @@
     - name: guide-xtu
       icon: intel-xtu
       title: Intel XTU 教程
-      keywords: 
       websites:
-        video1: 视频链接
+        1: 老弟的视频教程
       notice: >
-          此处只收录老弟的教程（桌面平台带K适用），笔记本相关的建议在b站搜索，同时确保自己理解超频/降压的理论后在进行。
+          此处只收录老弟的教程（桌面平台带K适用），笔记本相关的建议在B站搜索，同时确保自己理解超频/降压的理论后在进行。
     - name: guide-amd-ryzen-master
       icon: amd-ryzen-master
       title: AMD Ryzen Master 教程
-      keywords: 
       websites:
-        video1: 视频链接
-    - name: guide-amd-ctr
+        1: PCEVA视频教程
+    - name: guide-ctr
       icon: ctr
-      title: CTR AMD 超频教程
-      keywords: 
+      title: ClockTuner for Ryzen 教程
       websites:
-        video1: 视频链接(极客湾)
-        video2: 视频链接(KENNY)
-        text1: 知乎链接
+        1: 极客湾视频教程
+        2: KENNY视频教程
+        3: 专栏教程
     - name: guide-ryzen-controller
       icon: ryzen-controller
       title: Ryzen Controller 教程
-      keywords: 
       websites:
-        text1: 知乎链接
+        1: 专栏教程
     - name: guide-cpu-burning
       icon: p95
-      title: CPU稳定性教程
-      keywords: 
+      title: CPU稳定性测试教程
       websites:
-        video1: 视频链接(极客湾)
+        1: 极客湾视频教程
       description: >
-        视频中同时介绍了超频的相关知识，17:29 CPU稳定性相关内容
+        视频中也同时介绍了超频的相关知识，17:29后为CPU稳定性相关内容。
     - name: guide-mem-overclock
       icon: tm5
       title: 内存超频/稳定性测试教程
-      keywords: 
       websites:
-        text1: 专栏链接（Intel相关）
-        text2: 专栏链接（AMD相关）
+        1: 专栏教程（Intel相关）
+        2: 专栏教程（AMD相关）
