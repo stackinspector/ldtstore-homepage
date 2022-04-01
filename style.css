@@ -608,14 +608,15 @@ svg.icon-line {
     margin-right: 1em;
 }
 
-/* .detail span {
-    min-width: 10em;
+.detail span {
+    /* min-width: 10em; */
     margin: .25em 0;
-} */
+}
 
 .tool-links-columns {
     columns: 2;
     overflow: hidden;
+    max-width: 24em;
 }
 
 .detail {
