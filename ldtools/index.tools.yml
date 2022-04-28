@@ -30,7 +30,7 @@
       description: >
         优秀的Windows工具箱。集合了映像工具、系统清理、驱动管理、更新管理等功能，还集合了一些常用的个人习惯相关的系统设置。
 - name: other-collection
-  title: 其他工具集合
+  title: 工具站推荐
   list:
     - name: techpowerup
       title: TechPowerUp下载页面
@@ -756,7 +756,7 @@
       description: >
         Intel官方推出的驱动检测与升级服务。使用前需要安装一个本地程序，然后在网页端操作。
 - name: burning
-  title: 稳定性测试
+  title: 稳定性测试工具
   cross_notice: 烤机相关说明
   list:
     - name: p95

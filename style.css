@@ -90,13 +90,14 @@ a.tile-link {
 #inputTrigger {
     position: absolute;
     display: flex;
-    width: 75%;
+    width: 14em;
     height: 3.5em;
     top: .15em;
     left: .5em;
     /* background-color: rgba(247, 103, 247, 0.288); */
     pointer-events: all;
     cursor: text;
+    z-index: -1;
 }
 
 #search,
@@ -417,7 +418,7 @@ a.tile-link {
 #keyword {
     display: inline-block;
     font-size: 1em;
-    width: 11em;
+    width: 13em;
     pointer-events: all;
     border-width: 0;
     padding: 0;
@@ -513,7 +514,26 @@ a.tile-link {
     }
 
     #keyword {
-        width: 6.5em;
+        width: 9em;
+    }
+    #inputTrigger {
+        width: 10.5em;
+        top: .5em;
+    }
+    #side .title {
+        font-size: 1.8em;
+        line-height: 2em;
+    }
+    .item {
+        font-size: .75em;
+    }
+
+    .item .title {
+        margin-left: 0;
+    }
+
+    .item .icon {
+        padding-right: 0em;
     }
 }
 
@@ -533,7 +553,7 @@ svg.icon-back {
     width: 2em;
     height: 2em;
     vertical-align: top;
-    padding: 1.4em 0 1.4em 1.4em;
+    padding: 1.4em 0 1.4em .4em;
 }
 
 #side .content {
@@ -627,18 +647,4 @@ svg.icon-line {
 .item img {
     display: inline-block;
     height: 3em;
-}
-
-@media screen and (max-width: 500px) {
-    .item {
-        font-size: .75em;
-    }
-
-    .item .title {
-        margin-left: 0;
-    }
-
-    .item .icon {
-        padding-right: 0em;
-    }
 }

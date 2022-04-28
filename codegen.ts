@@ -212,18 +212,30 @@ const proc_tool_groups = (groups: ToolGroup[]): ProcessedToolGroups => {
   const all: ToolAllType = Object.create(null);
   const cross: ToolCrossType = Object.create(null);
   const cross_notice_title: Record<string, string> = Object.create(null);
+  const groups_name: Record<string, string> = Object.create(null);
   for (const group of groups) {
     if (group.name !== void 0 && group.cross_notice !== void 0) {
       cross_notice_title[group.name] = group.cross_notice;
       cross[group.name] = Object.create(null);
     }
+    if (group.title !== void 0 && group.name !== void 0)
+      groups_name[group.name] = group.title;
   }
   for (const group of groups) {
     const group_name = (group.name === void 0 && group.list.length === 1) ? group.list[0].name : group.name!;
     const list = [];
     for (const tool of group.list) {
       list.push(tool.name);
-      all[tool.keywords === void 0 ? tool.title : tool.title + tool.keywords!] = tool.name;
+      let combined_keywords = tool.keywords === void 0 ? tool.title : tool.title + tool.keywords!;
+      combined_keywords += tool.name;
+      if(group.title)
+        combined_keywords += group.title;
+        if(tool.cross){
+          for (const cross_group_name of tool.cross) {
+            combined_keywords += groups_name[cross_group_name];
+          }
+        }
+      all[combined_keywords.toLowerCase()] = tool.name;
       tools[tool.name] = tool;
       if (tool.cross_notice !== void 0) {
         for (const [group, content] of Object.entries(tool.cross_notice)) {
@@ -341,7 +353,7 @@ const tool_notice = (notice: string): Node =>
 
 const gen_tool = (input: Tool): Node =>
   ["template", { id: `tool-${input.name}` }, [
-    ["div", { class: "item", onclick: "detail(this)" }, [
+    ["div", { class: "item", name: input.name, onclick: "detail(this)" }, [
       ["img", {
         src: `{{IMAGE}}/icon-tool/${input.icon === void 0 ? input.name : input.icon}.webp`,
         alt: input.title,

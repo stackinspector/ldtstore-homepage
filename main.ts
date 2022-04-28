@@ -84,7 +84,7 @@ if (DATA.page_type === "tool") {
     search!.onclick = (e: MouseEvent) => {
         // 用来阻止冒泡
         e.stopPropagation();
-        sideSet("search");
+        sideSet("tool-search");
     };
 
     back!.onclick = (e: MouseEvent) => {
@@ -145,18 +145,6 @@ const sideChange = (id: string | null) => {
         offset.style.opacity = "1";
     }
 
-    if (id === "search") {
-        // console.log("focus");
-        const keyword = document.getElementById("keyword") as HTMLInputElement;
-        const inputTrigger = document.getElementById("inputTrigger") as HTMLElement;
-        inputTrigger.onclick = () => {
-            keyword.focus();
-        };
-        keyword.addEventListener("keyup", () => {
-            renderSearch(keyword.value);
-        });
-        keyword.focus();
-    }
 };
 
 /**
@@ -235,34 +223,45 @@ const renderSide = (id: string) => {
         side.removeChild(side.lastChild!);
     }
     if (id.startsWith("tool-") && DATA.page_type === "tool") {
-        const name = id.substring(5);
-        const index = DATA.tool.index[name];
-        const cross = DATA.tool.cross[name];
-        const list = [...index.list, ...index.cross_list];
-        const single = list.length === 1;
-        side.appendChild(cloneTemplate("side-tools-base"));
-        const title = side.getElementsByClassName("title")[0] as HTMLElement;
-        title.innerText = single ? "详情" : index.title;
-        const content = side.getElementsByClassName("content")[0];
-        for (const tool of list) {
-            const item = cloneTemplate(`tool-${tool}`).firstElementChild!;
-            const cross_notice = cross?.[tool];
-            if (cross_notice !== void 0) {
-                const p = document.createElement("p");
-                p.innerHTML = cross_notice;
-                item.getElementsByClassName("detail")[0].appendChild(p);
+        side.appendChild(cloneTemplate(`side-tool-search`));
+        const keyword = document.getElementById("keyword") as HTMLInputElement;
+        const inputTrigger = document.getElementById("inputTrigger") as HTMLElement;
+        if (id !== "tool-search") {
+            const name = id.substring(5);
+            const index = DATA.tool.index[name];
+            const cross = DATA.tool.cross[name];
+            const content = side.getElementsByClassName("content")[0];
+            renderSearch(index.title);
+            keyword.value = index.title;
+            for (const item  of content.children) {
+                const cross_notice = cross?.[item.getAttribute("name")];
+                if (cross_notice !== void 0) {
+                    const p = document.createElement("p");
+                    p.innerHTML = cross_notice;
+                    item.getElementsByClassName("detail")[0].appendChild(p);
+                }
             }
-            content.appendChild(item);
+            const single = content.childElementCount === 1;
+            if (single) {
+                showDetail(side.getElementsByClassName("item")[0] as HTMLElement);
+            }
+        } else {
+            keyword.focus();
         }
-        if (single) {
-            showDetail(side.getElementsByClassName("item")[0] as HTMLElement);
-        }
-    } else {
+        inputTrigger.onclick = () => {
+            keyword.focus();
+        };
+        keyword.addEventListener("keyup", () => {
+            renderSearch(keyword.value);
+        });
+    }
+    else {
         side.appendChild(cloneTemplate(`side-${id}`));
     }
 };
 
 const renderSearch = (keywordText: string) => {
+    keywordText = keywordText.toLowerCase();
     if (DATA.page_type === "tool") {
         const all = DATA.tool.all;
         const content = document.getElementById("search-content")!;
@@ -270,7 +269,7 @@ const renderSearch = (keywordText: string) => {
             content.removeChild(content.lastChild!);
         }
         for (const tool of Object.keys(all)) {
-            if (tool.toLowerCase().includes(keywordText.toLowerCase())) {
+            if (tool.includes(keywordText)) {
                 content.appendChild(cloneTemplate(`tool-${all[tool]}`));
                 // showDetail(side.getElementsByClassName("item")[0] as HTMLElement);
                 // return;
