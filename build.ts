@@ -13,6 +13,10 @@ const ADDR = {
     IMAGE: "//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert@latest/image",
     MIRROR: "//d1.ldtstore.net",
   },
+  test: {
+    IMAGE: "/image",
+    MIRROR: "//d1.ldtstore.net",
+  },
 }
 
 const target_dir = Deno.args[0]!

@@ -16,6 +16,8 @@ type TileGrids = {
     title: string;
     content: Tile[];
   }[];
+  toolTypes: FlatTileColumn[];
+  linkTypes: FlatTileColumn[];
 };
 
 type Tile = {
@@ -27,6 +29,19 @@ type Tile = {
   title?: string;
   icon?: string;
 };
+
+type FlatTileColumn = {
+  title: string;
+  content: FlatTile[];
+};
+type FlatTile = {
+  name: string;
+  title: string;
+  action: string;
+  keyword?: string;
+  icon?: string;
+};
+
 
 type TileTemplate = {
   template: {
@@ -151,6 +166,74 @@ const gen_tile = (input: Tile): Node => {
   }
 };
 
+const gen_flat_tile_item = (input: FlatTile): Node => {
+  const inner: Node =
+  ["img", {
+    src: `{{IMAGE}}/icon/${
+      input.icon === void 0 ? input.name : input.icon
+    }.webp`,
+    alt: input.title,
+  }, input.title === void 0 ? [] : [
+    ["span", {}, [input.title]],
+  ]];
+  const href = (path: string): Node =>
+    ["a", {
+      target: "_blank",
+      class: "tile-link",
+      href: `${path}${input.name}/`,
+    }, [
+      ["div", { class: `newlook-line` }, [inner]],
+    ]];
+  const call = (func: string): Node =>
+    ["div", {
+      class: `newlook-line`,
+      onclick: `${func}('${input.name}')`,
+    }, [inner]];
+  const search = (): Node =>
+  ["div", {
+    class: `newlook-line`,
+    onclick: `toolSearch('${input.keyword ? input.keyword : input.title}')`,
+  }, [inner]]; 
+  const none = (): Node =>
+  ["div", {class: `newlook-line`}, [inner]];
+
+  switch (input.action) {
+    case "tool": return call("tool"); 
+    case "side": return call("side");
+    case "search": return search(); 
+    case "none": return none(); 
+    case "href": return href("/");
+    default:     throw new Error("unknown action type");
+  }
+}
+const gen_flat_tile_category = (input: FlatTileColumn): Node => {
+  if(input === void 0)
+    return["div",{},[]]
+  return["div", { class: "newlook-category" },
+    [
+      ["div",{ class: "newlook-subtitle" },[
+        ["div", { class: "text" }, [input.title]]
+      ]],
+      ...input.content.map(gen_flat_tile_item)
+    ]];
+}
+const gen_flat_tile_columns = (input: FlatTileColumn[]): Node[] => {
+  if (input.length > 4) throw new Error("unsupported grid middle count");
+  return [
+    ["div", { class: "newlook-column" },
+      [
+        gen_flat_tile_category(input[0]),
+        gen_flat_tile_category(input[1]),
+      ]
+    ],
+    ["div", { class: "newlook-column" },
+      [
+        gen_flat_tile_category(input[2]),
+        gen_flat_tile_category(input[3]),
+      ]
+    ]
+  ]
+}
 const gen_tile_columns = (input: TileColumns): Node[] =>
   input.map((input) => ["div", { class: "tile-column" }, input.map(gen_tile)]);
 
@@ -168,6 +251,31 @@ const gen_tile_grids = (input: TileGrids): Node[] => {
       ["div", { class: "title" }, [third.title]],
     ]],
     ...third.content.map(gen_tile),
+  ];
+};
+
+const gen_flat = (input: TileGrids): Node[] => {
+  return [
+
+    
+    ["div", { class: "newlook-title" },[
+      ["div", { id: "tool_button" , class : "selected" },
+        ["工具部分"]
+      ],
+      ["div", { id: "link_button" },
+        ["其他链接"]
+      ]
+    ]],
+    ["div", { class: "newlook-content" },[
+      ["div", { id: "tool_list" },
+        gen_flat_tile_columns(input.toolTypes)
+        
+      ],
+      ["div", { id: "link_list" , style : "opacity: 0; pointer-events: none"},
+        gen_flat_tile_columns(input.linkTypes)
+        
+      ],
+    ]]
   ];
 };
 
@@ -450,7 +558,8 @@ export const codegen = (filename: string) => {
     dynamic_inserts.set(
       "<!--{{major}}-->",
       render_nonvoid_node(
-        gen_major(gen_tile_grids(load("major") as TileGrids), page_type)
+        //gen_major(gen_tile_grids(load("major") as TileGrids), page_type),
+        gen_major(gen_flat(load("major") as TileGrids), "home"),
       ),
     );
     dynamic_inserts.set(

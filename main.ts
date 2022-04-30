@@ -6,6 +6,7 @@ declare global {
         copy?: typeof copy;
         side?: typeof sideClick;
         tool?: typeof toolSideClick;
+        toolSearch?: typeof toolSearchSideClick;
         detail?: typeof showDetail;
     }
 }
@@ -92,6 +93,45 @@ if (DATA.page_type === "tool") {
         e.stopPropagation();
         window.open("/", "_blank");
     };
+    
+    // 事件绑定 列表部分
+    let b1 = document.getElementById("tool_button");
+    let b2 = document.getElementById("link_button");
+    let p1 = document.getElementById("tool_list");
+    let p2 = document.getElementById("link_list");
+    b1.className = "selected";
+    p2.style.opacity = "0";
+    p2.style.pointerEvents = "none";
+    p1.onclick = p2.onclick = (e) => {
+        if (
+            e.composedPath()[0] === p1 ||
+            e.composedPath()[0] === p2
+        ) {
+            sideClose();
+        }
+    };
+    
+
+    b1!.onclick = (e: MouseEvent) => {
+        e.stopPropagation();
+        p1.style.opacity = "1";
+        p1.style.pointerEvents = "all";
+        p2.style.opacity = "0";
+        p2.style.pointerEvents = "none";
+        b2.classList.remove()
+        b1.className = "selected";
+        b2.className = ""
+    };
+    b2!.onclick = (e: MouseEvent) => {
+        e.stopPropagation();
+        p1.style.opacity = "0";
+        p1.style.pointerEvents = "none";
+        p2.style.opacity = "1";
+        p2.style.pointerEvents = "all";
+        b1.className = "";
+        b2.className = "selected";
+        
+    };
 }
 
 /**
@@ -164,6 +204,14 @@ const toolSideClick = (id: string) => {
 };
 
 /**
+ * 点击侧边栏 (tool-search)
+ * @param id 要设置为的目标侧边栏id
+ */
+ const toolSearchSideClick = (id: string) => {
+    sideSet(`tool-search-${id}`);
+};
+
+/**
  * 关闭侧边栏
  */
 const sideClose = () => {
@@ -228,22 +276,29 @@ const renderSide = (id: string) => {
         const inputTrigger = document.getElementById("inputTrigger") as HTMLElement;
         if (id !== "tool-search") {
             const name = id.substring(5);
-            const index = DATA.tool.index[name];
-            const cross = DATA.tool.cross[name];
-            const content = side.getElementsByClassName("content")[0];
-            renderSearch(index.title);
-            keyword.value = index.title;
-            for (const item  of content.children) {
-                const cross_notice = cross?.[item.getAttribute("name")];
-                if (cross_notice !== void 0) {
-                    const p = document.createElement("p");
-                    p.innerHTML = cross_notice;
-                    item.getElementsByClassName("detail")[0].appendChild(p);
-                }
+            if(name.startsWith("search-")){
+                const search = name.substring(7);
+                renderSearch(search);
+                keyword.value = search;
             }
-            const single = content.childElementCount === 1;
-            if (single) {
-                showDetail(side.getElementsByClassName("item")[0] as HTMLElement);
+            else{
+                const index = DATA.tool.index[name];
+                const cross = DATA.tool.cross[name];
+                const content = side.getElementsByClassName("content")[0];
+                renderSearch(index.title);
+                keyword.value = index.title;
+                for (const item  of content.children) {
+                    const cross_notice = cross?.[item.getAttribute("name")];
+                    if (cross_notice !== void 0) {
+                        const p = document.createElement("p");
+                        p.innerHTML = cross_notice;
+                        item.getElementsByClassName("detail")[0].appendChild(p);
+                    }
+                }
+                const single = content.childElementCount === 1;
+                if (single) {
+                    showDetail(side.getElementsByClassName("item")[0] as HTMLElement);
+                }
             }
         } else {
             keyword.focus();
@@ -397,6 +452,7 @@ const renderDispatchBanner = () => {
 window.copy = copy;
 window.side = sideClick;
 window.tool = toolSideClick;
+window.toolSearch = toolSearchSideClick;
 if (DATA.page_type === "tool") {
     window.detail = showDetail;
 }

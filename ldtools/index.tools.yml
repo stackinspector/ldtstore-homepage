@@ -4,7 +4,7 @@
 - list:
     - name: tbtool
       title: 图吧工具箱
-      keywords: 集合图拉丁
+      keywords: 集合图拉丁综合工具
       website: 1
       description: >
         起源于图吧，由DIY爱好者创造并维护的工具箱。集合了本站大部分工具，方便使用。
@@ -13,7 +13,7 @@
 - list:
     - name: kbtool
       title: 卡吧工具箱
-      keywords: 卡硬工具箱集合
+      keywords: 卡硬工具箱集合综合工具
       website: 1
       description: >
         起源于卡吧的工具箱，现名卡硬工具箱，集合了本站大部分工具，方便使用，但版本相对较老。因制作组多为用爱发电，已许久未更新。部分工具比图吧工具箱更加全面。
@@ -195,14 +195,14 @@
   title: 配置检测与监控
   list:
     - name: tbinfo
-      title: 图拉丁硬件检测
+      title: 图拉丁硬件检测综合工具检测工具
       website: 1
       description: >
         图吧工具箱衍生的硬件检测工具。完美的避开所有国产软件常见的弊端。
     - name: aida64
       title: AIDA64
       cross: [cpu, memory, burning]
-      keywords: 硬件检测烤机烤鸡CPU内存
+      keywords: 硬件检测烤机烤鸡CPU内存综合工具检测工具
       website: 1
       mirror: active
       description: >
@@ -214,7 +214,7 @@
           界面右上角的折线图图标为压力测试。提供多种烤机模式，其中FPU烤机作为检测CPU散热与持续稳定性的基准常用。
     - name: hwinfo
       title: HWiNFO
-      keywords: 硬件检测
+      keywords: 硬件检测综合工具检测工具
       website: 1
       description: >
         综合硬件检测工具。基于全面收集系统传感器上报的信息，免费且全面。但其使用门槛比AIDA64更高。
@@ -222,7 +222,7 @@
         这个软件对个人使用免费。如需商业使用请前往官网查询。
     - name: speccy
       title: Speccy
-      keywords: 硬件检测
+      keywords: 硬件检测综合工具检测工具
       website: 1
       description: >
         轻量级的硬件检测工具。
@@ -230,14 +230,14 @@
         这是收费软件，提供30天的试用期。
     - name: hwmon
       title: HWMonitor
-      keywords: 温度监控
+      keywords: 温度监控检测工具
       website: 1
       mirror: synced
       description: >
         简洁方便的硬件温度监控工具。
     - name: coretemp
       title: CoreTemp
-      keywords: 温度监控显示插件
+      keywords: 温度监控显示插件检测工具
       website: 1
       description: >
         在任务栏托盘监控硬件温度的小工具。
@@ -245,7 +245,7 @@
         官网下载的安装包有捆绑，请注意取消勾选。
     - name: traffic-monitor
       title: TrafficMonitor
-      keywords: 网速温度监控显示插件
+      keywords: 网速温度监控显示插件检测工具
       mirror: active
       website: 2
       description: >
@@ -255,6 +255,7 @@
   list:
     - name: cpuz
       title: CPU-Z
+      keywords: 检测工具跑分工具
       website: 1
       mirror: active
       description: >
@@ -262,6 +263,7 @@
     - name: cinebench
       title: Cinebench
       cross: [burning]
+      keywords: 跑分工具
       website: 1
       downloads:
         r23: R23官网下载直链
@@ -281,20 +283,21 @@
           R23可作为检测CPU超频稳定性的基准。一般来说能过五六圈R23的频率，打游戏就没什么问题了。
     - name: fritz-chess
       title: Fritz Chess Benchmark
-      keywords: 国际象棋
+      keywords: 国际象棋跑分工具
       website: 4
       mirror: locked
       description: >
         基于国际象棋步法预测对CPU进行性能测试的软件。常用于CPU性能与稳定性测试。
     - name: superpi
       title: SuperPi
-      keywords: 圆周率稳定单核性能单线程
+      keywords: 圆周率稳定单核性能单线程跑分工具
       website: 1
       mirror: locked
       description: >
         基于计算圆周率的CPU单线程基准测试。常用于CPU性能与稳定性测试。
     - name: wprime
       title: wPrime
+      keywords: 跑分工具
       website: 1
       mirror: locked
       description: >
@@ -302,20 +305,21 @@
     - name: geekbench
       title: Geekbench
       cross: [gpu]
-      keywords: 跑分
+      keywords: 跑分工具
       website: 1
       description: >
         CPU、GPU基准测试工具。支持macOS和移动设备等多种平台。
     - name: baiyan
       title: 白眼
       cross: [disk]
-      keywords: CPU硬盘跑分扩容盘山寨机
+      keywords: CPU硬盘跑分工具扩容盘山寨机
       website: 1
       description: >
         轻量级CPU跑分、排名，扩容盘检测软件。
     - name: blender-test
       title: Blender Open Data
       cross: [gpu]
+      keywords: 跑分工具
       website: 1
       description: >
         基于Blender渲染的测试软件。
@@ -324,7 +328,7 @@
     - name: vray
       title: Vray Benchmark
       cross: [gpu]
-      keywords: vray渲染测试
+      keywords: vray渲染测试跑分工具
       website: 1
       description: >
         基于Vray渲染器的测试软件，包含CPU、混合、RTX测试。在测试速度和易用性有优势。
@@ -333,7 +337,7 @@
     - name: intel-xtu
       title: Intel XTU
       cross: [memory, burning]
-      keywords: CPU内存超频功耗墙功耗控制
+      keywords: CPU内存超频工具功耗墙功耗控制
       website: 1
       description: >
         Intel处理器官方超频调整工具。本站教程集合中有收录本工具相关的教程。
@@ -344,26 +348,26 @@
           内置稳定性测试功能，偏向动态响应测试而非负载测试，对主板供电的性能有极高要求。如出现能过FPU甚至P95烤机，但使用中仍有黑屏死机的话，可以尝试XTU测试。
     - name: amd-ryzen-master
       title: AMD Ryzen Master
-      keywords: CPU内存超频功耗墙功耗控制
+      keywords: CPU内存超频工具功耗墙功耗控制
       website: 1
       description: >
         AMD处理器官方超频调整工具。本站教程集合中有收录本工具相关的教程。
     - name: throttle-stop
       title: ThrottleStop
-      keywords: CPU超频功耗墙功耗控制
+      keywords: CPU超频工具功耗墙功耗控制
       website: 1
       description: >
         轻量级的CPU频率与功率限制控制工具。现多用于移动平台功耗控制。
     - name: ryzen-controller
       title: Ryzen Controller
-      keywords: CPU超频功耗墙功耗控制自动超频
+      keywords: CPU超频工具功耗墙功耗控制自动超频
       website: 1
       mirror: active
       description: >
         针对笔记本AMD锐龙处理器的超频工具。官方的Ryzen Master仅适用于台式机CPU。本站教程集合中有收录本工具相关的教程。
     - name: ctr
       title: ClockTuner for Ryzen
-      keywords: CPU超频功耗墙功耗控制自动超频
+      keywords: CPU超频工具功耗墙功耗控制自动超频
       website: 1
       mirror: active
       description: >
@@ -371,12 +375,13 @@
     - name: intel-burntest
       title: Intel BurnTest
       keywords: linpack烤鸡
+      cross: [burning]
       website: 4
       description: >
         基于Intel官方的linpack性能测试制作的烤机工具，压力极高
     - name: hydra
       title: HYDRA
-      keywords: AMDCPU超频
+      keywords: AMDCPU超频工具
       website: 2
       description: >
         第三方开发的AMD处理器超频工具，还具有体质分查看等功能。具体使用教程可在B站自行搜索。
@@ -414,14 +419,14 @@
         更为高级的内存稳定性测试工具，依靠不同的配置文件达到不同的测试效果，小白请先看教程后使用。
     - name: zentimings
       title: Zentimings
-      keywords: AMD内存超频监测
+      keywords: AMD内存超频监测检测工具
       website: 1
       mirror: locked
       description: >
         AMD平台独占，提供内存时序等的实时监测，内存超频便利性工具。
     - name: thaiphoon
       title: ThaiPhoon
-      keywords: 内存SPD编辑
+      keywords: 内存SPD编辑检测工具
       website: 5
       mirror: locked
       description: >
@@ -430,7 +435,7 @@
         这个软件的基础功能免费，可能含有收费的附加功能，详见软件官网。
     - name: intel-mlc
       title: Intel mlc
-      keywords: Intel内存延迟测试
+      keywords: Intel内存延迟测试跑分工具
       website: 1
       mirror: locked
       description: >
@@ -440,34 +445,34 @@
   list:
     - name: gpuz
       title: GPU-Z
-      keywords: 显卡信息检测
+      keywords: 显卡信息检测工具
       mirror: active
       website: 1
       description: >
         常用显卡信息检测工具。带有适配较广泛的检测功能。
     - name: ddu
       title: Display Driver Uninstaller
-      keywords: 显卡驱动卸载
+      keywords: 显卡驱动卸载系统工具
       website: 1
       mirror: active
       description: >
         显卡驱动强力卸载工具。更换显卡及排除故障时使用，可避免因驱动残留导致的系统问题。
     - name: msi-afterburner
       title: MSI Afterburner（小飞机）
-      keywords: 微星显卡超频
+      keywords: 微星显卡超频检测工具超频工具
       website: 1
       description: >
         微星开发的显卡超频工具。简单实用，覆盖监测功能，在测评中常见。
     - name: gpucaps
       title: GPU Caps Viewer
-      keywords: 显卡信息压力测试
+      keywords: 显卡信息压力测试检测工具
       website: 1
       mirror: active
       description: >
         显卡检测工具。还可以进行简单的压力测试。
     - name: nvidia-inspector
       title: NVIDIA Inspector
-      keywords: N卡检测N卡超频
+      keywords: N卡检测N卡超频检测工具超频工具
       website: 2
       websites:
         profile: Profile Inspector
@@ -481,7 +486,7 @@
         TechPowerUp的VBIOS收集下载站。
     - name: gpuinfo
       title: GpuInfo
-      keywords: 显卡核心代号假卡识别
+      keywords: 显卡核心代号假卡识别检测工具
       website: 1
       mirror: locked
       description: >
@@ -490,7 +495,7 @@
         由于作者已停止更新，故只能识别9系列之前的显卡。不过对于识别假卡来说已经够用，大部分假卡都是9系列之前刷的。
     - name: easymats
       title: EasyMats显存检测
-      keywords: 显卡显存
+      keywords: 显卡显存检测工具
       website: 2
       description: >
         由B站UP制作的简化 显存检测工具MATS 使用的辅助工具，用于检测显卡显存是否有故障。依赖PE运行。
@@ -509,21 +514,21 @@
         这个软件的基础功能免费，可能含有收费的附加功能，详见软件官网。
     - name: asssd
       title: AS SSD Benchmark
-      keywords: SSD跑分三件套固态硬盘
+      keywords: SSD跑分三件套固态硬盘跑分工具
       website: 4
       mirror: locked
       description: >
         常见的“SSD跑分三件套”1号。可较为直观的测试固态性能。
     - name: cdm
       title: CrystalDiskMark
-      keywords: SSD跑分三件套固态硬盘CDM
+      keywords: SSD跑分三件套固态硬盘CDM跑分工具
       website: 1
       mirror: active
       description: >
         常见的“SSD跑分三件套”2号。测试结果不是非常直观。
     - name: atto
       title: AttoDiskMark
-      keywords: SSD跑分三件套固态硬盘
+      keywords: SSD跑分三件套固态硬盘跑分工具
       website: 1
       mirror: locked
       description: >
@@ -532,14 +537,14 @@
         这是收费软件，提供30天的试用期。官方的试用下载需要邮件。
     - name: cdi
       title: CrystalDiskInfo
-      keywords: 硬盘信息CDI
+      keywords: 硬盘信息CDI检测工具
       website: 1
       mirror: active
       description: >
         硬盘信息检测软件。
     - name: hdtune
       title: HDTune
-      keywords: 硬盘检测
+      keywords: 硬盘检测工具跑分工具
       website: 1
       description: >
         老牌硬盘检测工具。混合写入测试中常用。
@@ -555,14 +560,14 @@
         收费服务为技术支持，自用免费。官方下载的版本需关注公众号才能使用。
     - name: txbench
       title: TxBENCH
-      keywords: SSD安全擦除固态硬盘跑分
+      keywords: SSD安全擦除固态硬盘跑分跑分工具
       website: 1
       mirror: synced
       description: >
         不常用的固态硬盘检测和跑分软件，但却是常用的固态硬盘安全擦除软件。
     - name: anvil
       title: AnvilPro
-      keywords: 硬盘
+      keywords: 硬盘跑分工具
       website: 4
       description: >
         硬盘测试软件。
@@ -589,7 +594,7 @@
         硬盘容量测试工具。
     - name: ssdz
       title: SSD-Z
-      keywords: 固态硬盘
+      keywords: 固态硬盘检测工具
       website: 1
       description: >
         “过气的”硬盘检测工具。
@@ -610,7 +615,7 @@
         这个软件可能会对不购买的用户限制擦除速度。
     - name: iometer
       title: IOMETER
-      keywords: 硬盘
+      keywords: 硬盘跑分工具
       website: 1
       description: >
         最初由Intel开发的开源专业IO测试软件。
@@ -648,26 +653,26 @@
   list:
     - name: rufus
       title: Rufus
-      keywords: U盘启动镜像写入
+      keywords: U盘启动镜像写入系统维护工具
       website: 1
       mirror: synced
       description: >
         最好用的镜像写入工具之一。
     - name: ventoy
       title: Ventoy
-      keywords: U盘启动镜像
+      keywords: U盘启动镜像系统维护工具
       website: 1
       description: >
         直接从镜像启动，支持多种格式，添加系统无需格式化。
     - name: winnt-setup
       title: WinNT Setup
-      keywords: WIMESD释放Windows
+      keywords: WIMESD释放Windows系统维护工具
       mirror: locked
       description: >
         方便的WIM/ESD解压安装工具。
     - name: wmct
       title: Windows媒体创建工具
-      keywords: 微软Windows系统下载获取镜像U盘安装
+      keywords: 微软Windows系统下载获取镜像U盘安装系统维护工具
       websites:
         10: 适用于Win10
         11: 适用于Win11
@@ -675,20 +680,20 @@
         官方的镜像生成工具，(MSDN) ITELLYOU镜像源之外最方便的系统获取方式。
     - name: bootice
       title: BOOTICE
-      keywords: Windows引导启动
+      keywords: Windows引导启动系统维护工具
       mirror: locked
       description: >
         引导修改工具。
     - name: cmwtat
       title: CMWTAT
-      keywords: Windows激活
+      keywords: Windows激活系统维护工具
       website: 1
       mirror: active
       description: >
         伪造升级残留激活Windows的开源工具。
     - name: vcrtpack
       title: VC运行库打包
-      keywords: 缺少丢失DLL
+      keywords: 缺少丢失DLL系统维护工具
       website: 1
       mirror: locked
       description: >
@@ -697,53 +702,55 @@
         脚本右键管理员运行更方便。
     - name: vcrtpack-ya
       title: VC运行库打包（Dreamcast版）
-      keywords: 缺少丢失DLL
+      keywords: 缺少丢失DLL系统维护工具
       website: 2
       description: >
         由国内大佬维护的VC运行库打包，使用更为方便。
     - name: dx-repair
       title: DirectX修复工具
+      keywords: 缺少丢失DLL系统维护工具
       website: 2
       description: >
         解决因DirectX相关功能问题导致的故障。
     - name: wtga
       title: Windows To Go辅助工具
+      keywords: 系统维护工具
       website: 1
       description: >
         方便部署Windows To Go的工具。
     - name: uui
       title: Universal USB Installer
-      keywords: U盘启动镜像写入
+      keywords: U盘启动镜像写入系统维护工具
       website: 1
       description: >
         另一个可启动镜像写入工具。
     - name: easyu
       title: 优启通PE
-      keywords: IT天空U盘启动PE
+      keywords: IT天空U盘启动PE环境
       website: 1
       description: >
         由IT天空论坛开发的知名PE工具，用户口碑较好。
     - name: wepe
       title: 微PE
-      keywords: U盘启动PE
+      keywords: U盘启动PE环境
       website: 1
       description: >
         知名PE工具，用户口碑较好。
     - name: edgeless
       title: Edgeless PE
-      keywords: U盘启动PE
+      keywords: U盘启动PE环境
       website: 1
       description: >
         半开源的新型PE工具，仍不稳定，较高水平的用户可以尝试使用。
     - name: firpe
       title: FirPE
-      keywords: U盘启动PE
+      keywords: U盘启动PE环境
       website: 1
       description: >
         新型PE工具，多人推荐。
     - name: hotpe
       title: HotPE
-      keywords: U盘启动PE
+      keywords: U盘启动PE环境
       website: 1
       description: >
         B站UP主制作的新型PE工具，自带丰富的功能和模块，制作者自荐。
@@ -784,12 +791,12 @@
         不依赖显卡驱动的高级自定义分辨率工具。
     - name: ufotest
       title: UFO Test
-      keywords: 显示器刷新率拖影
+      keywords: 显示器刷新率拖影检测工具
       website: 3
       description: >
         刷新率测试。可以同时测试屏幕刷新率真实性和拖影。
     - name: monitorgamut
-      title: 显示器色域检测
+      title: 显示器色域检测工具
       mirror: locked
       description: >
         通过检测EDID信息获取显示器标称色域参数的软件。
@@ -797,7 +804,7 @@
         读取的是显示器的标称值，结果仅供参考。
     - name: monitor-test
       title: 显示器检测
-      keywords: 坏点
+      keywords: 坏点检测
       website: 3
       description: >
         通过各种测试图像测试显示器的网页工具。
@@ -832,18 +839,18 @@
         PassMark出品的键盘测试工具，功能全面，支持自定义布局。
     - name: mouse-test-web
       title: 网页版鼠标检测工具
-      keywords: 拖拽灵敏
+      keywords: 拖拽灵敏检测工具
       website: 3
       description: >
         网页版鼠标测试。检测鼠标或者触控板拖拽是否灵敏。
     - name: mouse-test
       title: 鼠标检测工具
-      keywords: 拖拽灵敏按键滚轮
+      keywords: 拖拽灵敏按键滚轮检测工具
       mirror: locked
       description: >
         鼠标测试工具。可测试按键、滚轮、回报率。
     - name: mouse-rate-checker
-      title: 网页版鼠标回报率测试工具
+      title: 网页版鼠标回报率测试工具检测工具
       keywords: 拖拽灵敏
       website: 3
       description: ""
@@ -860,7 +867,7 @@
         <br>（也许未来会有表情包搜索功能）
     - name: chipgenius
       title: ChipGenius
-      keywords: USB主控芯片USB设备路径
+      keywords: USB主控芯片USB设备路径检测工具
       website: 2
       mirror: locked
       description: >
@@ -869,13 +876,13 @@
         这个软件的官方分发渠道可能需要首发地账号以查看下载链接。
     - name: geekuninstaller
       title: Geek Uninstaller
-      keywords: 软件卸载残留清理
+      keywords: 软件卸载残留清理便利性工具
       website: 1
       description: >
         轻量级的软件卸载、卸载残留删除工具。
     - name: windbg
       title: Windbg
-      keywords: 文件搜索
+      keywords: 文件搜索文件工具
       website: 1
       description: >
         常用于用于蓝屏分析，简单调试只需要找到引起蓝屏的软件/驱动即可。
@@ -883,54 +890,54 @@
         出于易用性考虑建议下载应用商店版。
     - name: everything
       title: Everything
-      keywords: 文件搜索
+      keywords: 文件搜索文件工具
       website: 1
       description: >
         知名文件搜索工具。利用文件系统索引搜索文件，比Windows自带搜索速度快很多。
     - name: windirstat
       title: WinDirStat
-      keywords: 目录大小可视化
+      keywords: 目录大小可视化文件工具
       website: 1
       mirror: locked
       description: >
         目录大小可视化工具。常用于整理文件。
     - name: wiztree
       title: WizTree
-      keywords: 目录大小可视化
+      keywords: 目录大小可视化文件工具
       website: 1
       mirror: locked
       description: >
         目录大小可视化工具。WinDirStat的改进版本。
     - name: spacesniffer
       title: SpaceSniffer
-      keywords: 目录大小可视化
+      keywords: 目录大小可视化文件工具
       website: 1
       mirror: synced
       description: >
         更为直观的目录大小可视化工具。不过早已不再更新。
     - name: desktopok
       title: DesktopOK
-      keywords: 系统桌面图标整理图标排列Windows
+      keywords: 系统桌面图标整理图标排列Windows便利性工具
       website: 1
       mirror: locked
       description: >
         可以方便地恢复桌面图标排列的小工具。
     - name: ccleaner
       title: CCleaner
-      keywords: 系统清理垃圾
+      keywords: 系统清理垃圾系统工具
       website: 1
       description: >
         知名系统清理工具。
     - name: 7zip
       title: 7-Zip
-      keywords: 压缩解压校验RAR
+      keywords: 压缩解压校验RAR系统工具
       website: 1
       mirror: synced
       description: >
         简洁、强大、多用途的压缩软件。除常规压缩解压外还适用于校验及各种打包格式解析。
     - name: bandizip
       title: Bandizip
-      keywords: 压缩解压RAR
+      keywords: 压缩解压RAR系统工具
       website: 1
       websites:
         dl: 官网下载页面
@@ -942,26 +949,27 @@
         知名压缩软件。目前最新的v7免费版包含广告，官网也可以下载到完全免费无广告的v6版本，但<b>官网警告使用旧版可能存在漏洞等风险，且后果自负</b>。
     - name: fastcopy
       title: FastCopy
-      keywords: 复制拷贝
+      keywords: 复制拷贝文件工具
       website: 1
       mirror: synced
       description: >
         强大的Windows文件复制工具。可用于在大规模（文件总大小及文件数量上）文件复制时代替资源管理器自带的文件复制，稳定性和速度优势明显。
     - name: choeazycopy
       title: ChoEazyCopy
-      keywords: 复制拷贝
+      keywords: 复制拷贝文件工具
       website: 2
       mirror: active
       description: >
         强大的Windows文件复制工具。通过调用原生RoboCopy实现，支持多线程拷贝，在一些方面相对FastCopy具备优势。
     - name: freefilesync
       title: FreeFileSync
-      keywords: 文件比对比较文件同步
+      keywords: 文件比对比较文件同步文件工具
       website: 1
       description: >
         文件夹对比和同步工具，操作简单。
     - name: softcnkiller
       title: SoftCnKiller
+      keywords: 便利性工具
       website: 2
       description: >
         针对流氓软件、下载器、弹窗广告等恶意软件制作的一键清理工具。
@@ -969,30 +977,32 @@
         Windows Defender误报，请自行确定是否使用。由于含有弹窗定位等功能请尽量避免在游戏反作弊引擎作用期间使用。
     - name: speedtest
       title: Speedtest
-      keywords: 网络测速
+      keywords: 网络测速便利性工具
       website: 3
       description: >
         知名网络测速站。国内网页打开速度可能较慢，但不影响测速结果。
     - name: speedtest-cn
       title: 测速网
-      keywords: 网络测速
+      keywords: 网络测速便利性工具
       icon: speedtest
       website: 3
       description: >
         国内常用网络测速站。
     - name: powertoys
       title: PowerToys
+      keywords: 便利性工具
       website: 1
       description: >
         微软官方推出的Windows实用工具集。包含窗口置顶、批量重命名、键盘管理等实用功能。
     - name: autoruns
       title: Autoruns
-      keywords: 自启自动启动管理
+      keywords: 自启自动启动管理系统工具
       website: 1
       description: >
         微软官方推出的自动启动管理工具，功能比任务管理器的启动管理全面得多。
     - name: eartrumpet
       title: EarTrumpet
+      keywords: 便利性工具
       website: 1
       websites:
         msstore: 微软应用商店
@@ -1000,6 +1010,7 @@
         强大的Windows 10/11音量设置辅助工具，可以直接调节各个应用音量。
     - name: quicklook
       title: QuickLook
+      keywords: 便利性工具
       websites:
         msstore: 微软应用商店
       description: >
@@ -1011,6 +1022,7 @@
         系统微调软件，整合了许多新系统需要调整的优化选项，并且可以保存和加载配置文件。
     - name: utools
       title: uTools
+      keywords: 便利性工具
       website: 1
       description: >
         使用搜索框/鼠标中键菜单进行快捷操作的效率工具，通过自由选配丰富的插件，打造得心应手的工具集合。
