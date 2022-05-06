@@ -2,11 +2,11 @@
 import { parse as parseYaml } from "https://deno.land/std@0.102.0/encoding/yaml.ts";
 import type { NonVoidNode, Node } from "./jsonhtml.ts";
 import { render_nodes, render_nonvoid_node } from "./jsonhtml.ts";
-import type { GlobalData, ToolAllType, ToolCrossType, ToolIndexType } from "./shared.ts";
+import type { GlobalData, ToolData, ToolAllType, ToolCategoryType, ToolCrossType, ToolIndexType } from "./shared.ts";
 
 type PageType = "home" | "tool";
 
-type InputType = "major" | "sides" | "tools";
+type InputType = "major" | "sides" | "tools" | "category";
 
 type TileColumns = Tile[][];
 
@@ -16,6 +16,22 @@ type TileGrids = {
     title: string;
     content: Tile[];
   }[];
+};
+
+// TODO CategoryTab[]
+type Category = {
+  tool: CategoryTab;
+  link: CategoryTab;
+};
+
+type CategoryTab = {
+  title: string;
+  content: CategoryGroup[];
+};
+
+type CategoryGroup = {
+  title: string;
+  content: Tile[];
 };
 
 type Tile = {
@@ -59,6 +75,7 @@ type ToolLinkTitle = keyof typeof tool_website_type | string;
 type Tool = {
   name: string;
   title: string;
+  category?: string[];
   cross?: string[];
   keywords?: string;
   icon?: string;
@@ -82,11 +99,7 @@ type ToolLink = {
 
 type ProcessedToolGroups = {
   tools: Record<string, Tool>;
-  tool_data: {
-    index: ToolIndexType;
-    all: ToolAllType;
-    cross: ToolCrossType;
-  };
+  tool_data: ToolData;
 };
 
 const tool_website_type = {
@@ -114,50 +127,66 @@ const svg_icon = (icon: string, class_name = "icon"): Node =>
     ["use", { href: `#icon-${icon}` }, []],
   ]];
 
-const gen_tile = (input: Tile): Node => {
+const gen_tile_inner = (input: Tile, category: boolean): Node => {
+  const class_name = category ? "category-item" : `tile ${input.tile}`;
+
   const inner: Node =
     ["img", {
       src: `{{IMAGE}}/icon${
         input.icon_type === void 0 ? "" : `-${input.icon_type}`}/${input.icon === void 0 ? input.name : input.icon
       }.webp`,
       alt: input.title,
-    }, input.font === void 0 || input.title === void 0 ? [] : [
+    }, category ? (input.title === void 0 ? [] : [
+      ["span", {}, [input.title]],
+    ]) : (input.font === void 0 || input.title === void 0 ? [] : [
       [input.font, {}, [input.title]],
-    ]];
+    ])];
 
-  const href = (path: string): Node =>
+  const href_base = (location: string): Node =>
     ["a", {
       target: "_blank",
       class: "tile-link",
-      href: `${path}${input.name}/`,
+      href: location,
     }, [
-      ["div", { class: `tile ${input.tile}` }, [inner]],
+      ["div", { class: class_name }, [inner]],
     ]];
+
+  const href = (path: string) => href_base(`${path}${input.name}/`);
+
+  const home = () => href_base("/");
 
   const call = (func: string): Node =>
     ["div", {
-      class: `tile ${input.tile}`,
+      class: class_name,
       onclick: `${func}('${input.name}')`,
     }, [inner]];
 
+  const none = (): Node =>
+    ["div", { class: class_name }, [inner]];
+
   switch (input.action) {
-    case "side": return call("side");
-    case "tool": return call("tool");
-    case "copy": return call("copy");
-    case "href": return href("/");
-    case "r":    return href("//r.ldtstore.com.cn/r/");
-    case "r2":   return href("//r.ldtstore.com.cn/r2/");
-    default:     throw new Error("unknown action type");
+    case "side":     return call("side");
+    case "tool":     return call("tool");
+    case "category": return call("category");
+    case "copy":     return call("copy");
+    case "href":     return href("/");
+    case "r":        return href("//r.ldtstore.com.cn/r/");
+    case "r2":       return href("//r.ldtstore.com.cn/r2/");
+    case "home":     return home();
+    case "none":     return none();
+    default:         throw new Error("unknown action type");
   }
 };
+
+const gen_tile = (input: Tile) => gen_tile_inner(input, false);
 
 const gen_tile_columns = (input: TileColumns): Node[] =>
   input.map((input) => ["div", { class: "tile-column" }, input.map(gen_tile)]);
 
 const gen_tile_grids = (input: TileGrids): Node[] => {
-  if (input.middle.length !== 3) throw new Error("unsupported grid middle count");
+  if (input.middle.length !== 3) throw new Error("unexpected grid middle count");
   const [first, second, third] = input.middle;
-  if (third.content.length !== 9) throw new Error("unsupported grid middle count");
+  if (third.content.length !== 9) throw new Error("unexpected grid middle count");
   return [
     ["div", { class: "tile-grid-vertical" }, input.left.map(gen_tile)],
     ["div", { class: "tile-grid-middle" }, [
@@ -206,18 +235,67 @@ const gen_side = (input: Side): Node =>
     ]],
   ]];
 
-const proc_tool_groups = (groups: ToolGroup[]): ProcessedToolGroups => {
+const gen_category_item = (input: Tile) => gen_tile_inner(input, true);
+
+const gen_category_group = (input: CategoryGroup): Node =>
+  ["div", { class: "category-group" }, [
+    ["div", { class: "category-group-title" }, [
+      ["div", { class: "text" }, [input.title]],
+    ]],
+    ...input.content.map(gen_category_item),
+  ]];
+
+const gen_category_tab = (input: CategoryTab): Node[] => {
+  if (input.content.length > 4) throw new Error("unexpected category group count");
+  const groups = input.content.map(gen_category_group);
+  // 四个group都可能为空，但Node本身就可能为空，所以无需处理
+  const [l1, l2, r1, r2] = groups;
+  return [
+    ["div", { class: "category-tab-part" }, [l1, l2]],
+    ["div", { class: "category-tab-part" }, [r1, r2]],
+  ]
+};
+
+const gen_category = (input: Category): Node[] => [
+  ["div", { class: "category-title" }, [
+    ["div", { id: "tool-button", class: "selected" }, [input.tool.title]],
+    ["div", { id: "link-button" }, [input.link.title]],
+  ]],
+  ["div", { class: "category-content" }, [
+    ["div", { id: "tool-list" }, gen_category_tab(input.tool)],
+    ["div", { id: "link-list", style: "opacity: 0; pointer-events: none" }, gen_category_tab(input.link)],
+  ]]
+];
+
+const proc_tool_groups = (groups: ToolGroup[], major_category: Category): ProcessedToolGroups => {
   const tools: Record<string, Tool> = Object.create(null);
   const index: ToolIndexType = Object.create(null);
   const all: ToolAllType = Object.create(null);
   const cross: ToolCrossType = Object.create(null);
   const cross_notice_title: Record<string, string> = Object.create(null);
+  const category: ToolCategoryType = Object.create(null);
+
+  // TODO fit CategoryTab[]
+  for (const tab of Object.values(major_category)) {
+    for (const group of tab.content) {
+      for (const item of group.content) {
+        if (item.action === "category") {
+          category[item.name] = {
+            title: item.title!,
+            list: [],
+          };
+        }
+      }
+    }
+  }
+
   for (const group of groups) {
     if (group.name !== void 0 && group.cross_notice !== void 0) {
       cross_notice_title[group.name] = group.cross_notice;
       cross[group.name] = Object.create(null);
     }
   }
+
   for (const group of groups) {
     const group_name = (group.name === void 0 && group.list.length === 1) ? group.list[0].name : group.name!;
     const list = [];
@@ -230,8 +308,13 @@ const proc_tool_groups = (groups: ToolGroup[]): ProcessedToolGroups => {
           cross[group]![tool.name] = `<b>${cross_notice_title[group]}</b><br>${content}`;
         }
       }
+      if (tool.category !== void 0) {
+        for (const category_kind of tool.category) {
+          category[category_kind].list.push(tool.name);
+        }
+      }
     }
-    if (group.name !== "non-catalog") {
+    if (group.name !== "non-index") {
       index[group_name] = {
         title: ((group.title === void 0 && group.list.length === 1) ? group.list[0].title : group.title!),
         list,
@@ -239,6 +322,7 @@ const proc_tool_groups = (groups: ToolGroup[]): ProcessedToolGroups => {
       };
     }
   }
+
   for (const group of groups) {
     for (const tool of group.list) {
       if (tool.cross !== void 0) {
@@ -248,7 +332,8 @@ const proc_tool_groups = (groups: ToolGroup[]): ProcessedToolGroups => {
       }
     }
   }
-  return { tools, tool_data: { index, all, cross } };
+
+  return { tools, tool_data: { index, category, all, cross } };
 };
 
 const proc_tool_title = (input: ToolLink) => (typeof input.title === "string") ? input.title : tool_website_type[input.title];
@@ -433,12 +518,14 @@ export const codegen = (filename: string) => {
   } else if (filename === "ldtools/index.html") {
     const page_type = "tool";
     const sides = [...(load("sides") as Side[]), ...public_sides];
-    const { tools, tool_data } = proc_tool_groups(load("tools") as ToolGroup[]);
+    const category = load("category") as Category;
+    const { tools, tool_data } = proc_tool_groups(load("tools") as ToolGroup[], category);
     const data: GlobalData = { page_type, tool: tool_data };
     dynamic_inserts.set(
       "<!--{{major}}-->",
       render_nonvoid_node(
-        gen_major(gen_tile_grids(load("major") as TileGrids), page_type)
+        //gen_major(gen_tile_grids(load("major") as TileGrids), page_type),
+        gen_major(gen_category(category), "home"),
       ),
     );
     dynamic_inserts.set(
@@ -453,6 +540,7 @@ export const codegen = (filename: string) => {
     );
   } else if (filename === "ldtools/plain.html") {
     const tool_groups = load_base("ldtools/index.tools.yml") as ToolGroup[];
+    const category = load_base("ldtools/index.category.yml") as Category;
     dynamic_inserts.set(
       "<!--{{toc}}-->",
       render_nodes(
@@ -462,7 +550,7 @@ export const codegen = (filename: string) => {
     dynamic_inserts.set(
       "<!--{{main}}-->",
       render_nodes(
-        gen_tools_plain(proc_tool_groups(tool_groups))
+        gen_tools_plain(proc_tool_groups(tool_groups, category))
       ),
     );
   }

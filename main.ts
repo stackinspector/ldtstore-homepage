@@ -6,6 +6,7 @@ declare global {
         copy?: typeof copy;
         side?: typeof sideClick;
         tool?: typeof toolSideClick;
+        category?: typeof categorySideClick;
         detail?: typeof showDetail;
     }
 }
@@ -92,6 +93,47 @@ if (DATA.page_type === "tool") {
         e.stopPropagation();
         window.open("/", "_blank");
     };
+    
+    // /*
+    // 事件绑定 列表部分
+    const tool_button = document.getElementById("tool-button")!;
+    const link_button = document.getElementById("link-button")!;
+    const tool_list = document.getElementById("tool-list")!;
+    const link_list = document.getElementById("link-list")!;
+    
+    tool_button.className = "selected";
+    link_list.style.opacity = "0";
+    link_list.style.pointerEvents = "none";
+    tool_list.onclick = link_list.onclick = (e) => {
+        if (
+            e.composedPath()[0] === tool_list ||
+            e.composedPath()[0] === link_list
+        ) {
+            sideClose();
+        }
+    };
+    
+    tool_button.onclick = (e: MouseEvent) => {
+        e.stopPropagation();
+        tool_list.style.opacity = "1";
+        tool_list.style.pointerEvents = "all";
+        link_list.style.opacity = "0";
+        link_list.style.pointerEvents = "none";
+        link_button.classList.remove()
+        tool_button.className = "selected";
+        link_button.className = "";
+    };
+
+    link_button.onclick = (e: MouseEvent) => {
+        e.stopPropagation();
+        tool_list.style.opacity = "0";
+        tool_list.style.pointerEvents = "none";
+        link_list.style.opacity = "1";
+        link_list.style.pointerEvents = "all";
+        tool_button.className = "";
+        link_button.className = "selected";
+    };
+    // */
 }
 
 /**
@@ -148,7 +190,7 @@ const sideChange = (id: string | null) => {
     if (id === "search") {
         // console.log("focus");
         const keyword = document.getElementById("keyword") as HTMLInputElement;
-        const inputTrigger = document.getElementById("inputTrigger") as HTMLElement;
+        const inputTrigger = document.getElementById("input-trigger") as HTMLElement;
         inputTrigger.onclick = () => {
             keyword.focus();
         };
@@ -173,6 +215,14 @@ const sideClick = (id: string) => {
  */
 const toolSideClick = (id: string) => {
     sideSet(`tool-${id}`);
+};
+
+/**
+ * 点击侧边栏 (category)
+ * @param id 要设置为的目标侧边栏id
+ */
+ const categorySideClick = (id: string) => {
+    sideSet(`category-${id}`);
 };
 
 /**
@@ -234,6 +284,7 @@ const renderSide = (id: string) => {
     while (side.firstChild) {
         side.removeChild(side.lastChild!);
     }
+
     if (id.startsWith("tool-") && DATA.page_type === "tool") {
         const name = id.substring(5);
         const index = DATA.tool.index[name];
@@ -252,6 +303,30 @@ const renderSide = (id: string) => {
                 p.innerHTML = cross_notice;
                 item.getElementsByClassName("detail")[0].appendChild(p);
             }
+            content.appendChild(item);
+        }
+        if (single) {
+            showDetail(side.getElementsByClassName("item")[0] as HTMLElement);
+        }
+    } else if (id.startsWith("category-") && DATA.page_type === "tool") {
+        const name = id.substring(9);
+        const category = DATA.tool.category[name];
+        // const cross = DATA.tool.cross[name];
+        const list = category.list;
+        // const list = [...category.list, ...category.cross_list];
+        const single = list.length === 1;
+        side.appendChild(cloneTemplate("side-tools-base"));
+        const title = side.getElementsByClassName("title")[0] as HTMLElement;
+        title.innerText = single ? "详情" : category.title;
+        const content = side.getElementsByClassName("content")[0];
+        for (const tool of list) {
+            const item = cloneTemplate(`tool-${tool}`).firstElementChild!;
+            // const cross_notice = cross?.[tool];
+            // if (cross_notice !== void 0) {
+            //     const p = document.createElement("p");
+            //     p.innerHTML = cross_notice;
+            //     item.getElementsByClassName("detail")[0].appendChild(p);
+            // }
             content.appendChild(item);
         }
         if (single) {
@@ -398,6 +473,7 @@ const renderDispatchBanner = () => {
 window.copy = copy;
 window.side = sideClick;
 window.tool = toolSideClick;
+window.category = categorySideClick;
 if (DATA.page_type === "tool") {
     window.detail = showDetail;
 }

@@ -33,7 +33,7 @@ middle:
       action: tool
       name: other-collection
       icon: other
-      title: 其他工具集合
+      title: 工具站推荐
   - title: 站点链接
     content:
     - tile: s1

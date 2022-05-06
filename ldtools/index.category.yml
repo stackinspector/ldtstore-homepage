@@ -1,0 +1,107 @@
+tool:
+  title: 工具部分
+  content:
+    - title: 硬件类
+      content:
+      - name: cpu
+        title: CPU工具
+        action: tool
+      - name: gpu
+        title: 显卡工具
+        action: tool
+      - name: memory
+        title: 内存工具
+        action: tool
+      - name: disk
+        title: 硬盘工具
+        action: tool
+      - name: peripheral
+        title: 外设工具
+        action: tool
+      - name: hardware
+        title: 综合工具
+        action: category
+        keyword: 综合工具
+    - title: 用途类
+      content:
+      - name: info
+        title: 检测工具
+        action: category
+      - name: benchmark
+        title: 跑分工具
+        action: category
+      - name: burning
+        title: 稳定性测试
+        action: tool
+      - name: overclocking
+        title: 超频工具
+        action: category
+    - title: 其他类别
+      content:
+      - name: other-file
+        title: 文件工具
+        action: category
+      - name: other-os
+        title: 系统工具
+        action: category
+      - name: other-toolbox
+        title: 工具箱
+        action: category
+      - name: other-convenience
+        title: 便利性工具
+        action: category
+    - title: 装机工具
+      content:
+      - name: os-images
+        title: 系统镜像
+        action: tool
+      - name: os-install
+        title: 系统维护工具
+        action: category
+      - name: os-pe
+        title: PE环境
+        action: category
+link:
+  title: 站内菜单
+  content:
+    - title: 站内菜单
+      content:
+      - name: back
+        title: 返回主站
+        action: home
+        icon: back
+      - name: about
+        title: 关于本站
+        action: side
+        icon: guide
+      - name: ldtools-about
+        title: 说明与赞助
+        icon: about
+        action: side
+    - title: 硬件百科
+      content:
+      - name: rank
+        title: 天梯图
+        action: tool
+      - name: guide
+        title: 教程集合
+        action: tool
+      - name: commingsoon
+        title: 敬请期待
+        action: none
+    - title: 链接导航
+      content:
+      - name: drv
+        title: 板厂下载链接
+        action: side
+      - name: other-collection
+        icon: other
+        title: 工具站推荐
+        action: tool
+      # - name: review
+      #  # 待制作
+      #   title: 评测网站
+      #   action: tool
+      - name: commingsoon
+        title: 敬请期待
+        action: none
