@@ -225,6 +225,13 @@
         综合硬件检测工具。基于全面收集系统传感器上报的信息，免费且全面。但其使用门槛比AIDA64更高。
       notice: >
         这个软件对个人使用免费。如需商业使用请前往官网查询。
+    - name: logviewer
+      title: LogViewer for HWiNFO
+      category: [hardware, info]
+      keywords: 硬件检测
+      website: 2
+      description: >
+        为HWiNFO记录的日志生成可视化图表的小工具。
     - name: speccy
       title: Speccy
       category: [hardware, info]
