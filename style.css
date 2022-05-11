@@ -85,9 +85,11 @@ a.tile-link {
     font-size: 2em;
     line-height: 2em;
     vertical-align: middle;
+    transition: opacity .5s;
 }
 
 #header span.light {
+    font-size: 1.5em;
     opacity: 0.5;
 }
 
@@ -193,12 +195,12 @@ a.tile-link {
     /* background-color: #faa3; */
 }
 
-#major.home {
+#major.normal{
     width: 60.1em;
     left: calc(50% - 30em);
 }
 
-#major.tool {
+#major.wide{
     width: 66.1em;
     left: calc(50% - 33em);
     /* background-color: #fff3; */
@@ -478,11 +480,11 @@ a.tile-link {
         float: right;
     }
 
-    #major.tool {
+    #major.wide{
         padding: 2em 1.5em;
     }
 
-    #major.home {
+    #major.normal{
         top: 0;
         margin-top: 5em;
         margin-bottom: 3em;
@@ -511,13 +513,11 @@ a.tile-link {
     }
 }
 
-@media screen and (max-width: 580px) {
+@media screen and (max-width: 500px) {
     #header span.light {
         display: none;
     }
-}
 
-@media screen and (max-width: 500px) {
     #side {
         width: 20em;
         left: calc(50% + 13em);

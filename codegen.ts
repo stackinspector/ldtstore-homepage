@@ -203,7 +203,7 @@ const gen_tile_grids = (input: TileGrids): Node[] => {
 const gen_major_wrapper = (inner: Node[], page_type: PageType): NonVoidNode =>
   ["div", { id: "content" }, [
     ["div", { id: "offset" }, [
-      ["div", { id: "major", class: page_type }, [...inner, clearfix]],
+      ["div", { id: "major", class: page_type === "home" ? "normal" : "wide" }, [...inner, clearfix]],
     ]],
   ]];
 

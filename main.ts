@@ -208,6 +208,9 @@ const sideClose = () => {
  */
 const sideSet = (id: string | null) => {
     setTransitionDuration();
+    //展开side的时候防止切换，否则看上去很怪
+    changeMajor.style.opacity = id === null ? "1" : "0";
+    changeMajor.style.pointerEvents = id === null ? "all" : "none";
 
     if (id === null) {
         // 1 关闭
@@ -366,7 +369,8 @@ const recalculate = () => {
     if (delta > 0) {
         RecalculateState.distance = major.offsetLeft - delta / 2;
     } else {
-        if (DATA.page_type === "tool" && delta_major < 1) {
+
+        if (major.className === "wide" && delta_major < 1) {
             RecalculateState.center = true;
             RecalculateState.distance = side.clientWidth + delta_side / 2;
         } else {
@@ -477,6 +481,7 @@ const changeMajorAction = () => {
     // TODO temporary solution
     const nextId = MajorState.id === "tiles" ? "category" : "tiles";
     major.appendChild(cloneTemplate(`major-${nextId}`));
+    major.className = nextId === "tiles" ? "wide" : "normal"
     if (nextId === "category") {
         initCategory();
     }
