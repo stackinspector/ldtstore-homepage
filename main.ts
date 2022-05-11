@@ -25,6 +25,7 @@ const side = document.getElementById("side")!;
 // tool only
 const search = document.getElementById("search");
 const back = document.getElementById("back");
+const changeMajor = document.getElementById("change-major");
 
 const copy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -53,6 +54,10 @@ const SideState = {
     on: false,
     /** 侧边栏当前id */
     id: null as string | null,
+};
+
+const MajorState = {
+    id: "tiles",
 };
 
 // 左滑返回
@@ -93,47 +98,12 @@ if (DATA.page_type === "tool") {
         e.stopPropagation();
         window.open("/", "_blank");
     };
-    
-    // /*
-    // 事件绑定 列表部分
-    const tool_button = document.getElementById("tool-button")!;
-    const link_button = document.getElementById("link-button")!;
-    const tool_list = document.getElementById("tool-list")!;
-    const link_list = document.getElementById("link-list")!;
-    
-    tool_button.className = "selected";
-    link_list.style.opacity = "0";
-    link_list.style.pointerEvents = "none";
-    tool_list.onclick = link_list.onclick = (e) => {
-        if (
-            e.composedPath()[0] === tool_list ||
-            e.composedPath()[0] === link_list
-        ) {
-            sideClose();
-        }
-    };
-    
-    tool_button.onclick = (e: MouseEvent) => {
-        e.stopPropagation();
-        tool_list.style.opacity = "1";
-        tool_list.style.pointerEvents = "all";
-        link_list.style.opacity = "0";
-        link_list.style.pointerEvents = "none";
-        link_button.classList.remove()
-        tool_button.className = "selected";
-        link_button.className = "";
-    };
 
-    link_button.onclick = (e: MouseEvent) => {
+    changeMajor!.onclick = (e: MouseEvent) => {
+        // 用来阻止冒泡
         e.stopPropagation();
-        tool_list.style.opacity = "0";
-        tool_list.style.pointerEvents = "none";
-        link_list.style.opacity = "1";
-        link_list.style.pointerEvents = "all";
-        tool_button.className = "";
-        link_button.className = "selected";
+        changeMajorAction();
     };
-    // */
 }
 
 /**
@@ -221,7 +191,7 @@ const toolSideClick = (id: string) => {
  * 点击侧边栏 (category)
  * @param id 要设置为的目标侧边栏id
  */
- const categorySideClick = (id: string) => {
+const categorySideClick = (id: string) => {
     sideSet(`category-${id}`);
 };
 
@@ -457,6 +427,60 @@ const showDetail = (e: HTMLElement) => {
         };
         icon.style.transform = "rotate(90deg)";
     }
+};
+
+const initCategory = () => {
+    const tool_button = document.getElementById("tool-button")!;
+    const link_button = document.getElementById("link-button")!;
+    const tool_list = document.getElementById("tool-list")!;
+    const link_list = document.getElementById("link-list")!;
+
+    tool_button.className = "selected";
+    link_list.style.opacity = "0";
+    link_list.style.pointerEvents = "none";
+    tool_list.onclick = link_list.onclick = (e) => {
+        if (
+            e.composedPath()[0] === tool_list ||
+            e.composedPath()[0] === link_list
+        ) {
+            sideClose();
+        }
+    };
+
+    tool_button.onclick = (e: MouseEvent) => {
+        e.stopPropagation();
+        tool_list.style.opacity = "1";
+        tool_list.style.pointerEvents = "all";
+        link_list.style.opacity = "0";
+        link_list.style.pointerEvents = "none";
+        link_button.classList.remove();
+        tool_button.className = "selected";
+        link_button.className = "";
+    };
+
+    link_button.onclick = (e: MouseEvent) => {
+        e.stopPropagation();
+        tool_list.style.opacity = "0";
+        tool_list.style.pointerEvents = "none";
+        link_list.style.opacity = "1";
+        link_list.style.pointerEvents = "all";
+        tool_button.className = "";
+        link_button.className = "selected";
+    };
+};
+
+const changeMajorAction = () => {
+    while (major.firstChild) {
+        major.removeChild(major.lastChild!);
+    }
+
+    // TODO temporary solution
+    const nextId = MajorState.id === "tiles" ? "category" : "tiles";
+    major.appendChild(cloneTemplate(`major-${nextId}`));
+    if (nextId === "category") {
+        initCategory();
+    }
+    MajorState.id = nextId;
 };
 
 /*

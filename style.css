@@ -105,7 +105,8 @@ a.tile-link {
 }
 
 #search,
-#back {
+#back,
+#change-major {
     position: fixed;
     padding: 0 .35em;
     cursor: pointer;
@@ -119,8 +120,13 @@ a.tile-link {
     right: 2em;
 }
 
+#change-major {
+    right: 4em;
+}
+
 #search svg,
-#back svg {
+#back svg,
+#change-major svg {
     width: 1em;
     height: 1em;
     vertical-align: middle;

@@ -200,12 +200,15 @@ const gen_tile_grids = (input: TileGrids): Node[] => {
   ];
 };
 
-const gen_major = (inner: Node[], page_type: PageType): NonVoidNode =>
+const gen_major_wrapper = (inner: Node[], page_type: PageType): NonVoidNode =>
   ["div", { id: "content" }, [
     ["div", { id: "offset" }, [
       ["div", { id: "major", class: page_type }, [...inner, clearfix]],
     ]],
   ]];
+
+const gen_major_fragment = (inner: Node[], id: string): NonVoidNode =>
+  ["template", { id: `major-${id}` }, [...inner, clearfix]];
 
 const tile_template = (input: TileTemplate): Tile[] =>
   Array.isArray(input.tiles)
@@ -499,10 +502,11 @@ export const codegen = (filename: string) => {
     const page_type = "home";
     const sides = [...(load("sides") as Side[]), ...public_sides];
     const data: GlobalData = { page_type };
+    const major_tiles = gen_tile_columns(load("major") as TileColumns);
     dynamic_inserts.set(
       "<!--{{major}}-->",
       render_nonvoid_node(
-        gen_major(gen_tile_columns(load("major") as TileColumns), page_type)
+        gen_major_wrapper(major_tiles, page_type),
       ),
     );
     dynamic_inserts.set(
@@ -521,17 +525,23 @@ export const codegen = (filename: string) => {
     const category = load("category") as Category;
     const { tools, tool_data } = proc_tool_groups(load("tools") as ToolGroup[], category);
     const data: GlobalData = { page_type, tool: tool_data };
+    const major_tiles = gen_tile_grids(load("major") as TileGrids);
+    const major_category = gen_category(category);
     dynamic_inserts.set(
       "<!--{{major}}-->",
       render_nonvoid_node(
-        //gen_major(gen_tile_grids(load("major") as TileGrids), page_type),
-        gen_major(gen_category(category), "home"),
+        gen_major_wrapper(major_tiles, page_type),
       ),
     );
     dynamic_inserts.set(
       "<!--{{sides}}-->",
       render_nodes(
-        [...sides.map(gen_side), ...Object.values(tools).map(gen_tool)]
+        [
+          ...sides.map(gen_side),
+          ...Object.values(tools).map(gen_tool),
+          gen_major_fragment(major_tiles, "tiles"),
+          gen_major_fragment(major_category, "category"),
+        ]
       ),
     );
     dynamic_inserts.set(
