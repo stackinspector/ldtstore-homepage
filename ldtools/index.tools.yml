@@ -230,6 +230,7 @@
       category: [hardware, info]
       keywords: 硬件检测
       website: 2
+      mirror: locked
       description: >
         为HWiNFO记录的日志生成可视化图表的小工具。
     - name: speccy
