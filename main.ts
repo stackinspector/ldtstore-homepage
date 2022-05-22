@@ -208,9 +208,12 @@ const sideClose = () => {
  */
 const sideSet = (id: string | null) => {
     setTransitionDuration();
-    //展开side的时候防止切换，否则看上去很怪
-    changeMajor.style.opacity = id === null ? "1" : "0";
-    changeMajor.style.pointerEvents = id === null ? "all" : "none";
+
+    // 展开side的时候防止切换，否则看上去很怪
+    if (DATA.page_type === "tool") {
+        changeMajor!.style.opacity = id === null ? "1" : "0";
+        changeMajor!.style.pointerEvents = id === null ? "all" : "none";
+    }
 
     if (id === null) {
         // 1 关闭
