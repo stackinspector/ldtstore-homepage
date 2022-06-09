@@ -10,7 +10,7 @@ const ADDR = {
     MIRROR: "//d1.ldtstore.com.cn",
   },
   intl: {
-    IMAGE: "//cdn.jsdelivr.net/gh/stackinspector/ldtstore-assert@latest/image",
+    IMAGE: "//fastly.jsdelivr.net/gh/stackinspector/ldtstore-assert@latest/image",
     MIRROR: "//d1.ldtstore.net",
   },
   test: {
