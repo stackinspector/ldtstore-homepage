@@ -81,7 +81,6 @@
 - name: group
   title: 硬件讨论群
   text: >
-    <p>一群：1005059704<a class="link copy" onclick="copy('1005059704')">📋</a></p>
     <p><a  class="link" href="//r.ldtstore.com.cn/r/group-readme-1">核心群入群测试</a></p>
 - name: outer
   title: 站外官方账号
