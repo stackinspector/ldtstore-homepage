@@ -69,7 +69,7 @@ const html = async (filename: string) => {
     `<link rel="stylesheet" href="/style.css">`,
     `<link rel="stylesheet" href="/style-${git}.css">`
   ).replaceAll(
-    `<a  `,
+    `<a n `,
     `<a target="_blank" `
   )
   return content
