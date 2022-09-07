@@ -1,7 +1,7 @@
 // deno-lint-ignore-file camelcase
 
 import { minify } from "https://deno.land/x/minifier@v1.1.1/mod.ts"
-import { transform } from "https://deno.land/x/esbuild@v0.14.13/mod.js"
+import { build } from "https://deno.land/x/esbuild@v0.14.13/mod.js"
 import { codegen } from "./codegen.ts"
 
 const ADDR = {
@@ -76,22 +76,17 @@ const html = async (filename: string) => {
 }
 
 const ts = async (filename: string) => {
-  const bundle_result = await Deno.emit(filename, {
-    bundle: "classic",
-    compilerOptions: {
-      lib: ["esnext", "dom"],
-    },
-  })
-  const transform_result = await transform(bundle_result.files["deno:///bundle.js"], {
+  const esbuild_result = await build({
+    entryPoints: [filename],
     minifyWhitespace: true,
     minifySyntax: true,
     target: ["es6"],
+    write: false,
   })
   console.log({
-    bundle: bundle_result,
-    transform: transform_result,
+    esbuild: esbuild_result,
   })
-  return transform_result.code
+  return `(function(){${esbuild_result.outputFiles[0].text.slice(0, -1)}})()\n`
 }
 
 await Deno.writeTextFile(target_dir + "/robots.txt", await Deno.readTextFile("robots.txt"))
