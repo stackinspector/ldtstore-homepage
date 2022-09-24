@@ -1,16 +1,15 @@
-type ElementAttr = Record<string, string | undefined>;
+import { map, filter_none } from "https://deno.land/x/option_utils@0.1.0/mod.ts"
+import type { Option } from "https://deno.land/x/option_utils@0.1.0/mod.ts"
+
+type ElementAttr = Record<string, Option<string>>;
 
 export type Element = [string, ElementAttr, Node[]];
-
-export type NonVoidNode = Element | string;
-export type Node = NonVoidNode | undefined;
-
-const filter_undefined = <T>(input: (T | undefined)[]): T[] => input.filter(x => x !== void 0) as T[];
+export type Node = Element | string;
 
 const render_attr = (input: ElementAttr): string =>
-  filter_undefined(Object.entries(input).map(([k, v]) => v === void 0 ? void 0 : ` ${k}${v === "" ? "" : `="${v}"`}`)).join("");
+  filter_none(Object.entries(input).map(([k, v]) => map(v, v => ` ${k}${v === "" ? "" : `="${v}"`}`))).join("");
 
-export const render_nonvoid_node = (input: NonVoidNode): string => {
+export const render_node = (input: Node): string => {
   if (typeof input === "string") {
     return input.replaceAll("\n", "")
   } else {
@@ -19,4 +18,4 @@ export const render_nonvoid_node = (input: NonVoidNode): string => {
   }
 };
 
-export const render_nodes = (input: Node[]): string => filter_undefined(input).map(render_nonvoid_node).join("");
+export const render_nodes = (input: Node[]): string => filter_none(input).map(render_node).join("");

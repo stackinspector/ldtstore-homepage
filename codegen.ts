@@ -1,7 +1,9 @@
 // deno-lint-ignore-file camelcase
 import { parse as parseYaml } from "https://deno.land/std@0.102.0/encoding/yaml.ts";
-import type { NonVoidNode, Node } from "./jsonhtml.ts";
-import { render_nodes, render_nonvoid_node } from "./jsonhtml.ts";
+import type { Option } from "https://deno.land/x/option_utils@0.1.0/mod.ts"
+import { None, filter_none, from_bool_and_then, from_str, into_bool, into_list, into_str, is_some, map, map2, or, unwrap, unwrap_or, unwrap_or_else } from "https://deno.land/x/option_utils@0.1.0/mod.ts"
+import type { Node } from "./jsonhtml.ts";
+import { render_nodes, render_node,  } from "./jsonhtml.ts";
 import type { GlobalData, ToolData, ToolAllType, ToolCategoryType, ToolCrossType, ToolIndexType } from "./shared.ts";
 
 type PageType = "home" | "tool";
@@ -132,15 +134,12 @@ const gen_tile_inner = (input: Tile, category: boolean): Node => {
 
   const inner: Node =
     ["img", {
-      src: `{{IMAGE}}/icon${
-        input.icon_type === void 0 ? "" : `-${input.icon_type}`}/${input.icon === void 0 ? input.name : input.icon
-      }.webp`,
+      src: `{{IMAGE}}/icon${into_str(map(input.icon_type, s => `-${s}`))}/${unwrap_or(input.icon, input.name)}.webp`,
       alt: input.title,
-    }, category ? (input.title === void 0 ? [] : [
-      ["span", {}, [input.title]],
-    ]) : (input.font === void 0 || input.title === void 0 ? [] : [
-      [input.font, {}, [input.title]],
-    ])];
+    }, category
+      ? into_list(map(input.title, title => ["span", {}, [title]]))
+      : into_list(map2(input.font, input.title, (font, title) => [font, {}, [title]]))
+    ];
 
   const href_base = (location: string): Node =>
     ["a", {
@@ -200,14 +199,14 @@ const gen_tile_grids = (input: TileGrids): Node[] => {
   ];
 };
 
-const gen_major_wrapper = (inner: Node[], page_type: PageType): NonVoidNode =>
+const gen_major_wrapper = (inner: Node[], page_type: PageType): Node =>
   ["div", { id: "content" }, [
     ["div", { id: "offset" }, [
       ["div", { id: "major", class: page_type === "home" ? "normal" : "wide" }, [...inner, clearfix]],
     ]],
   ]];
 
-const gen_major_fragment = (inner: Node[], id: string): NonVoidNode =>
+const gen_major_fragment = (inner: Node[], id: string): Node =>
   ["template", { id: `major-${id}` }, [...inner, clearfix]];
 
 const tile_template = (input: TileTemplate): Tile[] =>
@@ -219,7 +218,7 @@ const tile_template = (input: TileTemplate): Tile[] =>
     : Object.entries(input.tiles).map(([name, title]) => ({
       ...input.template,
       name,
-      title: title === "" ? void 0 : title,
+      title: from_str(title),
     }));
 
 const gen_side = (input: Side): Node =>
@@ -227,15 +226,10 @@ const gen_side = (input: Side): Node =>
     ["div", { class: "title" }, [input.title]],
     svg_icon("#icon-arrow-left", "icon-back"),
     ["hr", {}, []],
-    ["div", { class: "content" }, [
-      ...(
-        input.tiles === void 0 && input.templated === void 0 ? [] : [
-          ...(input.templated === void 0 ? input.tiles! : tile_template(input.templated!)).map(gen_tile),
-          clearfix,
-        ]
-      ),
-      input.text === void 0 ? void 0 : ["div", { class: input.text_small ? "text small" : "text" }, [input.text]],
-    ]],
+    ["div", { class: "content" }, filter_none([
+      ...unwrap_or(map(or(input.tiles, map(input.templated, tile_template)), tiles => [...tiles.map(gen_tile), clearfix]), []),
+      map(input.text, text => ["div", { class: input.text_small ? "text small" : "text" }, [text]]),
+    ])],
   ]];
 
 const gen_category_item = (input: Tile) => gen_tile_inner(input, true);
@@ -251,11 +245,11 @@ const gen_category_group = (input: CategoryGroup): Node =>
 const gen_category_tab = (input: CategoryTab): Node[] => {
   if (input.content.length > 4) throw new Error("unexpected category group count");
   const groups = input.content.map(gen_category_group);
-  // 四个group都可能为空，但Node本身就可能为空，所以无需处理
+  console.log(groups.length)
   const [l1, l2, r1, r2] = groups;
   return [
-    ["div", { class: "category-tab-part" }, [l1, l2]],
-    ["div", { class: "category-tab-part" }, [r1, r2]],
+    ["div", { class: "category-tab-part" }, filter_none([l1, l2])],
+    ["div", { class: "category-tab-part" }, filter_none([r1, r2])],
   ]
 };
 
@@ -284,7 +278,7 @@ const proc_tool_groups = (groups: ToolGroup[], major_category: Category): Proces
       for (const item of group.content) {
         if (item.action === "category") {
           category[item.name] = {
-            title: item.title!,
+            title: unwrap(item.title),
             list: [],
           };
         }
@@ -293,33 +287,33 @@ const proc_tool_groups = (groups: ToolGroup[], major_category: Category): Proces
   }
 
   for (const group of groups) {
-    if (group.name !== void 0 && group.cross_notice !== void 0) {
+    if (is_some(group.name) && is_some(group.cross_notice)) {
       cross_notice_title[group.name] = group.cross_notice;
       cross[group.name] = Object.create(null);
     }
   }
 
   for (const group of groups) {
-    const group_name = (group.name === void 0 && group.list.length === 1) ? group.list[0].name : group.name!;
+    const group_name = unwrap(or(group.name, from_bool_and_then(group.list.length === 1, () => group.list[0].name)));
     const list = [];
     for (const tool of group.list) {
       list.push(tool.name);
-      all[tool.keywords === void 0 ? tool.title : tool.title + tool.keywords!] = tool.name;
+      all[tool.title + into_str(tool.keywords)] = tool.name;
       tools[tool.name] = tool;
-      if (tool.cross_notice !== void 0) {
+      if (is_some(tool.cross_notice)) {
         for (const [group, content] of Object.entries(tool.cross_notice)) {
-          cross[group]![tool.name] = `<b>${cross_notice_title[group]}</b><br>${content}`;
+          unwrap(cross[group])[tool.name] = `<b>${unwrap(cross_notice_title[group])}</b><br>${content}`;
         }
       }
-      if (tool.category !== void 0) {
+      if (is_some(tool.category)) {
         for (const category_kind of tool.category) {
-          category[category_kind].list.push(tool.name);
+          unwrap(category[category_kind]).list.push(tool.name);
         }
       }
     }
     if (group.name !== "non-index") {
       index[group_name] = {
-        title: ((group.title === void 0 && group.list.length === 1) ? group.list[0].title : group.title!),
+        title: unwrap(or(group.title, from_bool_and_then(group.list.length === 1, () => group.list[0].title))),
         list,
         cross_list: [],
       };
@@ -328,9 +322,9 @@ const proc_tool_groups = (groups: ToolGroup[], major_category: Category): Proces
 
   for (const group of groups) {
     for (const tool of group.list) {
-      if (tool.cross !== void 0) {
+      if (is_some(tool.cross)) {
         for (const cross_group_name of tool.cross) {
-          index[cross_group_name].cross_list.push(tool.name);
+          unwrap(index[cross_group_name]).cross_list.push(tool.name);
         }
       }
     }
@@ -366,10 +360,10 @@ const gen_tool_link_plain = (input: ToolLink): Node =>
     ["br", {}, []],
   ]];
 
-const gen_tool_links = (input: Tool, plain: boolean): Node[] => {
+const gen_tool_links = (input: Tool, plain: boolean): Option<Node>[] => {
   const links: ToolLink[] = [];
   const downloads: ToolLink[] = [];
-  if (input.website !== void 0) {
+  if (is_some(input.website)) {
     links.push({
       title: input.website,
       link_type: "r2",
@@ -377,7 +371,7 @@ const gen_tool_links = (input: Tool, plain: boolean): Node[] => {
       icon: "link",
     });
   }
-  if (input.websites !== void 0) {
+  if (is_some(input.websites)) {
     links.push(...Object.entries(input.websites).map(([link, title]): ToolLink => ({
       title,
       link_type: "r2",
@@ -385,7 +379,7 @@ const gen_tool_links = (input: Tool, plain: boolean): Node[] => {
       icon: "link",
     })));
   }
-  if (input.downloads !== void 0) {
+  if (is_some(input.downloads)) {
     downloads.push(...Object.entries(input.downloads).map(([link, title]): ToolLink => ({
       title,
       link_type: "r2",
@@ -393,7 +387,7 @@ const gen_tool_links = (input: Tool, plain: boolean): Node[] => {
       icon: "download",
     })));
   }
-  if (input.mirror !== void 0) {
+  if (is_some(input.mirror)) {
     downloads.push({
       title: "镜像下载",
       link_type: "mirror",
@@ -401,7 +395,7 @@ const gen_tool_links = (input: Tool, plain: boolean): Node[] => {
       icon: "download",
     });
   }
-  if (input.mirrors !== void 0) {
+  if (is_some(input.mirrors)) {
     downloads.push(...Object.entries(input.mirrors).map(([link, title]): ToolLink => ({
       title,
       link_type: "mirror",
@@ -409,10 +403,10 @@ const gen_tool_links = (input: Tool, plain: boolean): Node[] => {
       icon: "download",
     })));
   }
-  const proc = (o: ToolLink[]): Node => o.length === 0
-    ? void 0
+  const proc = (o: ToolLink[]): Option<Node> => o.length === 0
+    ? None
     : ["div", {
-        class: !plain && input.columns ? "tool-links-columns" : void 0
+        class: (!plain && into_bool(input.columns)) ? "tool-links-columns" : None
       }, o.map(plain ? gen_tool_link_plain : gen_tool_link)]
   return [
     proc(links),
@@ -431,34 +425,34 @@ const gen_tool = (input: Tool): Node =>
   ["template", { id: `tool-${input.name}` }, [
     ["div", { class: "item", onclick: "detail(this)" }, [
       ["img", {
-        src: `{{IMAGE}}/icon-tool/${input.icon === void 0 ? input.name : input.icon}.webp`,
+        src: `{{IMAGE}}/icon-tool/${unwrap_or(input.icon, input.name)}.webp`,
         alt: input.title,
       }, []],
       ["div", { class: "item-title" }, [input.title]],
       svg_icon("expand-right", "icon-line"),
       ["div", { class: "detail-container" }, [
-        ["div", { class: "detail" }, [
+        ["div", { class: "detail" }, filter_none([
           ["p", {}, [input.description]],
           ...gen_tool_links(input, false),
-          input.notice === void 0 ? void 0 : tool_notice(input.notice),
-        ]],
+          map(input.notice, tool_notice),
+        ])],
       ]],
     ]],
   ]];
 
-const gen_tool_plain = (input: Tool, cross: boolean, title = true): Node[] => [
+const gen_tool_plain = (input: Tool, cross: boolean, title = true): Option<Node>[] => [
   title
     ? ["h3", { id: input.name }, [
       `${input.title} `,
       ["i", {}, [`${input.name}${cross ? " [cross]" : ""}`]],
     ]]
-    : void 0,
+    : None,
   ["p", {}, [input.description]],
   ...gen_tool_links(input, true),
-  input.notice === void 0 ? void 0 : tool_notice(input.notice),
+  map(input.notice, tool_notice),
 ];
 
-const gen_tools_plain = ({ tools, tool_data: { index, cross } }: ProcessedToolGroups): Node[] =>
+const gen_tools_plain = ({ tools, tool_data: { index, cross } }: ProcessedToolGroups): Option<Node>[] =>
   Object.entries(index).map(([name, { title, list, cross_list }]) => [
     ["h2", { id: name }, [
       `${title} `,
@@ -472,7 +466,7 @@ const gen_tools_plain = ({ tools, tool_data: { index, cross } }: ProcessedToolGr
     ...cross_list.map((tool) => {
       const text = gen_tool_plain(tools[tool], true);
       const cross_notice = cross[name]?.[tool];
-      if (cross_notice !== void 0) {
+      if (is_some(cross_notice)) {
         text.push(cross_notice);
       }
       return text;
@@ -482,8 +476,8 @@ const gen_tools_plain = ({ tools, tool_data: { index, cross } }: ProcessedToolGr
 const gen_tools_plain_toc = (groups: ToolGroup[]): Node[] => [
   ["h2", { id: "toc" }, ["目录"]],
   ...groups.map((group): Node => {
-    const name = group.name !== void 0 ? group.name : group.list[0].name;
-    const title = group.title !== void 0 ? group.title : group.list[0].title;
+    const name = unwrap_or_else(group.name, () => group.list[0].name);
+    const title = unwrap_or_else(group.title, () => group.list[0].title);
     return ["p", {}, [
       ["a", { href: `#${name}` }, [title]],
       "&nbsp;",
@@ -505,15 +499,11 @@ export const codegen = (filename: string) => {
     const major_tiles = gen_tile_columns(load("major") as TileColumns);
     dynamic_inserts.set(
       "<!--{{major}}-->",
-      render_nonvoid_node(
-        gen_major_wrapper(major_tiles, page_type),
-      ),
+      render_node(gen_major_wrapper(major_tiles, page_type)),
     );
     dynamic_inserts.set(
       "<!--{{sides}}-->",
-      render_nodes(
-        sides.map(gen_side)
-      ),
+      render_nodes(sides.map(gen_side)),
     );
     dynamic_inserts.set(
       "<!--{{include-data}}-->",
@@ -529,20 +519,16 @@ export const codegen = (filename: string) => {
     const major_category = gen_category(category);
     dynamic_inserts.set(
       "<!--{{major}}-->",
-      render_nonvoid_node(
-        gen_major_wrapper(major_tiles, page_type),
-      ),
+      render_node(gen_major_wrapper(major_tiles, page_type)),
     );
     dynamic_inserts.set(
       "<!--{{sides}}-->",
-      render_nodes(
-        [
-          ...sides.map(gen_side),
-          ...Object.values(tools).map(gen_tool),
-          gen_major_fragment(major_tiles, "tiles"),
-          gen_major_fragment(major_category, "category"),
-        ]
-      ),
+      render_nodes([
+        ...sides.map(gen_side),
+        ...Object.values(tools).map(gen_tool),
+        gen_major_fragment(major_tiles, "tiles"),
+        gen_major_fragment(major_category, "category"),
+      ]),
     );
     dynamic_inserts.set(
       "<!--{{include-data}}-->",
@@ -553,15 +539,11 @@ export const codegen = (filename: string) => {
     const category = load_base("ldtools/index.category.yml") as Category;
     dynamic_inserts.set(
       "<!--{{toc}}-->",
-      render_nodes(
-        gen_tools_plain_toc(tool_groups)
-      ),
+      render_nodes(gen_tools_plain_toc(tool_groups)),
     );
     dynamic_inserts.set(
       "<!--{{main}}-->",
-      render_nodes(
-        gen_tools_plain(proc_tool_groups(tool_groups, category))
-      ),
+      render_nodes(filter_none(gen_tools_plain(proc_tool_groups(tool_groups, category)))),
     );
   }
 
