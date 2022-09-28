@@ -3,7 +3,7 @@ import { parse as parseYaml } from "https://deno.land/std@0.102.0/encoding/yaml.
 import type { Option } from "https://deno.land/x/option_utils@0.1.0/mod.ts"
 import { None, filter_none, from_bool_and_then, from_str, into_bool, into_list, into_str, is_some, map, map2, or, unwrap, unwrap_or, unwrap_or_else } from "https://deno.land/x/option_utils@0.1.0/mod.ts"
 import type { Node } from "./jsonhtml.ts";
-import { render_nodes, render_node,  } from "./jsonhtml.ts";
+import { render_nodes, render_node, filter_none_attr } from "./jsonhtml.ts";
 import type { GlobalData, ToolData, ToolAllType, ToolCategoryType, ToolCrossType, ToolIndexType } from "./shared.ts";
 
 type PageType = "home" | "tool";
@@ -133,10 +133,10 @@ const gen_tile_inner = (input: Tile, category: boolean): Node => {
   const class_name = category ? "category-item" : `tile ${input.tile}`;
 
   const inner: Node =
-    ["img", {
+    ["img", filter_none_attr({
       src: `{{IMAGE}}/icon${into_str(map(input.icon_type, s => `-${s}`))}/${unwrap_or(input.icon, input.name)}.webp`,
       alt: input.title,
-    }, category
+    }), category
       ? into_list(map(input.title, title => ["span", {}, [title]]))
       : into_list(map2(input.font, input.title, (font, title) => [font, {}, [title]]))
     ];
@@ -405,9 +405,9 @@ const gen_tool_links = (input: Tool, plain: boolean): Option<Node>[] => {
   }
   const proc = (o: ToolLink[]): Option<Node> => o.length === 0
     ? None
-    : ["div", {
+    : ["div", filter_none_attr({
         class: (!plain && into_bool(input.columns)) ? "tool-links-columns" : None
-      }, o.map(plain ? gen_tool_link_plain : gen_tool_link)]
+      }), o.map(plain ? gen_tool_link_plain : gen_tool_link)]
   return [
     proc(links),
     proc(downloads),

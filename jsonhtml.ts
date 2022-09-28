@@ -1,13 +1,16 @@
-import { map, filter_none } from "https://deno.land/x/option_utils@0.1.0/mod.ts"
+import { is_some } from "https://deno.land/x/option_utils@0.1.0/mod.ts"
 import type { Option } from "https://deno.land/x/option_utils@0.1.0/mod.ts"
 
-type ElementAttr = Record<string, Option<string>>;
+export const filter_none_attr = (input: Record<string, Option<string>>): ElementAttr =>
+  Object.fromEntries(Object.entries(input).filter(([_, v]) => is_some(v))) as ElementAttr;
+
+type ElementAttr = Record<string, string>;
 
 export type Element = [string, ElementAttr, Node[]];
 export type Node = Element | string;
 
 const render_attr = (input: ElementAttr): string =>
-  filter_none(Object.entries(input).map(([k, v]) => map(v, v => ` ${k}${v === "" ? "" : `="${v}"`}`))).join("");
+  Object.entries(input).map(([k, v]) => ` ${k}${v === "" ? "" : `="${v}"`}`).join("");
 
 export const render_node = (input: Node): string => {
   if (typeof input === "string") {
@@ -18,4 +21,4 @@ export const render_node = (input: Node): string => {
   }
 };
 
-export const render_nodes = (input: Node[]): string => filter_none(input).map(render_node).join("");
+export const render_nodes = (input: Node[]): string => input.map(render_node).join("");
