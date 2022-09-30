@@ -1,8 +1,8 @@
 import { is_some } from "https://deno.land/x/option_utils@0.1.0/mod.ts"
 import type { Option } from "https://deno.land/x/option_utils@0.1.0/mod.ts"
 
-export const filter_none_attr = (input: Record<string, Option<string>>): ElementAttr =>
-  Object.fromEntries(Object.entries(input).filter(([_, v]) => is_some(v))) as ElementAttr;
+export const filter_none_attr = <T>(input: Record<string, Option<T>>): Record<string, T> =>
+  Object.fromEntries(Object.entries(input).filter(([_, v]) => is_some(v))) as Record<string, T>;
 
 type ElementAttr = Record<string, string>;
 

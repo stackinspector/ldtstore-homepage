@@ -4,6 +4,10 @@ import { minify } from "https://deno.land/x/minifier@v1.1.1/mod.ts"
 import { build } from "https://deno.land/x/esbuild@v0.14.13/mod.js"
 import { codegen } from "./codegen.ts"
 
+const throw_fn = (err: unknown): never => { throw err }
+const unwrap = <T>(opt: T | undefined): T => opt !== void 0 ? opt : throw_fn(new TypeError("called unwrap() on a None (undefined) value"))
+const unwrap_null = <T>(opt: T | null): T => opt !== null ? opt : throw_fn(new TypeError("called unwrap_null() on a null value"))
+
 const ADDR = {
   default: {
     IMAGE: "//s0.ldtstore.com.cn",
@@ -29,17 +33,12 @@ const global_replace = (input: string) => input.replaceAll(
   "{{MIRROR}}", current_addr.MIRROR
 )
 
-const git = new TextDecoder().decode(
-  await Deno.run({
-    cmd: `git log -1 --pretty=format:%h`.split(" "),
-    stdout: "piped",
-  }).output(),
-)
+const commit = (await Deno.readTextFile(`.git/${unwrap(unwrap_null(/ref: (.+)\n/gm.exec(await Deno.readTextFile(".git/HEAD")))[1])}`)).slice(0, 7)
 
 const copyright = `
   Copyright (c) 2021-2022 CarrotGeball and stackinspector. All rights reserved. MIT license.
   Source code: https://github.com/stackinspector/ldtstore-homepage
-  Commit: ${git}
+  Commit: ${commit}
 `
 
 const css = async (filename: string) => minify("css", await Deno.readTextFile(filename))
@@ -64,10 +63,10 @@ const html = async (filename: string) => {
   const dynamic_templated = insert(static_templated, codegen(filename))
   const content = dynamic_templated.replaceAll(
     `<script src="/main.js"></script>`,
-    `<script src="/main-${git}.js"></script>`
+    `<script src="/main-${commit}.js"></script>`
   ).replaceAll(
     `<link rel="stylesheet" href="/style.css">`,
-    `<link rel="stylesheet" href="/style-${git}.css">`
+    `<link rel="stylesheet" href="/style-${commit}.css">`
   ).replaceAll(
     `<a n `,
     `<a target="_blank" `
@@ -106,11 +105,11 @@ await Deno.writeTextFile(
   `<!--${copyright}-->\n\n${global_replace(await html("ldtools/plain.html"))}`,
 )
 await Deno.writeTextFile(
-  `${target_dir}/style-${git}.css`,
+  `${target_dir}/style-${commit}.css`,
   `/*${copyright}*/\n\n${global_replace(await css("style.css"))}`,
 )
 await Deno.writeTextFile(
-  `${target_dir}/main-${git}.js`,
+  `${target_dir}/main-${commit}.js`,
   `/*${copyright}*/\n\n${global_replace(await ts("main.ts"))}`,
 )
 
