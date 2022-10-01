@@ -725,8 +725,8 @@
       category: [os-install]
       keywords: 微软Windows系统下载获取镜像U盘安装
       websites:
-        10: 适用于Win10
-        11: 适用于Win11
+        "10": 适用于Win10
+        "11": 适用于Win11
       description: >
         官方的镜像生成工具，(MSDN) ITELLYOU镜像源之外最方便的系统获取方式。
     - name: bootice
@@ -1130,36 +1130,36 @@
       icon: intel-xtu
       title: Intel XTU 教程
       websites:
-        1: 老弟的视频教程
+        "1": 老弟的视频教程
       notice: >
           此处只收录老弟的教程（桌面平台带K适用），笔记本相关的建议在B站搜索，同时确保自己理解超频/降压的理论后在进行。
     - name: guide-amd-ryzen-master
       icon: amd-ryzen-master
       title: AMD Ryzen Master 教程
       websites:
-        1: PCEVA视频教程
+        "1": PCEVA视频教程
     - name: guide-ctr
       icon: ctr
       title: ClockTuner for Ryzen 教程
       websites:
-        1: 极客湾视频教程
-        2: KENNY视频教程
-        3: 专栏教程
+        "1": 极客湾视频教程
+        "2": KENNY视频教程
+        "3": 专栏教程
     - name: guide-ryzen-controller
       icon: ryzen-controller
       title: Ryzen Controller 教程
       websites:
-        1: 专栏教程
+        "1": 专栏教程
     - name: guide-cpu-burning
       icon: p95
       title: CPU稳定性测试教程
       websites:
-        1: 极客湾视频教程
+        "1": 极客湾视频教程
       description: >
         视频中也同时介绍了超频的相关知识，17:29后为CPU稳定性相关内容。
     - name: guide-mem-overclock
       icon: tm5
       title: 内存超频/稳定性测试教程
       websites:
-        1: 专栏教程（Intel相关）
-        2: 专栏教程（AMD相关）
+        "1": 专栏教程（Intel相关）
+        "2": 专栏教程（AMD相关）
