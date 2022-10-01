@@ -244,9 +244,7 @@ const gen_category_group = (input: CategoryGroup): Node =>
 
 const gen_category_tab = (input: CategoryTab): Node[] => {
   if (input.content.length > 4) throw new Error("unexpected category group count");
-  const groups = input.content.map(gen_category_group);
-  console.log(groups.length)
-  const [l1, l2, r1, r2] = groups;
+  const [l1, l2, r1, r2] = input.content.map(gen_category_group);
   return [
     ["div", { class: "category-tab-part" }, filter_none([l1, l2])],
     ["div", { class: "category-tab-part" }, filter_none([r1, r2])],

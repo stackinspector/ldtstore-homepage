@@ -1,4 +1,4 @@
-import { is_some } from "https://deno.land/x/option_utils@0.1.0/mod.ts"
+import { is_some, filter_none } from "https://deno.land/x/option_utils@0.1.0/mod.ts"
 import type { Option } from "https://deno.land/x/option_utils@0.1.0/mod.ts"
 
 export const filter_none_attr = <T>(input: Record<string, Option<T>>): Record<string, T> =>
@@ -15,10 +15,12 @@ const render_attr = (input: ElementAttr): string =>
 export const render_node = (input: Node): string => {
   if (typeof input === "string") {
     return input.replaceAll("\n", "")
-  } else {
+  } else if (Array.isArray(input)) {
     const [name, attr, child] = input;
     return `<${name}${render_attr(attr)}>${render_nodes(child)}${["br", "hr"].some(s => name === s) ? "" : `</${name}>`}`
+  } else {
+    throw new Error("not vaild node");
   }
 };
 
-export const render_nodes = (input: Node[]): string => input.map(render_node).join("");
+export const render_nodes = (input: Node[]): string => filter_none(input).map(render_node).join("");
