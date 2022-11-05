@@ -1,4 +1,33 @@
-import type { GlobalData } from "./shared.ts";
+export {};
+
+type ToolIndexType = Record<string, {
+    title: string
+    list: string[]
+    cross_list: string[]
+}>;
+
+type ToolCategoryType = Record<string, {
+    title: string
+    list: string[]
+}>;
+
+type ToolAllType = Record<string, string>;
+
+type ToolCrossType = Record<string, Record<string, string>>;
+
+type ToolData = {
+    index: ToolIndexType;
+    category: ToolCategoryType;
+    all: ToolAllType;
+    cross: ToolCrossType;
+};
+
+type GlobalData = {
+    page_type: "home";
+} | {
+    page_type: "tool";
+    tool: ToolData;
+};
 
 declare global {
     interface Window {
