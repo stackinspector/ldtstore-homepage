@@ -1,6 +1,5 @@
 // deno-lint-ignore-file camelcase
 
-import { minify } from "https://deno.land/x/minifier@v1.1.1/mod.ts"
 import { build } from "https://deno.land/x/esbuild@v0.14.13/mod.js"
 import { codegen } from "./codegen.ts"
 
@@ -41,7 +40,7 @@ const copyright = `
   Commit: ${commit}
 `
 
-const css = async (filename: string) => minify("css", await Deno.readTextFile(filename))
+const css = async (filename: string) => unwrap((await build({ entryPoints: [filename], minify: true, write: false })).outputFiles)[0].text
 
 const static_inserts: Map<string, string> = new Map()
 for await (const item of Deno.readDir("./fragment")) {
@@ -50,7 +49,6 @@ for await (const item of Deno.readDir("./fragment")) {
 }
 
 static_inserts.set(`<!--{{footer}}-->`, await Deno.readTextFile(cfg === "intl" ? "./fragment/footer-intl.html" : "./fragment/footer.html"))
-static_inserts.set(`<!--{{plain.css}}-->`, `<style>${await css("fragment/plain.css")}</style>`)
 
 const insert = (template: string, content: Map<string, string>) => template.replaceAll(
   new RegExp([...content.keys()].join("|"), "gi"),
@@ -70,6 +68,9 @@ const html = async (filename: string) => {
   ).replaceAll(
     `<a n `,
     `<a target="_blank" `
+  ).replaceAll(
+    "/*{{minified:plain.css}}*/",
+    await css("fragment/plain.css"),
   )
   return content
 }
