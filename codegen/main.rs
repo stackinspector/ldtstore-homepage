@@ -106,13 +106,11 @@ const fn template_paths(config: Config) -> TemplatePaths<'static> {
 
 const COPYRIGHT_L: &str = "
   Copyright (c) 2021-2022 CarrotGeball and stackinspector. All rights reserved. MIT license.
-  source: https://github.com/stackinspector/ldtstore-homepage
-  commit: ";
+  Source: https://github.com/stackinspector/ldtstore-homepage
+  Commit (content): ";
 
 const COPYRIGHT_R: &str = concat!("
-  codegen system (MPL license):
-  source: https://github.com/stackinspector/ldtstore-codegen
-  commit: ", env!("GIT_HASH"));
+  Commit (codegen): ", env!("GIT_HASH"));
 
 fn read_commit<P: AsRef<Path>>(base_path: P) -> String {
     let base_path = base_path.as_ref();

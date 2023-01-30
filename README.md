@@ -2,14 +2,19 @@
 
 The new home page of LDTstore.com.cn
 
-## Build
+The `/codegen` is MPL licensed and the rest is MIT licensed.
 
-Make sure the `esbuild` binary is present in the PATH.
+## Build Codegen
 
 ```bash
-cargo install https://github.com/stackinspector/ldtstore-codegen
-git clone https://github.com/stackinspector/ldtstore-homepage
-cd ldtstore-homepage
+cargo install --path ./codegen --force
+```
+
+## Build Pages
+
+Make sure the `esbuild` binary is present in the PATH and codegen is installed.
+
+```bash
 ldtstore-codegen -c default -d path/to/wwwroot/
 ldtstore-codegen -c intl -d path/to/intl-wwwroot/
 ```
