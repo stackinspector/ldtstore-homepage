@@ -1,4 +1,4 @@
-use macros::concat_string as cs;
+use foundations::concat_string as cs;
 use lighthtml::{*, prelude::*};
 use crate::{config::*, data::*, Map, Inserts};
 

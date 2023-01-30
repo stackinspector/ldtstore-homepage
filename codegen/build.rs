@@ -16,5 +16,5 @@ fn read_commit<P: AsRef<Path>>(base_path: P) -> String {
 }
 
 fn main() {
-    println!("cargo:rustc-env=GIT_HASH={}", read_commit("."))
+    println!("cargo:rustc-env=GIT_HASH={}", read_commit(".."))
 }

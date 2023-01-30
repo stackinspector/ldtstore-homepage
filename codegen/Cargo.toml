@@ -22,5 +22,7 @@ serde_repr = "0.1"
 serde_json = "1.0"
 serde_yaml = "0.9"
 indexmap = { version = "1.9", features = ["serde"] }
-macros = { git = "https://github.com/Berylsoft/rust-macros" }
-lighthtml = { path = "../../Berylsoft/lighthtml" }
+foundations = { path = "../../../Berylsoft/foundations", default-features = false, features = [
+    "concat-string"
+] }
+lighthtml = { path = "../../../Berylsoft/lighthtml" }
