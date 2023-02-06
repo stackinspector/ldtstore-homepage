@@ -1,4 +1,4 @@
-use std::{str::FromStr, fmt::Display, error::Error, fs::{self, OpenOptions}, path::{Path, PathBuf}, io::Write};
+use std::{str::FromStr, fs::{self, OpenOptions}, path::{Path, PathBuf}, io::Write};
 use foundations::concat_string as cs;
 use ldtstore_codegen::{codegen::{codegen, CodegenResult}, Inserts};
 
@@ -14,10 +14,18 @@ macro_rules! load {
     };
 }
 
-#[allow(non_snake_case)]
-struct TemplatePaths<'a> {
-    IMAGE: &'a str,
-    MIRROR: &'a str,
+fn global_replace(content: &str, config: Config) -> String {
+    use Config::*;
+    content
+        .replace("{{IMAGE}}", match config {
+            Default => "//s0.ldtstore.com.cn",
+            Intl => "//fastly.jsdelivr.net/gh/stackinspector/ldtstore-assert@latest/image",
+            Test => "/image",
+        })
+        .replace("{{MIRROR}}", match config {
+            Default => "//d1.ldtstore.com.cn",
+            Intl | Test => "//d1.ldtstore.net",
+        })
 }
 
 #[derive(Clone, Copy)]
@@ -27,33 +35,18 @@ enum Config {
     Test,
 }
 
-// region: impl FromStr
-
 impl FromStr for Config {
-    type Err = ParseEnumError;
+    type Err = &'static str;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(match s {
             "default" => Config::Default,
             "intl" => Config::Intl,
             "test" => Config::Test,
-            _ => return Err(ParseEnumError)
+            _ => return Err("error parsing config type")
         })
     }
 }
-
-#[derive(Debug)]
-struct ParseEnumError;
-
-impl Display for ParseEnumError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "error parsing enum")
-    }
-}
-
-impl Error for ParseEnumError {}
-
-// endregion
 
 #[derive(Clone, Copy)]
 enum FileType {
@@ -61,46 +54,30 @@ enum FileType {
     Css,
     Script,
 }
+use FileType::*;
 
 impl FileType {
     fn as_src(&self) -> &'static str {
         match self {
-            FileType::Html => "html",
-            FileType::Css => "css",
-            FileType::Script => "ts",
+            Html => "html",
+            Css => "css",
+            Script => "ts",
         }
     }
 
     fn as_dest(&self) -> &'static str {
         match self {
-            FileType::Html => "html",
-            FileType::Css => "css",
-            FileType::Script => "js",
+            Html => "html",
+            Css => "css",
+            Script => "js",
         }
     }
 
     fn comment(&self) -> (&'static str, &'static str) {
         match self {
-            FileType::Html => ("<!--", "-->"),
-            FileType::Css | FileType::Script => ("/*", "*/"),
+            Html => ("<!--", "-->"),
+            Css | Script => ("/*", "*/"),
         }
-    }
-}
-
-const fn template_paths(config: Config) -> TemplatePaths<'static> {
-    match config {
-        Config::Default => TemplatePaths {
-            IMAGE: "//s0.ldtstore.com.cn",
-            MIRROR: "//d1.ldtstore.com.cn",
-        },
-        Config::Intl => TemplatePaths {
-            IMAGE: "//fastly.jsdelivr.net/gh/stackinspector/ldtstore-assert@latest/image",
-            MIRROR: "//d1.ldtstore.net",
-        },
-        Config::Test => TemplatePaths {
-            IMAGE: "/image",
-            MIRROR: "//d1.ldtstore.net",
-        },
     }
 }
 
@@ -182,7 +159,7 @@ fn compile_script<P: AsRef<Path>>(full_path: P) -> String {
 struct GlobalStates {
     base_path: PathBuf,
     dest_path: PathBuf,
-    template: TemplatePaths<'static>,
+    config: Config,
     commit: String,
     static_inserts: Inserts,
     codegen_result: CodegenResult,
@@ -190,15 +167,14 @@ struct GlobalStates {
 
 impl GlobalStates {
     fn init(Args { base_path, dest_path, config }: Args) -> GlobalStates {
-        let template = template_paths(config);
         let commit = read_commit(&base_path);
         let codegen_result = codegen(&base_path);
         let static_inserts = build_static_inserts(&base_path, config);
-        GlobalStates { base_path, dest_path, template, commit, static_inserts, codegen_result }
+        GlobalStates { base_path, dest_path, config, commit, static_inserts, codegen_result }
     }
 
     fn emit(&self, name: &str, ty: FileType) {
-        let GlobalStates { base_path, dest_path, template, commit, static_inserts, codegen_result } = self;
+        let GlobalStates { base_path, dest_path, config, commit, static_inserts, codegen_result } = self;
 
         let src_path = base_path.join(cs!(name, ".", ty.as_src()));
         let content = match ty {
@@ -229,14 +205,7 @@ impl GlobalStates {
             FileType::Script => compile_script(src_path),
         };
 
-        // macro_rules! replace_impl {
-        //     ($($kw:ident),+) => {$(
-        //         let content = content.replace(concat!("{{", stringify!($kw), "}}"), template.$kw);
-        //     )+};
-        // }
-        // replace_impl!(IMAGE, MIRROR);
-        let content = content.replace("{{IMAGE}}", template.IMAGE);
-        let content = content.replace("{{MIRROR}}", template.MIRROR);
+        let content = global_replace(&content, *config);
 
         let dest_path = dest_path.join(if matches!(ty, FileType::Html) {
             cs!(name, ".", ty.as_dest())
