@@ -421,11 +421,11 @@ fn tool_links(name: ByteString, ToolLinks { website, websites, downloads: tool_d
             });
         }
     }
-    if let Some(mirror) = mirror {
+    if let Some(_mirror) = mirror {
         downloads.push(ToolLink {
             title: ToolLinkTitle::Text(s!("镜像下载")),
             link_type: ToolLinkType::Mirror,
-            link: s!("/", mirror.as_str(), "/", name, ".zip"),
+            link: name.clone(),
             icon: ToolLinkIcon::Download,
         })
     }
@@ -434,7 +434,7 @@ fn tool_links(name: ByteString, ToolLinks { website, websites, downloads: tool_d
             downloads.push(ToolLink {
                 title: ToolLinkTitle::Text(title),
                 link_type: ToolLinkType::Mirror,
-                link: s!("/locked/", name, "-", link, ".zip"),
+                link: s!(name, "-", link),
                 icon: ToolLinkIcon::Download,
             });
         }
