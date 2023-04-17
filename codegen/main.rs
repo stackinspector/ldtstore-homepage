@@ -23,8 +23,8 @@ fn global_replace(content: &str, config: Config) -> String {
             Test => "/image",
         })
         .replace("{{MIRROR}}", match config {
-            Default => "//d1.ldtstore.com.cn",
-            Intl | Test => "//d1.ldtstore.net",
+            Default => "//r.ldtstore.com.cn/mirror-cn/",
+            Intl | Test => "//r.ldtstore.com.cn/mirror-os/",
         })
 }
 
