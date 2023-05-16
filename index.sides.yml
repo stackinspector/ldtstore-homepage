@@ -31,14 +31,8 @@
       font: h3
       action: r
       name: yjws
-      icon: topic
-      title: 进入旧版话题
-    - tile: s
-      font: h3
-      action: r
-      name: yjws-newtopic
-      icon: topic
-      title: 新版话题
+      icon: yjws-newtopic
+      title: 进入话题
     - tile: s
       font: h3
       action: r
@@ -58,14 +52,8 @@
       font: h3
       action: r
       name: icu
-      icon: topic
-      title: 进入旧版话题
-    - tile: s
-      font: h3
-      action: r
-      name: icu-newtopic
-      icon: topic
-      title: 新版话题
+      icon: icu-newtopic
+      title: 进入话题
     - tile: s
       font: h3
       action: r

@@ -23,15 +23,9 @@
     - tile: m
       font: h3
       action: r
-      name: rlwj
-      icon: topic
-      title: 进入旧版话题
-    - tile: s
-      font: h3
-      action: r
       name: rlwj-newtopic
       icon: topic
-      title: 新版话题
+      title: 进入话题
     - tile: s
       font: h3
       action: r
