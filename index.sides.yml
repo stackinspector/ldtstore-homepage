@@ -30,8 +30,8 @@
     - tile: m
       font: h3
       action: r
-      name: yjws
-      icon: yjws-newtopic
+      name: yjws-newtopic
+      icon: topic
       title: 进入话题
     - tile: s
       font: h3
@@ -51,8 +51,8 @@
     - tile: m
       font: h3
       action: r
-      name: icu
-      icon: icu-newtopic
+      name: icu-newtopic
+      icon: topic
       title: 进入话题
     - tile: s
       font: h3
