@@ -19,7 +19,7 @@ fn global_replace(content: &str, config: Config) -> String {
     content
         .replace("{{IMAGE}}", match config {
             Default => "//s0.ldtstore.com.cn",
-            Intl => "//fastly.jsdelivr.net/gh/stackinspector/ldtstore-assert@latest/image",
+            Intl => "//raw.githubusercontent.com/stackinspector/ldtstore-assert/master/image",
             Test => "/image",
         })
         .replace("{{MIRROR}}", match config {
@@ -230,8 +230,8 @@ impl GlobalStates {
     }
 }
 
-/// !
 #[derive(argh::FromArgs)]
+#[argh(description = "")]
 struct Args {
     /// dest wwwroot path
     #[argh(option, short = 'd')]
