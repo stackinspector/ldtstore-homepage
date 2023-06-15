@@ -1164,21 +1164,21 @@
     - name: drv
       title: 官方驱动下载
       websites:
-        drv-intel: 英特尔
-        drv-amd: AMD
-        drv-nvidia-new: 英伟达（新）
-        drv-nvidia-old: 英伟达（旧）
-        drv-asus: 华硕
-        drv-msi: 微星
-        drv-asrock: 华擎
-        drv-maxsun: 铭瑄
-        drv-biostar: 映泰
-        drv-gigabyte: 寄嘉
-        drv-colorful: 七彩虹
-        drv-galaxy: 影驰
-        drv-soyo: 梅捷
-        drv-shengqi: 圣旗
-        drv-onda: 昂达
+        intel: 英特尔
+        amd: AMD
+        nvidia-new: 英伟达（新）
+        nvidia-old: 英伟达（旧）
+        asus: 华硕
+        msi: 微星
+        asrock: 华擎
+        maxsun: 铭瑄
+        biostar: 映泰
+        gigabyte: 寄嘉
+        colorful: 七彩虹
+        galaxy: 影驰
+        soyo: 梅捷
+        shengqi: 圣旗
+        onda: 昂达
       description: >
         官方驱动下载由于是用磁贴格式实现的，原本不会包含在简洁版。为了简洁版的完整性，特别补充了一个工具格式的官方驱动下载。
 - name: non-index
