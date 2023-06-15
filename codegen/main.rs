@@ -118,6 +118,10 @@ fn build_static_inserts<P: AsRef<Path>>(base_path: P, config: Config) -> Inserts
         "/*{{minified:plain.css}}*/".to_owned(),
         minify_css(base_path.join("fragment").join("plain.css")),
     ));
+    assert_none!(res.insert(
+        "/*{{minified:plain.js}}*/".to_owned(),
+        compile_script(base_path.join("fragment").join("plain.js")),
+    ));
     res
 }
 
