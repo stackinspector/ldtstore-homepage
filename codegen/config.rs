@@ -60,6 +60,7 @@ pub struct Tile {
     pub name: ByteString,
     pub title: Option<ByteString>,
     pub icon: Option<ByteString>,
+    pub path: Option<ByteString>,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize)]
@@ -93,10 +94,9 @@ pub enum TileAction {
     Tool,
     Category,
     Copy,
-    Href,
+    Path,
     R,
     R2,
-    Home,
     None,
 }
 

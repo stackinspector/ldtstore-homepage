@@ -6,6 +6,13 @@ left:
     title: 日理万稽
   - tile: l2
     font: h3
+    action: path
+    name: plain
+    icon: ldtools
+    path: /ldtools/plain.html
+    title: 简洁版
+  - tile: l2
+    font: h3
     action: side
     name: ldtools-about
     icon: about

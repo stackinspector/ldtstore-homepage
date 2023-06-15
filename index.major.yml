@@ -46,7 +46,7 @@
     title: 站外官方账号
   - tile: l
     font: h2
-    action: href
+    action: path
     name: ldtools
     title: LDTools
   - tile: m

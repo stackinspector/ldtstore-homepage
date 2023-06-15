@@ -1,4 +1,4 @@
-use foundations::concat_string as cs;
+use concat_string::concat_string as cs;
 use lighthtml::{*, prelude::*};
 use crate::{config::*, data::*, Map, Inserts};
 
@@ -61,7 +61,7 @@ macro_rules! svg_icon {
     };
 }
 
-fn tile_inner(Tile { tile, font, action, icon_type, name, title, icon }: Tile, is_category: bool) -> Node {
+fn tile_inner(Tile { tile, font, action, icon_type, name, title, icon, path }: Tile, is_category: bool) -> Node {
     // TODO lazy eval these `let`s
 
     let class_name = if is_category { s!("category-item") } else { s!("tile ", tile.as_ref().unwrap()) };
@@ -86,7 +86,7 @@ fn tile_inner(Tile { tile, font, action, icon_type, name, title, icon }: Tile, i
 
     let inner = Element(img, inner_attr, inner_content);
 
-    macro_rules! href_base {
+    macro_rules! link {
         ($location:expr) => {
             Element(a, vec![
                 (target, s!("_blank")),
@@ -95,18 +95,6 @@ fn tile_inner(Tile { tile, font, action, icon_type, name, title, icon }: Tile, i
             ], vec![
                 Element(div, vec![(class, class_name)], vec![inner])
             ])
-        };
-    }
-
-    macro_rules! href {
-        ($path:expr) => {
-            href_base!(s!($path, name, "/"))
-        };
-    }
-
-    macro_rules! home {
-        () => {
-            href_base!(s!("/"))
         };
     }
 
@@ -130,10 +118,9 @@ fn tile_inner(Tile { tile, font, action, icon_type, name, title, icon }: Tile, i
         TileAction::Tool => call!("tool"),
         TileAction::Category => call!("category"),
         TileAction::Copy => call!("copy"),
-        TileAction::Href => href!("/"),
-        TileAction::R => href!("//r.ldtstore.com.cn/r/"),
-        TileAction::R2 => href!("//r.ldtstore.com.cn/r2/"),
-        TileAction::Home => home!(),
+        TileAction::Path => link!(path.clone().unwrap_or_else(|| s!("/", name, "/"))),
+        TileAction::R => link!(s!("//r.ldtstore.com.cn/r/", name, "/")),
+        TileAction::R2 => link!(s!("//r.ldtstore.com.cn/r2/", name, "/")),
         TileAction::None => none!(),
     }
 }
@@ -193,13 +180,13 @@ fn tile_template(TileTemplate { template: tile_template, tiles }: TileTemplate) 
         TileTemplateTiles::WithoutTitle(tiles) => {
             tiles.into_iter().map(|name| {
                 let TileTemplateInner { tile, font, action, icon_type } = tile_template.clone();
-                Tile { tile: Some(tile), font, action, icon_type, name, title: None, icon: None }
+                Tile { tile: Some(tile), font, action, icon_type, name, title: None, icon: None, path: None }
             }).collect()
         },
         TileTemplateTiles::WithTitle(tiles) => {
             tiles.into_iter().map(|(name, title)| {
                 let TileTemplateInner { tile, font, action, icon_type } = tile_template.clone();
-                Tile { tile: Some(tile), font, action, icon_type, name, title: Some(title), icon: None }
+                Tile { tile: Some(tile), font, action, icon_type, name, title: Some(title), icon: None, path: None }
             }).collect()
         }
     }
