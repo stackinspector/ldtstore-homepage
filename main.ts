@@ -174,17 +174,13 @@ const positionSet = () => {
 const sideChange = (id: string | null) => {
     const enable = id !== null;
     if (enable) {
-        renderSide(id!);
+        renderSide(id);
     }
     side.style.opacity = enable ? "1" : "0";
 
     // 防止横向的在侧边栏展开的情况下还能被点到
     offset.style.visibility = side.style.visibility = "visible";
-    if (RecalculateState.center) {
-        offset.style.opacity = SideState.id === null ? "1" : "0";
-    } else {
-        offset.style.opacity = "1";
-    }
+    offset.style.opacity = (RecalculateState.center && (SideState.id !== null)) ? "0" : "1";
 
     if (id === "search") {
         // console.log("focus");
@@ -193,9 +189,9 @@ const sideChange = (id: string | null) => {
         inputTrigger.onclick = () => {
             keyword.focus();
         };
-        keyword.addEventListener("keyup", () => {
+        keyword.onkeyup = () => {
             renderSearch(keyword.value);
-        });
+        };
         keyword.focus();
     }
 };
@@ -269,7 +265,7 @@ const sideSet = (id: string | null) => {
     }
 };
 
-side.addEventListener("transitionend", (e) => {
+side.ontransitionend = (e) => {
     if (e.propertyName === "opacity") {
         // 防止横向的在侧边栏展开的情况下还能被点到
         offset.style.visibility = offset.style.opacity === "0" ? "hidden" : "visible";
@@ -279,7 +275,7 @@ side.addEventListener("transitionend", (e) => {
             sideChange(SideState.id);
         }
     }
-});
+};
 
 const cloneTemplate = (template: string) => {
     return (document.getElementById(template) as HTMLTemplateElement).content.cloneNode(true) as DocumentFragment;
