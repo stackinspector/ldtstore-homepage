@@ -1,14 +1,14 @@
 export {};
 
 type ToolIndexType = Record<string, {
-    title: string
-    list: string[]
-    cross_list: string[]
+    title: string;
+    list: string[];
+    cross_list: string[];
 }>;
 
 type ToolCategoryType = Record<string, {
-    title: string
-    list: string[]
+    title: string;
+    list: string[];
 }>;
 
 type ToolAllType = Record<string, string>;
@@ -397,7 +397,6 @@ const recalculate = () => {
     if (delta > 0) {
         RecalculateState.distance = major.offsetLeft - delta / 2;
     } else {
-
         if (major.className === "wide" && delta_major < 1) {
             RecalculateState.center = true;
             RecalculateState.distance = side.clientWidth + delta_side / 2;
@@ -509,7 +508,7 @@ const changeMajorAction = () => {
     // TODO temporary solution
     const nextId = MajorState.id === "tiles" ? "category" : "tiles";
     major.appendChild(cloneTemplate(`major-${nextId}`));
-    major.className = nextId === "tiles" ? "wide" : "normal"
+    major.className = nextId === "tiles" ? "wide" : "normal";
     if (nextId === "category") {
         initCategory();
     }
