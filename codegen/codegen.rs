@@ -1,5 +1,5 @@
 use lighthtml::{*, prelude::*};
-use crate::{cs, s, config::*, data::*, Map, Inserts};
+use crate::{s, config::*, data::*, Map, Inserts};
 
 macro_rules! assert_none {
     ($x:expr) => {
@@ -548,18 +548,12 @@ pub fn codegen<P: AsRef<std::path::Path>>(base_path: P) -> CodegenResult {
         let mut home_sides = home_sides;
         home_sides.append(&mut public_sides.clone());
         let data = GlobalData::Home;
-        assert_none!(res.insert(
-            s!("<!--{{major}}-->"),
-            render_node(major_wrapper(tile_columns(home_major), page_type)),
-        ));
-        assert_none!(res.insert(
-            s!("<!--{{sides}}-->"),
-            render_nodes(home_sides.into_iter().map(side).collect()),
-        ));
-        assert_none!(res.insert(
-            s!("<!--{{include-data}}-->"),
-            cs!("<script>window.__DATA__=", serde_json::to_string(&data).unwrap(), "</script>"),
-        ));
+        add_insert! {
+            res:
+            "<!--{{major}}-->" => render_node(major_wrapper(tile_columns(home_major), page_type))
+            "<!--{{sides}}-->" => render_nodes(home_sides.into_iter().map(side).collect())
+            "<!--{{include-data}}-->" => "<script>window.__DATA__=", serde_json::to_string(&data).unwrap(), "</script>"
+        }
         res
     };
 
@@ -576,31 +570,22 @@ pub fn codegen<P: AsRef<std::path::Path>>(base_path: P) -> CodegenResult {
         fragments.extend(tools_ext.clone().into_values().map(tool));
         fragments.push(major_fragment(major.clone(), s!("tiles")));
         fragments.push(major_fragment(category(tools_category), s!("category")));
-        assert_none!(res.insert(
-            s!("<!--{{major}}-->"),
-            render_node(major_wrapper(major, page_type)),
-        ));
-        assert_none!(res.insert(
-            s!("<!--{{sides}}-->"),
-            render_nodes(fragments),
-        ));
-        assert_none!(res.insert(
-            s!("<!--{{include-data}}-->"),
-            cs!("<script>window.__DATA__=", serde_json::to_string(&data).unwrap(), "</script>"),
-        ));
+        add_insert! {
+            res:
+            "<!--{{major}}-->" => render_node(major_wrapper(major, page_type))
+            "<!--{{sides}}-->" => render_nodes(fragments)
+            "<!--{{include-data}}-->" => "<script>window.__DATA__=", serde_json::to_string(&data).unwrap(), "</script>"
+        }
         res
     };
 
     let tools_plain = {
         let mut res = Inserts::new();
-        assert_none!(res.insert(
-            s!("<!--{{toc}}-->"),
-            render_nodes(tools_plain_toc(tools_tools)),
-        ));
-        assert_none!(res.insert(
-            s!("<!--{{main}}-->"),
-            render_nodes(tools_plain(tools_ext, tool_data.index, tool_data.cross)),
-        ));
+        add_insert! {
+            res:
+            "<!--{{toc}}-->" => render_nodes(tools_plain_toc(tools_tools))
+            "<!--{{main}}-->" => render_nodes(tools_plain(tools_ext, tool_data.index, tool_data.cross))
+        }
         res
     };
 

@@ -1,11 +1,5 @@
 use std::{str::FromStr, fs::{self, OpenOptions, read_to_string as load}, path::{Path, PathBuf}, io::Write};
-use ldtstore_codegen::{codegen::{codegen, CodegenResult}, Inserts, s, cs};
-
-macro_rules! assert_none {
-    ($x:expr) => {
-        assert!(matches!($x, None))
-    };
-}
+use ldtstore_codegen::{codegen::{codegen, CodegenResult}, Inserts, cs, add_insert};
 
 fn global_replace(content: &str, config: Config) -> String {
     use Config::*;
@@ -77,7 +71,7 @@ const COPYRIGHT_L: &str = "
   Commit (content): ";
 
 const COPYRIGHT_R: &str = concat!("
-  Commit (codegen): ", env!("GIT_HASH"));
+  Commit (codegen): ", env!("GIT_HASH"), "\n");
 
 fn read_commit<P: AsRef<Path>>(base_path: P) -> String {
     let base_path = base_path.as_ref();
@@ -97,39 +91,38 @@ fn build_static_inserts<P: AsRef<Path>>(base_path: P, config: Config, commit: St
             let file_name = entry.file_name();
             let file_name = file_name.to_str().unwrap();
             if file_name.ends_with(FileType::Css.as_src()) {
-                assert_none!(res.insert(
-                    s!("/*{{minified:", file_name, "}}*/"),
-                    minify_css(load(entry.path()).unwrap()),
-                ));
+                add_insert! {
+                    res:
+                    "/*{{minified:", file_name, "}}*/" => minify_css(load(entry.path()).unwrap())
+                }
             } else if file_name.ends_with(FileType::Script.as_src()) {
-                assert_none!(res.insert(
-                    s!("/*{{minified:", file_name, "}}*/"),
-                    compile_script(load(entry.path()).unwrap()),
-                ));
+                add_insert! {
+                    res:
+                    "/*{{minified:", file_name, "}}*/" => compile_script(load(entry.path()).unwrap())
+                }
             } else if (file_name == "footer.html") | (file_name == "footer-intl.html") {
 
             } else {
-                assert_none!(res.insert(
-                    s!("<!--{{", file_name, "}}-->"),
-                    load(entry.path()).unwrap(),
-                ));
+                add_insert! {
+                    res:
+                    "<!--{{", file_name, "}}-->" => load(entry.path()).unwrap()
+                }
             }
         }
     }
-    assert_none!(res.insert(
-        s!("<!--{{footer}}-->"),
-        load(fragment_path.join(if matches!(config, Config::Intl) { "footer-intl.html" } else { "footer.html" })).unwrap(),
-    ));
-    assert_none!(res.insert(
-        s!("{{COMMIT}}"),
-        commit,
-    ));
+    add_insert! {
+        res:
+        "<!--{{footer}}-->" => load(fragment_path.join(if matches!(config, Config::Intl) { "footer-intl.html" } else { "footer.html" })).unwrap()
+        "{{COMMIT}}" => commit
+    }
     res
 }
 
-fn insert(mut input: String, inserts: &Inserts) -> String {
-    for (k, v) in inserts {
-        input = input.replace(AsRef::<str>::as_ref(k), v);
+fn insert(mut input: String, inserts: &[&Inserts]) -> String {
+    for _inserts in inserts {
+        for (k, v) in _inserts.iter() {
+            input = input.replace(AsRef::<str>::as_ref(k), AsRef::<str>::as_ref(v));
+        }
     }
     input
 }
@@ -186,13 +179,12 @@ impl GlobalStates {
         let content = match ty {
             FileType::Html => {
                 let code = load(src_path).unwrap();
-                let code = insert(code, static_inserts);
-                let code = insert(code, match name {
+                let code = insert(code, &[static_inserts, match name {
                     "index" => &codegen_result.home,
                     "ldtools/index" => &codegen_result.tools,
                     "ldtools/plain" => &codegen_result.tools_plain,
                     _ => unreachable!(),
-                });
+                }]);
                 let code = code.replace(
                     "<a n ",
                     r#"<a target="_blank" "#,
@@ -221,7 +213,6 @@ impl GlobalStates {
         w!(COPYRIGHT_L);
         w!(commit);
         w!(COPYRIGHT_R);
-        w!("\n");
         w!(comment_r);
         w!("\n\n");
         w!(content);
