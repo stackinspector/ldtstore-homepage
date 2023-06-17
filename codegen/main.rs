@@ -98,12 +98,12 @@ fn build_static_inserts<P: AsRef<Path>>(base_path: P, config: Config, commit: St
             if file_name.ends_with(FileType::Css.as_src()) {
                 add_insert! {
                     res:
-                    "/*{{minified:", file_name, "}}*/" => minify_css(load(entry.path()).unwrap())
+                    "/*{{minified:", file_name, "}}*/" => minify_css(entry.path())
                 }
             } else if file_name.ends_with(FileType::Script.as_src()) {
                 add_insert! {
                     res:
-                    "/*{{minified:", file_name, "}}*/" => compile_script(load(entry.path()).unwrap())
+                    "/*{{minified:", file_name, "}}*/" => compile_script(entry.path())
                 }
             } else if (file_name == "footer.html") | (file_name == "footer-intl.html") {
 
@@ -176,15 +176,17 @@ impl GlobalStates {
         let GlobalStates { base_path, dest_path, commit, global_replacer, static_inserts, codegen_result } = self;
 
         let src_path = base_path.join(cs!(name, ".", ty.as_src()));
-        let mut inserts = static_inserts.clone();
-        inserts.extend(match name {
-            "index" => &codegen_result.home,
-            "ldtools/index" => &codegen_result.tools,
-            "ldtools/plain" => &codegen_result.tools_plain,
-            _ => unreachable!(),
-        }.clone().into_iter());
         let content = match ty {
-            FileType::Html => insert(&load(src_path).unwrap(), inserts),
+            FileType::Html => {
+                let mut inserts = static_inserts.clone();
+                inserts.extend(match name {
+                    "index" => &codegen_result.home,
+                    "ldtools/index" => &codegen_result.tools,
+                    "ldtools/plain" => &codegen_result.tools_plain,
+                    _ => unreachable!(),
+                }.clone().into_iter());
+                insert(&load(src_path).unwrap(), inserts)
+            },
             FileType::Css => minify_css(src_path),
             FileType::Script => compile_script(src_path),
         };
