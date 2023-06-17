@@ -1,16 +1,10 @@
-use std::{str::FromStr, fs::{self, OpenOptions}, path::{Path, PathBuf}, io::Write};
+use std::{str::FromStr, fs::{self, OpenOptions, read_to_string as load}, path::{Path, PathBuf}, io::Write};
 use concat_string::concat_string as cs;
 use ldtstore_codegen::{codegen::{codegen, CodegenResult}, Inserts};
 
 macro_rules! assert_none {
     ($x:expr) => {
         assert!(matches!($x, None))
-    };
-}
-
-macro_rules! load {
-    ($p:expr) => {
-        fs::read_to_string($p).unwrap()
     };
 }
 
@@ -91,36 +85,48 @@ const COPYRIGHT_R: &str = concat!("
 
 fn read_commit<P: AsRef<Path>>(base_path: P) -> String {
     let base_path = base_path.as_ref();
-    let head = load!(base_path.join(".git/HEAD"));
+    let head = load(base_path.join(".git/HEAD")).unwrap();
     let head = head.split('\n').next().unwrap();
     let head = head.split("ref: ").nth(1).unwrap();
     let commit = fs::read(base_path.join(".git").join(head)).unwrap();
     String::from_utf8(commit[0..7].to_vec()).unwrap()
 }
 
-fn build_static_inserts<P: AsRef<Path>>(base_path: P, config: Config) -> Inserts {
-    let base_path = base_path.as_ref();
+fn build_static_inserts<P: AsRef<Path>>(base_path: P, config: Config, commit: String) -> Inserts {
+    let fragment_path = base_path.as_ref().join("fragment");
     let mut res = Inserts::new();
-    for entry in fs::read_dir(base_path.join("fragment")).unwrap() {
+    for entry in fs::read_dir(fragment_path.clone()).unwrap() {
         let entry = entry.unwrap();
         if entry.metadata().unwrap().is_file() {
-            assert_none!(res.insert(
-                cs!("<!--{{", entry.file_name().to_str().unwrap(), "}}-->"),
-                load!(entry.path()),
-            ));
+            let file_name = entry.file_name();
+            let file_name = file_name.to_str().unwrap();
+            if file_name.ends_with(FileType::Css.as_src()) {
+                assert_none!(res.insert(
+                    cs!("/*{{minified:", file_name, "}}*/"),
+                    minify_css(load(entry.path()).unwrap()),
+                ));
+            } else if file_name.ends_with(FileType::Script.as_src()) {
+                assert_none!(res.insert(
+                    cs!("/*{{minified:", file_name, "}}*/"),
+                    compile_script(load(entry.path()).unwrap()),
+                ));
+            } else if (file_name == "footer.html") | (file_name == "footer-intl.html") {
+
+            } else {
+                assert_none!(res.insert(
+                    cs!("<!--{{", file_name, "}}-->"),
+                    load(entry.path()).unwrap(),
+                ));
+            }
         }
     }
     assert_none!(res.insert(
-        "<!--{{footer}}-->".to_owned(),
-        load!(base_path.join("fragment").join(if matches!(config, Config::Intl) { "footer-intl.html" } else { "footer.html" })),
+        cs!("<!--{{footer}}-->"),
+        load(fragment_path.join(if matches!(config, Config::Intl) { "footer-intl.html" } else { "footer.html" })).unwrap(),
     ));
     assert_none!(res.insert(
-        "/*{{minified:plain.css}}*/".to_owned(),
-        minify_css(base_path.join("fragment").join("plain.css")),
-    ));
-    assert_none!(res.insert(
-        "/*{{minified:plain.js}}*/".to_owned(),
-        compile_script(base_path.join("fragment").join("plain.js")),
+        cs!("{{COMMIT}}"),
+        commit,
     ));
     res
 }
@@ -173,7 +179,7 @@ impl GlobalStates {
     fn init(Args { base_path, dest_path, config }: Args) -> GlobalStates {
         let commit = read_commit(&base_path);
         let codegen_result = codegen(&base_path);
-        let static_inserts = build_static_inserts(&base_path, config);
+        let static_inserts = build_static_inserts(&base_path, config, commit.clone());
         GlobalStates { base_path, dest_path, config, commit, static_inserts, codegen_result }
     }
 
@@ -183,7 +189,7 @@ impl GlobalStates {
         let src_path = base_path.join(cs!(name, ".", ty.as_src()));
         let content = match ty {
             FileType::Html => {
-                let code = load!(src_path);
+                let code = load(src_path).unwrap();
                 let code = insert(code, static_inserts);
                 let code = insert(code, match name {
                     "index" => &codegen_result.home,
@@ -191,14 +197,6 @@ impl GlobalStates {
                     "ldtools/plain" => &codegen_result.tools_plain,
                     _ => unreachable!(),
                 });
-                let code = code.replace(
-                    r#"<script src="/main.js"></script>"#,
-                    cs!(r#"<script src="/main-"#, commit, r#".js"></script>"#).as_str(),
-                );
-                let code = code.replace(
-                    r#"<link rel="stylesheet" href="/style.css">"#,
-                    cs!(r#"<link rel="stylesheet" href="/style-"#, commit, r#".css">"#).as_str(),
-                );
                 let code = code.replace(
                     "<a n ",
                     r#"<a target="_blank" "#,
