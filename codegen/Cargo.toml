@@ -24,3 +24,4 @@ serde_yaml = "0.9"
 indexmap = { version = "1.9", features = ["serde"] }
 concat-string = "1"
 lighthtml = { git = "https://github.com/Berylsoft/lighthtml" }
+aho-corasick = "1"

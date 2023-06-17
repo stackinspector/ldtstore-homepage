@@ -1,23 +1,28 @@
 use std::{str::FromStr, fs::{self, OpenOptions, read_to_string as load}, path::{Path, PathBuf}, io::Write};
-use ldtstore_codegen::{codegen::{codegen, CodegenResult}, Inserts, cs, add_insert};
-
-fn global_replace(content: &str, config: Config) -> String {
-    use Config::*;
-    content
-        .replace("{{IMAGE}}", match config {
-            Default => "//s0.ldtstore.com.cn",
-            Intl => "//raw.githubusercontent.com/stackinspector/ldtstore-assert/master/image",
-        })
-        .replace("{{MIRROR}}", match config {
-            Default => "//r.ldtstore.com.cn/mirror-cn/",
-            Intl => "//r.ldtstore.com.cn/mirror-os/",
-        })
-}
+use ldtstore_codegen::{codegen::{codegen, CodegenResult}, Inserts, insert, cs, add_insert, GlobalReplacer};
 
 #[derive(Clone, Copy)]
 enum Config {
     Default,
     Intl,
+}
+
+impl Config {
+    const fn image(&self) -> &'static str {
+        use Config::*;
+        match self {
+            Default => "//s0.ldtstore.com.cn",
+            Intl => "//raw.githubusercontent.com/stackinspector/ldtstore-assert/master/image",
+        }
+    }
+
+    const fn mirror(&self) -> &'static str {
+        use Config::*;
+        match self {
+            Default => "//r.ldtstore.com.cn/mirror-cn/",
+            Intl => "//r.ldtstore.com.cn/mirror-os/",
+        }
+    }
 }
 
 impl FromStr for Config {
@@ -118,15 +123,6 @@ fn build_static_inserts<P: AsRef<Path>>(base_path: P, config: Config, commit: St
     res
 }
 
-fn insert(mut input: String, inserts: &[&Inserts]) -> String {
-    for _inserts in inserts {
-        for (k, v) in _inserts.iter() {
-            input = input.replace(AsRef::<str>::as_ref(k), AsRef::<str>::as_ref(v));
-        }
-    }
-    input
-}
-
 fn call_esbuilld_cli<P: AsRef<Path>>(full_path: P, args: &'static [&'static str]) -> String {
     use std::process::{Command, Stdio, Output};
     let Output { status, stdout, .. } = Command::new("esbuild")
@@ -158,8 +154,8 @@ fn compile_script<P: AsRef<Path>>(full_path: P) -> String {
 struct GlobalStates {
     base_path: PathBuf,
     dest_path: PathBuf,
-    config: Config,
     commit: String,
+    global_replacer: GlobalReplacer,
     static_inserts: Inserts,
     codegen_result: CodegenResult,
 }
@@ -169,33 +165,30 @@ impl GlobalStates {
         let commit = read_commit(&base_path);
         let codegen_result = codegen(&base_path);
         let static_inserts = build_static_inserts(&base_path, config, commit.clone());
-        GlobalStates { base_path, dest_path, config, commit, static_inserts, codegen_result }
+        let global_replacer = GlobalReplacer::build(
+            &["{{IMAGE}}", "{{MIRROR}}", "<a n "],
+            &[config.image(), config.mirror(), r#"<a target="_blank" "#],
+        );
+        GlobalStates { base_path, dest_path, commit, global_replacer, static_inserts, codegen_result }
     }
 
     fn emit(&self, name: &str, ty: FileType) {
-        let GlobalStates { base_path, dest_path, config, commit, static_inserts, codegen_result } = self;
+        let GlobalStates { base_path, dest_path, commit, global_replacer, static_inserts, codegen_result } = self;
 
         let src_path = base_path.join(cs!(name, ".", ty.as_src()));
+        let mut inserts = static_inserts.clone();
+        inserts.extend(match name {
+            "index" => &codegen_result.home,
+            "ldtools/index" => &codegen_result.tools,
+            "ldtools/plain" => &codegen_result.tools_plain,
+            _ => unreachable!(),
+        }.clone().into_iter());
         let content = match ty {
-            FileType::Html => {
-                let code = load(src_path).unwrap();
-                let code = insert(code, &[static_inserts, match name {
-                    "index" => &codegen_result.home,
-                    "ldtools/index" => &codegen_result.tools,
-                    "ldtools/plain" => &codegen_result.tools_plain,
-                    _ => unreachable!(),
-                }]);
-                let code = code.replace(
-                    "<a n ",
-                    r#"<a target="_blank" "#,
-                );
-                code
-            },
+            FileType::Html => insert(&load(src_path).unwrap(), inserts),
             FileType::Css => minify_css(src_path),
             FileType::Script => compile_script(src_path),
         };
-
-        let content = global_replace(&content, *config);
+        let content = global_replacer.replace(&content);
 
         let dest_path = dest_path.join(if matches!(ty, FileType::Html) {
             cs!(name, ".", ty.as_dest())
