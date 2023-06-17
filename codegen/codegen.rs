@@ -1,21 +1,10 @@
-use concat_string::concat_string as cs;
 use lighthtml::{*, prelude::*};
-use crate::{config::*, data::*, Map, Inserts};
+use crate::{cs, s, config::*, data::*, Map, Inserts};
 
 macro_rules! assert_none {
     ($x:expr) => {
         assert!(matches!($x, None))
     };
-}
-
-macro_rules! s {
-    ($s:expr) => {{
-        let t: ByteString = $s.into();
-        t
-    }};
-    ($($s:expr),+) => {
-        s!(cs!($($s),+))
-    }
 }
 
 macro_rules! class {
@@ -560,15 +549,15 @@ pub fn codegen<P: AsRef<std::path::Path>>(base_path: P) -> CodegenResult {
         home_sides.append(&mut public_sides.clone());
         let data = GlobalData::Home;
         assert_none!(res.insert(
-            "<!--{{major}}-->".to_owned(),
+            s!("<!--{{major}}-->"),
             render_node(major_wrapper(tile_columns(home_major), page_type)),
         ));
         assert_none!(res.insert(
-            "<!--{{sides}}-->".to_owned(),
+            s!("<!--{{sides}}-->"),
             render_nodes(home_sides.into_iter().map(side).collect()),
         ));
         assert_none!(res.insert(
-            "<!--{{include-data}}-->".to_owned(),
+            s!("<!--{{include-data}}-->"),
             cs!("<script>window.__DATA__=", serde_json::to_string(&data).unwrap(), "</script>"),
         ));
         res
@@ -588,15 +577,15 @@ pub fn codegen<P: AsRef<std::path::Path>>(base_path: P) -> CodegenResult {
         fragments.push(major_fragment(major.clone(), s!("tiles")));
         fragments.push(major_fragment(category(tools_category), s!("category")));
         assert_none!(res.insert(
-            "<!--{{major}}-->".to_owned(),
+            s!("<!--{{major}}-->"),
             render_node(major_wrapper(major, page_type)),
         ));
         assert_none!(res.insert(
-            "<!--{{sides}}-->".to_owned(),
+            s!("<!--{{sides}}-->"),
             render_nodes(fragments),
         ));
         assert_none!(res.insert(
-            "<!--{{include-data}}-->".to_owned(),
+            s!("<!--{{include-data}}-->"),
             cs!("<script>window.__DATA__=", serde_json::to_string(&data).unwrap(), "</script>"),
         ));
         res
@@ -605,11 +594,11 @@ pub fn codegen<P: AsRef<std::path::Path>>(base_path: P) -> CodegenResult {
     let tools_plain = {
         let mut res = Inserts::new();
         assert_none!(res.insert(
-            "<!--{{toc}}-->".to_owned(),
+            s!("<!--{{toc}}-->"),
             render_nodes(tools_plain_toc(tools_tools)),
         ));
         assert_none!(res.insert(
-            "<!--{{main}}-->".to_owned(),
+            s!("<!--{{main}}-->"),
             render_nodes(tools_plain(tools_ext, tool_data.index, tool_data.cross)),
         ));
         res

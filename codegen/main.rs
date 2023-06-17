@@ -1,6 +1,5 @@
 use std::{str::FromStr, fs::{self, OpenOptions, read_to_string as load}, path::{Path, PathBuf}, io::Write};
-use concat_string::concat_string as cs;
-use ldtstore_codegen::{codegen::{codegen, CodegenResult}, Inserts};
+use ldtstore_codegen::{codegen::{codegen, CodegenResult}, Inserts, s, cs};
 
 macro_rules! assert_none {
     ($x:expr) => {
@@ -99,30 +98,30 @@ fn build_static_inserts<P: AsRef<Path>>(base_path: P, config: Config, commit: St
             let file_name = file_name.to_str().unwrap();
             if file_name.ends_with(FileType::Css.as_src()) {
                 assert_none!(res.insert(
-                    cs!("/*{{minified:", file_name, "}}*/"),
+                    s!("/*{{minified:", file_name, "}}*/"),
                     minify_css(load(entry.path()).unwrap()),
                 ));
             } else if file_name.ends_with(FileType::Script.as_src()) {
                 assert_none!(res.insert(
-                    cs!("/*{{minified:", file_name, "}}*/"),
+                    s!("/*{{minified:", file_name, "}}*/"),
                     compile_script(load(entry.path()).unwrap()),
                 ));
             } else if (file_name == "footer.html") | (file_name == "footer-intl.html") {
 
             } else {
                 assert_none!(res.insert(
-                    cs!("<!--{{", file_name, "}}-->"),
+                    s!("<!--{{", file_name, "}}-->"),
                     load(entry.path()).unwrap(),
                 ));
             }
         }
     }
     assert_none!(res.insert(
-        cs!("<!--{{footer}}-->"),
+        s!("<!--{{footer}}-->"),
         load(fragment_path.join(if matches!(config, Config::Intl) { "footer-intl.html" } else { "footer.html" })).unwrap(),
     ));
     assert_none!(res.insert(
-        cs!("{{COMMIT}}"),
+        s!("{{COMMIT}}"),
         commit,
     ));
     res
@@ -130,7 +129,7 @@ fn build_static_inserts<P: AsRef<Path>>(base_path: P, config: Config, commit: St
 
 fn insert(mut input: String, inserts: &Inserts) -> String {
     for (k, v) in inserts {
-        input = input.replace(k, v);
+        input = input.replace(AsRef::<str>::as_ref(k), v);
     }
     input
 }
