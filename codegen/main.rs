@@ -14,11 +14,10 @@ fn global_replace(content: &str, config: Config) -> String {
         .replace("{{IMAGE}}", match config {
             Default => "//s0.ldtstore.com.cn",
             Intl => "//raw.githubusercontent.com/stackinspector/ldtstore-assert/master/image",
-            Test => "/image",
         })
         .replace("{{MIRROR}}", match config {
             Default => "//r.ldtstore.com.cn/mirror-cn/",
-            Intl | Test => "//r.ldtstore.com.cn/mirror-os/",
+            Intl => "//r.ldtstore.com.cn/mirror-os/",
         })
 }
 
@@ -26,7 +25,6 @@ fn global_replace(content: &str, config: Config) -> String {
 enum Config {
     Default,
     Intl,
-    Test,
 }
 
 impl FromStr for Config {
@@ -36,7 +34,6 @@ impl FromStr for Config {
         Ok(match s {
             "default" => Config::Default,
             "intl" => Config::Intl,
-            "test" => Config::Test,
             _ => return Err("error parsing config type")
         })
     }
