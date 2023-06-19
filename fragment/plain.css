@@ -1,5 +1,9 @@
 body {
-    font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif
+    font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif;
+    font-size: 16px;
+    max-width: 1000px;
+    padding: 1em;
+    line-height: 1.5;
 }
 
 p {
@@ -18,4 +22,35 @@ a.toc {
 
 i {
     color: #808080;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+    body {
+        background-color: #000;
+        color: #d9d9d9;
+    }
+
+    a {
+        color: #00a2e7;
+    }
+
+    body.inverted {
+        background-color: unset;
+        color: unset;
+    }
+
+    body.inverted a {
+        color: unset;
+    }
+}
+
+@media screen and (prefers-color-scheme: light) {
+    body.inverted {
+        background-color: #000;
+        color: #d9d9d9;
+    }
+
+    body.inverted a {
+        color: #00a2e7;
+    }
 }

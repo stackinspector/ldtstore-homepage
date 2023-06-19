@@ -356,6 +356,7 @@ fn tool_link(ToolLink { title, link_type, link, icon }: ToolLink) -> Node {
 fn tool_link_plain(ToolLink { title, link_type, link, icon }: ToolLink) -> Node {
     Element(span, vec![], vec![
         Element(a, vec![
+            (target, s!("_blank")),
             (href, s!(tool_link_prefix(link_type), link)),
         ], vec![
             Text(s!(tool_icon_emoji(icon), tool_link_title(title.clone())))
