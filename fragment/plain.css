@@ -3,7 +3,7 @@ body {
     font-size: 16px;
     max-width: 1000px;
     padding: 1em;
-    line-height: 1.5;
+    line-height: 1.4;
 }
 
 p {
@@ -24,13 +24,22 @@ i {
     color: #808080;
 }
 
+body.inverted {
+    background-color: #000;
+    color: #d9d9d9;
+}
+
+body.inverted a {
+    color: #00a2e7;
+}
+
 @media screen and (prefers-color-scheme: dark) {
-    body {
+    body:not(.inverted) {
         background-color: #000;
         color: #d9d9d9;
     }
 
-    a {
+    a:not(.inverted) {
         color: #00a2e7;
     }
 
@@ -40,17 +49,6 @@ i {
     }
 
     body.inverted a {
-        color: unset;
-    }
-}
-
-@media screen and (prefers-color-scheme: light) {
-    body.inverted {
-        background-color: #000;
-        color: #d9d9d9;
-    }
-
-    body.inverted a {
-        color: #00a2e7;
+        color: #07a;
     }
 }
