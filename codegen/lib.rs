@@ -29,14 +29,14 @@ pub fn insert(input: &str, inserts: Inserts) -> String {
     AhoCorasick::new(patterns).unwrap().replace_all(input, &replaces)
 }
 
-pub struct GlobalReplacer {
+pub struct GlobalReplacer<const N: usize> {
     replacer: AhoCorasick,
-    replaces: Vec<&'static str>,
+    replaces: [&'static str; N],
 }
 
-impl GlobalReplacer {
-    pub fn build(patterns: &'static [&'static str], replaces: &[&'static str]) -> GlobalReplacer {
-        GlobalReplacer { replacer: AhoCorasick::new(patterns).unwrap(), replaces: replaces.to_vec() }
+impl<const N: usize> GlobalReplacer<N> {
+    pub fn build(patterns: [&'static str; N], replaces: [&'static str; N]) -> GlobalReplacer<N> {
+        GlobalReplacer { replacer: AhoCorasick::new(patterns).unwrap(), replaces }
     }
 
     pub fn replace(&self, input: &str) -> String {

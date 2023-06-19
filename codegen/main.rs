@@ -151,11 +151,13 @@ fn compile_script<P: AsRef<Path>>(full_path: P) -> String {
     ])
 }
 
+const GLOBAL_REPLACE_ITEMS: [&'static str; 3] = ["{{IMAGE}}", "{{MIRROR}}", "<a n "];
+
 struct GlobalStates {
     base_path: PathBuf,
     dest_path: PathBuf,
     commit: String,
-    global_replacer: GlobalReplacer,
+    global_replacer: GlobalReplacer<{GLOBAL_REPLACE_ITEMS.len()}>,
     static_inserts: Inserts,
     codegen_result: CodegenResult,
 }
@@ -166,8 +168,8 @@ impl GlobalStates {
         let codegen_result = codegen(&base_path);
         let static_inserts = build_static_inserts(&base_path, config, commit.clone());
         let global_replacer = GlobalReplacer::build(
-            &["{{IMAGE}}", "{{MIRROR}}", "<a n "],
-            &[config.image(), config.mirror(), r#"<a target="_blank" "#],
+            GLOBAL_REPLACE_ITEMS,
+            [config.image(), config.mirror(), r#"<a target="_blank" "#],
         );
         GlobalStates { base_path, dest_path, commit, global_replacer, static_inserts, codegen_result }
     }
