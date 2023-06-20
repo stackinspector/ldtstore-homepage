@@ -37,6 +37,7 @@ declare global {
         tool?: typeof toolSideClick;
         category?: typeof categorySideClick;
         detail?: typeof showDetail;
+        backDefault?: typeof backDefault;
     }
 }
 
@@ -519,6 +520,10 @@ const setBackground = (url: string) => {
 
 const defaultBackground = () => `{{IMAGE}}/bg/${Math.floor(Math.random() * 7)}.webp`;
 
+const backDefault = () => {
+    location.href = `//r.ldtstore.com.cn/r/${{ home: "fw-back-main", tool: "fw-back-ldtools" }[DATA.page_type]}`;
+};
+
 /*
 const renderDispatchBanner = () => {
     const msg = {
@@ -534,6 +539,7 @@ window.copy = copy;
 window.side = sideClick;
 window.tool = toolSideClick;
 window.category = categorySideClick;
+window.backDefault = backDefault;
 if (DATA.page_type === "tool") {
     window.detail = showDetail;
 }
