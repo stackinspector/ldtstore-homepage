@@ -45,7 +45,7 @@ const DATA = window.__DATA__!;
 delete window.__DATA__;
 
 // all
-const body = document.documentElement;
+const body = document.body;
 const background = document.getElementById("background")!;
 const content = document.getElementById("content")!;
 const offset = document.getElementById("offset")!;
@@ -55,6 +55,12 @@ const side = document.getElementById("side")!;
 const search = document.getElementById("search");
 const back = document.getElementById("back");
 const changeMajor = document.getElementById("change-major");
+
+const clear = (el: Element) => {
+    while (el.firstChild) {
+        el.removeChild(el.lastChild!);
+    }
+};
 
 const copy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -282,10 +288,7 @@ const cloneTemplate = (template: string) => {
 };
 
 const renderSide = (id: string) => {
-    while (side.firstChild) {
-        side.removeChild(side.lastChild!);
-    }
-
+    clear(side);
     if (id.startsWith("tool-") && DATA.page_type === "tool") {
         const name = id.substring(5);
         const index = DATA.tool.index[name];
@@ -342,9 +345,7 @@ const renderSearch = (keywordText: string) => {
     if (DATA.page_type === "tool") {
         const all = DATA.tool.all;
         const content = document.getElementById("search-content")!;
-        while (content.firstChild) {
-            content.removeChild(content.lastChild!);
-        }
+        clear(content);
         for (const tool of Object.keys(all)) {
             if (tool.toLowerCase().includes(keywordText.toLowerCase())) {
                 content.appendChild(cloneTemplate(`tool-${all[tool]}`));
@@ -501,10 +502,7 @@ const initCategory = () => {
 };
 
 const changeMajorAction = () => {
-    while (major.firstChild) {
-        major.removeChild(major.lastChild!);
-    }
-
+    clear(major);
     // TODO temporary solution
     const nextId = MajorState.id === "tiles" ? "category" : "tiles";
     major.appendChild(cloneTemplate(`major-${nextId}`));
@@ -514,6 +512,12 @@ const changeMajorAction = () => {
     }
     MajorState.id = nextId;
 };
+
+const setBackground = (url: string) => {
+    background.style.backgroundImage = `url(${url})`;
+};
+
+const defaultBackground = () => `{{IMAGE}}/bg/${Math.floor(Math.random() * 7)}.webp`;
 
 /*
 const renderDispatchBanner = () => {
@@ -534,6 +538,5 @@ if (DATA.page_type === "tool") {
     window.detail = showDetail;
 }
 
-background.style.backgroundImage = `url('{{IMAGE}}/bg/${Math.floor(Math.random() * 7)}.webp')`;
-
+setBackground(defaultBackground());
 recalculate();
