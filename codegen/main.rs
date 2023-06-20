@@ -12,7 +12,7 @@ impl Config {
         use Config::*;
         match self {
             Default => "//s0.ldtstore.com.cn",
-            Intl => "//raw.githubusercontent.com/stackinspector/ldtstore-assert/master/image",
+            Intl => "//ldtstore-intl-asserts.pages.dev/image",
         }
     }
 
