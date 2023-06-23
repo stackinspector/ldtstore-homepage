@@ -96,6 +96,18 @@ pub enum FileType {
 use FileType::*;
 
 impl FileType {
+    fn parse(name: &str) -> Self {
+        if name.ends_with(Html.as_src()) {
+            Html
+        } else if name.ends_with(Css.as_src()) {
+            Css
+        } else if name.ends_with(Script.as_src()) {
+            Script
+        } else {
+            unreachable!()
+        }
+    }
+
     fn as_src(&self) -> &'static str {
         match self {
             Html => "html",
@@ -145,23 +157,27 @@ fn build_static_inserts<P: AsRef<Path>>(base_path: P, config: Config, commit: St
         if entry.metadata().unwrap().is_file() {
             let file_name = entry.file_name();
             let file_name = file_name.to_str().unwrap();
-            if file_name.ends_with(FileType::Css.as_src()) {
-                add_insert! {
-                    res:
-                    "/*{{minified:", file_name, "}}*/" => minify_css(entry.path())
-                }
-            } else if file_name.ends_with(FileType::Script.as_src()) {
-                add_insert! {
-                    res:
-                    "/*{{minified:", file_name, "}}*/" => compile_script(entry.path())
-                }
-            } else if (file_name == "footer.html") | (file_name == "footer-intl.html") {
-
-            } else {
-                add_insert! {
-                    res:
-                    "<!--{{", file_name, "}}-->" => load(entry.path()).unwrap()
-                }
+            match FileType::parse(file_name) {
+                Html => {
+                    if !["footer.html", "footer-intl.html"].contains(&file_name) {
+                        add_insert! {
+                            res:
+                            "<!--{{", file_name, "}}-->" => load(entry.path()).unwrap()
+                        }
+                    }
+                },
+                Css => {
+                    add_insert! {
+                        res:
+                        "/*{{minified:", file_name, "}}*/" => minify_css(entry.path())
+                    }
+                },
+                Script => {
+                    add_insert! {
+                        res:
+                        "/*{{minified:", file_name, "}}*/" => compile_script(entry.path())
+                    }
+                },
             }
         }
     }
@@ -201,46 +217,44 @@ fn compile_script<P: AsRef<Path>>(full_path: P) -> String {
     ])
 }
 
-const GLOBAL_REPLACE_ITEMS: [&'static str; 3] = ["{{IMAGE}}", "{{MIRROR}}", "<a n "];
-
-pub struct GlobalStates {
-    base_path: PathBuf,
-    dest_path: PathBuf,
-    commit: String,
-    global_replacer: GlobalReplacer<{GLOBAL_REPLACE_ITEMS.len()}>,
-    inserts: Inserts,
+fn firstname(file_name: &str, ty: FileType) -> &str {
+    let b = file_name.as_bytes();
+    let l = b.len() - ty.as_src().len() - 1;
+    std::str::from_utf8(&b[..l]).unwrap()
 }
 
-impl GlobalStates {
-    pub fn init(base_path: PathBuf, dest_path: PathBuf, config: Config) -> GlobalStates {
-        let commit = read_commit(&base_path);
-        let mut inserts = build_static_inserts(&base_path, config, commit.clone());
-        codegen(&mut inserts, &base_path);
-        let global_replacer = GlobalReplacer::build(
-            GLOBAL_REPLACE_ITEMS,
-            [config.image(), config.mirror(), r#"<a target="_blank" "#],
-        );
-        GlobalStates { base_path, dest_path, commit, global_replacer, inserts }
+pub fn build(base_path: PathBuf, dest_path: PathBuf, config: Config) {
+    fs::create_dir_all(&dest_path).unwrap();
+    let commit = read_commit(&base_path);
+    let mut inserts = build_static_inserts(&base_path, config, commit.clone());
+    codegen(&mut inserts, base_path.join("page"));
+    let global_replacer = GlobalReplacer::build(
+        ["{{IMAGE}}", "{{MIRROR}}", "<a n "],
+        [config.image(), config.mirror(), r#"<a target="_blank" "#],
+    );
+
+    for entry in fs::read_dir(base_path.join("static")).unwrap() {
+        let entry = entry.unwrap();
+        if entry.metadata().unwrap().is_file() {
+            fs::copy(entry.path(), dest_path.join(entry.file_name())).unwrap();
+        }
     }
 
-    pub fn emit(&self, name: &str, ty: FileType) {
-        let GlobalStates { base_path, dest_path, commit, global_replacer, inserts } = self;
-
-        let src_path = base_path.join(cs!(name, ".", ty.as_src()));
+    let emit = |path: PathBuf, file_name: &str, dest_dir: &Path| {
+        let ty = FileType::parse(file_name);
         let content = match ty {
-            FileType::Html => insert(&load(src_path).unwrap(), inserts.clone()),
-            FileType::Css => minify_css(src_path),
-            FileType::Script => compile_script(src_path),
+            Html => insert(&load(path).unwrap(), inserts.clone()),
+            Css => minify_css(path),
+            Script => compile_script(path),
         };
         let content = global_replacer.replace(&content);
-
-        let dest_path = dest_path.join(if matches!(ty, FileType::Html) {
-            cs!(name, ".", ty.as_dest())
-        } else {
-            cs!(name, "-", commit, ".", ty.as_dest())
-        });
         let (comment_l, comment_r) = ty.comment();
-        let mut file = OpenOptions::new().create_new(true).write(true).open(dest_path).unwrap();
+        let dest = dest_dir.join(if matches!(ty, Html) {
+            cs!(firstname(file_name, ty), ".", ty.as_dest())
+        } else {
+            cs!(firstname(file_name, ty), "-", commit, ".", ty.as_dest())
+        });
+        let mut file = OpenOptions::new().create_new(true).write(true).open(dest).unwrap();
         macro_rules! w {
             ($s:expr) => {
                 file.write_all($s.as_bytes()).unwrap();
@@ -253,5 +267,27 @@ impl GlobalStates {
         w!(comment_r);
         w!("\n\n");
         w!(content);
+    };
+    
+    for entry in fs::read_dir(base_path.join("dynamic")).unwrap() {
+        let entry = entry.unwrap();
+        let metadata = entry.metadata().unwrap();
+        let file_name = entry.file_name();
+        if metadata.is_file() {
+            let file_name = file_name.to_str().unwrap();
+            emit(entry.path(), file_name, &dest_path);
+        }
+        if metadata.is_dir() {
+            let dest_path = dest_path.join(file_name);
+            fs::create_dir_all(&dest_path).unwrap();
+            for entry in fs::read_dir(entry.path()).unwrap() {
+                let entry = entry.unwrap();
+                if entry.metadata().unwrap().is_file() {
+                    let file_name = entry.file_name();
+                    let file_name = file_name.to_str().unwrap();
+                    emit(entry.path(), file_name, &dest_path);
+                }
+            }
+        }
     }
 }

@@ -584,21 +584,21 @@ fn include_data(data: GlobalData) -> ByteString {
     s!("<script>window.__DATA__=", serde_json::to_string(&data).unwrap(), "</script>")
 }
 
-pub fn codegen<P: AsRef<std::path::Path>>(inserts: &mut Inserts, base_path: P) {
-    let base_path = base_path.as_ref();
+pub fn codegen<P: AsRef<std::path::Path>>(inserts: &mut Inserts, page_path: P) {
+    let page_path = page_path.as_ref();
     macro_rules! load {
         ($s:literal -> $t:ty) => {{
-            let v: $t = serde_yaml::from_reader(std::fs::File::open(base_path.join($s)).unwrap()).unwrap(); v
+            let v: $t = serde_yaml::from_reader(std::fs::File::open(page_path.join($s)).unwrap()).unwrap(); v
         }};
     }
 
-    let public_sides = load!("public.sides.yml" -> Vec<Side>);
-    let home_major = load!("index.major.yml" -> TileColumns);
-    let home_sides = load!("index.sides.yml" -> Vec<Side>);
-    let tools_major = load!("ldtools/index.major.yml" -> TileGrids);
-    let tools_sides = load!("ldtools/index.sides.yml" -> Vec<Side>);
-    let tools_tools = load!("ldtools/index.tools.yml" -> Vec<ToolGroup>);
-    let tools_category = load!("ldtools/index.category.yml" -> Category);
+    let public_sides = load!("public/sides.yml" -> Vec<Side>);
+    let home_major = load!("home/major.yml" -> TileColumns);
+    let home_sides = load!("home/sides.yml" -> Vec<Side>);
+    let tools_major = load!("tool/major.yml" -> TileGrids);
+    let tools_sides = load!("tool/sides.yml" -> Vec<Side>);
+    let tools_tools = load!("tool/tools.yml" -> Vec<ToolGroup>);
+    let tools_category = load!("tool/category.yml" -> Category);
 
     let public_sides = public_sides.map(side);
 

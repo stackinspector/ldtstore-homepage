@@ -1,5 +1,5 @@
-use std::{path::PathBuf, fs};
-use ldtstore_codegen::{Config, FileType, GlobalStates};
+use std::path::PathBuf;
+use ldtstore_codegen::{Config, build};
 
 #[derive(argh::FromArgs)]
 #[argh(description = "")]
@@ -17,15 +17,5 @@ struct Args {
 
 fn main() {
     let Args { base_path, dest_path, config }: Args = argh::from_env();
-    fs::create_dir_all(&dest_path).unwrap();
-    fs::create_dir_all(dest_path.join("ldtools")).unwrap();
-    fs::copy(base_path.join("robots.txt"), dest_path.join("robots.txt")).unwrap();
-    fs::copy(base_path.join("error.html"), dest_path.join("error.html")).unwrap();
-
-    let builder = GlobalStates::init(base_path, dest_path, config);
-    builder.emit("index", FileType::Html);
-    builder.emit("ldtools/index", FileType::Html);
-    builder.emit("ldtools/plain", FileType::Html);
-    builder.emit("style", FileType::Css);
-    builder.emit("main", FileType::Script);
+    build(base_path, dest_path, config);
 }
