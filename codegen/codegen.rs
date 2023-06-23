@@ -147,15 +147,13 @@ fn tile_grids(TileGrids { left, middle }: TileGrids) -> Vec<Node> {
 fn major_wrapper(mut inner: Vec<Node>, page_type: PageType) -> Node {
     inner.push(clearfix!());
     Element(div, id!("content"), vec![
-        Element(div, id!("offset"), vec![
-            Element(div, vec![
-                (id, s!("major")),
-                (class, s!(match page_type {
-                    PageType::Home => "normal",
-                    PageType::Tool => "wide",
-                })),
-            ], inner)
-        ])
+        Element(div, vec![
+            (id, s!("major")),
+            (class, s!(match page_type {
+                PageType::Home => "normal",
+                PageType::Tool => "wide",
+            })),
+        ], inner)
     ])
 }
 

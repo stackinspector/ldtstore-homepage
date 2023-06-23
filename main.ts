@@ -49,7 +49,6 @@ delete window.__DATA__;
 const body = document.body;
 const background = document.getElementById("background")!;
 const content = document.getElementById("content")!;
-const offset = document.getElementById("offset")!;
 const major = document.getElementById("major")!;
 const side = document.getElementById("side")!;
 // tool only
@@ -158,7 +157,7 @@ const sideMove = (enable: boolean) => {
 };
 
 const setTransitionDuration = (time = 0.4) => {
-    offset.style.transitionDuration = side.style.transitionDuration = `${time}s`;
+    content.style.transitionDuration = side.style.transitionDuration = `${time}s`;
 };
 
 /**
@@ -166,10 +165,10 @@ const setTransitionDuration = (time = 0.4) => {
  */
 const positionSet = () => {
     if (SideState.on) {
-        offset.style.left = `${-RecalculateState.distance}px`;
+        content.style.left = `${-RecalculateState.distance}px`;
         side.style.left = `${RecalculateState.sidePosition - RecalculateState.distance}px`;
     } else {
-        offset.style.left = "0";
+        content.style.left = "0";
         side.style.left = `${RecalculateState.sidePosition}px`;
     }
 };
@@ -186,8 +185,8 @@ const sideChange = (id: string | null) => {
     side.style.opacity = enable ? "1" : "0";
 
     // 防止横向的在侧边栏展开的情况下还能被点到
-    offset.style.visibility = side.style.visibility = "visible";
-    offset.style.opacity = (RecalculateState.center && (SideState.id !== null)) ? "0" : "1";
+    content.style.visibility = side.style.visibility = "visible";
+    content.style.opacity = (RecalculateState.center && (SideState.id !== null)) ? "0" : "1";
 
     if (id === "search") {
         // console.log("focus");
@@ -275,7 +274,7 @@ const sideSet = (id: string | null) => {
 side.ontransitionend = (e) => {
     if (e.propertyName === "opacity") {
         // 防止横向的在侧边栏展开的情况下还能被点到
-        offset.style.visibility = offset.style.opacity === "0" ? "hidden" : "visible";
+        content.style.visibility = content.style.opacity === "0" ? "hidden" : "visible";
         side.style.visibility = side.style.opacity === "0" ? "hidden" : "visible";
         // 完成切换的操作
         if (side.style.opacity === "0" && SideState.id !== null) {
@@ -416,8 +415,8 @@ const recalculate = () => {
     setTransitionDuration(0);
     positionSet();
     if (SideState.on) {
-        offset.style.opacity = RecalculateState.center ? "0" : "1";
-        offset.style.visibility = offset.style.opacity === "0" ? "hidden" : "visible";
+        content.style.opacity = RecalculateState.center ? "0" : "1";
+        content.style.visibility = content.style.opacity === "0" ? "hidden" : "visible";
     }
 };
 

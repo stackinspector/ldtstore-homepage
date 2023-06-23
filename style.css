@@ -167,6 +167,9 @@ a.tile-link {
     height: 100%;
     overflow: scroll;
     scrollbar-width: none;
+    display: inline-block;
+    transition: cubic-bezier(.6, 0, .4, 1) left, opacity 0.4s;
+    pointer-events: none;
 }
 
 #content::-webkit-scrollbar {
@@ -174,16 +177,6 @@ a.tile-link {
 }
 
 /* major */
-
-#offset {
-    display: inline-block;
-    position: relative;
-    height: 100%;
-    min-width: 100%;
-    left: 0;
-    transition: cubic-bezier(.6, 0, .4, 1) left, opacity 0.4s;
-    pointer-events: none;
-}
 
 #major {
     color: white;
