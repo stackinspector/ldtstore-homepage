@@ -1,5 +1,5 @@
 use std::{str::FromStr, fs::{self, OpenOptions, read_to_string as load}, path::{Path, PathBuf}, io::Write};
-use ldtstore_codegen::{codegen::{codegen, CodegenResult}, Inserts, insert, cs, add_insert, GlobalReplacer};
+use ldtstore_codegen::{codegen::codegen, Inserts, insert, cs, add_insert, GlobalReplacer};
 
 #[derive(Clone, Copy)]
 enum Config {
@@ -158,37 +158,27 @@ struct GlobalStates {
     dest_path: PathBuf,
     commit: String,
     global_replacer: GlobalReplacer<{GLOBAL_REPLACE_ITEMS.len()}>,
-    static_inserts: Inserts,
-    codegen_result: CodegenResult,
+    inserts: Inserts,
 }
 
 impl GlobalStates {
     fn init(Args { base_path, dest_path, config }: Args) -> GlobalStates {
         let commit = read_commit(&base_path);
-        let codegen_result = codegen(&base_path);
-        let static_inserts = build_static_inserts(&base_path, config, commit.clone());
+        let mut inserts = build_static_inserts(&base_path, config, commit.clone());
+        codegen(&mut inserts, &base_path);
         let global_replacer = GlobalReplacer::build(
             GLOBAL_REPLACE_ITEMS,
             [config.image(), config.mirror(), r#"<a target="_blank" "#],
         );
-        GlobalStates { base_path, dest_path, commit, global_replacer, static_inserts, codegen_result }
+        GlobalStates { base_path, dest_path, commit, global_replacer, inserts }
     }
 
     fn emit(&self, name: &str, ty: FileType) {
-        let GlobalStates { base_path, dest_path, commit, global_replacer, static_inserts, codegen_result } = self;
+        let GlobalStates { base_path, dest_path, commit, global_replacer, inserts } = self;
 
         let src_path = base_path.join(cs!(name, ".", ty.as_src()));
         let content = match ty {
-            FileType::Html => {
-                let mut inserts = static_inserts.clone();
-                inserts.extend(match name {
-                    "index" => &codegen_result.home,
-                    "ldtools/index" => &codegen_result.tools,
-                    "ldtools/plain" => &codegen_result.tools_plain,
-                    _ => unreachable!(),
-                }.clone().into_iter());
-                insert(&load(src_path).unwrap(), inserts)
-            },
+            FileType::Html => insert(&load(src_path).unwrap(), inserts.clone()),
             FileType::Css => minify_css(src_path),
             FileType::Script => compile_script(src_path),
         };

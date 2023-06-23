@@ -308,7 +308,7 @@ fn tool_groups(groups: Vec<ToolGroup>, major_category: Category) -> (Map<Tool>, 
         }
     }
 
-    for ToolGroup { name, title: _, cross_notice, list: _ } in &groups {
+    for ToolGroup { name, cross_notice, .. } in &groups {
         if let (Some(name), Some(cross_notice)) = (name, cross_notice) {
             cross_notice_title.first_insert(
                 name.clone(),
@@ -556,63 +556,51 @@ fn tools_plain_toc(groups: Vec<ToolGroup>) -> Vec<Node> {
     res
 }
 
-#[derive(Clone, Debug)]
-pub struct CodegenResult {
-    pub home: Inserts,
-    pub tools: Inserts,
-    pub tools_plain: Inserts,
+fn include_data(data: GlobalData) -> ByteString {
+    s!("<script>window.__DATA__=", serde_json::to_string(&data).unwrap(), "</script>")
 }
 
-pub fn codegen<P: AsRef<std::path::Path>>(base_path: P) -> CodegenResult {
+pub fn codegen<P: AsRef<std::path::Path>>(inserts: &mut Inserts, base_path: P) {
     let base_path = base_path.as_ref();
     macro_rules! load {
-        ($s:expr) => {
-            serde_yaml::from_reader(std::fs::File::open(base_path.join($s)).unwrap()).unwrap()
-        };
+        ($s:literal -> $t:ty) => {{
+            let v: $t = serde_yaml::from_reader(std::fs::File::open(base_path.join($s)).unwrap()).unwrap(); v
+        }};
     }
 
-    let public_sides: Vec<Side> = load!("public.sides.yml");
-    let home_major: TileColumns = load!("index.major.yml");
-    let home_sides: Vec<Side> = load!("index.sides.yml");
-    let tools_major: TileGrids = load!("ldtools/index.major.yml");
-    let tools_sides: Vec<Side> = load!("ldtools/index.sides.yml");
-    let tools_tools: Vec<ToolGroup> = load!("ldtools/index.tools.yml");
-    let tools_category: Category = load!("ldtools/index.category.yml");
+    let public_sides = load!("public.sides.yml" -> Vec<Side>);
+    let home_major = load!("index.major.yml" -> TileColumns);
+    let home_sides = load!("index.sides.yml" -> Vec<Side>);
+    let tools_major = load!("ldtools/index.major.yml" -> TileGrids);
+    let tools_sides = load!("ldtools/index.sides.yml" -> Vec<Side>);
+    let tools_tools = load!("ldtools/index.tools.yml" -> Vec<ToolGroup>);
+    let tools_category = load!("ldtools/index.category.yml" -> Category);
 
-    let home = {
-        let mut home_sides = home_sides;
-        home_sides.append(&mut public_sides.clone());
-        let data = GlobalData::Home;
-        insert! {
-            "<!--{{major}}-->" => render_nodes(tile_columns(home_major))
-            "<!--{{fragments}}-->" => render_nodes(home_sides.map_to(side))
-            "<!--{{include-data}}-->" => "<script>window.__DATA__=", serde_json::to_string(&data).unwrap(), "</script>"
-        }
-    };
+    let public_sides = public_sides.map(side);
+
+    let home_major = tile_columns(home_major);
+
+    let mut home_sides = home_sides.map_to(side);
+    home_sides.extend(public_sides.clone());
 
     let (tools_ext, tool_data) = tool_groups(tools_tools.clone(), tools_category.clone());
 
-    let tools = {
-        let mut tools_sides = tools_sides;
-        tools_sides.append(&mut public_sides.clone());
-        let data = GlobalData::Tool { tool: tool_data.clone() };
-        let major = tile_grids(tools_major);
-        let mut fragments = tools_sides.map_to(side);
-        fragments.extend(tools_ext.values().map(Clone::clone).map(tool));
-        fragments.push(major_fragment(major, s!("tiles")));
-        fragments.push(major_fragment(category(tools_category), s!("category")));
-        insert! {
-            "<!--{{fragments}}-->" => render_nodes(fragments)
-            "<!--{{include-data}}-->" => "<script>window.__DATA__=", serde_json::to_string(&data).unwrap(), "</script>"
-        }
-    };
+    let mut tools_fragments = tools_sides.map_to(side);
+    tools_fragments.extend(public_sides);
+    tools_fragments.extend(tools_ext.values().map(Clone::clone).map(tool));
+    tools_fragments.push(major_fragment(tile_grids(tools_major), s!("tiles")));
+    tools_fragments.push(major_fragment(category(tools_category), s!("category")));
 
-    let tools_plain = {
-        insert! {
-            "<!--{{toc}}-->" => render_nodes(tools_plain_toc(tools_tools))
-            "<!--{{main}}-->" => render_nodes(tools_plain(tools_ext, tool_data.index, tool_data.cross))
-        }
-    };
+    let mut tools_plains = tools_plain_toc(tools_tools);
+    tools_plains.extend(tools_plain(tools_ext, tool_data.index.clone(), tool_data.cross.clone()));
 
-    CodegenResult { home, tools, tools_plain }
+    add_insert! {
+        inserts:
+        "<!--{{codegen-home-major}}-->" => render_nodes(home_major)
+        "<!--{{codegen-home-fragments}}-->" => render_nodes(home_sides)
+        "<!--{{codegen-tool-fragments}}-->" => render_nodes(tools_fragments)
+        "<!--{{codegen-tool-plain}}-->" => render_nodes(tools_plains)
+        "<!--{{codegen-home-include-data}}-->" => include_data(GlobalData::Home)
+        "<!--{{codegen-tool-include-data}}-->" => include_data(GlobalData::Tool { tool: tool_data })
+    }
 }
