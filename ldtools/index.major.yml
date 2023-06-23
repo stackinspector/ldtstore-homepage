@@ -50,7 +50,7 @@ middle:
       title: 系统镜像
     - tile: s1
       font: h3
-      action: side
+      action: tool
       name: drv
       title: 官网驱动
     - tile: s1

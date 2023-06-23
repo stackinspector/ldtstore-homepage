@@ -185,7 +185,6 @@ impl ToolLinkIcon {
 
 #[derive(Clone, Copy, Debug, Deserialize)]
 #[serde(rename_all = "kebab-case")]
-
 pub enum MirrorType {
     Active,
     Locked,
@@ -234,6 +233,8 @@ pub struct Tool {
 pub struct ToolLinks {
     pub website: Option<ToolLinkTitle>,
     pub websites: Option<Map<ToolLinkTitle>>,
+    pub websites_tile: Option<Map<ToolLinkTitle>>,
+    pub websites_tile_template: Option<TileTemplateInner>,
     pub downloads: Option<Map<ByteString>>,
     pub mirror: Option<MirrorType>,
     pub mirrors: Option<Map<ByteString>>,

@@ -403,9 +403,10 @@ fn tool_link_plain(ToolLink { title, link_type, link, icon }: ToolLink) -> Node 
     ])
 }
 
-fn tool_links(name: ByteString, ToolLinks { website, websites, downloads: tool_downloads, mirror, mirrors, columns }: ToolLinks, plain: bool) -> Vec<Node> {
+fn tool_links(name: ByteString, ToolLinks { website, websites, websites_tile, websites_tile_template, downloads: tool_downloads, mirror, mirrors, columns }: ToolLinks, plain: bool) -> Vec<Node> {
     let mut links = Vec::new();
     let mut downloads = Vec::new();
+    let mut tile_links = Vec::new();
     if let Some(website) = website {
         links.push(ToolLink {
             title: website,
@@ -417,6 +418,16 @@ fn tool_links(name: ByteString, ToolLinks { website, websites, downloads: tool_d
     if let Some(websites) = websites {
         for (link, title) in websites {
             links.push(ToolLink {
+                title,
+                link_type: ToolLinkType::R2,
+                link: s!(name, "-", link),
+                icon: ToolLinkIcon::Link,
+            });
+        }
+    }
+    if let Some(websites_tile) = websites_tile {
+        for (link, title) in websites_tile {
+            tile_links.push(ToolLink {
                 title,
                 link_type: ToolLinkType::R2,
                 link: s!(name, "-", link),
@@ -460,7 +471,18 @@ fn tool_links(name: ByteString, ToolLinks { website, websites, downloads: tool_d
         res.push(Element(div, attrs.clone(), links.map_to(map_fn)));
     }
     if !downloads.is_empty() {
-        res.push(Element(div, attrs, downloads.map_to(map_fn)));
+        res.push(Element(div, attrs.clone(), downloads.map_to(map_fn)));
+    }
+    if !tile_links.is_empty() {
+        if plain {
+            res.push(Element(div, attrs, tile_links.map_to(tool_link_plain)));
+        } else {
+            res.extend(tile_template(TileTemplate {
+                template: websites_tile_template.unwrap(),
+                tiles: TileTemplateTiles::WithoutTitle(tile_links.map_to(|ToolLink { link, .. }| link))
+            }).map(tile));
+            res.push(clearfix!())
+        }
     }
     res
 }
@@ -486,11 +508,13 @@ fn tool(Tool { name, title, icon, description, notice, links, .. }: Tool) -> Nod
             (class, s!("item")),
             (onclick, s!("detail(this)")),
         ], vec![
-            Element(img, vec![
-                (src, s!("{{IMAGE}}/icon-tool/", icon.as_ref().unwrap_or(&name), ".webp")),
-                (alt, title.clone()),
-            ], vec![]),
-            Element(div, class!("item-title"), vec![Text(title)]),
+            Element(div, class!("item-title"), vec![
+                Element(img, vec![
+                    (src, s!("{{IMAGE}}/icon-tool/", icon.as_ref().unwrap_or(&name), ".webp")),
+                    (alt, title.clone()),
+                ], vec![]),
+                Text(title),
+            ]),
             svg_icon!("expand-right", "icon-line"),
             Element(div, class!("detail-container"), vec![
                 Element(div, class!("detail"), detail)

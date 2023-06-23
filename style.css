@@ -610,8 +610,9 @@ svg.icon-line {
     transition: cubic-bezier(.6, 0, .4, 1) transform 0.3s;
 }
 
-.item img {
+.item .item-title img {
     margin-right: .625em;
+    height: 3em;
 }
 
 .item .item-title {
@@ -630,7 +631,7 @@ svg.icon-line {
     transition: cubic-bezier(.6, 0, .4, 1) height 0.3s;
 }
 
-.detail a {
+.detail a.link {
     margin-right: 1em;
 }
 
@@ -648,11 +649,6 @@ svg.icon-line {
 .detail {
     display: inline-block;
     width: 100%;
-}
-
-.item img {
-    display: inline-block;
-    height: 3em;
 }
 
 .category-title {

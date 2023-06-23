@@ -1163,7 +1163,12 @@
 - list:
     - name: drv
       title: 官方驱动下载
-      websites:
+      websites_tile_template:
+        tile: s notext
+        font: h3
+        action: r2
+        icon_type: tool
+      websites_tile:
         intel: 英特尔
         amd: AMD
         nvidia-new: 英伟达（新）
@@ -1179,8 +1184,6 @@
         soyo: 梅捷
         shengqi: 圣旗
         onda: 昂达
-      description: >
-        磁贴格式实现的官方驱动下载不会包含在简洁版，也不会被搜索到，所以补充了一个工具格式的。
 - name: non-index
   title: "[隐藏的项目]（并没有）"
   list: []
