@@ -29,6 +29,8 @@ type GlobalData = {
     tool: ToolData;
 };
 
+type MajorId = "tiles" | "category"
+
 declare global {
     interface Window {
         __DATA__?: GlobalData;
@@ -72,10 +74,8 @@ const enum LayoutMode {
     Phone,
 }
 
-let layoutMode = LayoutMode.PC;
-
-/** 与recalculate有关的数据 */
-const RecalculateState = {
+const LayoutState = {
+    mode: LayoutMode.PC,
     /** side的位置 */
     sidePosition: 0,
     /** 打开侧边栏时需要移动的距离 */
@@ -92,7 +92,7 @@ const SideState = {
 };
 
 const MajorState = {
-    id: "tiles",
+    id: "tiles" as MajorId,
 };
 
 // 左滑返回
@@ -137,7 +137,7 @@ if (DATA.page_type === "tool") {
     changeMajor!.onclick = (e: MouseEvent) => {
         // 用来阻止冒泡
         e.stopPropagation();
-        changeMajorAction();
+        renderToolMajor(MajorState.id === "tiles" ? "category" : "tiles");
     };
 }
 
@@ -165,11 +165,11 @@ const setTransitionDuration = (time = 0.4) => {
  */
 const positionSet = () => {
     if (SideState.on) {
-        content.style.left = `${-RecalculateState.distance}px`;
-        side.style.left = `${RecalculateState.sidePosition - RecalculateState.distance}px`;
+        content.style.left = `${-LayoutState.distance}px`;
+        side.style.left = `${LayoutState.sidePosition - LayoutState.distance}px`;
     } else {
         content.style.left = "0";
-        side.style.left = `${RecalculateState.sidePosition}px`;
+        side.style.left = `${LayoutState.sidePosition}px`;
     }
 };
 
@@ -186,7 +186,7 @@ const sideChange = (id: string | null) => {
 
     // 防止横向的在侧边栏展开的情况下还能被点到
     content.style.visibility = side.style.visibility = "visible";
-    content.style.opacity = (RecalculateState.center && (SideState.id !== null)) ? "0" : "1";
+    content.style.opacity = (LayoutState.center && (SideState.id !== null)) ? "0" : "1";
 
     if (id === "search") {
         // console.log("focus");
@@ -356,25 +356,25 @@ const renderSearch = (keywordText: string) => {
     }
 };
 
-const recalculate = () => {
+const layout = () => {
     // 判定平台，和css对应
     if (body.clientWidth > 800) {
-        layoutMode = LayoutMode.PC;
+        LayoutState.mode = LayoutMode.PC;
     } else if (body.clientWidth > 500) {
-        layoutMode = LayoutMode.Pad;
+        LayoutState.mode = LayoutMode.Pad;
     } else {
-        layoutMode = LayoutMode.Phone;
+        LayoutState.mode = LayoutMode.Phone;
     }
 
     // 计算相对大小
     let scaleW: number;
     let scaleH: number;
-    if (layoutMode === LayoutMode.PC) {
+    if (LayoutState.mode === LayoutMode.PC) {
         scaleW = body.clientWidth / 1056;
         scaleH = body.clientHeight / 900;
     } else {
         scaleH = body.clientHeight / 800;
-        if (layoutMode === LayoutMode.Pad) {
+        if (LayoutState.mode === LayoutMode.Pad) {
             scaleW = body.clientWidth / 600;
         } else {
             scaleW = body.clientWidth / 450;
@@ -388,25 +388,25 @@ const recalculate = () => {
     const delta = body.clientWidth - major.clientWidth - side.clientWidth;
     // 计算side的位置，保证其在major右边，并且最多不超过屏幕宽度
     if (delta_major < 0) {
-        RecalculateState.sidePosition = body.clientWidth;
+        LayoutState.sidePosition = body.clientWidth;
     } else {
-        RecalculateState.sidePosition = major.clientWidth + delta_major / 2;
+        LayoutState.sidePosition = major.clientWidth + delta_major / 2;
     }
 
     // 计算side移动的距离
-    RecalculateState.center = false;
+    LayoutState.center = false;
     if (delta > 0) {
-        RecalculateState.distance = major.offsetLeft - delta / 2;
+        LayoutState.distance = major.offsetLeft - delta / 2;
     } else {
         if (major.className === "wide" && delta_major < 1) {
-            RecalculateState.center = true;
-            RecalculateState.distance = side.clientWidth + delta_side / 2;
+            LayoutState.center = true;
+            LayoutState.distance = side.clientWidth + delta_side / 2;
         } else {
             if (delta_side < 200) {
-                RecalculateState.center = true;
-                RecalculateState.distance = major.clientWidth + (-major.clientWidth + side.clientWidth) / 2;
+                LayoutState.center = true;
+                LayoutState.distance = major.clientWidth + (-major.clientWidth + side.clientWidth) / 2;
             } else {
-                RecalculateState.distance = -delta + major.offsetLeft;
+                LayoutState.distance = -delta + major.offsetLeft;
             }
         }
     }
@@ -415,13 +415,13 @@ const recalculate = () => {
     setTransitionDuration(0);
     positionSet();
     if (SideState.on) {
-        content.style.opacity = RecalculateState.center ? "0" : "1";
+        content.style.opacity = LayoutState.center ? "0" : "1";
         content.style.visibility = content.style.opacity === "0" ? "hidden" : "visible";
     }
 };
 
 window.onresize = () => {
-    recalculate();
+    layout();
 };
 
 /**
@@ -501,23 +501,24 @@ const initCategory = () => {
     };
 };
 
-const changeMajorAction = () => {
+const renderToolMajor = (id: MajorId) => {
     clear(major);
-    // TODO temporary solution
-    const nextId = MajorState.id === "tiles" ? "category" : "tiles";
-    major.appendChild(cloneTemplate(`major-${nextId}`));
-    major.className = nextId === "tiles" ? "wide" : "normal";
-    if (nextId === "category") {
+    major.appendChild(cloneTemplate(`major-${id}`));
+    major.className = id === "tiles" ? "wide" : "normal";
+    if (id === "category") {
         initCategory();
     }
-    MajorState.id = nextId;
-};
+    MajorState.id = id;
+}
 
-const setBackground = (url: string) => {
+const randomIndex = (length: number) => Math.floor(Math.random() * length);
+
+const setBackground = (url: string, blur = false) => {
     background.style.backgroundImage = `url(${url})`;
+    background.style.filter = blur ? "blur(5px)" : "unset";
 };
 
-const defaultBackground = () => `{{IMAGE}}/bg/${Math.floor(Math.random() * 7)}.webp`;
+const defaultBackground = () => `{{IMAGE}}/bg/${randomIndex(7)}.webp`;
 
 const backDefault = () => {
     location.href = `//r.ldtstore.com.cn/r/${{ home: "fw-back-main", tool: "fw-back-ldtools" }[DATA.page_type]}`;
@@ -541,7 +542,8 @@ window.category = categorySideClick;
 window.backDefault = backDefault;
 if (DATA.page_type === "tool") {
     window.detail = showDetail;
+    renderToolMajor("tiles");
 }
 
 setBackground(defaultBackground());
-recalculate();
+layout();

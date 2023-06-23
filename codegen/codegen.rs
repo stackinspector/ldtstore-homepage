@@ -1,10 +1,61 @@
 use lighthtml::{*, prelude::*};
 use crate::{s, config::*, data::*, Map, Inserts};
 
-macro_rules! assert_none {
-    ($x:expr) => {
-        assert!(matches!($x, None))
-    };
+trait VecMap<T>: IntoIterator<Item = T> + Sized {
+    #[inline]
+    fn map<U, F: FnMut(T) -> U>(self, f: F) -> core::iter::Map<Self::IntoIter, F> {
+        self.into_iter().map(f)
+    }
+
+    #[inline]
+    fn map_to<U, F: FnMut(T) -> U>(self, f: F) -> Vec<U> {
+        self.into_iter().map(f).collect()
+    }
+}
+
+impl<T> VecMap<T> for Vec<T> {}
+
+trait MapMap<K, V>: IntoIterator<Item = (K, V)> + Sized {
+    #[inline]
+    fn map<U, F: FnMut((K, V)) -> U>(self, f: F) -> core::iter::Map<Self::IntoIter, F> {
+        self.into_iter().map(f)
+    }
+
+    #[inline]
+    fn map_to<U, F: FnMut((K, V)) -> U>(self, f: F) -> Vec<U> {
+        self.into_iter().map(f).collect()
+    }
+}
+
+impl<K, V> MapMap<K, V> for indexmap::IndexMap<K, V> {}
+
+trait OptionToVec<T>: IntoIterator<Item = T> + Sized {
+    #[inline]
+    fn to_vec(self) -> Vec<T> {
+        self.into_iter().collect()
+    }
+}
+
+impl<T> OptionToVec<T> for Option<T> {}
+
+trait UnwrapNone {
+    fn unwrap_none(self);
+}
+
+impl<T> UnwrapNone for Option<T> {
+    fn unwrap_none(self) {
+        assert!(matches!(self, None))
+    }
+}
+
+trait IndexMapFirstInsert<K: core::hash::Hash + core::cmp::Eq, V> {
+    fn first_insert(&mut self, k: K, v: V);
+}
+
+impl<K: core::hash::Hash + core::cmp::Eq, V> IndexMapFirstInsert<K, V> for indexmap::IndexMap<K, V> {
+    fn first_insert(&mut self, k: K, v: V) {
+        self.insert(k, v).unwrap_none()
+    }
 }
 
 macro_rules! class {
@@ -71,7 +122,7 @@ fn tile_inner(Tile { tile, font, action, icon_type, name, title, icon, path }: T
         Some(Element(font.into_tag(), vec![], vec![Text(title)]))
     } else {
         None
-    }.into_iter().collect::<Vec<_>>();
+    }.to_vec();
 
     let inner = Element(img, inner_attr, inner_content);
 
@@ -119,7 +170,7 @@ fn tile(input: Tile) -> Node {
 }
 
 fn tile_columns(input: TileColumns) -> Vec<Node> {
-    input.into_iter().map(|o| Element(div, class!("tile-column"), o.into_iter().map(tile).collect())).collect()
+    input.map_to(|o| Element(div, class!("tile-column"), o.map_to(tile)))
 }
 
 fn tile_grids(TileGrids { left, middle }: TileGrids) -> Vec<Node> {
@@ -132,29 +183,16 @@ fn tile_grids(TileGrids { left, middle }: TileGrids) -> Vec<Node> {
 
     let mut middle = Vec::new();
     middle.push(Element(div, class!("title top"), vec![Text(first_title)]));
-    middle.extend(first.into_iter().map(tile));
+    middle.extend(first.map(tile));
     middle.push(Element(div, class!("title"), vec![Text(second_title)]));
-    middle.extend(second.into_iter().map(tile));
+    middle.extend(second.map(tile));
     middle.push(Element(div, class!("title"), vec![Text(third_title)]));
 
     let mut res = Vec::new();
-    res.push(Element(div, class!("tile-grid-vertical"), left.into_iter().map(tile).collect()));
+    res.push(Element(div, class!("tile-grid-vertical"), left.map_to(tile)));
     res.push(Element(div, class!("tile-grid-middle"), middle));
-    res.extend(third.into_iter().map(tile));
+    res.extend(third.map(tile));
     res
-}
-
-fn major_wrapper(mut inner: Vec<Node>, page_type: PageType) -> Node {
-    inner.push(clearfix!());
-    Element(div, id!("content"), vec![
-        Element(div, vec![
-            (id, s!("major")),
-            (class, s!(match page_type {
-                PageType::Home => "normal",
-                PageType::Tool => "wide",
-            })),
-        ], inner)
-    ])
 }
 
 fn major_fragment(mut inner: Vec<Node>, template_id: ByteString) -> Node {
@@ -165,23 +203,23 @@ fn major_fragment(mut inner: Vec<Node>, template_id: ByteString) -> Node {
 fn tile_template(TileTemplate { template: tile_template, tiles }: TileTemplate) -> Vec<Tile> {
     match tiles {
         TileTemplateTiles::WithoutTitle(tiles) => {
-            tiles.into_iter().map(|name| {
+            tiles.map_to(|name| {
                 let TileTemplateInner { tile, font, action, icon_type } = tile_template.clone();
                 Tile { tile: Some(tile), font, action, icon_type, name, title: None, icon: None, path: None }
-            }).collect()
+            })
         },
         TileTemplateTiles::WithTitle(tiles) => {
-            tiles.into_iter().map(|(name, title)| {
+            tiles.map_to(|(name, title)| {
                 let TileTemplateInner { tile, font, action, icon_type } = tile_template.clone();
                 Tile { tile: Some(tile), font, action, icon_type, name, title: Some(title), icon: None, path: None }
-            }).collect()
+            })
         }
     }
 }
 
 fn side(Side { name, title, text, text_small, tiles, templated }: Side) -> Node {
     let mut content = if let Some(tiles) = tiles.or_else(|| templated.map(tile_template)) {
-        let mut content: Vec<_> = tiles.into_iter().map(tile).collect();
+        let mut content: Vec<_> = tiles.map_to(tile);
         content.push(clearfix!());
         content
     } else {
@@ -209,12 +247,12 @@ fn category_group(CategoryGroup { title, content }: CategoryGroup) -> Node {
     inner.push(Element(div, class!("category-group-title"), vec![
         Element(div, class!("text"), vec![Text(title)]),
     ]));
-    inner.extend(content.into_iter().map(category_item));
+    inner.extend(content.map(category_item));
     Element(div, class!("category-group"), inner)
 }
 
 fn category_tab(content: Vec<CategoryGroup>) -> Vec<Node> {
-    let mut content = content.into_iter().map(category_group);
+    let mut content = content.map(category_group);
     let mut left = Vec::new();
     let mut right = Vec::new();
     if let Some(l1) = content.next() { left.push(l1); }
@@ -258,13 +296,13 @@ fn tool_groups(groups: Vec<ToolGroup>, major_category: Category) -> (Map<Tool>, 
         for group in tab.content {
             for item in group.content {
                 if matches!(item.action, TileAction::Category) {
-                    assert_none!(category.insert(
+                    category.first_insert(
                         item.name.clone(),
                         ToolCategoryItem {
                             title: item.title.clone().unwrap().clone(),
                             list: Vec::new()
                         }
-                    ));
+                    );
                 }
             }
         }
@@ -272,14 +310,14 @@ fn tool_groups(groups: Vec<ToolGroup>, major_category: Category) -> (Map<Tool>, 
 
     for ToolGroup { name, title: _, cross_notice, list: _ } in &groups {
         if let (Some(name), Some(cross_notice)) = (name, cross_notice) {
-            assert_none!(cross_notice_title.insert(
+            cross_notice_title.first_insert(
                 name.clone(),
                 cross_notice.clone(),
-            ));
-            assert_none!(cross.insert(
+            );
+            cross.first_insert(
                 name.clone(),
                 Map::new(),
-            ));
+            );
         }
     }
 
@@ -289,14 +327,14 @@ fn tool_groups(groups: Vec<ToolGroup>, major_category: Category) -> (Map<Tool>, 
         let mut list = Vec::new();
         for tool in &group.list {
             list.push(tool.name.clone());
-            assert_none!(all.insert(s!(tool.title, tool.keywords.clone().unwrap_or_default()), tool.name.clone()));
-            assert_none!(tools.insert(tool.name.clone(), tool.clone()));
+            all.first_insert(s!(tool.title, tool.keywords.clone().unwrap_or_default()), tool.name.clone());
+            tools.first_insert(tool.name.clone(), tool.clone());
             if let Some(cross_notice) = &tool.cross_notice {
                 for (notice_group, notice) in cross_notice {
-                    assert_none!(cross.get_mut(notice_group).unwrap().insert(
+                    cross.get_mut(notice_group).unwrap().first_insert(
                         tool.name.clone(),
                         s!("<b>", cross_notice_title.get(notice_group).unwrap(), "</b><br>", notice),
-                    ))
+                    )
                 }
             }
             if let Some(tool_category) = &tool.category {
@@ -306,14 +344,14 @@ fn tool_groups(groups: Vec<ToolGroup>, major_category: Category) -> (Map<Tool>, 
             }
         }
         if group.name.as_ref().map(|s| s != "non-index").unwrap_or(true) {
-            assert_none!(index.insert(
+            index.first_insert(
                 group_name,
                 ToolIndexItem {
                     title: group.title.clone().or_else(|| single.then(|| group.list[0].title.clone())).unwrap(),
                     list,
                     cross_list: Vec::new(),
                 }
-            ))
+            )
         }
     }
 
@@ -415,14 +453,14 @@ fn tool_links(name: ByteString, ToolLinks { website, websites, downloads: tool_d
         }
     }
 
-    let attrs = (!plain && columns.unwrap_or(false)).then(|| (class, s!("tool-links-columns"))).into_iter().collect::<Vec<_>>();
+    let attrs = (!plain && columns.unwrap_or(false)).then(|| (class, s!("tool-links-columns"))).to_vec();
     let map_fn = if plain { tool_link_plain } else { tool_link };
     let mut res = Vec::new();
     if !links.is_empty() {
-        res.push(Element(div, attrs.clone(), links.into_iter().map(map_fn).collect::<Vec<_>>()));
+        res.push(Element(div, attrs.clone(), links.map_to(map_fn)));
     }
     if !downloads.is_empty() {
-        res.push(Element(div, attrs, downloads.into_iter().map(map_fn).collect::<Vec<_>>()));
+        res.push(Element(div, attrs, downloads.map_to(map_fn)));
     }
     res
 }
@@ -437,7 +475,7 @@ fn tool_notice(notice: ByteString) -> Node {
 
 fn tool(Tool { name, title, icon, description, notice, links, .. }: Tool) -> Node {
     let mut detail = Vec::new();
-    detail.push(Element(p, vec![], description.map(Text).into_iter().collect::<Vec<_>>()));
+    detail.push(Element(p, vec![], description.map(Text).to_vec()));
     detail.append(&mut tool_links(name.clone(), links, false));
     if let Some(notice) = notice {
         detail.push(tool_notice(notice));
@@ -469,7 +507,7 @@ fn tool_plain(Tool { name, title, description, notice, links, .. }: Tool, cross:
             Element(i, vec![], vec![Text(s!(name, if cross { " [cross]" } else { "" }))]),
         ]));
     }
-    res.push(Element(p, vec![], description.map(Text).into_iter().collect::<Vec<_>>()));
+    res.push(Element(p, vec![], description.map(Text).to_vec()));
     res.append(&mut tool_links(name, links, true));
     if let Some(notice) = notice {
         res.push(tool_notice(notice));
@@ -542,50 +580,38 @@ pub fn codegen<P: AsRef<std::path::Path>>(base_path: P) -> CodegenResult {
     let tools_category: Category = load!("ldtools/index.category.yml");
 
     let home = {
-        let mut res = Inserts::new();
-        let page_type = PageType::Home;
         let mut home_sides = home_sides;
         home_sides.append(&mut public_sides.clone());
         let data = GlobalData::Home;
-        add_insert! {
-            res:
-            "<!--{{major}}-->" => render_node(major_wrapper(tile_columns(home_major), page_type))
-            "<!--{{sides}}-->" => render_nodes(home_sides.into_iter().map(side).collect())
+        insert! {
+            "<!--{{major}}-->" => render_nodes(tile_columns(home_major))
+            "<!--{{fragments}}-->" => render_nodes(home_sides.map_to(side))
             "<!--{{include-data}}-->" => "<script>window.__DATA__=", serde_json::to_string(&data).unwrap(), "</script>"
         }
-        res
     };
 
     let (tools_ext, tool_data) = tool_groups(tools_tools.clone(), tools_category.clone());
 
     let tools = {
-        let mut res = Inserts::new();
-        let page_type = PageType::Tool;
         let mut tools_sides = tools_sides;
         tools_sides.append(&mut public_sides.clone());
         let data = GlobalData::Tool { tool: tool_data.clone() };
         let major = tile_grids(tools_major);
-        let mut fragments = tools_sides.into_iter().map(side).collect::<Vec<_>>();
-        fragments.extend(tools_ext.clone().into_values().map(tool));
-        fragments.push(major_fragment(major.clone(), s!("tiles")));
+        let mut fragments = tools_sides.map_to(side);
+        fragments.extend(tools_ext.values().map(Clone::clone).map(tool));
+        fragments.push(major_fragment(major, s!("tiles")));
         fragments.push(major_fragment(category(tools_category), s!("category")));
-        add_insert! {
-            res:
-            "<!--{{major}}-->" => render_node(major_wrapper(major, page_type))
-            "<!--{{sides}}-->" => render_nodes(fragments)
+        insert! {
+            "<!--{{fragments}}-->" => render_nodes(fragments)
             "<!--{{include-data}}-->" => "<script>window.__DATA__=", serde_json::to_string(&data).unwrap(), "</script>"
         }
-        res
     };
 
     let tools_plain = {
-        let mut res = Inserts::new();
-        add_insert! {
-            res:
+        insert! {
             "<!--{{toc}}-->" => render_nodes(tools_plain_toc(tools_tools))
             "<!--{{main}}-->" => render_nodes(tools_plain(tools_ext, tool_data.index, tool_data.cross))
         }
-        res
     };
 
     CodegenResult { home, tools, tools_plain }

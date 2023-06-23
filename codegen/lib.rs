@@ -24,6 +24,14 @@ macro_rules! add_insert {
     };
 }
 
+macro_rules! insert {
+    ($($($s1:expr),+ => $($s2:expr),+)*) => {{
+        let mut res = Inserts::new();
+        $(res.push(($crate::s!($($s1),+), $crate::s!($($s2),+)));)*
+        res
+    }};
+}
+
 pub fn insert(input: &str, inserts: Inserts) -> String {
     let (patterns, replaces): (Vec<_>, Vec<_>) = inserts.into_iter().unzip();
     AhoCorasick::new(patterns).unwrap().replace_all(input, &replaces)
