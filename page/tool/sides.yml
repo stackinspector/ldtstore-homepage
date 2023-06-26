@@ -17,18 +17,18 @@
       如发现镜像下载到的收费软件被使用过破解手段，请尽快通过站点说明中提到的联系方式联系我们。
       <br>部分工具如使用不当，<b>可能对您的设备或者造成不可逆的损坏，请谨慎操作。</b>本站不对因使用这些工具造成的损失负任何责任。
     </p>
-- name: rlwj
-  title: 日理万稽
-  tiles:
-    - tile: m
-      font: h3
-      action: r
-      name: rlwj-newtopic
-      icon: topic
-      title: 进入话题
-    - tile: s
-      font: h3
-      action: r
-      name: rlwj-spec-1
-      icon: spec
-      title: 投稿规范
+# - name: rlwj
+#   title: 日理万稽
+#   tiles:
+#     - tile: m
+#       font: h3
+#       action: r
+#       name: rlwj-newtopic
+#       icon: topic
+#       title: 进入话题
+#     - tile: s
+#       font: h3
+#       action: r
+#       name: rlwj-spec-1
+#       icon: spec
+#       title: 投稿规范

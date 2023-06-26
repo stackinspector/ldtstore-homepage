@@ -1,9 +1,10 @@
 left:
   - tile: l1
     font: h2
-    action: side
-    name: rlwj
-    title: 日理万稽
+    action: r
+    name: pcwiki-beta1
+    icon: pcwiki
+    title: PCWiki Beta
   - tile: l2
     font: h3
     action: path
