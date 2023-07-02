@@ -7,6 +7,12 @@ left:
     title: PCWiki Beta
   - tile: l2
     font: h3
+    action: tool
+    name: doc
+    icon: review
+    title: 测试文档
+  - tile: l2
+    font: h3
     action: path
     name: plain
     icon: ldtools

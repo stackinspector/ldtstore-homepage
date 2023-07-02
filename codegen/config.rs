@@ -136,6 +136,7 @@ pub struct ToolGroup {
     pub name: Option<ByteString>,
     pub title: Option<ByteString>,
     pub cross_notice: Option<ByteString>,
+    pub no_icon: Option<bool>,
     pub list: Vec<Tool>,
 }
 
@@ -206,6 +207,7 @@ impl MirrorType {
 pub struct Tool {
     pub name: ByteString,
     pub title: ByteString,
+    pub no_icon: Option<bool>,
     pub icon: Option<ByteString>,
     pub description: Option<ByteString>, // prev no option
     pub notice: Option<ByteString>,

@@ -5,6 +5,7 @@ pub type ToolIndex = Map<ToolIndexItem>;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct ToolIndexItem {
+    pub single: bool,
     pub title: ByteString,
     pub list: Vec<ByteString>,
     pub cross_list: Vec<ByteString>,

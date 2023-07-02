@@ -339,22 +339,22 @@ a.tile-link {
 
 .tile.l1 {
     width: 17em;
-    height: 21em;
+    height: 12em;
 }
 
 .tile.l1 img {
-    width: 11em;
-    margin: 5em 3em;
+    width: 9em;
+    margin: 1.6em 4em;
 }
 
 .tile.l2 {
     width: 17em;
-    height: 5.5em;
+    height: 6em;
 }
 
 .tile.l2 img {
     width: 5em;
-    margin: .25em 6em;
+    margin: .5em 6em;
 }
 
 .tile.m1 {

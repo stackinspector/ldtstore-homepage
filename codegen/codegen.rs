@@ -48,6 +48,21 @@ impl<T> UnwrapNone for Option<T> {
     }
 }
 
+trait OrSelf<T> {
+    fn or_self(&mut self, optb: Option<T>);
+}
+
+impl<T> OrSelf<T> for Option<T> {
+    fn or_self(&mut self, optb: Option<T>) {
+        match self {
+            Some(_) => {},
+            None => {
+                let _ = core::mem::replace(self, optb);
+            }
+        }
+    }
+}
+
 trait IndexMapFirstInsert<K: core::hash::Hash + core::cmp::Eq, V> {
     fn first_insert(&mut self, k: K, v: V);
 }
@@ -281,7 +296,7 @@ fn category(Category { tool, link }: Category) -> Vec<Node> {
     ]
 }
 
-fn tool_groups(groups: Vec<ToolGroup>, major_category: Category) -> (Map<Tool>, ToolData) {
+fn tool_groups(mut groups: Vec<ToolGroup>, major_category: Category) -> (Map<Tool>, ToolData) {
     let mut tools = Map::new();
     let mut index = Map::new();
     let mut all = Map::new();
@@ -321,11 +336,12 @@ fn tool_groups(groups: Vec<ToolGroup>, major_category: Category) -> (Map<Tool>, 
         }
     }
 
-    for group in &groups {
-        let single = group.list.len() == 1;
+    for group in &mut groups {
+        let single = (group.list.len() == 1) && group.name.is_none();
         let group_name = group.name.clone().or_else(|| single.then(|| group.list[0].name.clone())).unwrap();
         let mut list = Vec::new();
-        for tool in &group.list {
+        for tool in &mut group.list {
+            tool.no_icon.or_self(group.no_icon);
             list.push(tool.name.clone());
             all.first_insert(s!(tool.title, tool.keywords.clone().unwrap_or_default()), tool.name.clone());
             tools.first_insert(tool.name.clone(), tool.clone());
@@ -347,6 +363,7 @@ fn tool_groups(groups: Vec<ToolGroup>, major_category: Category) -> (Map<Tool>, 
             index.first_insert(
                 group_name,
                 ToolIndexItem {
+                    single,
                     title: group.title.clone().or_else(|| single.then(|| group.list[0].title.clone())).unwrap(),
                     list,
                     cross_list: Vec::new(),
@@ -495,7 +512,7 @@ fn tool_notice(notice: ByteString) -> Node {
     ])
 }
 
-fn tool(Tool { name, title, icon, description, notice, links, .. }: Tool) -> Node {
+fn tool(Tool { name, title, icon, description, notice, links, no_icon, .. }: Tool) -> Node {
     let mut detail = Vec::new();
     detail.push(Element(p, vec![], description.map(Text).to_vec()));
     detail.append(&mut tool_links(name.clone(), links, false));
@@ -503,18 +520,21 @@ fn tool(Tool { name, title, icon, description, notice, links, .. }: Tool) -> Nod
         detail.push(tool_notice(notice));
     }
 
+    let mut item_title = Vec::new();
+    if !(no_icon.unwrap_or(false)) {
+        item_title.push(Element(img, vec![
+            (src, s!("{{IMAGE}}/icon-tool/", icon.as_ref().unwrap_or(&name), ".webp")),
+            (alt, title.clone()),
+        ], vec![]))
+    }
+    item_title.push(Text(title));
+
     Element(template, id!("tool-", name), vec![
         Element(div, vec![
             (class, s!("item")),
             (onclick, s!("detail(this)")),
         ], vec![
-            Element(div, class!("item-title"), vec![
-                Element(img, vec![
-                    (src, s!("{{IMAGE}}/icon-tool/", icon.as_ref().unwrap_or(&name), ".webp")),
-                    (alt, title.clone()),
-                ], vec![]),
-                Text(title),
-            ]),
+            Element(div, class!("item-title"), item_title),
             svg_icon!("expand-right", "icon-line"),
             Element(div, class!("detail-container"), vec![
                 Element(div, class!("detail"), detail)
@@ -541,7 +561,8 @@ fn tool_plain(Tool { name, title, description, notice, links, .. }: Tool, cross:
 
 fn tools_plain(tools: Map<Tool>, index: ToolIndex, cross: ToolCross) -> Vec<Node> {
     let mut res = Vec::new();
-    for (name, ToolIndexItem { title, list, cross_list }) in index {
+    // TODO view if single
+    for (name, ToolIndexItem { single: _, title, list, cross_list }) in index {
         res.push(Element(h2, id!(name.clone()), vec![
             Text(s!(title, " ")),
             Element(i, vec![], vec![Text(name.clone())]),

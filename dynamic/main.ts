@@ -1,6 +1,7 @@
 export {};
 
 type ToolIndexType = Record<string, {
+    single: boolean;
     title: string;
     list: string[];
     cross_list: string[];
@@ -290,14 +291,13 @@ const cloneTemplate = (template: string) => {
 const renderSide = (id: string) => {
     clear(side);
     if (id.startsWith("tool-") && DATA.page_type === "tool") {
-        const name = id.substring(5);
+        const name = id.substring("tool-".length);
         const index = DATA.tool.index[name];
         const cross = DATA.tool.cross[name];
         const list = [...index.list, ...index.cross_list];
-        const single = list.length === 1;
         side.appendChild(cloneTemplate("side-tools-base"));
         const title = side.getElementsByClassName("title")[0] as HTMLElement;
-        title.innerText = single ? "详情" : index.title;
+        title.innerText = index.single ? "详情" : index.title;
         const content = side.getElementsByClassName("content")[0];
         for (const tool of list) {
             const item = cloneTemplate(`tool-${tool}`).firstElementChild!;
@@ -309,31 +309,20 @@ const renderSide = (id: string) => {
             }
             content.appendChild(item);
         }
-        if (single) {
+        if (list.length === 1) {
             showDetail(side.getElementsByClassName("item")[0] as HTMLElement);
         }
     } else if (id.startsWith("category-") && DATA.page_type === "tool") {
-        const name = id.substring(9);
+        const name = id.substring("category-".length);
         const category = DATA.tool.category[name];
-        // const cross = DATA.tool.cross[name];
         const list = category.list;
-        // const list = [...category.list, ...category.cross_list];
-        const single = list.length === 1;
         side.appendChild(cloneTemplate("side-tools-base"));
-        const title = side.getElementsByClassName("title")[0] as HTMLElement;
-        title.innerText = single ? "详情" : category.title;
         const content = side.getElementsByClassName("content")[0];
         for (const tool of list) {
             const item = cloneTemplate(`tool-${tool}`).firstElementChild!;
-            // const cross_notice = cross?.[tool];
-            // if (cross_notice !== void 0) {
-            //     const p = document.createElement("p");
-            //     p.innerHTML = cross_notice;
-            //     item.getElementsByClassName("detail")[0].appendChild(p);
-            // }
             content.appendChild(item);
         }
-        if (single) {
+        if (list.length === 1) {
             showDetail(side.getElementsByClassName("item")[0] as HTMLElement);
         }
     } else {
