@@ -1186,10 +1186,10 @@
         onda: 昂达
 - name: doc
   title: 测试文档
+  no_icon: true
   list:
     - name: doc-1
       title: 分体水VS一体水
-      no_icon: true
       websites:
         "1": 文案
         "2": 数据
