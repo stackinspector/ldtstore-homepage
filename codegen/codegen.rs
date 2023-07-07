@@ -1,6 +1,34 @@
 use lighthtml::{*, prelude::*};
 use crate::{s, config::*, data::*, Map, Inserts};
 
+macro_rules! vec_ext {
+    [$(
+        $(@if ($if_cond:expr) $if_body:block)?
+        $(@for ($for_pat:pat in $for_val:expr) $for_body:block)?
+        $(@if let ($if_let_pat:pat = $if_let_val:expr) $if_let_body:block)?
+        $(@append($append:expr))?
+        $(@extend($extend:expr))?
+        $($val:expr)?
+    ),*] => {{
+        let mut result = Vec::new();
+        $(
+            $(if $if_cond {
+                result.push($if_body);
+            })?
+            $(for $for_pat in $for_val {
+                result.push($for_body);
+            })?
+            $(if let $if_let_pat = $if_let_val {
+                result.push($if_let_body);
+            })?
+            $(result.append($append);)?
+            $(result.extend($extend);)?
+            $(result.push($val);)?
+        )*
+        result
+    }};
+}
+
 trait VecMap<T>: IntoIterator<Item = T> + Sized {
     #[inline]
     fn map<U, F: FnMut(T) -> U>(self, f: F) -> core::iter::Map<Self::IntoIter, F> {
@@ -54,12 +82,7 @@ trait OrSelf<T> {
 
 impl<T> OrSelf<T> for Option<T> {
     fn or_self(&mut self, optb: Option<T>) {
-        match self {
-            Some(_) => {},
-            None => {
-                let _ = core::mem::replace(self, optb);
-            }
-        }
+        *self = self.take().or(optb);
     }
 }
 
@@ -123,23 +146,16 @@ fn tile_inner(Tile { tile, font, action, icon_type, name, title, icon, path }: T
 
     let icon_type = icon_type.as_ref().map(|s| s!("-", s)).unwrap_or_default();
 
-    let mut inner_attr = vec![
+    let inner = Element(img, vec_ext![
         (src, s!("{{IMAGE}}/icon", icon_type, "/", icon.as_ref().unwrap_or(&name), ".webp")),
-    ];
-
-    if let Some(title) = title.clone() {
-        inner_attr.push((alt, title));
-    }
-
-    let inner_content = if is_category {
+        @if let (Some(title) = title.clone()) { (alt, title) },
+    ], if is_category {
         title.map(|title| Element(span, vec![], vec![Text(title)]))
     } else if let (Some(font), Some(title)) = (font, title) {
         Some(Element(font.into_tag(), vec![], vec![Text(title)]))
     } else {
         None
-    }.to_vec();
-
-    let inner = Element(img, inner_attr, inner_content);
+    }.to_vec());
 
     macro_rules! link {
         ($location:expr) => {
@@ -196,18 +212,17 @@ fn tile_grids(TileGrids { left, middle }: TileGrids) -> Vec<Node> {
     ]: [TileGridMiddle; 3] = middle.try_into().unwrap();
     assert_eq!(third.len(), 9);
 
-    let mut middle = Vec::new();
-    middle.push(Element(div, class!("title top"), vec![Text(first_title)]));
-    middle.extend(first.map(tile));
-    middle.push(Element(div, class!("title"), vec![Text(second_title)]));
-    middle.extend(second.map(tile));
-    middle.push(Element(div, class!("title"), vec![Text(third_title)]));
-
-    let mut res = Vec::new();
-    res.push(Element(div, class!("tile-grid-vertical"), left.map_to(tile)));
-    res.push(Element(div, class!("tile-grid-middle"), middle));
-    res.extend(third.map(tile));
-    res
+    vec_ext![
+        Element(div, class!("tile-grid-vertical"), left.map_to(tile)),
+        Element(div, class!("tile-grid-middle"), vec_ext![
+            Element(div, class!("title top"), vec![Text(first_title)]),
+            @extend(first.map(tile)),
+            Element(div, class!("title"), vec![Text(second_title)]),
+            @extend(second.map(tile)),
+            Element(div, class!("title"), vec![Text(third_title)]),
+        ]),
+        @extend(third.map(tile)),
+    ]
 }
 
 fn major_fragment(mut inner: Vec<Node>, template_id: ByteString) -> Node {
@@ -234,9 +249,10 @@ fn tile_template(TileTemplate { template: tile_template, tiles }: TileTemplate) 
 
 fn side(Side { name, title, text, text_small, tiles, templated }: Side) -> Node {
     let mut content = if let Some(tiles) = tiles.or_else(|| templated.map(tile_template)) {
-        let mut content: Vec<_> = tiles.map_to(tile);
-        content.push(clearfix!());
-        content
+        vec_ext![
+            @extend(tiles.map(tile)),
+            clearfix!(),
+        ]
     } else {
         Vec::new()
     };
@@ -258,26 +274,19 @@ fn category_item(input: Tile) -> Node {
 }
 
 fn category_group(CategoryGroup { title, content }: CategoryGroup) -> Node {
-    let mut inner = Vec::new();
-    inner.push(Element(div, class!("category-group-title"), vec![
-        Element(div, class!("text"), vec![Text(title)]),
-    ]));
-    inner.extend(content.map(category_item));
-    Element(div, class!("category-group"), inner)
+    Element(div, class!("category-group"), vec_ext![
+        Element(div, class!("category-group-title"), vec![
+            Element(div, class!("text"), vec![Text(title)]),
+        ]),
+        @extend(content.map(category_item)),
+    ])
 }
 
 fn category_tab(content: Vec<CategoryGroup>) -> Vec<Node> {
-    let mut content = content.map(category_group);
-    let mut left = Vec::new();
-    let mut right = Vec::new();
-    if let Some(l1) = content.next() { left.push(l1); }
-    if let Some(l2) = content.next() { left.push(l2); }
-    if let Some(r1) = content.next() { right.push(r1); }
-    if let Some(r2) = content.next() { right.push(r2); }
-    assert!(matches!(content.next(), None));
+    let [l1, l2, r1, r2]: [Node; 4] = content.map_to(category_group).try_into().unwrap();
     vec![
-        Element(div, class!("category-tab-part"), left),
-        Element(div, class!("category-tab-part"), right),
+        Element(div, class!("category-tab-part"), vec![l1, l2]),
+        Element(div, class!("category-tab-part"), vec![r1, r2]),
     ]
 }
 
@@ -513,50 +522,48 @@ fn tool_notice(notice: ByteString) -> Node {
 }
 
 fn tool(Tool { name, title, icon, description, notice, links, no_icon, .. }: Tool) -> Node {
-    let mut detail = Vec::new();
-    detail.push(Element(p, vec![], description.map(Text).to_vec()));
-    detail.append(&mut tool_links(name.clone(), links, false));
-    if let Some(notice) = notice {
-        detail.push(tool_notice(notice));
-    }
-
-    let mut item_title = Vec::new();
-    if !(no_icon.unwrap_or(false)) {
-        item_title.push(Element(img, vec![
-            (src, s!("{{IMAGE}}/icon-tool/", icon.as_ref().unwrap_or(&name), ".webp")),
-            (alt, title.clone()),
-        ], vec![]))
-    }
-    item_title.push(Text(title));
-
     Element(template, id!("tool-", name), vec![
         Element(div, vec![
             (class, s!("item")),
             (onclick, s!("detail(this)")),
         ], vec![
-            Element(div, class!("item-title"), item_title),
+            Element(div, class!("item-title"), vec_ext![
+                @if (!(no_icon.unwrap_or(false))) {
+                    Element(img, vec![
+                        (src, s!("{{IMAGE}}/icon-tool/", icon.as_ref().unwrap_or(&name), ".webp")),
+                        (alt, title.clone()),
+                    ], vec![])
+                },
+                Text(title)
+            ]),
             svg_icon!("expand-right", "icon-line"),
             Element(div, class!("detail-container"), vec![
-                Element(div, class!("detail"), detail)
+                Element(div, class!("detail"), vec_ext![
+                    Element(p, vec![], description.map(Text).to_vec()),
+                    @append(&mut tool_links(name.clone(), links, false)),
+                    @if let (Some(notice) = notice) {
+                        tool_notice(notice)
+                    }
+                ])
             ])
         ])
     ])
 }
 
 fn tool_plain(Tool { name, title, description, notice, links, .. }: Tool, cross: bool, has_title: bool) -> Vec<Node> {
-    let mut res = Vec::new();
-    if has_title {
-        res.push(Element(h3, id!(name.clone()), vec![
-            Text(s!(title, " ")),
-            Element(i, vec![], vec![Text(s!(name, if cross { " [cross]" } else { "" }))]),
-        ]));
-    }
-    res.push(Element(p, vec![], description.map(Text).to_vec()));
-    res.append(&mut tool_links(name, links, true));
-    if let Some(notice) = notice {
-        res.push(tool_notice(notice));
-    }
-    res
+    vec_ext![
+        @if (has_title) {
+            Element(h3, id!(name.clone()), vec![
+                Text(s!(title, " ")),
+                Element(i, vec![], vec![Text(s!(name, if cross { " [cross]" } else { "" }))]),
+            ])
+        },
+        Element(p, vec![], description.map(Text).to_vec()),
+        @append(&mut tool_links(name, links, true)),
+        @if let (Some(notice) = notice) {
+            tool_notice(notice)
+        },
+    ]
 }
 
 fn tools_plain(tools: Map<Tool>, index: ToolIndex, cross: ToolCross) -> Vec<Node> {
