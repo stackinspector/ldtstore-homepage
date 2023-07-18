@@ -68,9 +68,9 @@ link:
       content:
       - name: back
         title: 返回主站
-        action: path
+        action: subdomain
         icon: back
-        path: /
+        subdomain: ldt
       - name: about
         title: 关于本站
         action: side

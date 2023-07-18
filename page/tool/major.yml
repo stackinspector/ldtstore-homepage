@@ -16,7 +16,7 @@ left:
     action: path
     name: plain
     icon: ldtools
-    path: /ldtools/plain.html
+    path: /plain.html
     title: 简洁版
   - tile: l2
     font: h3

@@ -507,7 +507,7 @@ const setBackground = (url: string, blur = false) => {
     background.style.filter = blur ? "blur(5px)" : "unset";
 };
 
-const defaultBackground = () => `/image/bg/${randomIndex(7)}.webp`;
+const defaultBackground = () => `{{ASSERT}}/image/bg/${randomIndex(7)}.webp`;
 
 const backDefault = () => {
     location.href = `//r.ldt.pc.wiki/r/${{ home: "fw-back-main", tool: "fw-back-ldtools" }[DATA.page_type]}`;

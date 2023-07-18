@@ -46,9 +46,10 @@
     title: 站外官方账号
   - tile: l
     font: h2
-    action: path
+    action: subdomain
     name: ldtools
     title: LDTools
+    subdomain: tool
   - tile: m
     font: h3
     action: r

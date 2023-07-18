@@ -192,9 +192,10 @@ pub fn build(base_path: PathBuf, dest_path: PathBuf) {
     let commit = read_commit(&base_path);
     let mut inserts = build_static_inserts(base_path.join("fragment"), commit.clone());
     codegen(&mut inserts, base_path.join("page"));
+    // TODO config dev/prod
     let global_replacer = GlobalReplacer::build(
-        ["<a n "],
-        [r#"<a target="_blank" "#],
+        ["<a n ", "{{ASSERT}}"],
+        [r#"<a target="_blank" "#, "//s0.ldt.pc.wiki"],
     );
 
     for entry in fs::read_dir(base_path.join("static")).unwrap() {

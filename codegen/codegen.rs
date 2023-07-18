@@ -146,7 +146,7 @@ macro_rules! svg_icon {
     };
 }
 
-fn tile_inner(Tile { tile, font, action, icon_type, name, title, icon, path }: Tile, is_category: bool) -> Node {
+fn tile_inner(Tile { tile, font, action, icon_type, name, title, icon, path, subdomain }: Tile, is_category: bool) -> Node {
     // TODO lazy eval these `let`s
 
     let class_name = if is_category { s!("category-item") } else { s!("tile ", tile.as_ref().unwrap()) };
@@ -154,7 +154,7 @@ fn tile_inner(Tile { tile, font, action, icon_type, name, title, icon, path }: T
     let icon_type = icon_type.as_ref().map(|s| s!("-", s)).unwrap_or_default();
 
     let inner = Element(img, vec_ext![
-        (src, s!("/image/icon", icon_type, "/", icon.as_ref().unwrap_or(&name), ".webp")),
+        (src, s!("{{ASSERT}}/image/icon", icon_type, "/", icon.as_ref().unwrap_or(&name), ".webp")),
         @if let (Some(title) = title.clone()) { (alt, title) },
     ], if is_category {
         title.map(|title| Element(span, vec![], vec![Text(title)]))
@@ -197,6 +197,7 @@ fn tile_inner(Tile { tile, font, action, icon_type, name, title, icon, path }: T
         TileAction::Category => call!("category"),
         TileAction::Copy => call!("copy"),
         TileAction::Path => link!(path.clone().unwrap_or_else(|| s!("/", name, "/"))),
+        TileAction::Subdomain => link!(s!("//", subdomain.as_ref().unwrap(), ".pc.wiki/")),
         TileAction::R => link!(s!("//r.ldt.pc.wiki/r/", name, "/")),
         TileAction::R2 => link!(s!("//r.ldt.pc.wiki/r2/", name, "/")),
         TileAction::None => none!(),
@@ -242,13 +243,13 @@ fn tile_template(TileTemplate { template: tile_template, tiles }: TileTemplate) 
         TileTemplateTiles::WithoutTitle(tiles) => {
             tiles.map_to(|name| {
                 let TileTemplateInner { tile, font, action, icon_type } = tile_template.clone();
-                Tile { tile: Some(tile), font, action, icon_type, name, title: None, icon: None, path: None }
+                Tile { tile: Some(tile), font, action, icon_type, name, title: None, icon: None, path: None, subdomain: None }
             })
         },
         TileTemplateTiles::WithTitle(tiles) => {
             tiles.map_to(|(name, title)| {
                 let TileTemplateInner { tile, font, action, icon_type } = tile_template.clone();
-                Tile { tile: Some(tile), font, action, icon_type, name, title: Some(title), icon: None, path: None }
+                Tile { tile: Some(tile), font, action, icon_type, name, title: Some(title), icon: None, path: None, subdomain: None }
             })
         }
     }
@@ -544,7 +545,7 @@ fn tool(Tool { name, title, icon, description, notice, links, no_icon, .. }: Too
             Element(div, class!("item-title"), vec_ext![
                 @if (!(no_icon.unwrap_or(false))) {
                     Element(img, vec![
-                        (src, s!("/image/icon-tool/", icon.as_ref().unwrap_or(&name), ".webp")),
+                        (src, s!("{{ASSERT}}/image/icon-tool/", icon.as_ref().unwrap_or(&name), ".webp")),
                         (alt, title.clone()),
                     ], vec![])
                 },
