@@ -31,14 +31,14 @@
         <br>你可以直接保存网页，其中的链接将一直保持最新。只要没有增加你需要的新的工具或者条目，你可以一直使用下去。
         <br>你甚至可以直接打印网页或者截图，然后使用时以如下格式构造链接（将<code>{name}</code>替换为灰色斜体的内部名称），直接访问目标网站或者镜像下载：
         <code>
-        <br>[r2] {name} -> https://r.ldtstore.com.cn/r2/{name}
-        <br>[mirror] {name} -> https://r.ldtstore.com.cn/mirror-cn/{name}
+        <br>[r2] {name} -> https://r.ldt.pc.wiki/r2/{name}
+        <br>[mirror] {name} -> https://r.ldt.pc.wiki/mirror/{name}
         </code>
-        <br><code>mirror-cn</code>只能在中国大陆使用，<b>可以通过地址栏直接访问甚至使用命令行工具等访问</b>，为了各种条件下用户的方便，我们<b>从未设置任何对访问方式的限制</b>。
-        <br>可以替换为对应海外下载站的<code>mirror-os</code>，海外可以使用，但需要浏览器质询。
-        <br>标准版和简洁版页面上的链接均遵循与如上相同的格式。通过海外站访问到的页面，包含的镜像下载链接为<code>mirror-os</code>。
-        <br>直链下载还可以通过短域名<code>d.ldt.tools/{name}</code>，大幅提升手动输入效率。与<code>ldt.tools</code>指向标准版页面、<code>p.ldt.tools</code>指向简洁版页面的方式一样，自动根据你的IP地址调度到<code>mirror-cn</code>或<code>mirror-os</code>。
+        <br><code>mirror</code><b>可以通过地址栏直接访问甚至使用命令行工具等访问</b>，为了各种条件下用户的方便，我们<b>从未设置任何对访问方式的限制</b>。
+        <br>标准版和简洁版页面上的链接均遵循与如上相同的格式。
+        <br>直链下载还可以通过短域名<code>d.ldt.tools/{name}</code>，提升手动输入效率。
         <br>依赖2023年4月之前无跳转的镜像下载链接格式（<code>https://d1.ldtstore.[com.cn|net]/[active|locked|synced]/{name}.zip</code>）的用户，请改为依赖如上格式，方可继续正常使用。现在我们通过跳转来使得链接对应的资源始终为最新。
+        <br>依赖2023年7月之前LDTools迁移到`pc.wiki`域名前区分`mirror-cn`和`mirror-os`的用户，请去掉`-cn`或者`-os`，现在全站的国内/海外CDN直接通过DNS调度。我们希望大多数情况下海外CDN不会因访问方式限制请求，但对此不作出保证。
     </p>
     <!--{{codegen-tool-plain}}-->
     <script>

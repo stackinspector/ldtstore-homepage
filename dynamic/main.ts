@@ -507,10 +507,10 @@ const setBackground = (url: string, blur = false) => {
     background.style.filter = blur ? "blur(5px)" : "unset";
 };
 
-const defaultBackground = () => `{{IMAGE}}/bg/${randomIndex(7)}.webp`;
+const defaultBackground = () => `/image/bg/${randomIndex(7)}.webp`;
 
 const backDefault = () => {
-    location.href = `//r.ldtstore.com.cn/r/${{ home: "fw-back-main", tool: "fw-back-ldtools" }[DATA.page_type]}`;
+    location.href = `//r.ldt.pc.wiki/r/${{ home: "fw-back-main", tool: "fw-back-ldtools" }[DATA.page_type]}`;
 };
 
 /*

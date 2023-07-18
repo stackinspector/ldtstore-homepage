@@ -278,8 +278,8 @@ pub const fn tool_website_type(t: ToolLinkTitleType) -> &'static str {
 pub const fn tool_link_prefix(t: ToolLinkType) -> &'static str {
     use ToolLinkType::*;
     match t {
-        R2 => "//r.ldtstore.com.cn/r2/",
-        Mirror => "{{MIRROR}}",
+        R2 => "//r.ldt.pc.wiki/r2/",
+        Mirror => "//r.ldt.pc.wiki/mirror/",
     }
 }
 

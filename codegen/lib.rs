@@ -49,43 +49,7 @@ pub mod data;
 pub mod codegen;
 use codegen::codegen;
 
-use std::{str::FromStr, fs::{self, OpenOptions, read_to_string as load}, path::{Path, PathBuf}, io::Write};
-
-#[derive(Clone, Copy)]
-pub enum Config {
-    Default,
-    Intl,
-}
-
-impl Config {
-    const fn image(&self) -> &'static str {
-        use Config::*;
-        match self {
-            Default => "//s0.ldtstore.com.cn",
-            Intl => "//ldtstore-intl-asserts.pages.dev/image",
-        }
-    }
-
-    const fn mirror(&self) -> &'static str {
-        use Config::*;
-        match self {
-            Default => "//r.ldtstore.com.cn/mirror-cn/",
-            Intl => "//r.ldtstore.com.cn/mirror-os/",
-        }
-    }
-}
-
-impl FromStr for Config {
-    type Err = &'static str;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(match s {
-            "default" => Config::Default,
-            "intl" => Config::Intl,
-            _ => return Err("error parsing config type")
-        })
-    }
-}
+use std::{fs::{self, OpenOptions, read_to_string as load}, path::{Path, PathBuf}, io::Write};
 
 #[derive(Clone, Copy)]
 pub enum FileType {
@@ -149,7 +113,7 @@ fn read_commit<P: AsRef<Path>>(base_path: P) -> String {
     String::from_utf8(commit[0..7].to_vec()).unwrap()
 }
 
-fn build_static_inserts<P: AsRef<Path>>(base_path: P, config: Config, commit: String) -> Inserts {
+fn build_static_inserts<P: AsRef<Path>>(base_path: P, commit: String) -> Inserts {
     let fragment_path = base_path.as_ref().join("fragment");
     let mut res = Inserts::new();
     for entry in fs::read_dir(fragment_path.clone()).unwrap() {
@@ -183,7 +147,6 @@ fn build_static_inserts<P: AsRef<Path>>(base_path: P, config: Config, commit: St
     }
     add_insert! {
         res:
-        "<!--{{footer}}-->" => load(fragment_path.join(if matches!(config, Config::Intl) { "footer-intl.html" } else { "footer.html" })).unwrap()
         "{{COMMIT}}" => commit
     }
     res
@@ -223,14 +186,14 @@ fn firstname(file_name: &str, ty: FileType) -> &str {
     std::str::from_utf8(&b[..l]).unwrap()
 }
 
-pub fn build(base_path: PathBuf, dest_path: PathBuf, config: Config) {
+pub fn build(base_path: PathBuf, dest_path: PathBuf) {
     fs::create_dir_all(&dest_path).unwrap();
     let commit = read_commit(&base_path);
-    let mut inserts = build_static_inserts(&base_path, config, commit.clone());
+    let mut inserts = build_static_inserts(&base_path, commit.clone());
     codegen(&mut inserts, base_path.join("page"));
     let global_replacer = GlobalReplacer::build(
-        ["{{IMAGE}}", "{{MIRROR}}", "<a n "],
-        [config.image(), config.mirror(), r#"<a target="_blank" "#],
+        ["<a n "],
+        [r#"<a target="_blank" "#],
     );
 
     for entry in fs::read_dir(base_path.join("static")).unwrap() {

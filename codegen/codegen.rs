@@ -154,7 +154,7 @@ fn tile_inner(Tile { tile, font, action, icon_type, name, title, icon, path }: T
     let icon_type = icon_type.as_ref().map(|s| s!("-", s)).unwrap_or_default();
 
     let inner = Element(img, vec_ext![
-        (src, s!("{{IMAGE}}/icon", icon_type, "/", icon.as_ref().unwrap_or(&name), ".webp")),
+        (src, s!("/image/icon", icon_type, "/", icon.as_ref().unwrap_or(&name), ".webp")),
         @if let (Some(title) = title.clone()) { (alt, title) },
     ], if is_category {
         title.map(|title| Element(span, vec![], vec![Text(title)]))
@@ -197,8 +197,8 @@ fn tile_inner(Tile { tile, font, action, icon_type, name, title, icon, path }: T
         TileAction::Category => call!("category"),
         TileAction::Copy => call!("copy"),
         TileAction::Path => link!(path.clone().unwrap_or_else(|| s!("/", name, "/"))),
-        TileAction::R => link!(s!("//r.ldtstore.com.cn/r/", name, "/")),
-        TileAction::R2 => link!(s!("//r.ldtstore.com.cn/r2/", name, "/")),
+        TileAction::R => link!(s!("//r.ldt.pc.wiki/r/", name, "/")),
+        TileAction::R2 => link!(s!("//r.ldt.pc.wiki/r2/", name, "/")),
         TileAction::None => none!(),
     }
 }
@@ -537,7 +537,7 @@ fn tool(Tool { name, title, icon, description, notice, links, no_icon, .. }: Too
             Element(div, class!("item-title"), vec_ext![
                 @if (!(no_icon.unwrap_or(false))) {
                     Element(img, vec![
-                        (src, s!("{{IMAGE}}/icon-tool/", icon.as_ref().unwrap_or(&name), ".webp")),
+                        (src, s!("/image/icon-tool/", icon.as_ref().unwrap_or(&name), ".webp")),
                         (alt, title.clone()),
                     ], vec![])
                 },

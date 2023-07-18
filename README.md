@@ -1,6 +1,6 @@
 # ldtstore-homepage
 
-The new home page of LDTstore.com.cn
+The new home page of LDTstore & LDTools
 
 The `/codegen` is MPL licensed and the rest is MIT licensed.
 
@@ -9,6 +9,5 @@ The `/codegen` is MPL licensed and the rest is MIT licensed.
 Make sure the `esbuild` binary is present in the PATH.
 
 ```bash
-cargo run --release -- -c default -d path/to/wwwroot/
-cargo run --release -- -c intl -d path/to/intl-wwwroot/
+cargo run --release -- -d path/to/wwwroot/
 ```

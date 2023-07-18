@@ -69,11 +69,11 @@
 - name: group
   title: 硬件讨论群
   text: >
-    <p><a n class="link" href="//r.ldtstore.com.cn/r/group-readme-1">核心群入群测试</a></p>
+    <p><a n class="link" href="//r.ldt.pc.wiki/r/group-readme-1">核心群入群测试</a></p>
 - name: outer
   title: 站外官方账号
   text: >
-    <p><a n class="link" href="//r.ldtstore.com.cn/r/ops-top-1">关于站外官方账号</a></p>
+    <p><a n class="link" href="//r.ldt.pc.wiki/r/ops-top-1">关于站外官方账号</a></p>
   templated:
     template:
       tile: s notext
