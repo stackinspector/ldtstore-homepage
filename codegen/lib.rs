@@ -113,8 +113,7 @@ fn read_commit<P: AsRef<Path>>(base_path: P) -> String {
     String::from_utf8(commit[0..7].to_vec()).unwrap()
 }
 
-fn build_static_inserts<P: AsRef<Path>>(base_path: P, commit: String) -> Inserts {
-    let fragment_path = base_path.as_ref().join("fragment");
+fn build_static_inserts(fragment_path: PathBuf, commit: String) -> Inserts {
     let mut res = Inserts::new();
     for entry in fs::read_dir(fragment_path.clone()).unwrap() {
         let entry = entry.unwrap();
@@ -186,8 +185,12 @@ fn firstname(file_name: &str, ty: FileType) -> &str {
 
 pub fn build(base_path: PathBuf, dest_path: PathBuf) {
     fs::create_dir_all(&dest_path).unwrap();
+    for name in ["code", "ldt", "tool"] {
+        fs::create_dir_all(dest_path.join(name)).unwrap();
+    }
+
     let commit = read_commit(&base_path);
-    let mut inserts = build_static_inserts(&base_path, commit.clone());
+    let mut inserts = build_static_inserts(base_path.join("fragment"), commit.clone());
     codegen(&mut inserts, base_path.join("page"));
     let global_replacer = GlobalReplacer::build(
         ["<a n "],
@@ -197,11 +200,13 @@ pub fn build(base_path: PathBuf, dest_path: PathBuf) {
     for entry in fs::read_dir(base_path.join("static")).unwrap() {
         let entry = entry.unwrap();
         if entry.metadata().unwrap().is_file() {
-            fs::copy(entry.path(), dest_path.join(entry.file_name())).unwrap();
+            for name in ["ldt", "tool"] {
+                fs::copy(entry.path(), dest_path.join(name).join(entry.file_name())).unwrap();
+            }
         }
     }
 
-    let emit = |path: PathBuf, file_name: &str, dest_dir: &Path| {
+    let emit = |path: PathBuf, file_name: &str, dest_dir: PathBuf| {
         let ty = FileType::parse(file_name);
         let content = match ty {
             Html => insert(&load(path).unwrap(), inserts.clone()),
@@ -229,25 +234,15 @@ pub fn build(base_path: PathBuf, dest_path: PathBuf) {
         w!("\n\n");
         w!(content);
     };
-    
-    for entry in fs::read_dir(base_path.join("dynamic")).unwrap() {
-        let entry = entry.unwrap();
-        let metadata = entry.metadata().unwrap();
-        let file_name = entry.file_name();
-        if metadata.is_file() {
-            let file_name = file_name.to_str().unwrap();
-            emit(entry.path(), file_name, &dest_path);
-        }
-        if metadata.is_dir() {
-            let dest_path = dest_path.join(file_name);
-            fs::create_dir_all(&dest_path).unwrap();
-            for entry in fs::read_dir(entry.path()).unwrap() {
-                let entry = entry.unwrap();
-                if entry.metadata().unwrap().is_file() {
-                    let file_name = entry.file_name();
-                    let file_name = file_name.to_str().unwrap();
-                    emit(entry.path(), file_name, &dest_path);
-                }
+
+    let dynamic_base = base_path.join("dynamic");
+    for name in ["code", "ldt", "tool"] {
+        for entry in fs::read_dir(dynamic_base.join(name)).unwrap() {
+            let entry = entry.unwrap();
+            if entry.metadata().unwrap().is_file() {
+                let file_name = entry.file_name();
+                let file_name = file_name.to_str().unwrap();
+                emit(entry.path(), file_name, dest_path.join(name));
             }
         }
     }
