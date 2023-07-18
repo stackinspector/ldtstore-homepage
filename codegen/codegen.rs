@@ -290,10 +290,17 @@ fn category_group(CategoryGroup { title, content }: CategoryGroup) -> Node {
 }
 
 fn category_tab(content: Vec<CategoryGroup>) -> Vec<Node> {
-    let [l1, l2, r1, r2]: [Node; 4] = content.map_to(category_group).try_into().unwrap();
+    let mut content = content.map(category_group);
+    let mut left = Vec::new();
+    let mut right = Vec::new();
+    if let Some(l1) = content.next() { left.push(l1); }
+    if let Some(l2) = content.next() { left.push(l2); }
+    if let Some(r1) = content.next() { right.push(r1); }
+    if let Some(r2) = content.next() { right.push(r2); }
+    assert!(matches!(content.next(), None));
     vec![
-        Element(div, class!("category-tab-part"), vec![l1, l2]),
-        Element(div, class!("category-tab-part"), vec![r1, r2]),
+        Element(div, class!("category-tab-part"), left),
+        Element(div, class!("category-tab-part"), right),
     ]
 }
 

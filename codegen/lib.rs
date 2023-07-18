@@ -123,11 +123,9 @@ fn build_static_inserts<P: AsRef<Path>>(base_path: P, commit: String) -> Inserts
             let file_name = file_name.to_str().unwrap();
             match FileType::parse(file_name) {
                 Html => {
-                    if !["footer.html", "footer-intl.html"].contains(&file_name) {
-                        add_insert! {
-                            res:
-                            "<!--{{", file_name, "}}-->" => load(entry.path()).unwrap()
-                        }
+                    add_insert! {
+                        res:
+                        "<!--{{", file_name, "}}-->" => load(entry.path()).unwrap()
                     }
                 },
                 Css => {
