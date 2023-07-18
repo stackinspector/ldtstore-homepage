@@ -40,7 +40,6 @@ declare global {
         tool?: typeof toolSideClick;
         category?: typeof categorySideClick;
         detail?: typeof showDetail;
-        backDefault?: typeof backDefault;
     }
 }
 
@@ -132,7 +131,7 @@ if (DATA.page_type === "tool") {
     back!.onclick = (e: MouseEvent) => {
         // 用来阻止冒泡
         e.stopPropagation();
-        window.open("/", "_blank");
+        window.open("//ldt.pc.wiki/", "_blank");
     };
 
     changeMajor!.onclick = (e: MouseEvent) => {
@@ -509,26 +508,10 @@ const setBackground = (url: string, blur = false) => {
 
 const defaultBackground = () => `{{ASSERT}}/image/bg/${randomIndex(7)}.webp`;
 
-const backDefault = () => {
-    location.href = `//r.ldt.pc.wiki/r/${{ home: "fw-back-main", tool: "fw-back-ldtools" }[DATA.page_type]}`;
-};
-
-/*
-const renderDispatchBanner = () => {
-    const msg = {
-        "?fw=intl": "检测到你的IP地址不在中国大陆，已调度到国际站。",
-        "?fw=intl-root": "检测到你的IP地址不在中国大陆，已调度到国际站。",
-        "?fw=emerg-root": "由于国内站遭受攻击，已调度到国际站。",
-    }[location.search];
-    if (msg === void 0) return;
-}
-*/
-
 window.copy = copy;
 window.side = sideClick;
 window.tool = toolSideClick;
 window.category = categorySideClick;
-window.backDefault = backDefault;
 if (DATA.page_type === "tool") {
     window.detail = showDetail;
     renderToolMajor("tiles");
