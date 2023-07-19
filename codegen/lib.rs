@@ -52,6 +52,34 @@ use codegen::codegen;
 use std::{fs::{self, OpenOptions, read_to_string as load}, path::{Path, PathBuf}, io::Write};
 
 #[derive(Clone, Copy)]
+pub enum Config {
+    Prod,
+    Dev,
+}
+
+impl Config {
+    const fn assert(&self) -> &'static str {
+        use Config::*;
+        match self {
+            Prod => "//s0.ldt.pc.wiki",
+            Dev => "../",
+        }
+    }
+}
+
+impl core::str::FromStr for Config {
+    type Err = &'static str;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Ok(match s {
+            "prod" => Config::Prod,
+            "dev" => Config::Dev,
+            _ => return Err("error parsing config type")
+        })
+    }
+}
+
+#[derive(Clone, Copy)]
 pub enum FileType {
     Html,
     Css,
@@ -183,7 +211,7 @@ fn firstname(file_name: &str, ty: FileType) -> &str {
     std::str::from_utf8(&b[..l]).unwrap()
 }
 
-pub fn build(base_path: PathBuf, dest_path: PathBuf) {
+pub fn build(base_path: PathBuf, dest_path: PathBuf, config: Config) {
     fs::create_dir_all(&dest_path).unwrap();
     for name in ["code", "ldt", "tool"] {
         fs::create_dir_all(dest_path.join(name)).unwrap();
@@ -192,10 +220,9 @@ pub fn build(base_path: PathBuf, dest_path: PathBuf) {
     let commit = read_commit(&base_path);
     let mut inserts = build_static_inserts(base_path.join("fragment"), commit.clone());
     codegen(&mut inserts, base_path.join("page"));
-    // TODO config dev/prod
     let global_replacer = GlobalReplacer::build(
         ["<a n ", "{{ASSERT}}"],
-        [r#"<a target="_blank" "#, "//s0.ldt.pc.wiki"],
+        [r#"<a target="_blank" "#, config.assert()],
     );
 
     for entry in fs::read_dir(base_path.join("static")).unwrap() {
