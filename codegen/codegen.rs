@@ -208,8 +208,8 @@ fn tile(input: Tile) -> Node {
     tile_inner(input, false)
 }
 
-fn tile_columns(input: TileColumns) -> Vec<Node> {
-    input.map_to(|o| Element(div, class!("tile-column"), o.map_to(tile)))
+fn tile_columns(input: TileColumns) -> impl Iterator<Item = Node> {
+    input.map(|o| Element(div, class!("tile-column"), o.map_to(tile)))
 }
 
 fn tile_grids(TileGrids { left, middle }: TileGrids) -> Vec<Node> {
@@ -627,6 +627,33 @@ fn include_data(data: GlobalData) -> ByteString {
     s!("<script>window.__DATA__=", serde_json::to_string(&data).unwrap(), "</script>")
 }
 
+fn classic(node: ClassicNode) -> Node {
+    match node {
+        ClassicNode::Button { target: _target, text } => {
+            // TODO handle top
+            let top = true;
+            Element(p, vec![], vec![Element(a, vec_ext![
+                (class, s!(vec_ext![
+                    "button",
+                    @if (top) {
+                        "button-detail"
+                    },
+                    @if (_target.is_none()) {
+                        "button-nolink"
+                    },
+                ].join(" "))),
+                @if (_target.is_some()) {
+                    (href, s!("//r.ldt.pc.wiki/r/", _target.as_ref().unwrap()))
+                },
+            ], vec![Text(text)])])
+        },
+        ClassicNode::Text { footer, text } => {
+            Element(span, class!(if footer { s!("text-detail-footer") } else { s!("text") }), vec![Text(text)])
+        },
+        ClassicNode::List { .. } => todo!(),
+    }
+}
+
 pub fn codegen<P: AsRef<std::path::Path>>(inserts: &mut Inserts, page_path: P) {
     let page_path = page_path.as_ref();
     macro_rules! load {
@@ -642,6 +669,7 @@ pub fn codegen<P: AsRef<std::path::Path>>(inserts: &mut Inserts, page_path: P) {
     let tools_sides = load!("tool/sides.yml" -> Vec<Side>);
     let tools_tools = load!("tool/tools.yml" -> Vec<ToolGroup>);
     let tools_category = load!("tool/category.yml" -> Category);
+    let legacy_buttons = load!("legacy/buttons.yml" -> Vec<ClassicNode>);
 
     let public_sides = public_sides.map(side);
 
@@ -661,6 +689,8 @@ pub fn codegen<P: AsRef<std::path::Path>>(inserts: &mut Inserts, page_path: P) {
     let mut tools_plains = tools_plain_toc(tools_tools);
     tools_plains.extend(tools_plain(tools_ext, tool_data.index.clone(), tool_data.cross.clone()));
 
+    let legacy_buttons = legacy_buttons.map(classic);
+
     add_insert! {
         inserts:
         "<!--{{codegen-home-major}}-->" => render_nodes(home_major)
@@ -669,5 +699,6 @@ pub fn codegen<P: AsRef<std::path::Path>>(inserts: &mut Inserts, page_path: P) {
         "<!--{{codegen-tool-plain}}-->" => render_nodes(tools_plains)
         "<!--{{codegen-home-include-data}}-->" => include_data(GlobalData::Home)
         "<!--{{codegen-tool-include-data}}-->" => include_data(GlobalData::Tool { tool: tool_data })
+        "<!--{{codegen-legacy-buttons}}-->" => render_nodes(legacy_buttons)
     }
 }

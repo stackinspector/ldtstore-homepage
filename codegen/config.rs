@@ -292,3 +292,22 @@ pub const fn tool_icon_emoji(t: ToolLinkIcon) -> &'static str {
         Download => "💾",
     }
 }
+
+#[derive(Clone, Debug, Deserialize)]
+#[serde(tag = "type")]
+#[serde(rename_all = "kebab-case")]
+pub enum ClassicNode {
+    Button {
+        target: Option<ByteString>,
+        text: ByteString,
+    },
+    Text {
+        footer: bool,
+        text: ByteString,
+    },
+    List {
+        id: ByteString,
+        text: ByteString,
+        content: Vec<ClassicNode>,
+    },
+}

@@ -9,12 +9,15 @@ use concat_string::concat_string as cs;
 
 #[macro_export]
 macro_rules! s {
+    () => {
+        $crate::ByteString::from("")
+    };
     ($s:expr) => {
         $crate::ByteString::from($s)
     };
     ($($s:expr),+) => {
         $crate::ByteString::from($crate::cs!($($s),+))
-    }
+    };
 }
 
 #[macro_export]
@@ -213,7 +216,7 @@ fn firstname(file_name: &str, ty: FileType) -> &str {
 
 pub fn build(base_path: PathBuf, dest_path: PathBuf, config: Config) {
     fs::create_dir_all(&dest_path).unwrap();
-    for name in ["code", "ldt", "tool"] {
+    for name in ["code", "ldt", "tool", "legacy"] {
         fs::create_dir_all(dest_path.join(name)).unwrap();
     }
 
@@ -264,7 +267,7 @@ pub fn build(base_path: PathBuf, dest_path: PathBuf, config: Config) {
     };
 
     let dynamic_base = base_path.join("dynamic");
-    for name in ["code", "ldt", "tool"] {
+    for name in ["code", "ldt", "tool", "legacy"] {
         for entry in fs::read_dir(dynamic_base.join(name)).unwrap() {
             let entry = entry.unwrap();
             if entry.metadata().unwrap().is_file() {

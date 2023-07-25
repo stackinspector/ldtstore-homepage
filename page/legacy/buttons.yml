@@ -1,0 +1,9 @@
+- type: button
+  target: fw-old-home
+  text: 主页 (ldt.pc.wiki)
+- type: button
+  target: fw-old-tool
+  text: LDTools (tool.pc.wiki)
+- type: button
+  target: fw-old-tool-plain
+  text: LDTools简洁版

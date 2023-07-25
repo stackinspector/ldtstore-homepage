@@ -1,0 +1,40 @@
+/* base */
+
+body {
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* head */
+
+img.logo {
+  vertical-align: middle;
+}
+
+/* links */
+
+a.link {
+  color: #00a1d6;
+}
+
+a.hidden-link {
+  color: inherit;
+}
+
+a.link:hover, a.hidden-link:hover {
+  color: #00b5e5;
+}
+
+/* footer */
+
+div#footer-container {
+  bottom: 0;
+}
+
+div#footer-container p {
+  color: #999;
+}
