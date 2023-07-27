@@ -15,6 +15,11 @@ img.logo {
   vertical-align: middle;
 }
 
+.notice {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
 /* links */
 
 a.link {
