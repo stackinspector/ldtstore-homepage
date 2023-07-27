@@ -656,7 +656,7 @@ fn classic_text(ClassicText { footer, text }: ClassicText) -> Node {
 
 fn classic_list(ClassicList { id: _id, text, content }: ClassicList, list: &mut Vec<Node>) {
     list.push(Element(p, vec![], vec![
-        Element(a, vec![(class, s!("button")), (onclick, s!("change('", _id, "-detail')"))], vec![Text(text)]),
+        Element(a, vec![(class, s!("button")), (onclick, s!("detail('", _id, "')"))], vec![Text(text)]),
     ]));
     list.push(Element(div, vec![(class, s!("detail-container")), (id, s!(_id, "-detail"))], content.map_to(|node| {
         match node {
