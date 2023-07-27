@@ -294,20 +294,37 @@ pub const fn tool_icon_emoji(t: ToolLinkIcon) -> &'static str {
 }
 
 #[derive(Clone, Debug, Deserialize)]
+pub struct ClassicButton {
+    pub target: Option<ByteString>,
+    pub text: ByteString,
+}
+
+#[derive(Clone, Debug, Deserialize)]
+pub struct ClassicText {
+    pub footer: bool,
+    pub text: ByteString,
+}
+
+#[derive(Clone, Debug, Deserialize)]
+pub struct ClassicList {
+    pub id: ByteString,
+    pub text: ByteString,
+    pub content: Vec<ClassicSubNode>,
+}
+
+#[derive(Clone, Debug, Deserialize)]
 #[serde(tag = "type")]
 #[serde(rename_all = "kebab-case")]
-pub enum ClassicNode {
-    Button {
-        target: Option<ByteString>,
-        text: ByteString,
-    },
-    Text {
-        footer: bool,
-        text: ByteString,
-    },
-    List {
-        id: ByteString,
-        text: ByteString,
-        content: Vec<ClassicNode>,
-    },
+pub enum ClassicRootNode {
+    Button(ClassicButton),
+    Text(ClassicText),
+    List(ClassicList),
+}
+
+#[derive(Clone, Debug, Deserialize)]
+#[serde(tag = "type")]
+#[serde(rename_all = "kebab-case")]
+pub enum ClassicSubNode {
+    Button(ClassicButton),
+    Text(ClassicText),
 }

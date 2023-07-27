@@ -103,6 +103,12 @@ impl<K: core::hash::Hash + core::cmp::Eq, V> IndexMapFirstInsert<K, V> for index
     }
 }
 
+macro_rules! classes {
+    ($($item:tt)+) => {
+        (class, s!(vec_ext![$($item)+].join(" ")))
+    };
+}
+
 macro_rules! class {
     ($s:expr) => {
         vec![(class, s!($s))]
@@ -438,7 +444,7 @@ fn tool_link_plain(ToolLink { title, link_type, link, icon }: ToolLink) -> Node 
         ], vec![
             Text(s!(tool_icon_emoji(icon), tool_link_title(title.clone())))
         ]),
-        Text(s!("&nbsp;")),
+        Text(s!(" ")),
         Element(i, vec![], vec![Text(s!("[", link_type.as_str(), "] ", link))]),
         empty!(br),
     ])
@@ -616,7 +622,7 @@ fn tools_plain_toc(groups: Vec<ToolGroup>) -> Vec<Node> {
         let title = title.unwrap_or_else(|| list[0].title.clone());
         res.push(Element(p, vec![], vec![
             Element(a, vec![(href, s!("#", name.clone()))], vec![Text(s!(title))]),
-            Text(s!("&nbsp;")),
+            Text(s!(" ")),
             Element(i, vec![], vec![Text(s!(name))])
         ]));
     }
@@ -627,31 +633,49 @@ fn include_data(data: GlobalData) -> ByteString {
     s!("<script>window.__DATA__=", serde_json::to_string(&data).unwrap(), "</script>")
 }
 
-fn classic(node: ClassicNode) -> Node {
-    match node {
-        ClassicNode::Button { target: _target, text } => {
-            // TODO handle top
-            let top = true;
-            Element(p, vec![], vec![Element(a, vec_ext![
-                (class, s!(vec_ext![
-                    "button",
-                    @if (top) {
-                        "button-detail"
-                    },
-                    @if (_target.is_none()) {
-                        "button-nolink"
-                    },
-                ].join(" "))),
-                @if (_target.is_some()) {
-                    (href, s!("//r.ldt.pc.wiki/r/", _target.as_ref().unwrap()))
-                },
-            ], vec![Text(text)])])
+fn classic_button(ClassicButton { target: _target, text }: ClassicButton, top: bool) -> Node {
+    Element(p, vec![], vec![Element(a, vec_ext![
+        classes!(
+            "button",
+            @if (!top) {
+                "button-detail"
+            },
+            @if (_target.is_none()) {
+                "button-nolink"
+            },
+        ),
+        @if (_target.is_some()) {
+            (href, s!("//r.ldt.pc.wiki/r/", _target.as_ref().unwrap()))
         },
-        ClassicNode::Text { footer, text } => {
-            Element(span, class!(if footer { s!("text-detail-footer") } else { s!("text") }), vec![Text(text)])
-        },
-        ClassicNode::List { .. } => todo!(),
+    ], vec![Text(text)])])
+}
+
+fn classic_text(ClassicText { footer, text }: ClassicText) -> Node {
+    Element(span, class!(if footer { s!("text-detail-footer") } else { s!("text") }), vec![Text(text)])
+}
+
+fn classic_list(ClassicList { id: _id, text, content }: ClassicList, list: &mut Vec<Node>) {
+    list.push(Element(p, vec![], vec![
+        Element(a, vec![(class, s!("button")), (onclick, s!("change('", _id, "-detail')"))], vec![Text(text)]),
+    ]));
+    list.push(Element(div, vec![(class, s!("detail-container")), (id, s!(_id, "-detail"))], content.map_to(|node| {
+        match node {
+            ClassicSubNode::Button(node) => classic_button(node, false),
+            ClassicSubNode::Text(node) => classic_text(node),
+        }
+    })));
+}
+
+fn classic(nodes: Vec<ClassicRootNode>) -> Vec<Node> {
+    let mut res = Vec::new();
+    for node in nodes {
+        match node {
+            ClassicRootNode::Button(node) => res.push(classic_button(node, true)),
+            ClassicRootNode::Text(node) => res.push(classic_text(node)),
+            ClassicRootNode::List(node) => classic_list(node, &mut res),
+        }
     }
+    res
 }
 
 pub fn codegen<P: AsRef<std::path::Path>>(inserts: &mut Inserts, page_path: P) {
@@ -669,7 +693,7 @@ pub fn codegen<P: AsRef<std::path::Path>>(inserts: &mut Inserts, page_path: P) {
     let tools_sides = load!("tool/sides.yml" -> Vec<Side>);
     let tools_tools = load!("tool/tools.yml" -> Vec<ToolGroup>);
     let tools_category = load!("tool/category.yml" -> Category);
-    let legacy_buttons = load!("legacy/buttons.yml" -> Vec<ClassicNode>);
+    let legacy_buttons = load!("legacy/buttons.yml" -> Vec<ClassicRootNode>);
 
     let public_sides = public_sides.map(side);
 
@@ -689,7 +713,7 @@ pub fn codegen<P: AsRef<std::path::Path>>(inserts: &mut Inserts, page_path: P) {
     let mut tools_plains = tools_plain_toc(tools_tools);
     tools_plains.extend(tools_plain(tools_ext, tool_data.index.clone(), tool_data.cross.clone()));
 
-    let legacy_buttons = legacy_buttons.map(classic);
+    let legacy_buttons = classic(legacy_buttons);
 
     add_insert! {
         inserts:
