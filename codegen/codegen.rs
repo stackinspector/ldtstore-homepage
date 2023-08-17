@@ -118,6 +118,12 @@ macro_rules! svg_icon {
     };
 }
 
+macro_rules! nbsp {
+    () => {
+        Text(s!(" "))
+    };
+}
+
 fn tile_inner(Tile { tile, font, action, icon_type, name, title, icon, path, subdomain }: Tile, is_category: bool) -> Node {
     // TODO lazy eval these `let`s
 
@@ -396,7 +402,7 @@ fn tool_link(ToolLink { title, link_type, link, icon }: ToolLink) -> Node {
             (href, s!(tool_link_prefix(link_type), link)),
         ], vec![
             svg_icon!(icon.as_str()),
-            Text(s!(" ")),
+            nbsp!(),
             Text(tool_link_title(title)),
         ])
     ])
@@ -410,7 +416,7 @@ fn tool_link_plain(ToolLink { title, link_type, link, icon }: ToolLink) -> Node 
         ], vec![
             Text(s!(tool_icon_emoji(icon), tool_link_title(title.clone())))
         ]),
-        Text(s!(" ")),
+        nbsp!(),
         Element(i, vec![], vec![Text(s!("[", link_type.as_str(), "] ", link))]),
         empty!(br),
     ])
@@ -555,15 +561,21 @@ fn tool_plain(Tool { name, title, description, notice, links, .. }: Tool, cross:
 
 fn tools_plain(tools: Map<Tool>, index: ToolIndex, cross: ToolCross) -> Vec<Node> {
     let mut res = Vec::new();
-    // TODO view if single
-    for (name, ToolIndexItem { single: _, title, list, cross_list }) in index {
-        res.push(Element(h2, id!(name.clone()), vec![
+    for (name, ToolIndexItem { single, title, list, cross_list }) in index {
+        res.push(Element(h2, id!(name.clone()), vec_ext![
             Text(s!(title, " ")),
             Element(i, vec![], vec![Text(name.clone())]),
-            Text(s!(" ")),
+            nbsp!(),
+            // TODO(foundations)
+            @if (single) {
+                Element(i, class!("hint"), vec![Text(s!("(single)"))])
+            },
+            @if (single) {
+                nbsp!()
+            },
             Element(a, vec![(class, s!("toc")), (href, s!("#toc"))], vec![Text(s!("[目录]"))]),
         ]));
-        if list.len() == 1 {
+        if single {
             res.append(&mut tool_plain(tools.get(&list[0]).unwrap().clone(), false, false));
         } else {
             for tool_name in list {
@@ -588,7 +600,7 @@ fn tools_plain_toc(groups: Vec<ToolGroup>) -> Vec<Node> {
         let title = title.unwrap_or_else(|| list[0].title.clone());
         res.push(Element(p, vec![], vec![
             Element(a, vec![(href, s!("#", name.clone()))], vec![Text(s!(title))]),
-            Text(s!(" ")),
+            nbsp!(),
             Element(i, vec![], vec![Text(s!(name))])
         ]));
     }

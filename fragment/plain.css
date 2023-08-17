@@ -15,7 +15,7 @@ a {
     color: #07a;
 }
 
-a.toc {
+a.toc, i.hint {
     font-size: medium;
     font-weight: normal;
 }
