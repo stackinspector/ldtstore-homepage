@@ -62,6 +62,14 @@ pub enum Config {
 }
 
 impl Config {
+    const fn name(&self) -> &'static str {
+        use Config::*;
+        match self {
+            Prod => "Prod",
+            Dev => "Dev",
+        }
+    }
+
     const fn assert(&self) -> &'static str {
         use Config::*;
         match self {
@@ -303,6 +311,9 @@ pub fn build(args: Args) {
         w!(COPYRIGHT_L);
         w!(commit);
         w!(COPYRIGHT_R);
+        w!("  ");
+        w!(config.name());
+        w!(" build\n");
         w!(comment_r);
         w!("\n\n");
         w!(content);
