@@ -675,7 +675,7 @@ pub fn codegen<P: AsRef<std::path::Path>>(inserts: &mut Inserts, page_path: P) {
 
     let public_sides = public_sides.map(side);
 
-    let home_major = tile_columns(home_major);
+    let home_major = tile_columns(home_major).collect();
 
     let mut home_sides = home_sides.map_to(side);
     home_sides.extend(public_sides.clone());
