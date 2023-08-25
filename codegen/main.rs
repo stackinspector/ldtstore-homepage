@@ -12,9 +12,12 @@ struct Args {
     /// mode
     #[argh(option, short = 'c')]
     config: ldtstore_codegen::Config,
+    /// esbuild binary path
+    #[argh(option)]
+    esbuild_path: Option<PathBuf>,
 }
 
 fn main() {
-    let Args { base_path, dest_path, config }: Args = argh::from_env();
-    ldtstore_codegen::build(base_path, dest_path, config);
+    let Args { base_path, dest_path, config, esbuild_path }: Args = argh::from_env();
+    ldtstore_codegen::build(base_path, dest_path, config, esbuild_path);
 }

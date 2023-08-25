@@ -144,7 +144,7 @@ fn read_commit<P: AsRef<Path>>(base_path: P) -> String {
     String::from_utf8(commit[0..7].to_vec()).unwrap()
 }
 
-fn build_static_inserts(fragment_path: PathBuf, commit: String) -> Inserts {
+fn build_static_inserts(fragment_path: PathBuf, commit: String, config: Config, esbuild_path: Option<&Path>) -> Inserts {
     let mut res = Inserts::new();
     for entry in fs::read_dir(fragment_path.clone()).unwrap() {
         let entry = entry.unwrap();
@@ -161,13 +161,13 @@ fn build_static_inserts(fragment_path: PathBuf, commit: String) -> Inserts {
                 Css => {
                     add_insert! {
                         res:
-                        "/*{{minified:", file_name, "}}*/" => minify_css(entry.path())
+                        "/*{{minified:", file_name, "}}*/" => minify_css(entry.path(), config, esbuild_path)
                     }
                 },
                 Script => {
                     add_insert! {
                         res:
-                        "/*{{minified:", file_name, "}}*/" => compile_script(entry.path())
+                        "/*{{minified:", file_name, "}}*/" => compile_script(entry.path(), config, esbuild_path)
                     }
                 },
             }
@@ -180,9 +180,14 @@ fn build_static_inserts(fragment_path: PathBuf, commit: String) -> Inserts {
     res
 }
 
-fn call_esbuilld_cli<P: AsRef<Path>>(full_path: P, args: &'static [&'static str]) -> String {
+fn call_esbuilld_cli<P: AsRef<Path>>(esbuild_path: Option<&Path>, full_path: P, args: &'static [&'static str]) -> String {
     use std::process::{Command, Stdio, Output};
-    let Output { status, stdout, .. } = Command::new("esbuild")
+    let mut command = if let Some(path) = esbuild_path {
+        Command::new(path)
+    } else {
+        Command::new("esbuild")
+    };
+    let Output { status, stdout, .. } = command
         .arg(full_path.as_ref())
         .args(args)
         .stdin(Stdio::null())
@@ -193,20 +198,31 @@ fn call_esbuilld_cli<P: AsRef<Path>>(full_path: P, args: &'static [&'static str]
     String::from_utf8(stdout).unwrap()
 }
 
-fn minify_css<P: AsRef<Path>>(full_path: P) -> String {
-    call_esbuilld_cli(full_path, &[
-        "--minify",
-    ])
+fn minify_css<P: AsRef<Path>>(full_path: P, config: Config, esbuild_path: Option<&Path>) -> String {
+    match config {
+        Config::Prod => call_esbuilld_cli(esbuild_path, full_path, &[
+            "--minify",
+        ]),
+        Config::Dev => load(full_path).unwrap(),
+    }
 }
 
-fn compile_script<P: AsRef<Path>>(full_path: P) -> String {
-    call_esbuilld_cli(full_path, &[
-        "--minify-whitespace",
-        "--minify-syntax",
-        "--format=iife",
-        "--target=es6",
-    ])
+fn compile_script<P: AsRef<Path>>(full_path: P, config: Config, esbuild_path: Option<&Path>) -> String {
+    match config {
+        Config::Prod => call_esbuilld_cli(esbuild_path, full_path, &[
+            "--minify-whitespace",
+            "--minify-syntax",
+            "--format=iife",
+            "--target=es6",
+        ]),
+        Config::Dev => call_esbuilld_cli(esbuild_path, full_path, &[
+            "--format=iife",
+            "--target=es6",
+        ]),
+    }
 }
+
+// fn complie_file(file_name: &str) -> (FileType, String) {}
 
 fn firstname(file_name: &str, ty: FileType) -> &str {
     let b = file_name.as_bytes();
@@ -214,14 +230,16 @@ fn firstname(file_name: &str, ty: FileType) -> &str {
     std::str::from_utf8(&b[..l]).unwrap()
 }
 
-pub fn build(base_path: PathBuf, dest_path: PathBuf, config: Config) {
+pub fn build(base_path: PathBuf, dest_path: PathBuf, config: Config, esbuild_path: Option<PathBuf>) {
+    let esbuild_path = esbuild_path.as_deref();
+
     fs::create_dir_all(&dest_path).unwrap();
     for name in ["code", "ldt", "tool", "legacy"] {
         fs::create_dir_all(dest_path.join(name)).unwrap();
     }
 
     let commit = read_commit(&base_path);
-    let mut inserts = build_static_inserts(base_path.join("fragment"), commit.clone());
+    let mut inserts = build_static_inserts(base_path.join("fragment"), commit.clone(), config, esbuild_path);
     codegen(&mut inserts, base_path.join("page"));
     let global_replacer = GlobalReplacer::build(
         ["<a n ", "{{ASSERT}}"],
@@ -241,8 +259,8 @@ pub fn build(base_path: PathBuf, dest_path: PathBuf, config: Config) {
         let ty = FileType::parse(file_name);
         let content = match ty {
             Html => insert(&load(path).unwrap(), inserts.clone()),
-            Css => minify_css(path),
-            Script => compile_script(path),
+            Css => minify_css(path, config, esbuild_path),
+            Script => compile_script(path, config, esbuild_path),
         };
         let content = global_replacer.replace(&content);
         let (comment_l, comment_r) = ty.comment();
