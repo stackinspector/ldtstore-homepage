@@ -546,9 +546,16 @@ fn tool(Tool { name, title, icon, description, notice, links, no_icon, .. }: Too
 fn tool_plain(Tool { name, title, description, notice, links, .. }: Tool, cross: bool, has_title: bool) -> Vec<Node> {
     vec_ext![
         @if (has_title) {
-            Element(h3, id!(name.clone()), vec![
-                Text(s!(title, " ")),
-                Element(i, vec![], vec![Text(s!(name, if cross { " [cross]" } else { "" }))]),
+            Element(h3, id!(name.clone()), vec_ext![
+                Text(s!(title)),
+                nbsp!(),
+                Element(i, vec![], vec![Text(s!(name.clone()))]),
+                @if (cross) {
+                    nbsp!()
+                },
+                @if (cross) {
+                    Element(i, class!("hint"), vec![Text(s!("[cross]"))])
+                },
             ])
         },
         Element(p, vec![], description.map(Text).to_vec()),
@@ -568,7 +575,7 @@ fn tools_plain(tools: Map<Tool>, index: ToolIndex, cross: ToolCross) -> Vec<Node
             nbsp!(),
             // TODO(foundations)
             @if (single) {
-                Element(i, class!("hint"), vec![Text(s!("(single)"))])
+                Element(i, class!("hint"), vec![Text(s!("[single]"))])
             },
             @if (single) {
                 nbsp!()
