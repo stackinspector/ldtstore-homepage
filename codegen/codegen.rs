@@ -691,7 +691,7 @@ pub fn codegen<P: AsRef<std::path::Path>>(inserts: &mut Inserts, page_path: P) {
 
     let mut tools_fragments = tools_sides.map_to(side);
     tools_fragments.extend(public_sides);
-    tools_fragments.extend(tools_ext.values().map(Clone::clone).map(tool));
+    tools_fragments.extend(tools_ext.values().cloned().map(tool));
     tools_fragments.push(major_fragment(tile_grids(tools_major), s!("tiles")));
     tools_fragments.push(major_fragment(category(tools_category), s!("category")));
 
