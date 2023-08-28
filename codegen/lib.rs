@@ -51,7 +51,7 @@ pub mod config;
 pub mod data;
 pub mod codegen;
 use codegen::codegen;
-use once_cell::sync::OnceCell;
+use std::sync::OnceLock;
 
 use std::{fs::{self, OpenOptions, read_to_string as load}, path::{Path, PathBuf}, io::Write};
 
@@ -161,7 +161,7 @@ pub struct Args {
     esbuild_path: Option<PathBuf>,
 }
 
-static ARGS: OnceCell<Args> = OnceCell::new();
+static ARGS: OnceLock<Args> = OnceLock::new();
 
 fn args<'a>() -> &'a Args {
     ARGS.get().unwrap()
