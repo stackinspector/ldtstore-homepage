@@ -196,6 +196,7 @@ a.tile-link {
 #major.wide {
     width: 66.1em;
     left: calc(50% - 33em);
+    pointer-events: all;
     /* background-color: #fff3; */
 }
 
@@ -475,6 +476,7 @@ a.tile-link {
 
     #major.wide {
         padding: 2em 1.5em;
+        left: 0;
     }
 
     #major.normal {
