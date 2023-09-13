@@ -26,3 +26,5 @@ concat-string = "1"
 lighthtml = { git = "https://github.com/Berylsoft/lighthtml" }
 aho-corasick = "1"
 foundations = { git = "https://github.com/Berylsoft/foundations", features = ["vec-ext"] }
+sha2 = "0.10"
+data-encoding = "2.4"

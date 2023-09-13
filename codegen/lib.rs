@@ -74,7 +74,7 @@ impl Config {
         use Config::*;
         match self {
             Prod => "//s0.ldt.pc.wiki",
-            Dev => "../",
+            Dev => "..",
         }
     }
 }
@@ -176,7 +176,7 @@ fn read_commit<P: AsRef<Path>>(base_path: P) -> String {
     String::from_utf8(commit[0..7].to_vec()).unwrap()
 }
 
-fn build_static_inserts(fragment_path: PathBuf, commit: String) -> Inserts {
+fn build_static_inserts(fragment_path: PathBuf) -> Inserts {
     let mut res = Inserts::new();
     for entry in fs::read_dir(fragment_path.clone()).unwrap() {
         let entry = entry.unwrap();
@@ -205,10 +205,10 @@ fn build_static_inserts(fragment_path: PathBuf, commit: String) -> Inserts {
             }
         }
     }
-    add_insert! {
-        res:
-        "{{COMMIT}}" => commit
-    }
+    // add_insert! {
+    //     res:
+    //     "{{COMMIT}}" => commit
+    // }
     res
 }
 
@@ -254,6 +254,29 @@ fn compile_script<P: AsRef<Path>>(full_path: P) -> String {
     }
 }
 
+struct IntegrityBuilder {
+    hasher: sha2::Sha512,
+}
+
+impl IntegrityBuilder {
+    fn new() -> Self {
+        Self { hasher: Default::default() }
+    }
+
+    fn update(&mut self, data: &[u8]) {
+        use sha2::Digest;
+        self.hasher.update(data);
+    }
+
+    fn output(self) -> String {
+        use sha2::Digest;
+        let hash = self.hasher.finalize();
+        let mut integrity = "sha512-".to_owned();
+        data_encoding::BASE64.encode_append(&hash, &mut integrity);
+        integrity
+    }
+}
+
 // fn complie_file(file_name: &str) -> (FileType, String) {}
 
 fn firstname(file_name: &str, ty: FileType) -> &str {
@@ -271,7 +294,7 @@ pub fn build(args: Args) {
     }
 
     let commit = read_commit(&base_path);
-    let mut inserts = build_static_inserts(base_path.join("fragment"), commit.clone());
+    let mut inserts = build_static_inserts(base_path.join("fragment"));
     codegen(&mut inserts, base_path.join("page"));
     let global_replacer = GlobalReplacer::build(
         ["<a n ", "{{ASSERT}}"],
@@ -287,7 +310,7 @@ pub fn build(args: Args) {
         }
     }
 
-    let emit = |path: PathBuf, file_name: &str, dest_dir: PathBuf| {
+    let mut emit = |path: PathBuf, file_name: &str, dest_dir: PathBuf, name: &str| {
         let ty = FileType::parse(file_name);
         let content = match ty {
             Html => insert(&load(path).unwrap(), inserts.clone()),
@@ -296,15 +319,21 @@ pub fn build(args: Args) {
         };
         let content = global_replacer.replace(&content);
         let (comment_l, comment_r) = ty.comment();
-        let dest = dest_dir.join(if matches!(ty, Html) {
+        let dest_name = if matches!(ty, Html) {
             cs!(firstname(file_name, ty), ".", ty.as_dest())
         } else {
             cs!(firstname(file_name, ty), "-", commit, ".", ty.as_dest())
-        });
+        };
+        let dest = dest_dir.join(&dest_name);
         let mut file = OpenOptions::new().create_new(true).write(true).open(dest).unwrap();
+        let need_ref = name == "code";
+        let mut integrity = IntegrityBuilder::new();
         macro_rules! w {
             ($s:expr) => {
                 file.write_all($s.as_bytes()).unwrap();
+                if need_ref {
+                    integrity.update($s.as_bytes());
+                }
             };
         }
         w!(comment_l);
@@ -317,6 +346,10 @@ pub fn build(args: Args) {
         w!(comment_r);
         w!("\n\n");
         w!(content);
+        if need_ref {
+            inserts.push((s!("{{path:/", name, "/", file_name, "}}"), s!(config.assert(), "/", name, "/", dest_name)));
+            inserts.push((s!("{{integrity:/", name, "/", file_name, "}}"), integrity.output().into()));
+        }
     };
 
     let dynamic_base = base_path.join("dynamic");
@@ -326,7 +359,7 @@ pub fn build(args: Args) {
             if entry.metadata().unwrap().is_file() {
                 let file_name = entry.file_name();
                 let file_name = file_name.to_str().unwrap();
-                emit(entry.path(), file_name, dest_path.join(name));
+                emit(entry.path(), file_name, dest_path.join(name), name);
             }
         }
     }
