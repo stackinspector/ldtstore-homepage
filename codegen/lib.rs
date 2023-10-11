@@ -289,7 +289,20 @@ pub fn build(args: Args) {
     let Args { dest_path, base_path, config, .. } = ARGS.get_or_init(|| args);
 
     fs::create_dir_all(&dest_path).unwrap();
-    for name in ["code", "ldt", "tool", "guide-page", "guide-page-intl"] {
+
+    let dynamic_base = base_path.join("dynamic");
+
+    let mut dynamics = Vec::new();
+    for entry in fs::read_dir(&dynamic_base).unwrap() {
+        let entry = entry.unwrap();
+        if entry.metadata().unwrap().is_dir() {
+            let file_name = entry.file_name();
+            let file_name = file_name.to_str().unwrap();
+            dynamics.push(file_name.to_owned());
+        }
+    }
+
+    for name in &dynamics {
         fs::create_dir_all(dest_path.join(name)).unwrap();
     }
 
@@ -352,8 +365,7 @@ pub fn build(args: Args) {
         }
     };
 
-    let dynamic_base = base_path.join("dynamic");
-    for name in ["code", "ldt", "tool", "guide-page", "guide-page-intl"] {
+    for name in &dynamics {
         for entry in fs::read_dir(dynamic_base.join(name)).unwrap() {
             let entry = entry.unwrap();
             if entry.metadata().unwrap().is_file() {
