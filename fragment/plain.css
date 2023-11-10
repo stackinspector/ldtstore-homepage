@@ -6,6 +6,10 @@ body {
     line-height: 1.4;
 }
 
+code {
+    font-family: Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New, monospace;
+}
+
 p {
     margin: .5em 0;
 }
@@ -15,7 +19,8 @@ a {
     color: #07a;
 }
 
-a.toc, i.hint {
+a.toc,
+i.hint {
     font-size: medium;
     font-weight: normal;
 }
