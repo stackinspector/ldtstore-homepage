@@ -1,5 +1,7 @@
 use foundations::vec_ext;
 use lighthtml::{*, prelude::*};
+use strpool::StrRef as ByteString;
+type Node = lighthtml::Node<ByteString>;
 use crate::{s, config::*, data::*, Map, Inserts};
 
 trait VecMap<T>: IntoIterator<Item = T> + Sized {

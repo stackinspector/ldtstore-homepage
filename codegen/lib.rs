@@ -1,6 +1,6 @@
 #![allow(non_camel_case_types)]
 
-use lighthtml::ByteString;
+use strpool::StrRef as ByteString;
 use aho_corasick::AhoCorasick;
 type Map<T> = indexmap::IndexMap<ByteString, T>;
 type Inserts = Vec<(ByteString, ByteString)>;

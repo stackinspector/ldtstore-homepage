@@ -21,10 +21,11 @@ serde = { version = "1.0", features = ["derive"] }
 serde_repr = "0.1"
 serde_json = "1.0"
 serde_yaml = "0.9"
-indexmap = { version = "1.9", features = ["serde"] }
+indexmap = { version = "2.1", features = ["serde"] }
 concat-string = "1"
 lighthtml = { git = "https://github.com/Berylsoft/lighthtml" }
 aho-corasick = "1"
 foundations = { git = "https://github.com/Berylsoft/foundations", features = ["vec-ext"] }
 sha2 = "0.10"
 data-encoding = "2.4"
+strpool = { git = "https://github.com/Berylsoft/strpool", features = ["serde"] }
