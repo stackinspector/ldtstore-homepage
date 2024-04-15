@@ -1,0 +1,5 @@
+lang: zh
+css:
+  - style.css
+js:
+  - main.ts
