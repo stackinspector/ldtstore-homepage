@@ -48,13 +48,15 @@ impl<const N: usize> GlobalReplacer<N> {
     }
 }
 
+pub mod util;
 pub mod config;
 pub mod data;
+pub mod jsldr;
 pub mod codegen;
+use util::IndexMapFirstInsert;
 use codegen::codegen;
-use std::sync::OnceLock;
 
-use std::{fs::{self, OpenOptions, read_to_string as load}, path::{Path, PathBuf}, io::Write};
+use std::{fs::{self, OpenOptions, read_to_string as load}, path::{Path, PathBuf}, io::Write, sync::OnceLock};
 
 #[derive(Clone, Copy)]
 pub enum Config {
@@ -289,24 +291,6 @@ fn firstname(file_name: &str, ty: FileType) -> &str {
 pub fn build(args: Args) {
     let Args { dest_path, base_path, config, .. } = ARGS.get_or_init(|| args);
 
-    fs::create_dir_all(&dest_path).unwrap();
-
-    let dynamic_base = base_path.join("dynamic");
-
-    let mut dynamics = Vec::new();
-    for entry in fs::read_dir(&dynamic_base).unwrap() {
-        let entry = entry.unwrap();
-        if entry.metadata().unwrap().is_dir() {
-            let file_name = entry.file_name();
-            let file_name = file_name.to_str().unwrap();
-            dynamics.push(file_name.to_owned());
-        }
-    }
-
-    for name in &dynamics {
-        fs::create_dir_all(dest_path.join(name)).unwrap();
-    }
-
     let commit = read_commit(&base_path);
     let mut inserts = build_static_inserts(base_path.join("fragment"));
     codegen(&mut inserts, base_path.join("page"));
@@ -315,65 +299,131 @@ pub fn build(args: Args) {
         [r#"<a target="_blank" "#, config.assert()],
     );
 
-    for entry in fs::read_dir(base_path.join("static")).unwrap() {
+    let dynamic_base = base_path.join("dynamic");
+    let dynamic_code_base = dynamic_base.join("code");
+    let dynamic_page_base = dynamic_base.join("page");
+    let dest_code_base = dest_path.join("code");
+    let dest_page_base = dest_path.join("page");
+
+    fs::create_dir_all(&dest_code_base).unwrap();
+    fs::create_dir_all(&dest_page_base).unwrap();
+
+    let replace_html = |path: PathBuf| {
+        global_replacer.replace(&insert(&load(path).unwrap(), inserts.clone()))
+    };
+
+    fn write_json<D: serde::Serialize>(value: &D, dest: PathBuf) {
+        let mut file = OpenOptions::new().create_new(true).write(true).open(dest).unwrap();
+        serde_json::to_writer(&mut file, value).unwrap();
+    }
+
+    let mut code_info = Map::new();
+
+    for entry in fs::read_dir(&dynamic_code_base).unwrap() {
         let entry = entry.unwrap();
         if entry.metadata().unwrap().is_file() {
-            for name in ["ldt", "tool"] {
-                fs::copy(entry.path(), dest_path.join(name).join(entry.file_name())).unwrap();
+            let path = entry.path();
+            let file_name = entry.file_name();
+            let file_name = file_name.to_str().unwrap();
+            let ty = FileType::parse(file_name);
+            let content = match ty {
+                Css => minify_css(path),
+                Script => compile_script(path),
+                Html => unreachable!(),
+            };
+            let content = global_replacer.replace(&content);
+            let dest_name = cs!(firstname(file_name, ty), "-", commit, ".", ty.as_dest());
+            let dest = dest_code_base.join(&dest_name);
+
+            let (comment_l, comment_r) = ty.comment();
+            let mut file = OpenOptions::new().create_new(true).write(true).open(dest).unwrap();
+            let mut integrity = IntegrityBuilder::new();
+            macro_rules! w {
+                ($s:expr) => {
+                    file.write_all($s.as_bytes()).unwrap();
+                    integrity.update($s.as_bytes());
+                };
             }
+            w!(comment_l);
+            w!(COPYRIGHT_L);
+            w!(commit);
+            w!(COPYRIGHT_R);
+            w!("  ");
+            w!(config.name());
+            w!(" build\n");
+            w!(comment_r);
+            w!("\n\n");
+            w!(content);
+
+            code_info.first_insert(file_name.to_owned(), jsldr::Resource {
+                path: s!(config.assert(), "/code/", dest_name),
+                integrity: integrity.output(),
+            });
         }
     }
 
-    let mut emit = |path: PathBuf, file_name: &str, dest_dir: PathBuf, name: &str| {
-        let ty = FileType::parse(file_name);
-        let content = match ty {
-            Html => insert(&load(path).unwrap(), inserts.clone()),
-            Css => minify_css(path),
-            Script => compile_script(path),
-        };
-        let content = global_replacer.replace(&content);
-        let (comment_l, comment_r) = ty.comment();
-        let dest_name = if matches!(ty, Html) {
-            cs!(firstname(file_name, ty), ".", ty.as_dest())
-        } else {
-            cs!(firstname(file_name, ty), "-", commit, ".", ty.as_dest())
-        };
-        let dest = dest_dir.join(&dest_name);
-        let mut file = OpenOptions::new().create_new(true).write(true).open(dest).unwrap();
-        let need_ref = name == "code";
-        let mut integrity = IntegrityBuilder::new();
-        macro_rules! w {
-            ($s:expr) => {
-                file.write_all($s.as_bytes()).unwrap();
-                if need_ref {
-                    integrity.update($s.as_bytes());
-                }
+    for entry in fs::read_dir(&dynamic_page_base).unwrap() {
+        let entry = entry.unwrap();
+        if entry.metadata().unwrap().is_dir() {
+            let path = entry.path();
+            let page_name = entry.file_name();
+            let page_name = page_name.to_str().unwrap();
+            let lconfig: jsldr::Config = serde_yaml::from_reader(fs::File::open(path.join("config.yml")).unwrap()).unwrap();
+            let head = replace_html(path.join("head.html"));
+            let body = replace_html(path.join("body.html"));
+            let boot = jsldr::Boot {
+                lang: lconfig.lang,
+                css: lconfig.css.iter().map(|file| code_info.get(file).unwrap().clone()).collect(),
+                js: lconfig.js.iter().map(|file| code_info.get(file).unwrap().clone()).collect(),
+                head,
+                body,
             };
-        }
-        w!(comment_l);
-        w!(COPYRIGHT_L);
-        w!(commit);
-        w!(COPYRIGHT_R);
-        w!("  ");
-        w!(config.name());
-        w!(" build\n");
-        w!(comment_r);
-        w!("\n\n");
-        w!(content);
-        if need_ref {
-            inserts.push((s!("{{path:/", name, "/", file_name, "}}"), s!(config.assert(), "/", name, "/", dest_name)));
-            inserts.push((s!("{{integrity:/", name, "/", file_name, "}}"), integrity.output().into()));
-        }
-    };
+            write_json(&boot, dest_page_base.join(cs!(page_name, ".boot.json")));
+            let dest = dest_page_base.join(cs!(page_name, ".html"));
 
-    for name in &dynamics {
-        for entry in fs::read_dir(dynamic_base.join(name)).unwrap() {
-            let entry = entry.unwrap();
-            if entry.metadata().unwrap().is_file() {
-                let file_name = entry.file_name();
-                let file_name = file_name.to_str().unwrap();
-                emit(entry.path(), file_name, dest_path.join(name), name);
+            let (comment_l, comment_r) = FileType::Html.comment();
+            let mut file = OpenOptions::new().create_new(true).write(true).open(dest).unwrap();
+            macro_rules! w {
+                ($s:expr) => {
+                    file.write_all($s.as_bytes()).unwrap();
+                };
             }
+            w!(comment_l);
+            w!(COPYRIGHT_L);
+            w!(commit);
+            w!(COPYRIGHT_R);
+            w!("  ");
+            w!(config.name());
+            w!(" build\n");
+            w!(comment_r);
+            w!("\n\n");
+
+            if let Some(lang) = boot.lang {
+                w!("<html lang=\"");
+                w!(lang);
+                w!("\">\n");
+            } else {
+                w!("<html>\n");
+            }
+            w!("<head>\n");
+            w!(boot.head);
+            for jsldr::Resource { path, integrity } in boot.css.iter() {
+                w!("<link rel=\"stylesheet\" href=\"");
+                w!(path);
+                w!("\" integrity=\"");
+                w!(integrity);
+                w!("\" crossorigin=\"anonymous\">\n");
+            }
+            w!("</head>\n<body>\n");
+            w!(boot.body);
+            for jsldr::Resource { path, integrity } in boot.js.iter() {
+                w!("<script src=\"");
+                w!(path);
+                w!("\" integrity=\"");
+                w!(integrity);
+                w!("\" crossorigin=\"anonymous\"></script>\n");
+            }
+            w!("</body>\n</html>\n");
         }
     }
 }
