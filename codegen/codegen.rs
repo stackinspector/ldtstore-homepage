@@ -1,6 +1,6 @@
 use foundations::vec_ext;
 use lighthtml::{*, prelude::*};
-use strpool::StrRef as ByteString;
+use crate::ByteString;
 type Node = lighthtml::Node<ByteString>;
 use crate::{s, config::*, data::*, Map, Inserts};
 

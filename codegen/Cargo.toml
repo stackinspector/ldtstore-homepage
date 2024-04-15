@@ -28,4 +28,3 @@ aho-corasick = "1"
 foundations = { git = "https://github.com/Berylsoft/foundations", features = ["vec-ext"] }
 sha2 = "0.10"
 data-encoding = "2.4"
-strpool = { git = "https://github.com/Berylsoft/strpool", features = ["serde"] }

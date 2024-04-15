@@ -1,6 +1,7 @@
 #![allow(non_camel_case_types)]
 
-use strpool::StrRef as ByteString;
+type ByteString = String;
+
 use aho_corasick::AhoCorasick;
 type Map<T> = indexmap::IndexMap<ByteString, T>;
 type Inserts = Vec<(ByteString, ByteString)>;
