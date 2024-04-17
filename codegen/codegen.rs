@@ -549,10 +549,6 @@ fn tools_plain_toc(groups: Vec<ToolGroup>) -> Vec<Node> {
     res
 }
 
-fn include_data(data: GlobalData) -> ByteString {
-    s!("<script>window.__DATA__=", serde_json::to_string(&data).unwrap(), "</script>")
-}
-
 fn classic_button(ClassicButton { target: _target, text }: ClassicButton, top: bool) -> Node {
     Element(p, vec![], vec![Element(a, vec_ext![
         classes!(
@@ -598,7 +594,7 @@ fn classic(nodes: Vec<ClassicRootNode>) -> Vec<Node> {
     res
 }
 
-pub fn codegen<P: AsRef<std::path::Path>>(inserts: &mut Inserts, page_path: P) {
+pub fn codegen<P: AsRef<std::path::Path>>(inserts: &mut Inserts, includes: &mut Map<GlobalData>, page_path: P) {
     let page_path = page_path.as_ref();
     macro_rules! load {
         ($s:literal -> $t:ty) => {{
@@ -641,8 +637,9 @@ pub fn codegen<P: AsRef<std::path::Path>>(inserts: &mut Inserts, page_path: P) {
         "<!--{{codegen-home-fragments}}-->" => render_nodes(home_sides)
         "<!--{{codegen-tool-fragments}}-->" => render_nodes(tools_fragments)
         "<!--{{codegen-tool-plain}}-->" => render_nodes(tools_plains)
-        "<!--{{codegen-home-include-data}}-->" => include_data(GlobalData::Home)
-        "<!--{{codegen-tool-include-data}}-->" => include_data(GlobalData::Tool { tool: tool_data })
         "<!--{{codegen-legacy-buttons}}-->" => render_nodes(legacy_buttons)
     }
+
+    includes.first_insert(s!("ldt"), GlobalData::Home);
+    includes.first_insert(s!("tool"), GlobalData::Tool { tool: tool_data });
 }

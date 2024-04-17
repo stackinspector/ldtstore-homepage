@@ -1,8 +1,11 @@
-export { };
+export {};
+
+type IncludeData = unknown;
 
 declare global {
     interface Window {
         __BOOT__?: string;
+        __DATA__?: IncludeData,
     }
 }
 
@@ -15,6 +18,7 @@ type Boot = {
     lang: string | null,
     css: Resource[],
     js: Resource[],
+    includes: IncludeData | null,
     head: string,
     body: string,
 };
@@ -41,6 +45,9 @@ type Boot = {
         document.head.appendChild(el);
     }
     document.body.innerHTML = boot.body;
+    if (boot.includes !== null) {
+        window.__DATA__ = boot.includes;
+    }
     for (const js of boot.js) {
         const el = document.createElement("script");
         el.setAttribute("src", js.path);

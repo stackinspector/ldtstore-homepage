@@ -293,7 +293,8 @@ pub fn build(args: Args) {
 
     let commit = read_commit(&base_path);
     let mut inserts = build_static_inserts(base_path.join("fragment"));
-    codegen(&mut inserts, base_path.join("page"));
+    let mut includes = Map::new();
+    codegen(&mut inserts, &mut includes, base_path.join("page"));
     let global_replacer = GlobalReplacer::build(
         ["<a n ", "{{ASSERT}}"],
         [r#"<a target="_blank" "#, config.assert()],
@@ -355,7 +356,7 @@ pub fn build(args: Args) {
             w!("\n\n");
             w!(content);
 
-            code_info.first_insert(file_name.to_owned(), jsldr::Resource {
+            code_info.first_insert(s!(file_name), jsldr::Resource {
                 path: s!(config.assert(), "/code/", dest_name),
                 integrity: integrity.output(),
             });
@@ -371,10 +372,11 @@ pub fn build(args: Args) {
             let lconfig: jsldr::Config = serde_yaml::from_reader(fs::File::open(path.join("config.yml")).unwrap()).unwrap();
             let head = replace_html(path.join("head.html"));
             let body = replace_html(path.join("body.html"));
-            let boot = jsldr::Boot {
+            let boot: jsldr::Boot<crate::data::GlobalData> = jsldr::Boot {
                 lang: lconfig.lang,
                 css: lconfig.css.map_to(|file| code_info.get(&file).unwrap().clone()),
                 js: lconfig.js.map_to(|file| code_info.get(&file).unwrap().clone()),
+                includes: includes.get(page_name).cloned(),
                 head,
                 body,
             };
@@ -416,6 +418,12 @@ pub fn build(args: Args) {
             }
             w!("</head>\n<body>\n");
             w!(boot.body);
+            if let Some(includes) = boot.includes {
+                w!("<script>window.__DATA__=");
+                serde_json::to_writer(&mut file, &includes).unwrap();
+                w!("</script>\n");
+            }
+            // TODO mini scripts
             for jsldr::Resource { path, integrity } in boot.js.iter() {
                 w!("<script src=\"");
                 w!(path);
