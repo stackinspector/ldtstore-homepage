@@ -21,5 +21,5 @@ pub struct Boot {
 #[derive(Clone, Debug, Serialize)]
 pub struct Resource {
     pub path: String,
-    pub integrity: String,
+    pub integrity: String, // TODO option
 }

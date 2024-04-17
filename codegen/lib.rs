@@ -53,7 +53,7 @@ pub mod config;
 pub mod data;
 pub mod jsldr;
 pub mod codegen;
-use util::IndexMapFirstInsert;
+use util::{IndexMapFirstInsert, VecMap};
 use codegen::codegen;
 
 use std::{fs::{self, OpenOptions, read_to_string as load}, path::{Path, PathBuf}, io::Write, sync::OnceLock};
@@ -373,8 +373,8 @@ pub fn build(args: Args) {
             let body = replace_html(path.join("body.html"));
             let boot = jsldr::Boot {
                 lang: lconfig.lang,
-                css: lconfig.css.iter().map(|file| code_info.get(file).unwrap().clone()).collect(),
-                js: lconfig.js.iter().map(|file| code_info.get(file).unwrap().clone()).collect(),
+                css: lconfig.css.map_to(|file| code_info.get(&file).unwrap().clone()),
+                js: lconfig.js.map_to(|file| code_info.get(&file).unwrap().clone()),
                 head,
                 body,
             };
