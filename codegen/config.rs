@@ -149,7 +149,6 @@ pub enum ToolLinkTitleType {
     Link = 2,
     PageLink = 3,
     Unofficial = 4,
-    OfficialLimited = 5,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize)]
@@ -267,7 +266,6 @@ pub const fn tool_website_type(t: ToolLinkTitleType) -> &'static str {
         Link => "首发链接",
         PageLink => "网页链接",
         Unofficial => "<b>非官方</b>页面",
-        OfficialLimited => "官方网站（国内无法访问）",
     }
 }
 
