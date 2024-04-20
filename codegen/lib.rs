@@ -179,8 +179,9 @@ fn read_commit<P: AsRef<Path>>(base_path: P) -> String {
     String::from_utf8(commit[0..7].to_vec()).unwrap()
 }
 
-fn build_static_inserts(fragment_path: PathBuf) -> Inserts {
-    let mut res = Inserts::new();
+fn build_static_inserts(fragment_path: PathBuf) -> (Inserts, Map<String>) {
+    let mut inserts = Inserts::new();
+    let mut minifieds = Map::new();
     for entry in fs::read_dir(fragment_path.clone()).unwrap() {
         let entry = entry.unwrap();
         if entry.metadata().unwrap().is_file() {
@@ -189,21 +190,16 @@ fn build_static_inserts(fragment_path: PathBuf) -> Inserts {
             match FileType::parse(file_name) {
                 Html => {
                     add_insert! {
-                        res:
+                        inserts:
                         "<!--{{", file_name, "}}-->" => load(entry.path()).unwrap()
                     }
                 },
                 Css => {
-                    add_insert! {
-                        res:
-                        "/*{{minified:", file_name, "}}*/" => minify_css(entry.path())
-                    }
+                    minifieds.first_insert(s!(file_name), minify_css(entry.path()));
                 },
                 Script => {
-                    add_insert! {
-                        res:
-                        "/*{{minified:", file_name, "}}*/" => compile_script(entry.path())
-                    }
+                    minifieds.first_insert(s!(file_name), compile_script(entry.path()));
+
                 },
             }
         }
@@ -212,7 +208,7 @@ fn build_static_inserts(fragment_path: PathBuf) -> Inserts {
     //     res:
     //     "{{COMMIT}}" => commit
     // }
-    res
+    (inserts, minifieds)
 }
 
 fn call_esbuilld_cli<P: AsRef<Path>>(full_path: P, cmdargs: &'static [&'static str]) -> String {
@@ -291,8 +287,8 @@ fn firstname(file_name: &str, ty: FileType) -> &str {
 pub fn build(args: Args) {
     let Args { dest_path, base_path, config, .. } = ARGS.get_or_init(|| args);
 
-    let commit = read_commit(&base_path);
-    let mut inserts = build_static_inserts(base_path.join("fragment"));
+    let commit: String = read_commit(&base_path);
+    let (mut inserts, minifieds) = build_static_inserts(base_path.join("fragment"));
     let mut includes = Map::new();
     codegen(&mut inserts, &mut includes, base_path.join("page"));
     let global_replacer = GlobalReplacer::build(
@@ -372,9 +368,13 @@ pub fn build(args: Args) {
             let lconfig: jsldr::Config = serde_yaml::from_reader(fs::File::open(path.join("config.yml")).unwrap()).unwrap();
             let head = replace_html(path.join("head.html"));
             let body = replace_html(path.join("body.html"));
+            // TODO warn when head or body include <link> <style> <script>
+            // allow control-used <style>?
             let boot: jsldr::Boot<crate::data::GlobalData> = jsldr::Boot {
                 lang: lconfig.lang,
                 css: lconfig.css.map_to(|file| code_info.get(&file).unwrap().clone()),
+                minified_css: lconfig.minified_css.map_to(|file| minifieds.get(&file).unwrap().clone()),
+                minified_js: lconfig.minified_js.map_to(|file| minifieds.get(&file).unwrap().clone()),
                 js: lconfig.js.map_to(|file| code_info.get(&file).unwrap().clone()),
                 includes: includes.get(page_name).cloned(),
                 head,
@@ -409,6 +409,11 @@ pub fn build(args: Args) {
             }
             w!("<head>\n");
             w!(boot.head);
+            for css_content in boot.minified_css.iter() {
+                w!("<style>");
+                w!(css_content);
+                w!("</style>\n");
+            }
             for jsldr::Resource { path, integrity } in boot.css.iter() {
                 w!("<link rel=\"stylesheet\" href=\"");
                 w!(path);
@@ -423,7 +428,11 @@ pub fn build(args: Args) {
                 serde_json::to_writer(&mut file, &includes).unwrap();
                 w!("</script>\n");
             }
-            // TODO mini scripts
+            for js_content in boot.minified_js.iter() {
+                w!("<script>");
+                w!(js_content);
+                w!("</script>\n");
+            }
             for jsldr::Resource { path, integrity } in boot.js.iter() {
                 w!("<script src=\"");
                 w!(path);
@@ -435,3 +444,5 @@ pub fn build(args: Args) {
         }
     }
 }
+
+// TODO build frameworks

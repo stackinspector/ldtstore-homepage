@@ -7,6 +7,10 @@ pub struct Config {
     pub css: Vec<String>,
     #[serde(default)]
     pub js: Vec<String>,
+    #[serde(default)]
+    pub minified_css: Vec<String>,
+    #[serde(default)]
+    pub minified_js: Vec<String>,
 }
 
 #[derive(Clone, Debug, Serialize)]
@@ -14,6 +18,8 @@ pub struct Boot<D> {
     pub lang: Option<String>,
     pub css: Vec<Resource>,
     pub js: Vec<Resource>,
+    pub minified_css: Vec<String>,
+    pub minified_js: Vec<String>,
     pub includes: Option<D>, // TODO only __DATA__ and one type?
     pub head: String,
     pub body: String,

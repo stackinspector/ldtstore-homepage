@@ -18,6 +18,8 @@ type Boot = {
     lang: string | null,
     css: Resource[],
     js: Resource[],
+    minified_css: string[],
+    minified_js: string[],
     includes: IncludeData | null,
     head: string,
     body: string,
@@ -36,6 +38,11 @@ type Boot = {
         document.documentElement.setAttribute("lang", boot.lang);
     }
     document.head.innerHTML = boot.head;
+    for (const css of boot.minified_css) {
+        const el = document.createElement("style");
+        el.textContent = css;
+        document.head.appendChild(el);
+    }
     for (const css of boot.css) {
         const el = document.createElement("link");
         el.setAttribute("rel", "stylesheet");
@@ -47,6 +54,11 @@ type Boot = {
     document.body.innerHTML = boot.body;
     if (boot.includes !== null) {
         window.__DATA__ = boot.includes;
+    }
+    for (const js of boot.minified_js) {
+        const el = document.createElement("script");
+        el.textContent = js;
+        document.body.appendChild(el);
     }
     for (const js of boot.js) {
         const el = document.createElement("script");
