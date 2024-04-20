@@ -11,7 +11,7 @@ declare global {
 
 type Resource = {
     path: string,
-    integrity: string,
+    integrity?: string,
 };
 
 type Boot = {
@@ -47,7 +47,9 @@ type Boot = {
         const el = document.createElement("link");
         el.setAttribute("rel", "stylesheet");
         el.setAttribute("href", css.path);
-        el.setAttribute("integrity", css.integrity);
+        if (css.integrity !== void 0) {
+            el.setAttribute("integrity", css.integrity);
+        }
         el.setAttribute("crossorigin", "anonymous");
         document.head.appendChild(el);
     }
@@ -63,7 +65,9 @@ type Boot = {
     for (const js of boot.js) {
         const el = document.createElement("script");
         el.setAttribute("src", js.path);
-        el.setAttribute("integrity", js.integrity);
+        if (js.integrity !== void 0) {
+            el.setAttribute("integrity", js.integrity);
+        }
         el.setAttribute("crossorigin", "anonymous");
         document.body.appendChild(el);
     }

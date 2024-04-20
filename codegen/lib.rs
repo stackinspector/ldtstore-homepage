@@ -354,7 +354,7 @@ pub fn build(args: Args) {
 
             code_info.first_insert(s!(file_name), jsldr::Resource {
                 path: s!(config.assert(), "/code/", dest_name),
-                integrity: integrity.output(),
+                integrity: Some(integrity.output()),
             });
         }
     }
@@ -417,8 +417,10 @@ pub fn build(args: Args) {
             for jsldr::Resource { path, integrity } in boot.css.iter() {
                 w!("<link rel=\"stylesheet\" href=\"");
                 w!(path);
-                w!("\" integrity=\"");
-                w!(integrity);
+                if let Some(integrity) = integrity {
+                    w!("\" integrity=\"");
+                    w!(integrity);
+                }
                 w!("\" crossorigin=\"anonymous\">\n");
             }
             w!("</head>\n<body>\n");
@@ -436,8 +438,10 @@ pub fn build(args: Args) {
             for jsldr::Resource { path, integrity } in boot.js.iter() {
                 w!("<script src=\"");
                 w!(path);
-                w!("\" integrity=\"");
-                w!(integrity);
+                if let Some(integrity) = integrity {
+                    w!("\" integrity=\"");
+                    w!(integrity);
+                }
                 w!("\" crossorigin=\"anonymous\"></script>\n");
             }
             w!("</body>\n</html>\n");
@@ -446,3 +450,4 @@ pub fn build(args: Args) {
 }
 
 // TODO build frameworks
+// TODO icp-record auto dispatch
