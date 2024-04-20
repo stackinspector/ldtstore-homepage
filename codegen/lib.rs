@@ -1,6 +1,7 @@
 #![allow(non_camel_case_types)]
 
 type ByteString = String;
+type JsonValue = serde_json::Value;
 
 use aho_corasick::AhoCorasick;
 type Map<T> = indexmap::IndexMap<ByteString, T>;
@@ -359,6 +360,15 @@ pub fn build(args: Args) {
         }
     }
 
+    fn make_includes(data: Option<&data::GlobalData>) -> Map<JsonValue> {
+        let mut includes = Map::new();
+        if let Some(data) = data {
+            includes.first_insert(s!("__DATA__"), serde_json::to_value(data).unwrap());
+        }
+        includes
+    }
+
+
     for entry in fs::read_dir(&dynamic_page_base).unwrap() {
         let entry = entry.unwrap();
         if entry.metadata().unwrap().is_dir() {
@@ -370,13 +380,13 @@ pub fn build(args: Args) {
             let body = replace_html(path.join("body.html"));
             // TODO warn when head or body include <link> <style> <script>
             // allow control-used <style>?
-            let boot: jsldr::Boot<crate::data::GlobalData> = jsldr::Boot {
+            let boot: jsldr::Boot = jsldr::Boot {
                 lang: lconfig.lang,
                 css: lconfig.css.map_to(|file| code_info.get(&file).unwrap().clone()),
                 minified_css: lconfig.minified_css.map_to(|file| minifieds.get(&file).unwrap().clone()),
                 minified_js: lconfig.minified_js.map_to(|file| minifieds.get(&file).unwrap().clone()),
                 js: lconfig.js.map_to(|file| code_info.get(&file).unwrap().clone()),
-                includes: includes.get(page_name).cloned(),
+                includes: make_includes(includes.get(page_name)),
                 head,
                 body,
             };
@@ -410,6 +420,7 @@ pub fn build(args: Args) {
             w!("<head>\n");
             w!(boot.head);
             for css_content in boot.minified_css.iter() {
+                // TODO one tag?
                 w!("<style>");
                 w!(css_content);
                 w!("</style>\n");
@@ -425,9 +436,12 @@ pub fn build(args: Args) {
             }
             w!("</head>\n<body>\n");
             w!(boot.body);
-            if let Some(includes) = boot.includes {
-                w!("<script>window.__DATA__=");
-                serde_json::to_writer(&mut file, &includes).unwrap();
+            for (key, data) in boot.includes.iter() {
+                // TODO one tag?
+                w!("<script>window.");
+                w!(key);
+                w!("=");
+                serde_json::to_writer(&mut file, data).unwrap();
                 w!("</script>\n");
             }
             for js_content in boot.minified_js.iter() {

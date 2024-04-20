@@ -1,11 +1,8 @@
 export {};
 
-type IncludeData = unknown;
-
 declare global {
     interface Window {
         __BOOT__?: string;
-        __DATA__?: IncludeData,
     }
 }
 
@@ -20,7 +17,7 @@ type Boot = {
     js: Resource[],
     minified_css: string[],
     minified_js: string[],
-    includes: IncludeData | null,
+    includes: Record<string, unknown>,
     head: string,
     body: string,
 };
@@ -54,8 +51,8 @@ type Boot = {
         document.head.appendChild(el);
     }
     document.body.innerHTML = boot.body;
-    if (boot.includes !== null) {
-        window.__DATA__ = boot.includes;
+    for (const [key, data] of Object.entries(boot.includes)) {
+        window[key] = data;
     }
     for (const js of boot.minified_js) {
         const el = document.createElement("script");

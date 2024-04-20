@@ -1,4 +1,5 @@
 use serde::{Serialize, Deserialize};
+use crate::{JsonValue, Map};
 
 #[derive(Clone, Debug, Deserialize)]
 pub struct Config {
@@ -14,13 +15,13 @@ pub struct Config {
 }
 
 #[derive(Clone, Debug, Serialize)]
-pub struct Boot<D> {
+pub struct Boot {
     pub lang: Option<String>,
     pub css: Vec<Resource>,
     pub js: Vec<Resource>,
     pub minified_css: Vec<String>,
     pub minified_js: Vec<String>,
-    pub includes: Option<D>, // TODO only __DATA__ and one type?
+    pub includes: Map<JsonValue>,
     pub head: String,
     pub body: String,
 }
