@@ -26,11 +26,11 @@ a.link {
   color: #00a1d6;
 }
 
-a.hidden-link {
+a.link.hidden {
   color: inherit;
 }
 
-a.link:hover, a.hidden-link:hover {
+a.link:hover {
   color: #00b5e5;
 }
 

@@ -2,3 +2,5 @@ lang: zh
 minified_css:
   - classic-base.css
   - classic-buttons.css
+minified_js:
+  - icpreg.ts

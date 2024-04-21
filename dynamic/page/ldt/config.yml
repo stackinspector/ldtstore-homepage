@@ -3,3 +3,5 @@ css:
   - style.css
 js:
   - main.ts
+minified_js:
+  - icpreg.ts
