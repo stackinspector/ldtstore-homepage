@@ -485,7 +485,7 @@ pub fn build(args: Args) {
         let Rename { dirs, rename } = load_yaml(dynamic_page_base.join("rename.yml"));
 
         for dir in dirs {
-            fs::create_dir_all(dest_page_base.join(dir)).unwrap();
+            fs::create_dir_all(dest_path.join(dir)).unwrap();
         }
 
         for (src, dest) in rename.into_iter() {
