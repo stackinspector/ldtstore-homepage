@@ -471,7 +471,7 @@ pub fn build(args: Args) {
                 }
                 w!("\" crossorigin=\"anonymous\"></script>\n");
             }
-            w!("</body>\n</html>\n");
+            w!("</body>\n</html>");
         }
     }
 
