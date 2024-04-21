@@ -184,6 +184,10 @@ fn load<P: AsRef<Path>>(path: P) -> String {
     fs::read_to_string(path).unwrap()
 }
 
+fn load_yaml<D: serde::de::DeserializeOwned, P: AsRef<Path>>(path: P) -> D {
+    serde_yaml::from_reader(fs::File::open(path).unwrap()).unwrap()
+}
+
 fn create<P: AsRef<Path>>(path: P) -> fs::File {
     fs::OpenOptions::new().create_new(true).write(true).open(path).unwrap()
 }
@@ -315,9 +319,11 @@ pub fn build(args: Args) {
     let dynamic_page_base = dynamic_base.join("page");
     let dest_code_base = dest_path.join("code");
     let dest_page_base = dest_path.join("page");
+    let dest_page_boot_base = dest_path.join("page-boot");
 
     fs::create_dir_all(&dest_code_base).unwrap();
     fs::create_dir_all(&dest_page_base).unwrap();
+    fs::create_dir_all(&dest_page_boot_base).unwrap();
 
     let replace_html = |path: PathBuf| {
         global_replacer.replace(&insert(&load(path), inserts.clone()))
@@ -376,13 +382,13 @@ pub fn build(args: Args) {
         includes
     }
 
-    for entry in fs::read_dir(dynamic_page_base).unwrap() {
+    for entry in fs::read_dir(&dynamic_page_base).unwrap() {
         let entry = entry.unwrap();
         if entry.metadata().unwrap().is_dir() {
             let path = entry.path();
             let page_name = entry.file_name();
             let page_name = page_name.to_str().unwrap();
-            let lconfig: jsldr::Config = serde_yaml::from_reader(fs::File::open(path.join("config.yml")).unwrap()).unwrap();
+            let lconfig: jsldr::Config = load_yaml(path.join("config.yml"));
             let head = replace_html(path.join("head.html"));
             let body = replace_html(path.join("body.html"));
             // TODO warn when head or body include <link> <style> <script>
@@ -397,7 +403,7 @@ pub fn build(args: Args) {
                 head,
                 body,
             };
-            create_json(&boot, dest_page_base.join(cs!(page_name, ".boot.json")));
+            create_json(&boot, dest_page_boot_base.join(cs!(page_name, ".boot.json")));
             let dest = dest_page_base.join(cs!(page_name, ".html"));
 
             let (comment_l, comment_r) = FileType::Html.comment();
@@ -468,7 +474,24 @@ pub fn build(args: Args) {
             w!("</body>\n</html>\n");
         }
     }
+
+    {
+        #[derive(serde::Deserialize)]
+        struct Rename {
+            dirs: Vec<ByteString>,
+            rename: Map<ByteString>,
+        }
+
+        let Rename { dirs, rename } = load_yaml(dynamic_page_base.join("rename.yml"));
+
+        for dir in dirs {
+            fs::create_dir_all(dest_page_base.join(dir)).unwrap();
+        }
+
+        for (src, dest) in rename.into_iter() {
+            fs::rename(dest_page_base.join(src), dest_path.join(dest)).unwrap()
+        }
+    }
 }
 
 // TODO build frameworks
-// TODO icp-record auto dispatch
