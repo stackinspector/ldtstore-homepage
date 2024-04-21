@@ -42,7 +42,7 @@ pub trait UnwrapNone {
 
 impl<T> UnwrapNone for Option<T> {
     fn unwrap_none(self) {
-        assert!(matches!(self, None))
+        assert!(self.is_none())
     }
 }
 

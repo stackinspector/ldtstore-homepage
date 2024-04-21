@@ -7,7 +7,7 @@ use aho_corasick::AhoCorasick;
 type Map<T> = indexmap::IndexMap<ByteString, T>;
 type Inserts = Vec<(ByteString, ByteString)>;
 
-use concat_string::concat_string as cs;
+use foundations::concat_string as cs;
 
 #[macro_export]
 macro_rules! s {
@@ -57,7 +57,7 @@ pub mod codegen;
 use util::{IndexMapFirstInsert, VecMap};
 use codegen::codegen;
 
-use std::{fs::{self, OpenOptions, read_to_string as load}, path::{Path, PathBuf}, io::Write, sync::OnceLock};
+use std::{fs, path::{Path, PathBuf}, io::Write, sync::OnceLock};
 
 #[derive(Clone, Copy)]
 pub enum Config {
@@ -173,11 +173,24 @@ fn args<'a>() -> &'a Args {
 
 fn read_commit<P: AsRef<Path>>(base_path: P) -> String {
     let base_path = base_path.as_ref();
-    let head = load(base_path.join(".git/HEAD")).unwrap();
+    let head = load(base_path.join(".git/HEAD"));
     let head = head.split('\n').next().unwrap();
     let head = head.split("ref: ").nth(1).unwrap();
     let commit = fs::read(base_path.join(".git").join(head)).unwrap();
     String::from_utf8(commit[0..7].to_vec()).unwrap()
+}
+
+fn load<P: AsRef<Path>>(path: P) -> String {
+    fs::read_to_string(path).unwrap()
+}
+
+fn create<P: AsRef<Path>>(path: P) -> fs::File {
+    fs::OpenOptions::new().create_new(true).write(true).open(path).unwrap()
+}
+
+fn create_json<D: serde::Serialize, P: AsRef<Path>>(value: &D, dest: P) {
+    let mut file = create(dest);
+    serde_json::to_writer(&mut file, value).unwrap();
 }
 
 fn build_static_inserts(fragment_path: PathBuf) -> (Inserts, Map<String>) {
@@ -192,7 +205,7 @@ fn build_static_inserts(fragment_path: PathBuf) -> (Inserts, Map<String>) {
                 Html => {
                     add_insert! {
                         inserts:
-                        "<!--{{", file_name, "}}-->" => load(entry.path()).unwrap()
+                        "<!--{{", file_name, "}}-->" => load(entry.path())
                     }
                 },
                 Css => {
@@ -235,7 +248,7 @@ fn minify_css<P: AsRef<Path>>(full_path: P) -> String {
         Config::Prod => call_esbuilld_cli(full_path, &[
             "--minify",
         ]),
-        Config::Dev => load(full_path).unwrap(),
+        Config::Dev => load(full_path),
     }
 }
 
@@ -288,7 +301,7 @@ fn firstname(file_name: &str, ty: FileType) -> &str {
 pub fn build(args: Args) {
     let Args { dest_path, base_path, config, .. } = ARGS.get_or_init(|| args);
 
-    let commit: String = read_commit(&base_path);
+    let commit: String = read_commit(base_path);
     let (mut inserts, minifieds) = build_static_inserts(base_path.join("fragment"));
     let mut includes = Map::new();
     codegen(&mut inserts, &mut includes, base_path.join("page"));
@@ -307,17 +320,12 @@ pub fn build(args: Args) {
     fs::create_dir_all(&dest_page_base).unwrap();
 
     let replace_html = |path: PathBuf| {
-        global_replacer.replace(&insert(&load(path).unwrap(), inserts.clone()))
+        global_replacer.replace(&insert(&load(path), inserts.clone()))
     };
-
-    fn write_json<D: serde::Serialize>(value: &D, dest: PathBuf) {
-        let mut file = OpenOptions::new().create_new(true).write(true).open(dest).unwrap();
-        serde_json::to_writer(&mut file, value).unwrap();
-    }
 
     let mut code_info = Map::new();
 
-    for entry in fs::read_dir(&dynamic_code_base).unwrap() {
+    for entry in fs::read_dir(dynamic_code_base).unwrap() {
         let entry = entry.unwrap();
         if entry.metadata().unwrap().is_file() {
             let path = entry.path();
@@ -334,7 +342,7 @@ pub fn build(args: Args) {
             let dest = dest_code_base.join(&dest_name);
 
             let (comment_l, comment_r) = ty.comment();
-            let mut file = OpenOptions::new().create_new(true).write(true).open(dest).unwrap();
+            let mut file = create(dest);
             let mut integrity = IntegrityBuilder::new();
             macro_rules! w {
                 ($s:expr) => {
@@ -354,7 +362,7 @@ pub fn build(args: Args) {
             w!(content);
 
             code_info.first_insert(s!(file_name), jsldr::Resource {
-                path: s!(config.assert(), "/code/", dest_name),
+                path: cs!(config.assert(), "/code/", dest_name),
                 integrity: Some(integrity.output()),
             });
         }
@@ -368,8 +376,7 @@ pub fn build(args: Args) {
         includes
     }
 
-
-    for entry in fs::read_dir(&dynamic_page_base).unwrap() {
+    for entry in fs::read_dir(dynamic_page_base).unwrap() {
         let entry = entry.unwrap();
         if entry.metadata().unwrap().is_dir() {
             let path = entry.path();
@@ -380,21 +387,21 @@ pub fn build(args: Args) {
             let body = replace_html(path.join("body.html"));
             // TODO warn when head or body include <link> <style> <script>
             // allow control-used <style>?
-            let boot: jsldr::Boot = jsldr::Boot {
+            let boot = jsldr::Boot {
                 lang: lconfig.lang,
-                css: lconfig.css.map_to(|file| code_info.get(&file).unwrap().clone()),
-                minified_css: lconfig.minified_css.map_to(|file| minifieds.get(&file).unwrap().clone()),
-                minified_js: lconfig.minified_js.map_to(|file| minifieds.get(&file).unwrap().clone()),
-                js: lconfig.js.map_to(|file| code_info.get(&file).unwrap().clone()),
+                css: lconfig.css.map_to(|file| code_info.get(file.as_str()).unwrap().clone()),
+                minified_css: lconfig.minified_css.map_to(|file| minifieds.get(file.as_str()).unwrap().clone()),
+                minified_js: lconfig.minified_js.map_to(|file| minifieds.get(file.as_str()).unwrap().clone()),
+                js: lconfig.js.map_to(|file| code_info.get(file.as_str()).unwrap().clone()),
                 includes: make_includes(includes.get(page_name)),
                 head,
                 body,
             };
-            write_json(&boot, dest_page_base.join(cs!(page_name, ".boot.json")));
+            create_json(&boot, dest_page_base.join(cs!(page_name, ".boot.json")));
             let dest = dest_page_base.join(cs!(page_name, ".html"));
 
             let (comment_l, comment_r) = FileType::Html.comment();
-            let mut file = OpenOptions::new().create_new(true).write(true).open(dest).unwrap();
+            let mut file = create(dest);
             macro_rules! w {
                 ($s:expr) => {
                     file.write_all($s.as_bytes()).unwrap();

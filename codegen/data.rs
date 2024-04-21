@@ -34,6 +34,7 @@ pub struct ToolData {
 #[derive(Clone, Debug, Serialize)]
 #[serde(tag = "page_type")]
 #[serde(rename_all = "snake_case")]
+#[allow(clippy::large_enum_variant)]
 pub enum GlobalData {
     Home,
     Tool { tool: ToolData }

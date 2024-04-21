@@ -211,7 +211,7 @@ fn category_tab(content: Vec<CategoryGroup>) -> Vec<Node> {
     if let Some(l2) = content.next() { left.push(l2); }
     if let Some(r1) = content.next() { right.push(r1); }
     if let Some(r2) = content.next() { right.push(r2); }
-    assert!(matches!(content.next(), None));
+    assert!(content.next().is_none());
     vec![
         Element(div, class!("category-tab-part"), left),
         Element(div, class!("category-tab-part"), right),
