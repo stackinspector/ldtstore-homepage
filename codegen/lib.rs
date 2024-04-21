@@ -424,7 +424,7 @@ pub fn build(args: Args) {
             w!("\n\n");
 
             if let Some(lang) = boot.lang {
-                w!("<html lang=\"");
+                w!("<!DOCTYPE html>\n<html lang=\"");
                 w!(lang);
                 w!("\">\n");
             } else {
