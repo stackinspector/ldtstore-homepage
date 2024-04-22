@@ -457,7 +457,7 @@ pub fn build(args: Args) {
                 head,
                 body,
             };
-            create_json(&boot, dest_page_boot_base.join(cs!(page_name, ".boot.json")));
+            create_json(&boot, dest_page_boot_base.join(cs!(page_name, "-", commit, ".boot.json")));
 
             for Dest { dir, name, reg } in lconfig.dest {
                 fs::create_dir_all(dest_path.join(&dir)).unwrap();
