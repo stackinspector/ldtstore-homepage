@@ -5,3 +5,7 @@ js:
   - main.ts
 minified_js:
   - icpreg.ts
+dest:
+  - dir: tool
+    name: index.html
+    reg: pc.wiki

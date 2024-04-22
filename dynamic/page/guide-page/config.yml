@@ -2,5 +2,10 @@ lang: zh
 minified_css:
   - classic-base.css
   - classic-buttons.css
-minified_js:
-  - icpreg.ts
+dest:
+  - dir: guide-page
+    name: index.html
+    reg: ldtstore.com.cn
+  - dir: guide-page-intl
+    name: index.html
+    reg: none

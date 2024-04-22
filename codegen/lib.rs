@@ -263,10 +263,12 @@ fn compile_script<P: AsRef<Path>>(full_path: P) -> String {
             "--minify-syntax",
             "--format=iife",
             "--target=es6",
+            "--charset=utf8",
         ]),
         Config::Dev => call_esbuilld_cli(full_path, &[
             "--format=iife",
             "--target=es6",
+            "--charset=utf8",
         ]),
     }
 }
@@ -318,11 +320,9 @@ pub fn build(args: Args) {
     let dynamic_code_base = dynamic_base.join("code");
     let dynamic_page_base = dynamic_base.join("page");
     let dest_code_base = dest_path.join("code");
-    let dest_page_base = dest_path.join("page");
     let dest_page_boot_base = dest_path.join("page-boot");
 
     fs::create_dir_all(&dest_code_base).unwrap();
-    fs::create_dir_all(&dest_page_base).unwrap();
     fs::create_dir_all(&dest_page_boot_base).unwrap();
 
     let replace_html = |path: PathBuf| {
@@ -382,13 +382,67 @@ pub fn build(args: Args) {
         includes
     }
 
+    #[derive(Clone, Debug, serde::Deserialize)]
+    struct PageConfig {
+        lang: Option<ByteString>,
+        #[serde(default)]
+        css: Vec<ByteString>,
+        #[serde(default)]
+        js: Vec<ByteString>,
+        #[serde(default)]
+        minified_css: Vec<ByteString>,
+        #[serde(default)]
+        minified_js: Vec<ByteString>,
+        dest: Vec<Dest>,
+    }
+
+    #[derive(Clone, Debug, serde::Deserialize)]
+    struct Dest {
+        dir: ByteString,
+        name: ByteString,
+        reg: DomainReg,
+    }
+
+    #[derive(Clone, Debug, serde::Deserialize)]
+    enum DomainReg {
+        #[serde(rename = "none")]
+        None,
+        #[serde(rename = "pc.wiki")]
+        PC_WIKI,
+        #[serde(rename = "ldtstore.com.cn")]
+        LDTSTORE_COM_CN,
+    }
+
+    impl DomainReg {
+        fn icpreg(&self) -> Option<&'static str> {
+            match self {
+                DomainReg::None => None,
+                DomainReg::PC_WIKI => Some("鲁ICP备2023022036号"),
+                DomainReg::LDTSTORE_COM_CN => Some("鲁ICP备2021014114号"),
+            }
+        }
+
+        fn replace_body(&self, body: &ByteString) -> ByteString {
+            let replace = if let Some(icpreg) = self.icpreg() {
+                cs!(
+                    "<a target=\"_blank\" class=\"link hidden\" href=\"//beian.miit.gov.cn/\"><span>",
+                    icpreg,
+                    "</span></a>\n"
+                )
+            } else {
+                String::new()
+            };
+            body.replace("<!--{{icpreg-static}}-->", &replace)
+        }
+    }
+
     for entry in fs::read_dir(&dynamic_page_base).unwrap() {
         let entry = entry.unwrap();
         if entry.metadata().unwrap().is_dir() {
             let path = entry.path();
             let page_name = entry.file_name();
             let page_name = page_name.to_str().unwrap();
-            let lconfig: jsldr::Config = load_yaml(path.join("config.yml"));
+            let lconfig: PageConfig = load_yaml(path.join("config.yml"));
             let head = replace_html(path.join("head.html"));
             let body = replace_html(path.join("body.html"));
             // TODO warn when head or body include <link> <style> <script>
@@ -404,92 +458,78 @@ pub fn build(args: Args) {
                 body,
             };
             create_json(&boot, dest_page_boot_base.join(cs!(page_name, ".boot.json")));
-            let dest = dest_page_base.join(cs!(page_name, ".html"));
 
-            let (comment_l, comment_r) = FileType::Html.comment();
-            let mut file = create(dest);
-            macro_rules! w {
-                ($s:expr) => {
-                    file.write_all($s.as_bytes()).unwrap();
-                };
-            }
-            w!(comment_l);
-            w!(COPYRIGHT_L);
-            w!(commit);
-            w!(COPYRIGHT_R);
-            w!("  ");
-            w!(config.name());
-            w!(" build\n");
-            w!(comment_r);
-            w!("\n\n");
+            for Dest { dir, name, reg } in lconfig.dest {
+                fs::create_dir_all(dest_path.join(&dir)).unwrap();
+                let dest = dest_path.join(dir).join(name);
 
-            if let Some(lang) = boot.lang {
-                w!("<!DOCTYPE html>\n<html lang=\"");
-                w!(lang);
-                w!("\">\n");
-            } else {
-                w!("<html>\n");
-            }
-            w!("<head>\n");
-            w!(boot.head);
-            for css_content in boot.minified_css.iter() {
-                // TODO one tag?
-                w!("<style>");
-                w!(css_content);
-                w!("</style>\n");
-            }
-            for jsldr::Resource { path, integrity } in boot.css.iter() {
-                w!("<link rel=\"stylesheet\" href=\"");
-                w!(path);
-                if let Some(integrity) = integrity {
-                    w!("\" integrity=\"");
-                    w!(integrity);
+                let (comment_l, comment_r) = FileType::Html.comment();
+                let mut file = create(dest);
+                macro_rules! w {
+                    ($s:expr) => {
+                        file.write_all($s.as_bytes()).unwrap();
+                    };
                 }
-                w!("\" crossorigin=\"anonymous\">\n");
-            }
-            w!("</head>\n<body>\n");
-            w!(boot.body);
-            for (key, data) in boot.includes.iter() {
-                // TODO one tag?
-                w!("<script>window.");
-                w!(key);
-                w!("=");
-                serde_json::to_writer(&mut file, data).unwrap();
-                w!("</script>\n");
-            }
-            for js_content in boot.minified_js.iter() {
-                w!("<script>");
-                w!(js_content);
-                w!("</script>\n");
-            }
-            for jsldr::Resource { path, integrity } in boot.js.iter() {
-                w!("<script src=\"");
-                w!(path);
-                if let Some(integrity) = integrity {
-                    w!("\" integrity=\"");
-                    w!(integrity);
+                w!(comment_l);
+                w!(COPYRIGHT_L);
+                w!(commit);
+                w!(COPYRIGHT_R);
+                w!("  ");
+                w!(config.name());
+                w!(" build\n");
+                w!(comment_r);
+                w!("\n\n");
+
+                if let Some(ref lang) = boot.lang {
+                    w!("<!DOCTYPE html>\n<html lang=\"");
+                    w!(lang);
+                    w!("\">\n");
+                } else {
+                    w!("<html>\n");
                 }
-                w!("\" crossorigin=\"anonymous\"></script>\n");
+                w!("<head>\n");
+                w!(boot.head);
+                for css_content in boot.minified_css.iter() {
+                    // TODO one tag?
+                    w!("<style>");
+                    w!(css_content);
+                    w!("</style>\n");
+                }
+                for jsldr::Resource { path, integrity } in boot.css.iter() {
+                    w!("<link rel=\"stylesheet\" href=\"");
+                    w!(path);
+                    if let Some(integrity) = integrity {
+                        w!("\" integrity=\"");
+                        w!(integrity);
+                    }
+                    w!("\" crossorigin=\"anonymous\">\n");
+                }
+                w!("</head>\n<body>\n");
+                w!(reg.replace_body(&boot.body));
+                for (key, data) in boot.includes.iter() {
+                    // TODO one tag?
+                    w!("<script>window.");
+                    w!(key);
+                    w!("=");
+                    serde_json::to_writer(&mut file, data).unwrap();
+                    w!("</script>\n");
+                }
+                for js_content in boot.minified_js.iter() {
+                    w!("<script>");
+                    w!(js_content);
+                    w!("</script>\n");
+                }
+                for jsldr::Resource { path, integrity } in boot.js.iter() {
+                    w!("<script src=\"");
+                    w!(path);
+                    if let Some(integrity) = integrity {
+                        w!("\" integrity=\"");
+                        w!(integrity);
+                    }
+                    w!("\" crossorigin=\"anonymous\"></script>\n");
+                }
+                w!("</body>\n</html>");
             }
-            w!("</body>\n</html>");
-        }
-    }
-
-    {
-        #[derive(serde::Deserialize)]
-        struct Rename {
-            dirs: Vec<ByteString>,
-            rename: Map<ByteString>,
-        }
-
-        let Rename { dirs, rename } = load_yaml(dynamic_page_base.join("rename.yml"));
-
-        for dir in dirs {
-            fs::create_dir_all(dest_path.join(dir)).unwrap();
-        }
-
-        for (src, dest) in rename.into_iter() {
-            fs::rename(dest_page_base.join(src), dest_path.join(dest)).unwrap()
         }
     }
 }

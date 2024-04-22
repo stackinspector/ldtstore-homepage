@@ -3,3 +3,7 @@ minified_css:
   - plain.css
 minified_js:
   - plain.ts
+dest:
+  - dir: tool
+    name: plain.html
+    reg: pc.wiki

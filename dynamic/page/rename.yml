@@ -1,9 +1,0 @@
-dirs:
-  - ldt
-  - tool
-  - guide-page
-rename:
-  ldt.html: ldt/index.html
-  tool.html: tool/index.html
-  tool-plain.html: tool/plain.html
-  guide-page.html: guide-page/index.html

@@ -1,18 +1,5 @@
-use serde::{Serialize, Deserialize};
+use serde::Serialize;
 use crate::{JsonValue, Map};
-
-#[derive(Clone, Debug, Deserialize)]
-pub struct Config {
-    pub lang: Option<String>,
-    #[serde(default)]
-    pub css: Vec<String>,
-    #[serde(default)]
-    pub js: Vec<String>,
-    #[serde(default)]
-    pub minified_css: Vec<String>,
-    #[serde(default)]
-    pub minified_js: Vec<String>,
-}
 
 #[derive(Clone, Debug, Serialize)]
 pub struct Boot {
