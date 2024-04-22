@@ -631,6 +631,39 @@ pub fn codegen<P: AsRef<std::path::Path>>(inserts: &mut Inserts, includes: &mut 
 
     let legacy_buttons = classic(legacy_buttons);
 
+    /*
+
+    let mut jsonhtml_inserts = Inserts::new();
+
+    macro_rules! collect {
+        ($($s:ident)+) => {$(
+            let $s = $s.into_iter().collect::<Vec<_>>();
+        )+};
+    }
+
+    collect! {
+        home_major
+        home_sides
+        tools_fragments
+        tools_plains
+        legacy_buttons
+    }
+
+    fn to_json<T: serde::Serialize>(d: &T) -> String {
+        serde_json::to_string(d).unwrap()
+    }
+
+    add_insert! {
+        jsonhtml_inserts:
+        "<!--{{codegen-home-major}}-->" => to_json(&home_major)
+        "<!--{{codegen-home-fragments}}-->" => to_json(&home_sides)
+        "<!--{{codegen-tool-fragments}}-->" => to_json(&tools_fragments)
+        "<!--{{codegen-tool-plain}}-->" => to_json(&tools_plains)
+        "<!--{{codegen-legacy-buttons}}-->" => to_json(&legacy_buttons)
+    }
+
+    */
+
     add_insert! {
         inserts:
         "<!--{{codegen-home-major}}-->" => render_nodes(home_major)
