@@ -424,17 +424,17 @@ fn tool_links(name: ByteString, ToolLinks { website, websites, websites_tile, we
 
     if let Some(downloads_groups) = downloads_groups {
         for (group_title, downloads_group) in downloads_groups {
-            res.push(Element(if plain { p } else { div }, vec![], vec![
-                Element(b, vec![], vec![Text(s!(group_title))]),
-            ]));
+            let mut res_group = Vec::new();
+            res_group.push(Element(b, vec![], vec![Text(s!(group_title))]));
             for (link, title) in downloads_group {
-                res.push(tool_link_selected(ToolLink {
+                res_group.push(tool_link_selected(ToolLink {
                     title: ToolLinkTitle::Text(title),
                     link_type: ToolLinkType::R2,
                     link: s!(name, "-d-", link),
                     icon: ToolLinkIcon::Download,
                 }));
             }
+            res.push(Element(if plain { p } else { div }, vec![], res_group));
         }
     }
 
