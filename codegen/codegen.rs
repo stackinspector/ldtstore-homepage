@@ -383,7 +383,7 @@ fn tool_links(name: ByteString, ToolLinks { website, websites, websites_tile, we
             }
         }
         if !res_links.is_empty() {
-            res.push(Element(p, attrs.clone(), res_links.map_to(tool_link_selected)));
+            res.push(Element(if plain { p } else { div }, attrs.clone(), res_links.map_to(tool_link_selected)));
         }
     }
 
@@ -418,13 +418,13 @@ fn tool_links(name: ByteString, ToolLinks { website, websites, websites_tile, we
             }
         }
         if !res_downloads.is_empty() {
-            res.push(Element(p, attrs.clone(), res_downloads.map_to(tool_link_selected)));
+            res.push(Element(if plain { p } else { div }, attrs.clone(), res_downloads.map_to(tool_link_selected)));
         }
     }
 
     if let Some(downloads_groups) = downloads_groups {
         for (group_title, downloads_group) in downloads_groups {
-            res.push(Element(p, vec![], vec![
+            res.push(Element(if plain { p } else { div }, vec![], vec![
                 Element(b, vec![], vec![Text(s!(group_title))]),
             ]));
             for (link, title) in downloads_group {
