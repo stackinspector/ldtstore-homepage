@@ -281,9 +281,6 @@
       website: 1
       downloads:
         r23: R23官网下载直链
-        r20: R20官网下载直链
-        r15: R15官网下载直链
-        r115: R11.5官网下载直链
       mirrors:
         r23: R23镜像下载
         r20: R20镜像下载
@@ -292,9 +289,9 @@
       columns: true
       description: >
         基于Cinema4D引擎渲染对CPU进行性能测试的软件。
-        <br>R23/R20/R15各自有各自的性能偏重特点，故评测及测试基本需要全部测试一遍，而测试超频稳定性的话仅使用R23即可。
+        <br>各版本有各自的性能偏重特点，故评测及测试基本需要全部测试一遍，而测试超频稳定性的话仅使用最新版本即可。
         <br>Cinebench 2024及以上版本官网不能通过直链下载，请前往官网在页面上下载。由于目前观察到官网下载速度良好（孤例），以及体积较大（多个平台体积更大），暂时不提供镜像，如果大量反馈下载速度很慢再考虑。
-        <br>R23及以下版本请尽量先尝试使用下面的“官网下载直链”，速度很慢时再考虑使用“镜像下载”，以帮助我们节省流量费用，感谢。
+        <br>目前官网关闭了R20及以下版本的下载。
       cross_notice:
         burning:
           R23可作为检测CPU超频稳定性的基准。一般来说能过五六圈R23的频率，打游戏就没什么问题了。
@@ -562,7 +559,10 @@
       category: [benchmark]
       keywords: SSD跑分三件套固态硬盘CDM
       website: 1
-      mirror: active
+      downloads_groups:
+        开源镜像站下载直链:
+          bfsu: 标准版
+          bfsu-shizuku: Shizuku主题
       description: >
         常见的“SSD跑分三件套”2号。测试结果不是非常直观。
     - name: atto
@@ -580,7 +580,11 @@
       category: [info]
       keywords: 硬盘信息CDI
       website: 1
-      mirror: active
+      downloads_groups:
+        开源镜像站下载直链:
+          bfsu: 标准版
+          bfsu-shizuku: Shizuku主题
+          bfsu-kureikei: KureiKei主题
       description: >
         硬盘信息检测软件。
     - name: hdtune
@@ -710,6 +714,11 @@
       category: [os-install]
       keywords: U盘启动镜像
       website: 1
+      downloads_groups:
+        开源镜像站下载直链:
+          bfsu-windows: Windows
+          bfsu-linux: Linux
+          bfsu-livecd: LiveCD
       description: >
         直接从镜像启动，支持多种格式，添加系统无需格式化。
     - name: winnt-setup
@@ -1019,6 +1028,19 @@
       mirror: synced
       description: >
         简洁、强大、多用途的压缩软件。除常规压缩解压外还适用于校验及各种打包格式解析。
+    - name: nanazip
+      title: NanaZip
+      category: [other-os]
+      keywords: 压缩解压校验RAR7zip7-zip
+      website: 2
+      websites:
+        msstore: 微软应用商店
+      downloads:
+        bfsu: 开源镜像站下载直链
+      description: >
+        基于7-Zip，适配现代Windows体验的多用途压缩软件。
+      notice: >
+        仅支持Windows 10 2004及以上版本。以MSIX包的形式分发，Server/LTS系统用户需要通过命令行安装，详见首发链接。
     - name: bandizip
       title: Bandizip
       category: [other-os]
@@ -1082,6 +1104,12 @@
       title: PowerToys
       category: [other-convenience]
       website: 1
+      downloads_groups:
+        开源镜像站下载直链:
+          bfsu-x64-user: 用户安装模式
+          bfsu-x64-system: 系统安装模式
+          bfsu-arm64-user: 用户安装模式（ARM64）
+          bfsu-arm64-system: 系统安装模式（ARM64）
       description: >
         微软官方推出的Windows实用工具集。包含窗口置顶、批量重命名、键盘管理等实用功能。
     - name: autoruns
