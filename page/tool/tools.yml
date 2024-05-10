@@ -22,6 +22,7 @@
     - name: dismxx
       title: Dism++
       keywords: Windows映像系统清理更新管理设置安装驱动卸载
+      cross: [prepare]
       website: 1
       websites:
         ghr: GitHub release
@@ -1023,7 +1024,7 @@
     - name: 7zip
       title: 7-Zip
       category: [other-os]
-      keywords: 压缩解压校验RAR
+      keywords: 压缩解压校验RAR7zip
       website: 1
       mirror: synced
       description: >
