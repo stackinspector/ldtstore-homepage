@@ -357,87 +357,112 @@ fn tool_link_plain(ToolLink { title, link_type, link, icon }: ToolLink) -> Node 
     ])
 }
 
-fn tool_links(name: ByteString, ToolLinks { website, websites, websites_tile, websites_tile_template, downloads: tool_downloads, mirror, mirrors, columns }: ToolLinks, plain: bool) -> Vec<Node> {
-    let mut links = Vec::new();
-    let mut downloads = Vec::new();
-    let mut tile_links = Vec::new();
-    if let Some(website) = website {
-        links.push(ToolLink {
-            title: website,
-            link_type: ToolLinkType::R2,
-            link: name.clone(),
-            icon: ToolLinkIcon::Link,
-        });
-    }
-    if let Some(websites) = websites {
-        for (link, title) in websites {
-            links.push(ToolLink {
-                title,
+fn tool_links(name: ByteString, ToolLinks { website, websites, websites_tile, websites_tile_template, downloads, downloads_groups, mirror, mirrors, columns }: ToolLinks, plain: bool) -> Vec<Node> {
+    let attrs = (!plain && columns.unwrap_or(false)).then(|| (class, s!("tool-links-columns"))).to_vec();
+    let tool_link_selected: fn(ToolLink) -> lighthtml::Node<String> = if plain { tool_link_plain } else { tool_link };
+    let mut res = Vec::new();
+
+    {
+        let mut res_links = Vec::new();
+        if let Some(website) = website {
+            res_links.push(ToolLink {
+                title: website,
                 link_type: ToolLinkType::R2,
-                link: s!(name, "-", link),
+                link: name.clone(),
                 icon: ToolLinkIcon::Link,
             });
         }
-    }
-    if let Some(websites_tile) = websites_tile {
-        for (link, title) in websites_tile {
-            tile_links.push(ToolLink {
-                title,
-                link_type: ToolLinkType::R2,
-                link: s!(name, "-", link),
-                icon: ToolLinkIcon::Link,
-            });
+        if let Some(websites) = websites {
+            for (link, title) in websites {
+                res_links.push(ToolLink {
+                    title,
+                    link_type: ToolLinkType::R2,
+                    link: s!(name, "-", link),
+                    icon: ToolLinkIcon::Link,
+                });
+            }
         }
-    }
-    if let Some(tool_downloads) = tool_downloads {
-        for (link, title) in tool_downloads {
-            downloads.push(ToolLink {
-                title: ToolLinkTitle::Text(title),
-                link_type: ToolLinkType::R2,
-                link: s!(name, "-d-", link),
-                icon: ToolLinkIcon::Download,
-            });
-        }
-    }
-    if let Some(_mirror) = mirror {
-        downloads.push(ToolLink {
-            title: ToolLinkTitle::Text(s!("镜像下载")),
-            link_type: ToolLinkType::Mirror,
-            link: name.clone(),
-            icon: ToolLinkIcon::Download,
-        })
-    }
-    if let Some(mirrors) = mirrors {
-        for (link, title) in mirrors {
-            downloads.push(ToolLink {
-                title: ToolLinkTitle::Text(title),
-                link_type: ToolLinkType::Mirror,
-                link: s!(name, "-", link),
-                icon: ToolLinkIcon::Download,
-            });
+        if !res_links.is_empty() {
+            res.push(Element(p, attrs.clone(), res_links.map_to(tool_link_selected)));
         }
     }
 
-    let attrs = (!plain && columns.unwrap_or(false)).then(|| (class, s!("tool-links-columns"))).to_vec();
-    let map_fn = if plain { tool_link_plain } else { tool_link };
-    let mut res = Vec::new();
-    if !links.is_empty() {
-        res.push(Element(div, attrs.clone(), links.map_to(map_fn)));
-    }
-    if !downloads.is_empty() {
-        res.push(Element(div, attrs.clone(), downloads.map_to(map_fn)));
-    }
-    if !tile_links.is_empty() {
-        if plain {
-            res.push(Element(div, attrs, tile_links.map_to(tool_link_plain)));
-        } else {
-            res.extend(tile_template(TileTemplate {
-                template: websites_tile_template.unwrap(),
-                tiles: TileTemplateTiles::WithoutTitle(tile_links.map_to(|ToolLink { link, .. }| link))
-            }).map(tile));
-            res.push(clearfix!())
+    {
+        let mut res_downloads = Vec::new();
+        if let Some(downloads) = downloads {
+            for (link, title) in downloads {
+                res_downloads.push(ToolLink {
+                    title: ToolLinkTitle::Text(title),
+                    link_type: ToolLinkType::R2,
+                    link: s!(name, "-d-", link),
+                    icon: ToolLinkIcon::Download,
+                });
+            }
+        }
+        if let Some(_mirror) = mirror {
+            res_downloads.push(ToolLink {
+                title: ToolLinkTitle::Text(s!("镜像下载")),
+                link_type: ToolLinkType::Mirror,
+                link: name.clone(),
+                icon: ToolLinkIcon::Download,
+            })
+        }
+        if let Some(mirrors) = mirrors {
+            for (link, title) in mirrors {
+                res_downloads.push(ToolLink {
+                    title: ToolLinkTitle::Text(title),
+                    link_type: ToolLinkType::Mirror,
+                    link: s!(name, "-", link),
+                    icon: ToolLinkIcon::Download,
+                });
+            }
+        }
+        if !res_downloads.is_empty() {
+            res.push(Element(p, attrs.clone(), res_downloads.map_to(tool_link_selected)));
         }
     }
+
+    if let Some(downloads_groups) = downloads_groups {
+        for (group_title, downloads_group) in downloads_groups {
+            res.push(Element(p, vec![], vec![
+                Element(b, vec![], vec![Text(s!(group_title))]),
+            ]));
+            for (link, title) in downloads_group {
+                res.push(tool_link_selected(ToolLink {
+                    title: ToolLinkTitle::Text(title),
+                    link_type: ToolLinkType::R2,
+                    link: s!(name, "-d-", link),
+                    icon: ToolLinkIcon::Download,
+                }));
+            }
+        }
+    }
+
+    {
+        let mut tile_links = Vec::new();
+        if let Some(websites_tile) = websites_tile {
+            for (link, title) in websites_tile {
+                tile_links.push(ToolLink {
+                    title,
+                    link_type: ToolLinkType::R2,
+                    link: s!(name, "-", link),
+                    icon: ToolLinkIcon::Link,
+                });
+            }
+        }
+        if !tile_links.is_empty() {
+            if plain {
+                res.push(Element(p, attrs, tile_links.map_to(tool_link_plain)));
+            } else {
+                res.extend(tile_template(TileTemplate {
+                    template: websites_tile_template.unwrap(),
+                    tiles: TileTemplateTiles::WithoutTitle(tile_links.map_to(|ToolLink { link, .. }| link))
+                }).map(tile));
+                res.push(clearfix!())
+            }
+        }
+    }
+
     res
 }
 

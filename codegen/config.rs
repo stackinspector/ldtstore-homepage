@@ -239,6 +239,7 @@ pub struct ToolLinks {
     pub websites_tile: Option<Map<ToolLinkTitle>>,
     pub websites_tile_template: Option<TileTemplateInner>,
     pub downloads: Option<Map<ByteString>>,
+    pub downloads_groups: Option<Map<Map<ByteString>>>,
     pub mirror: Option<MirrorType>,
     pub mirrors: Option<Map<ByteString>>,
     pub columns: Option<bool>,
