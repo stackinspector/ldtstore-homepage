@@ -529,6 +529,65 @@ pub fn build(args: Args) {
                     w!("\" crossorigin=\"anonymous\"></script>\n");
                 }
                 w!("</body>\n</html>");
+
+                /*
+
+                use foundations::vec_ext;
+                use lighthtml::{*, prelude::*};
+                macro_rules! text {
+                    ($s:expr) => {
+                        vec![Text($s)]
+                    };
+                }
+                w!(&render_node(Element(E_HTML, vec_ext![
+                    @if let (Some(ref lang) = boot.lang) {
+                        (A_LANG, s!(lang))
+                    }
+                ], vec![
+                    Element(E_HEAD, attr!{}, vec_ext![
+                        Html(s!(&boot.head)),
+                        @for (css_content in boot.minified_css.iter()) {
+                            // TODO one tag?
+                            Element(E_STYLE, attr!{}, text!(s!(css_content)))
+                        },
+                        @for (jsldr::Resource { path, integrity } in boot.css.iter()) {
+                            Element(E_LINK, vec_ext![
+                                (A_REL, s!("stylesheet")),
+                                (A_HREF, s!(path)),
+                                @if let (Some(integrity) = integrity) {
+                                    (A_INTEGRITY, s!(integrity))
+                                },
+                                (A_CROSSORIGIN, s!("anonymous")),
+                            ], vec![])
+                        }
+                    ]),
+                    Element(E_BODY, attr!{}, vec_ext![
+                        Html(reg.replace_body(&boot.body)),
+                        @for ((key, data) in boot.includes.iter()) {
+                            // TODO one tag?
+                            Element(E_SCRIPT, attr!{}, text!(s!(
+                                "window.",
+                                key,
+                                "=",
+                                serde_json::to_string(data).unwrap()
+                            )))
+                        },
+                        @for (js_content in boot.minified_js.iter()) {
+                            Element(E_SCRIPT, attr!{}, text!(s!(js_content)))
+                        },
+                        @for (jsldr::Resource { path, integrity } in boot.js.iter()) {
+                            Element(E_SCRIPT, vec_ext![
+                                (A_HREF, s!(path)),
+                                @if let (Some(integrity) = integrity) {
+                                    (A_INTEGRITY, s!(integrity))
+                                },
+                                (A_CROSSORIGIN, s!("anonymous")),
+                            ], vec![])
+                        }
+                    ]),
+                ])));
+            */
+
             }
         }
     }
