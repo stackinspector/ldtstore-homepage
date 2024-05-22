@@ -580,19 +580,19 @@ fn tools_plain_toc(groups: Vec<ToolGroup>) -> Vec<Node> {
     res
 }
 
-fn classic_button(ClassicButton { target: _target, text }: ClassicButton, top: bool) -> Node {
+fn classic_button(ClassicButton { target, text }: ClassicButton, top: bool) -> Node {
     Element(E_P, attr!{}, vec![Element(E_A, vec_ext![
         classes!(
             "button",
             @if (!top) {
                 "button-detail"
             },
-            @if (_target.is_none()) {
+            @if (target.is_none()) {
                 "button-nolink"
             },
         ),
-        @if (_target.is_some()) {
-            (A_HREF, s!("//r.ldt.pc.wiki/r/", _target.as_ref().unwrap()))
+        @if (target.is_some()) {
+            (A_HREF, s!("//r.ldt.pc.wiki/r/", target.as_ref().unwrap()))
         },
     ], text!(text))])
 }
@@ -601,11 +601,11 @@ fn classic_text(ClassicText { footer, text }: ClassicText) -> Node {
     Element(E_SPAN, class!(if footer { s!("text-detail-footer") } else { s!("text") }), text!(text))
 }
 
-fn classic_list(ClassicList { id: _id, text, content }: ClassicList, list: &mut Vec<Node>) {
+fn classic_list(ClassicList { id, text, content }: ClassicList, list: &mut Vec<Node>) {
     list.push(Element(E_P, attr!{}, vec![
-        Element(E_A, attr!{A_CLASS: s!("button"), A_ONCLICK: s!("detail('", _id, "')")}, text!(text)),
+        Element(E_A, attr!{A_CLASS: s!("button"), A_ONCLICK: s!("detail('", id, "')")}, text!(text)),
     ]));
-    list.push(Element(E_DIV, attr!{A_CLASS: s!("detail-container"), A_ID: s!(_id, "-detail")}, content.map_to(|node| {
+    list.push(Element(E_DIV, attr!{A_CLASS: s!("detail-container"), A_ID: s!(id, "-detail")}, content.map_to(|node| {
         match node {
             ClassicSubNode::Button(node) => classic_button(node, false),
             ClassicSubNode::Text(node) => classic_text(node),
