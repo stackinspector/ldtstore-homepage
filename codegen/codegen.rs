@@ -43,12 +43,12 @@ macro_rules! clearfix {
 macro_rules! svg_icon {
     ($icon:expr) => {
         Element(svg, class!("icon"), vec![
-            Element(r#use, attr!{href: s!("#icon-", $icon)}, vec![]),
+            Element(_use, attr!{href: s!("#icon-", $icon)}, vec![]),
         ])
     };
     ($icon:expr, $class_name:expr) => {
         Element(svg, class!($class_name), vec![
-            Element(r#use, attr!{href: s!("#icon-", $icon)}, vec![]),
+            Element(_use, attr!{href: s!("#icon-", $icon)}, vec![]),
         ])
     };
 }
