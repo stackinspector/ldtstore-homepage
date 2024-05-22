@@ -79,11 +79,11 @@ impl TileFont {
         use TileFont::*;
         use lighthtml::ElementTag::*;
         match self {
-            H1 => h1,
-            H2 => h2,
-            H3 => h3,
-            H4 => h4,
-            H5 => h5,
+            H1 => E_H1,
+            H2 => E_H2,
+            H3 => E_H3,
+            H4 => E_H4,
+            H5 => E_H5,
         }
     }
 }

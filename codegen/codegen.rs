@@ -6,25 +6,25 @@ use crate::{s, util::*, config::*, data::*, Map, Inserts};
 
 macro_rules! classes {
     ($($item:tt)+) => {
-        (class, s!(vec_ext![$($item)+].join(" ")))
+        (A_CLASS, s!(vec_ext![$($item)+].join(" ")))
     };
 }
 
 macro_rules! class {
     ($s:expr) => {
-        attr!{class: s!($s)}
+        attr!{A_CLASS: s!($s)}
     };
     ($($s:expr),+) => {
-        attr!{class: s!($($s),+)}
+        attr!{A_CLASS: s!($($s),+)}
     };
 }
 
 macro_rules! id {
     ($s:expr) => {
-        attr!{id: s!($s)}
+        attr!{A_ID: s!($s)}
     };
     ($($s:expr),+) => {
-        attr!{id: s!($($s),+)}
+        attr!{A_ID: s!($($s),+)}
     };
 }
 
@@ -36,19 +36,19 @@ macro_rules! empty {
 
 macro_rules! clearfix {
     () => {
-        Element(div, class!("clearfix"), vec![])
+        Element(E_DIV, class!("clearfix"), vec![])
     };
 }
 
 macro_rules! svg_icon {
     ($icon:expr) => {
-        Element(svg, class!("icon"), vec![
-            Element(_use, attr!{href: s!("#icon-", $icon)}, vec![]),
+        Element(E_SVG, class!("icon"), vec![
+            Element(E_USE, attr!{A_HREF: s!("#icon-", $icon)}, vec![]),
         ])
     };
     ($icon:expr, $class_name:expr) => {
-        Element(svg, class!($class_name), vec![
-            Element(_use, attr!{href: s!("#icon-", $icon)}, vec![]),
+        Element(E_SVG, class!($class_name), vec![
+            Element(E_USE, attr!{A_HREF: s!("#icon-", $icon)}, vec![]),
         ])
     };
 }
@@ -72,11 +72,11 @@ fn tile_inner(Tile { tile, font, action, icon_type, name, title, icon, path, sub
 
     let icon_type = icon_type.as_ref().map(|s| s!("-", s)).unwrap_or_default();
 
-    let inner = Element(img, vec_ext![
-        (src, s!("{{ASSERT}}/image/icon", icon_type, "/", icon.as_ref().unwrap_or(&name), ".webp")),
-        @if let (Some(title) = title.clone()) { (alt, title) },
+    let inner = Element(E_IMG, vec_ext![
+        (A_SRC, s!("{{ASSERT}}/image/icon", icon_type, "/", icon.as_ref().unwrap_or(&name), ".webp")),
+        @if let (Some(title) = title.clone()) { (A_ALT, title) },
     ], if is_category {
-        title.map(|title| Element(span, attr!{}, text!(title)))
+        title.map(|title| Element(E_SPAN, attr!{}, text!(title)))
     } else if let (Some(font), Some(title)) = (font, title) {
         Some(Element(font.into_tag(), attr!{}, text!(title)))
     } else {
@@ -85,28 +85,28 @@ fn tile_inner(Tile { tile, font, action, icon_type, name, title, icon, path, sub
 
     macro_rules! link {
         ($location:expr) => {
-            Element(a, attr!{
-                target: s!("_blank"),
-                class: s!("tile-link"),
-                href: $location,
+            Element(E_A, attr!{
+                A_TARGET: s!("_blank"),
+                A_CLASS: s!("tile-link"),
+                A_HREF: $location,
             }, vec![
-                Element(div, attr!{class: class_name}, vec![inner])
+                Element(E_DIV, attr!{A_CLASS: class_name}, vec![inner])
             ])
         };
     }
 
     macro_rules! call {
         ($func:expr) => {
-            Element(div, attr!{
-                class: class_name,
-                onclick: s!($func, "('", name, "')"),
+            Element(E_DIV, attr!{
+                A_CLASS: class_name,
+                A_ONCLICK: s!($func, "('", name, "')"),
             }, vec![inner])
         };
     }
 
     macro_rules! none {
         () => {
-            Element(div, attr!{class: class_name}, vec![inner])
+            Element(E_DIV, attr!{A_CLASS: class_name}, vec![inner])
         };
     }
 
@@ -128,7 +128,7 @@ fn tile(input: Tile) -> Node {
 }
 
 fn tile_columns(input: TileColumns) -> impl Iterator<Item = Node> {
-    input.map(|o| Element(div, class!("tile-column"), o.map_to(tile)))
+    input.map(|o| Element(E_DIV, class!("tile-column"), o.map_to(tile)))
 }
 
 fn tile_grids(TileGrids { left, middle }: TileGrids) -> Vec<Node> {
@@ -140,13 +140,13 @@ fn tile_grids(TileGrids { left, middle }: TileGrids) -> Vec<Node> {
     assert_eq!(third.len(), 9);
 
     vec_ext![
-        Element(div, class!("tile-grid-vertical"), left.map_to(tile)),
-        Element(div, class!("tile-grid-middle"), vec_ext![
-            Element(div, class!("title top"), text!(first_title)),
+        Element(E_DIV, class!("tile-grid-vertical"), left.map_to(tile)),
+        Element(E_DIV, class!("tile-grid-middle"), vec_ext![
+            Element(E_DIV, class!("title top"), text!(first_title)),
             @extend(first.map(tile)),
-            Element(div, class!("title"), text!(second_title)),
+            Element(E_DIV, class!("title"), text!(second_title)),
             @extend(second.map(tile)),
-            Element(div, class!("title"), text!(third_title)),
+            Element(E_DIV, class!("title"), text!(third_title)),
         ]),
         @extend(third.map(tile)),
     ]
@@ -154,7 +154,7 @@ fn tile_grids(TileGrids { left, middle }: TileGrids) -> Vec<Node> {
 
 fn major_fragment(mut inner: Vec<Node>, template_id: ByteString) -> Node {
     inner.push(clearfix!());
-    Element(template, id!("major-", template_id), inner)
+    Element(E_TEMPLATE, id!("major-", template_id), inner)
 }
 
 fn tile_template(TileTemplate { template: tile_template, tiles }: TileTemplate) -> Vec<Tile> {
@@ -185,14 +185,14 @@ fn side(Side { name, title, text, text_small, tiles, templated }: Side) -> Node 
     };
 
     if let Some(text) = text {
-        content.push(Element(div, class!(if text_small.unwrap_or(false) { "text small" } else { "text" }), text!(text)));
+        content.push(Element(E_DIV, class!(if text_small.unwrap_or(false) { "text small" } else { "text" }), text!(text)));
     }
     
-    Element(template, id!("side-", name), vec![
-        Element(div, class!("title"), text!(title)),
+    Element(E_TEMPLATE, id!("side-", name), vec![
+        Element(E_DIV, class!("title"), text!(title)),
         svg_icon!("#icon-arrow-left", "icon-back"),
-        empty!(hr),
-        Element(div, class!("content"), content),
+        empty!(E_HR),
+        Element(E_DIV, class!("content"), content),
     ])
 }
 
@@ -201,9 +201,9 @@ fn category_item(input: Tile) -> Node {
 }
 
 fn category_group(CategoryGroup { title, content }: CategoryGroup) -> Node {
-    Element(div, class!("category-group"), vec_ext![
-        Element(div, class!("category-group-title"), vec![
-            Element(div, class!("text"), text!(title)),
+    Element(E_DIV, class!("category-group"), vec_ext![
+        Element(E_DIV, class!("category-group-title"), vec![
+            Element(E_DIV, class!("text"), text!(title)),
         ]),
         @extend(content.map(category_item)),
     ])
@@ -219,8 +219,8 @@ fn category_tab(content: Vec<CategoryGroup>) -> Vec<Node> {
     if let Some(r2) = content.next() { right.push(r2); }
     assert!(content.next().is_none());
     vec![
-        Element(div, class!("category-tab-part"), left),
-        Element(div, class!("category-tab-part"), right),
+        Element(E_DIV, class!("category-tab-part"), left),
+        Element(E_DIV, class!("category-tab-part"), right),
     ]
 }
 
@@ -228,13 +228,13 @@ fn category(Category { tool, link }: Category) -> Vec<Node> {
     let CategoryTab { title: tool_title, content: tool } = tool;
     let CategoryTab { title: link_title, content: link } = link;
     vec![
-        Element(div, class!("category-title"), vec![
-            Element(div, attr!{id: s!("tool-button"), class: s!("selected")}, text!(tool_title)),
-            Element(div, id!("link-button"), text!(link_title)),
+        Element(E_DIV, class!("category-title"), vec![
+            Element(E_DIV, attr!{A_ID: s!("tool-button"), A_CLASS: s!("selected")}, text!(tool_title)),
+            Element(E_DIV, id!("link-button"), text!(link_title)),
         ]),
-        Element(div, class!("category-content"), vec![
-            Element(div, id!("tool-list"), category_tab(tool)),
-            Element(div, attr!{id: s!("link-list"), style: s!("opacity: 0; pointer-events: none")}, category_tab(link)),
+        Element(E_DIV, class!("category-content"), vec![
+            Element(E_DIV, id!("tool-list"), category_tab(tool)),
+            Element(E_DIV, attr!{A_ID: s!("link-list"), A_STYLE: s!("opacity: 0; pointer-events: none")}, category_tab(link)),
         ])
     ]
 }
@@ -336,11 +336,11 @@ fn tool_link_title(title: ToolLinkTitle) -> ByteString {
 }
 
 fn tool_link(ToolLink { title, link_type, link, icon }: ToolLink) -> Node {
-    Element(span, vec![], vec![
-        Element(a, attr!{
-            target: s!("_blank"),
-            class: s!("link"),
-            href: s!(tool_link_prefix(link_type), link),
+    Element(E_SPAN, vec![], vec![
+        Element(E_A, attr!{
+            A_TARGET: s!("_blank"),
+            A_CLASS: s!("link"),
+            A_HREF: s!(tool_link_prefix(link_type), link),
         }, vec![
             svg_icon!(icon.as_str()),
             nbsp!(),
@@ -350,21 +350,21 @@ fn tool_link(ToolLink { title, link_type, link, icon }: ToolLink) -> Node {
 }
 
 fn tool_link_plain(ToolLink { title, link_type, link, icon }: ToolLink) -> Node {
-    Element(span, attr!{}, vec![
-        Element(a, attr!{
-            target: s!("_blank"),
-            href: s!(tool_link_prefix(link_type), link),
+    Element(E_SPAN, attr!{}, vec![
+        Element(E_A, attr!{
+            A_TARGET: s!("_blank"),
+            A_HREF: s!(tool_link_prefix(link_type), link),
         }, vec![
             Text(s!(tool_icon_emoji(icon), tool_link_title(title.clone())))
         ]),
         nbsp!(),
-        Element(i, attr!{}, text!(s!("[", link_type.as_str(), "] ", link))),
-        empty!(br),
+        Element(E_I, attr!{}, text!(s!("[", link_type.as_str(), "] ", link))),
+        empty!(E_BR),
     ])
 }
 
 fn tool_links(name: ByteString, ToolLinks { website, websites, websites_tile, websites_tile_template, downloads, downloads_groups, mirror, mirrors, columns }: ToolLinks, plain: bool) -> Vec<Node> {
-    let attrs = (!plain && columns.unwrap_or(false)).then(|| (class, s!("tool-links-columns"))).to_vec();
+    let attrs = (!plain && columns.unwrap_or(false)).then(|| (A_CLASS, s!("tool-links-columns"))).to_vec();
     let tool_link_selected: fn(ToolLink) -> lighthtml::Node<String> = if plain { tool_link_plain } else { tool_link };
     let mut res = Vec::new();
 
@@ -389,7 +389,7 @@ fn tool_links(name: ByteString, ToolLinks { website, websites, websites_tile, we
             }
         }
         if !res_links.is_empty() {
-            res.push(Element(if plain { p } else { div }, attrs.clone(), res_links.map_to(tool_link_selected)));
+            res.push(Element(if plain { E_P } else { E_DIV }, attrs.clone(), res_links.map_to(tool_link_selected)));
         }
     }
 
@@ -424,14 +424,14 @@ fn tool_links(name: ByteString, ToolLinks { website, websites, websites_tile, we
             }
         }
         if !res_downloads.is_empty() {
-            res.push(Element(if plain { p } else { div }, attrs.clone(), res_downloads.map_to(tool_link_selected)));
+            res.push(Element(if plain { E_P } else { E_DIV }, attrs.clone(), res_downloads.map_to(tool_link_selected)));
         }
     }
 
     if let Some(downloads_groups) = downloads_groups {
         for (group_title, downloads_group) in downloads_groups {
             let mut res_group = Vec::new();
-            res_group.push(Element(b, attr!{}, text!(s!(group_title))));
+            res_group.push(Element(E_B, attr!{}, text!(s!(group_title))));
             for (link, title) in downloads_group {
                 res_group.push(tool_link_selected(ToolLink {
                     title: ToolLinkTitle::Text(title),
@@ -440,7 +440,7 @@ fn tool_links(name: ByteString, ToolLinks { website, websites, websites_tile, we
                     icon: ToolLinkIcon::Download,
                 }));
             }
-            res.push(Element(if plain { p } else { div }, attr!{}, res_group));
+            res.push(Element(if plain { E_P } else { E_DIV }, attr!{}, res_group));
         }
     }
 
@@ -458,7 +458,7 @@ fn tool_links(name: ByteString, ToolLinks { website, websites, websites_tile, we
         }
         if !tile_links.is_empty() {
             if plain {
-                res.push(Element(p, attrs, tile_links.map_to(tool_link_plain)));
+                res.push(Element(E_P, attrs, tile_links.map_to(tool_link_plain)));
             } else {
                 res.extend(tile_template(TileTemplate {
                     template: websites_tile_template.unwrap(),
@@ -473,32 +473,32 @@ fn tool_links(name: ByteString, ToolLinks { website, websites, websites_tile, we
 }
 
 fn tool_notice(notice: ByteString) -> Node {
-    Element(p, attr!{}, vec![
-        Element(b, attr!{}, text!(s!("注意事项"))),
-        empty!(br),
+    Element(E_P, attr!{}, vec![
+        Element(E_B, attr!{}, text!(s!("注意事项"))),
+        empty!(E_BR),
         Text(notice),
     ])
 }
 
 fn tool(Tool { name, title, icon, description, notice, links, no_icon, .. }: Tool) -> Node {
-    Element(template, id!("tool-", name), vec![
-        Element(div, attr!{
-            class: s!("item"),
-            onclick: s!("detail(this)"),
+    Element(E_TEMPLATE, id!("tool-", name), vec![
+        Element(E_DIV, attr!{
+            A_CLASS: s!("item"),
+            A_ONCLICK: s!("detail(this)"),
         }, vec![
-            Element(div, class!("item-title"), vec_ext![
+            Element(E_DIV, class!("item-title"), vec_ext![
                 @if (!(no_icon.unwrap_or(false))) {
-                    Element(img, attr![
-                        src: s!("{{ASSERT}}/image/icon-tool/", icon.as_ref().unwrap_or(&name), ".webp"),
-                        alt: title.clone(),
+                    Element(E_IMG, attr![
+                        A_SRC: s!("{{ASSERT}}/image/icon-tool/", icon.as_ref().unwrap_or(&name), ".webp"),
+                        A_ALT: title.clone(),
                     ], vec![])
                 },
                 Text(title)
             ]),
             svg_icon!("expand-right", "icon-line"),
-            Element(div, class!("detail-container"), vec![
-                Element(div, class!("detail"), vec_ext![
-                    Element(p, attr!{}, description.map(Text).to_vec()),
+            Element(E_DIV, class!("detail-container"), vec![
+                Element(E_DIV, class!("detail"), vec_ext![
+                    Element(E_P, attr!{}, description.map(Text).to_vec()),
                     @append(&mut tool_links(name.clone(), links, false)),
                     @if let (Some(notice) = notice) {
                         tool_notice(notice)
@@ -512,19 +512,19 @@ fn tool(Tool { name, title, icon, description, notice, links, no_icon, .. }: Too
 fn tool_plain(Tool { name, title, description, notice, links, .. }: Tool, cross: bool, has_title: bool) -> Vec<Node> {
     vec_ext![
         @if (has_title) {
-            Element(h3, id!(name.clone()), vec_ext![
+            Element(E_H3, id!(name.clone()), vec_ext![
                 Text(s!(title)),
                 nbsp!(),
-                Element(i, attr!{}, text!(s!(name.clone()))),
+                Element(E_I, attr!{}, text!(s!(name.clone()))),
                 @if (cross) {
                     nbsp!()
                 },
                 @if (cross) {
-                    Element(i, class!("hint"), text!(s!("[cross]")))
+                    Element(E_I, class!("hint"), text!(s!("[cross]")))
                 },
             ])
         },
-        Element(p, attr!{}, description.map(Text).to_vec()),
+        Element(E_P, attr!{}, description.map(Text).to_vec()),
         @append(&mut tool_links(name, links, true)),
         @if let (Some(notice) = notice) {
             tool_notice(notice)
@@ -535,18 +535,18 @@ fn tool_plain(Tool { name, title, description, notice, links, .. }: Tool, cross:
 fn tools_plain(tools: Map<Tool>, index: ToolIndex, cross: ToolCross) -> Vec<Node> {
     let mut res = Vec::new();
     for (name, ToolIndexItem { single, title, list, cross_list }) in index {
-        res.push(Element(h2, id!(name.clone()), vec_ext![
+        res.push(Element(E_H2, id!(name.clone()), vec_ext![
             Text(s!(title, " ")),
-            Element(i, attr!{}, text!(name.clone())),
+            Element(E_I, attr!{}, text!(name.clone())),
             nbsp!(),
             // TODO(foundations)
             @if (single) {
-                Element(i, class!("hint"), text!(s!("[single]")))
+                Element(E_I, class!("hint"), text!(s!("[single]")))
             },
             @if (single) {
                 nbsp!()
             },
-            Element(a, attr!{class: s!("toc"), href: s!("#toc")}, text!(s!("[目录]"))),
+            Element(E_A, attr!{A_CLASS: s!("toc"), A_HREF: s!("#toc")}, text!(s!("[目录]"))),
         ]));
         if single {
             res.append(&mut tool_plain(tools.get(&list[0]).unwrap().clone(), false, false));
@@ -567,21 +567,21 @@ fn tools_plain(tools: Map<Tool>, index: ToolIndex, cross: ToolCross) -> Vec<Node
 
 fn tools_plain_toc(groups: Vec<ToolGroup>) -> Vec<Node> {
     let mut res = Vec::new();
-    res.push(Element(h2, id!("toc"), text!(s!("目录"))));
+    res.push(Element(E_H2, id!("toc"), text!(s!("目录"))));
     for ToolGroup { name, title, list, .. } in groups {
         let name = name.unwrap_or_else(|| list[0].name.clone());
         let title = title.unwrap_or_else(|| list[0].title.clone());
-        res.push(Element(p, attr!{}, vec![
-            Element(a, attr!{href: s!("#", name.clone())}, text!(s!(title))),
+        res.push(Element(E_P, attr!{}, vec![
+            Element(E_A, attr!{A_HREF: s!("#", name.clone())}, text!(s!(title))),
             nbsp!(),
-            Element(i, attr!{}, text!(s!(name)))
+            Element(E_I, attr!{}, text!(s!(name)))
         ]));
     }
     res
 }
 
 fn classic_button(ClassicButton { target: _target, text }: ClassicButton, top: bool) -> Node {
-    Element(p, attr!{}, vec![Element(a, vec_ext![
+    Element(E_P, attr!{}, vec![Element(E_A, vec_ext![
         classes!(
             "button",
             @if (!top) {
@@ -592,20 +592,20 @@ fn classic_button(ClassicButton { target: _target, text }: ClassicButton, top: b
             },
         ),
         @if (_target.is_some()) {
-            (href, s!("//r.ldt.pc.wiki/r/", _target.as_ref().unwrap()))
+            (A_HREF, s!("//r.ldt.pc.wiki/r/", _target.as_ref().unwrap()))
         },
     ], text!(text))])
 }
 
 fn classic_text(ClassicText { footer, text }: ClassicText) -> Node {
-    Element(span, class!(if footer { s!("text-detail-footer") } else { s!("text") }), text!(text))
+    Element(E_SPAN, class!(if footer { s!("text-detail-footer") } else { s!("text") }), text!(text))
 }
 
 fn classic_list(ClassicList { id: _id, text, content }: ClassicList, list: &mut Vec<Node>) {
-    list.push(Element(p, attr!{}, vec![
-        Element(a, attr!{class: s!("button"), onclick: s!("detail('", _id, "')")}, text!(text)),
+    list.push(Element(E_P, attr!{}, vec![
+        Element(E_A, attr!{A_CLASS: s!("button"), A_ONCLICK: s!("detail('", _id, "')")}, text!(text)),
     ]));
-    list.push(Element(div, attr!{class: s!("detail-container"), id: s!(_id, "-detail")}, content.map_to(|node| {
+    list.push(Element(E_DIV, attr!{A_CLASS: s!("detail-container"), A_ID: s!(_id, "-detail")}, content.map_to(|node| {
         match node {
             ClassicSubNode::Button(node) => classic_button(node, false),
             ClassicSubNode::Text(node) => classic_text(node),
