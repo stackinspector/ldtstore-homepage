@@ -478,10 +478,10 @@ pub fn build(args: Args) {
                 w!(config.name());
                 w!(" build\n");
                 w!(comment_r);
-                w!("\n\n");
+                w!("\n\n<!DOCTYPE html>\n");
 
                 if let Some(ref lang) = boot.lang {
-                    w!("<!DOCTYPE html>\n<html lang=\"");
+                    w!("<html lang=\"");
                     w!(lang);
                     w!("\">\n");
                 } else {
