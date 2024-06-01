@@ -1,3 +1,4 @@
+let unreachable (msg: string) = raise (System.Exception $"__unreachable: {msg}")
 type _Map<'a> = Map<string, 'a>
 
 // Deserialize
@@ -13,52 +14,6 @@ type InputType =
     | InputType__Sides
     | InputType__Tools
     | InputType__Category
-
-type TileColumns = Tile list list
-
-// Deserialize
-type TileGrids = {
-    left: Tile list;
-    middle: TileGridMiddle list;
-}
-
-// Deserialize
-type TileGridMiddle = {
-    title: string;
-    content: Tile list;
-}
-
-// TODO Vec<CategoryTab>
-// Deserialize
-type Category = {
-    tool: CategoryTab;
-    link: CategoryTab;
-}
-
-// Deserialize
-type CategoryTab = {
-    title: string;
-    content: CategoryGroup list;
-}
-
-// Deserialize
-type CategoryGroup = {
-    title: string;
-    content: Tile list;
-}
-
-// Deserialize
-type Tile = {
-    tile: string option; // prev no option
-    font: TileFont option;
-    action: TileAction;
-    icon_type: string option;
-    name: string;
-    title: string option;
-    icon: string option;
-    path: string option;
-    subdomain: string option;
-}
 
 // Deserialize
 // #[serde(rename_all = "kebab-case")]
@@ -90,9 +45,57 @@ type TileAction =
     | TileAction__None
 
 // Deserialize
-type TileTemplate = {
-    template: TileTemplateInner;
-    tiles: TileTemplateTiles;
+type Tile = {
+    tile: string option; // prev no option
+    font: TileFont option;
+    action: TileAction;
+    icon_type: string option;
+    name: string;
+    title: string option;
+    icon: string option;
+    path: string option;
+    subdomain: string option;
+}
+
+type TileColumns = Tile list list
+
+// Deserialize
+type TileGridMiddle = {
+    title: string;
+    content: Tile list;
+}
+
+// Deserialize
+type TileGrids = {
+    left: Tile list;
+    middle: TileGridMiddle list;
+}
+
+// Deserialize
+type CategoryGroup = {
+    title: string;
+    content: Tile list;
+}
+
+// Deserialize
+type CategoryTab = {
+    title: string;
+    content: CategoryGroup list;
+}
+
+// TODO Vec<CategoryTab>
+// Deserialize
+type Category = {
+    tool: CategoryTab;
+    link: CategoryTab;
+}
+
+// Deserialize
+type TileTemplateInner = {
+    tile: string;
+    font: TileFont option;
+    action: TileAction;
+    icon_type: string option;
 }
 
 // Deserialize
@@ -102,11 +105,9 @@ type TileTemplateTiles =
     | WithTitle of _Map<string>
 
 // Deserialize
-type TileTemplateInner = {
-    tile: string;
-    font: TileFont option;
-    action: TileAction;
-    icon_type: string option;
+type TileTemplate = {
+    template: TileTemplateInner;
+    tiles: TileTemplateTiles;
 }
 
 // Deserialize
@@ -119,15 +120,6 @@ type Side = {
     templated: TileTemplate option;
 }
 
-// Deserialize
-type ToolGroup = {
-    name: string option;
-    title: string option;
-    cross_notice: string option;
-    no_icon: bool option;
-    list: Tool list;
-}
-
 // Deserialize_repr
 // #[repr(u8)]
 type ToolLinkTitleType =
@@ -135,6 +127,20 @@ type ToolLinkTitleType =
     | Link = 2
     | PageLink = 3
     | Unofficial = 4
+
+let tool_website_type (t: ToolLinkTitleType) =
+    match t with
+    | ToolLinkTitleType.Official -> "官方网站"
+    | ToolLinkTitleType.Link -> "首发链接"
+    | ToolLinkTitleType.PageLink -> "网页链接"
+    | ToolLinkTitleType.Unofficial -> "<b>非官方</b>页面"
+    | _ -> unreachable "num_enum"
+
+// Deserialize
+// #[serde(untagged)]
+type ToolLinkTitle =
+    | ToolLinkTitle__Type of ToolLinkTitleType
+    | ToolLinkTitle__Text of string
 
 // Deserialize
 // #[serde(rename_all = "kebab-case")]
@@ -146,6 +152,11 @@ type ToolLinkType =
         | ToolLinkType__R2 -> "r2"
         | ToolLinkType__Mirror -> "mirror"
 
+let tool_link_prefix (t: ToolLinkType) =
+    match t with
+    | ToolLinkType__R2 -> "//r.ldt.pc.wiki/r2/"
+    | ToolLinkType__Mirror -> "//r.ldt.pc.wiki/mirror/"
+
 // #[serde(rename_all = "kebab-case")]
 type ToolLinkIcon =
     | ToolLinkIcon__Link
@@ -154,6 +165,11 @@ type ToolLinkIcon =
         match self with
         | ToolLinkIcon__Link -> "link"
         | ToolLinkIcon__Download -> "download"
+
+let tool_icon_emoji (t: ToolLinkIcon) =
+    match t with
+    | ToolLinkIcon__Link -> "🔗"
+    | ToolLinkIcon__Download -> "💾"
 
 // Deserialize
 // #[serde(rename_all = "kebab-case")]
@@ -166,6 +182,27 @@ type MirrorType =
         | MirrorType__Active -> "active"
         | MirrorType__Locked -> "locked"
         | MirrorType__Synced -> "synced"
+
+// Deserialize
+type ToolLink = {
+    title: ToolLinkTitle;
+    link_type: ToolLinkType;
+    link: string;
+    icon: ToolLinkIcon;
+}
+
+// Deserialize
+type ToolLinks = {
+    website: ToolLinkTitle option;
+    websites: _Map<ToolLinkTitle> option;
+    websites_tile: _Map<ToolLinkTitle> option;
+    websites_tile_template: TileTemplateInner option;
+    downloads: _Map<string> option;
+    downloads_groups: _Map<_Map<string>> option;
+    mirror: MirrorType option;
+    mirrors: _Map<string> option;
+    columns: bool option;
+}
 
 // Deserialize
 type Tool = {
@@ -184,48 +221,13 @@ type Tool = {
 }
 
 // Deserialize
-type ToolLinks = {
-    website: ToolLinkTitle option;
-    websites: _Map<ToolLinkTitle> option;
-    websites_tile: _Map<ToolLinkTitle> option;
-    websites_tile_template: TileTemplateInner option;
-    downloads: _Map<string> option;
-    downloads_groups: _Map<_Map<string>> option;
-    mirror: MirrorType option;
-    mirrors: _Map<string> option;
-    columns: bool option;
+type ToolGroup = {
+    name: string option;
+    title: string option;
+    cross_notice: string option;
+    no_icon: bool option;
+    list: Tool list;
 }
-
-// Deserialize
-type ToolLink = {
-    title: ToolLinkTitle;
-    link_type: ToolLinkType;
-    link: string;
-    icon: ToolLinkIcon;
-}
-
-// Deserialize
-// #[serde(untagged)]
-type ToolLinkTitle =
-    | ToolLinkTitle__Type of ToolLinkTitleType
-    | ToolLinkTitle__Text of string
-
-let tool_website_type (t: ToolLinkTitleType) =
-    match t with
-    | ToolLinkTitleType__Official -> "官方网站";
-    | ToolLinkTitleType__Link -> "首发链接";
-    | ToolLinkTitleType__PageLink -> "网页链接";
-    | ToolLinkTitleType__Unofficial -> "<b>非官方</b>页面";
-
-let tool_link_prefix (t: ToolLinkType) =
-    match t with
-    | ToolLinkType__R2 -> "//r.ldt.pc.wiki/r2/"
-    | ToolLinkType__Mirror -> "//r.ldt.pc.wiki/mirror/"
-
-let tool_icon_emoji (t: ToolLinkIcon) =
-    match t with
-    | ToolLinkIcon__Link -> "🔗"
-    | ToolLinkIcon__Download -> "💾"
 
 // Deserialize
 type ClassicButton = {
@@ -240,6 +242,13 @@ type ClassicText = {
 }
 
 // Deserialize
+// #[serde(tag = "type")]
+// #[serde(rename_all = "kebab-case")]
+type ClassicSubNode =
+    | ClassicSubNode__Button of ClassicButton
+    | ClassicSubNode__Text of ClassicText
+
+// Deserialize
 type ClassicList = {
     id: string;
     text: string;
@@ -250,13 +259,6 @@ type ClassicList = {
 // #[serde(tag = "type")]
 // #[serde(rename_all = "kebab-case")]
 type ClassicRootNode =
-    | Button of ClassicButton
-    | Text of ClassicText
-    | List of ClassicList
-
-// Deserialize
-// #[serde(tag = "type")]
-// #[serde(rename_all = "kebab-case")]
-type ClassicSubNode =
-    | Button of ClassicButton
-    | Text of ClassicText
+    | ClassicRootNode__Button of ClassicButton
+    | ClassicRootNode__Text of ClassicText
+    | ClassicRootNode__List of ClassicList

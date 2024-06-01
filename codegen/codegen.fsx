@@ -29,6 +29,7 @@ let El (tag: string) (attrs: (AttrKey * string) list) (childs: Node list) =
     Element (ElementTag tag, attrs, childs)
 
 #load "config.fsx"
+open Config
 
 let nbsp = Text " "
 
@@ -51,14 +52,6 @@ let svg_icon (icon: string) (class_name: string) =
     ]
 
 let svg_icon_default (icon: string) = svg_icon icon "icon"
-
-let tool_website_type (t: ToolLinkTitleType) =
-    match t with
-    | ToolLinkTitleType.Official -> "官方网站"
-    | ToolLinkTitleType.Link -> "首发链接"
-    | ToolLinkTitleType.PageLink -> "网页链接"
-    | ToolLinkTitleType.Unofficial -> "<b>非官方</b>页面"
-    | _ -> unreachable "num_enum"
 
 let tool_link_title (title: ToolLinkTitle) = 
     match title with 
