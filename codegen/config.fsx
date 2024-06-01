@@ -1,5 +1,5 @@
 let unreachable (msg: string) = raise (System.Exception $"__unreachable: {msg}")
-type _Map<'a> = Map<string, 'a>
+type _Map<'a> = (string * 'a) list
 
 // Deserialize
 // #[serde(rename_all = "kebab-case")]
@@ -101,8 +101,8 @@ type TileTemplateInner = {
 // Deserialize
 // #[serde(untagged)]
 type TileTemplateTiles =
-    | WithoutTitle of string list
-    | WithTitle of _Map<string>
+    | TileTemplateTiles__WithoutTitle of string list
+    | TileTemplateTiles__WithTitle of _Map<string>
 
 // Deserialize
 type TileTemplate = {
