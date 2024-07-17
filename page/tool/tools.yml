@@ -560,10 +560,7 @@
       category: [benchmark]
       keywords: SSD跑分三件套固态硬盘CDM
       website: 1
-      downloads_groups:
-        开源镜像站下载直链:
-          bfsu: 标准版
-          bfsu-shizuku: Shizuku主题
+      mirror: active
       description: >
         常见的“SSD跑分三件套”2号。测试结果不是非常直观。
     - name: atto
@@ -581,11 +578,7 @@
       category: [info]
       keywords: 硬盘信息CDI
       website: 1
-      downloads_groups:
-        开源镜像站下载直链:
-          bfsu: 标准版
-          bfsu-shizuku: Shizuku主题
-          bfsu-kureikei: KureiKei主题
+      mirror: active
       description: >
         硬盘信息检测软件。
     - name: hdtune
