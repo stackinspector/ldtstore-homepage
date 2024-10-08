@@ -431,7 +431,7 @@ fn tool_links(name: ByteString, ToolLinks { website, websites, websites_tile, we
     if let Some(downloads_groups) = downloads_groups {
         for (group_title, downloads_group) in downloads_groups {
             let mut res_group = Vec::new();
-            res_group.push(Element(E_B, attr!{}, text!(s!(group_title))));
+            res_group.push(Element(E_P, attr!{}, vec![Element(E_B, attr!{}, text!(s!(group_title)))]));
             for (link, title) in downloads_group {
                 res_group.push(tool_link_selected(ToolLink {
                     title: ToolLinkTitle::Text(title),
