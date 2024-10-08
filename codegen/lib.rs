@@ -141,7 +141,7 @@ impl FileType {
 }
 
 const COPYRIGHT_L: &str = "
-  Copyright (c) 2021-2023 CarrotGeball and stackinspector. All rights reserved. MIT license.
+  Copyright (c) 2021-2024 CarrotGeball and stackinspector. All rights reserved. MIT license.
   Source: https://github.com/stackinspector/ldtstore-homepage
   Commit (content): ";
 
