@@ -1,3 +1,4 @@
+#![deny(unused_results)]
 #![allow(non_camel_case_types)]
 
 type ByteString = String;
