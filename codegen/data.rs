@@ -9,6 +9,7 @@ pub struct ToolIndexItem {
     pub title: ByteString,
     pub list: Vec<ByteString>,
     pub cross_list: Vec<ByteString>,
+    pub cross_top_list: Vec<ByteString>,
 }
 
 pub type ToolCategory = Map<ToolCategoryItem>;

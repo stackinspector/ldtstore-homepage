@@ -5,6 +5,7 @@ type ToolIndexType = Record<string, {
     title: string;
     list: string[];
     cross_list: string[];
+    cross_top_list: string[];
 }>;
 
 type ToolCategoryType = Record<string, {
@@ -291,7 +292,7 @@ const renderSide = (id: string) => {
         const name = id.substring("tool-".length);
         const index = DATA.tool.index[name];
         const cross = DATA.tool.cross[name];
-        const list = [...index.list, ...index.cross_list];
+        const list = [...index.cross_top_list, ...index.list, ...index.cross_list];
         side.appendChild(cloneTemplate("side-tools-base"));
         const title = side.getElementsByClassName("title")[0] as HTMLElement;
         title.innerText = index.single ? "详情" : index.title;

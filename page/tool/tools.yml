@@ -2,7 +2,7 @@
     - name: tbtool
       title: 图吧工具箱
       category: [hardware, info, other-toolbox]
-      cross: [info]
+      cross_top: [info]
       keywords: 集合图拉丁硬件检测
       website: 1
       description: >
@@ -23,7 +23,7 @@
     - name: dismxx
       title: Dism++
       keywords: Windows映像系统清理更新管理设置安装驱动卸载
-      cross: [prepare]
+      cross_top: [prepare]
       website: 1
       websites:
         ghr: GitHub release

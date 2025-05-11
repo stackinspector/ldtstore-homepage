@@ -214,6 +214,7 @@ pub struct Tool {
     pub notice: Option<ByteString>,
     pub category: Option<Vec<ByteString>>,
     pub cross: Option<Vec<ByteString>>,
+    pub cross_top: Option<Vec<ByteString>>,
     pub keywords: Option<ByteString>,
     pub cross_notice: Option<Map<ByteString>>,
     #[serde(flatten)]

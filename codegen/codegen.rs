@@ -310,6 +310,7 @@ fn tool_groups(mut groups: Vec<ToolGroup>, major_category: Category) -> (Map<Too
                     title: group.title.clone().or_else(|| single.then(|| group.list[0].title.clone())).unwrap(),
                     list,
                     cross_list: Vec::new(),
+                    cross_top_list: Vec::new(),
                 }
             )
         }
@@ -320,6 +321,11 @@ fn tool_groups(mut groups: Vec<ToolGroup>, major_category: Category) -> (Map<Too
             if let Some(cross) = &tool.cross {
                 for cross_group_name in cross {
                     index.get_mut(cross_group_name).unwrap().cross_list.push(tool.name.clone())
+                }
+            }
+            if let Some(cross) = &tool.cross_top {
+                for cross_group_name in cross {
+                    index.get_mut(cross_group_name).unwrap().cross_top_list.push(tool.name.clone())
                 }
             }
         }
@@ -509,18 +515,43 @@ fn tool(Tool { name, title, icon, description, notice, links, no_icon, .. }: Too
     ])
 }
 
-fn tool_plain(Tool { name, title, description, notice, links, .. }: Tool, cross: bool, has_title: bool) -> Vec<Node> {
+enum CrossType {
+    None,
+    Cross,
+    CrossTop,
+}
+
+impl CrossType {
+    fn is_cross(&self) -> bool {
+        match self {
+            CrossType::None => false,
+            _ => true,
+        }
+    }
+
+    fn cross_sign(&self) -> &'static str {
+        match self {
+            CrossType::None => panic!(),
+            CrossType::Cross => "[cross]",
+            CrossType::CrossTop => "[cross-top]",
+        }
+    }
+}
+
+fn tool_plain(Tool { name, title, description, notice, links, .. }: Tool, cross: CrossType, has_title: bool) -> Vec<Node> {
+    let is_cross = cross.is_cross();
+    let cross_sign = cross.cross_sign();
     vec_ext![
         @if (has_title) {
             Element(E_H3, id!(name.clone()), vec_ext![
                 Text(s!(title)),
                 nbsp!(),
                 Element(E_I, attr!{}, text!(s!(name.clone()))),
-                @if (cross) {
+                @if (is_cross) {
                     nbsp!()
                 },
-                @if (cross) {
-                    Element(E_I, class!("hint"), text!(s!("[cross]")))
+                @if (is_cross) {
+                    Element(E_I, class!("hint"), text!(s!(cross_sign)))
                 },
             ])
         },
@@ -534,7 +565,7 @@ fn tool_plain(Tool { name, title, description, notice, links, .. }: Tool, cross:
 
 fn tools_plain(tools: Map<Tool>, index: ToolIndex, cross: ToolCross) -> Vec<Node> {
     let mut res = Vec::new();
-    for (name, ToolIndexItem { single, title, list, cross_list }) in index {
+    for (name, ToolIndexItem { single, title, list, cross_list, cross_top_list }) in index {
         res.push(Element(E_H2, id!(name.clone()), vec_ext![
             Text(s!(title, " ")),
             Element(E_I, attr!{}, text!(name.clone())),
@@ -549,14 +580,17 @@ fn tools_plain(tools: Map<Tool>, index: ToolIndex, cross: ToolCross) -> Vec<Node
             Element(E_A, attr!{A_CLASS: s!("toc"), A_HREF: s!("#toc")}, text!(s!("[目录]"))),
         ]));
         if single {
-            res.append(&mut tool_plain(tools.get(&list[0]).unwrap().clone(), false, false));
+            res.append(&mut tool_plain(tools.get(&list[0]).unwrap().clone(), CrossType::None, false));
         } else {
+            for tool_name in cross_top_list {
+                res.append(&mut tool_plain(tools.get(&tool_name).unwrap().clone(), CrossType::CrossTop, true));
+            }
             for tool_name in list {
-                res.append(&mut tool_plain(tools.get(&tool_name).unwrap().clone(), false, true));
+                res.append(&mut tool_plain(tools.get(&tool_name).unwrap().clone(), CrossType::None, true));
             }
         }
         for tool_name in cross_list {
-            res.append(&mut tool_plain(tools.get(&tool_name).unwrap().clone(), true, true));
+            res.append(&mut tool_plain(tools.get(&tool_name).unwrap().clone(), CrossType::Cross, true));
             if let Some(cross_notice) = cross.get(&name).and_then(|m| m.get(&tool_name)) {
                 res.push(Text(cross_notice.clone()));
             }
