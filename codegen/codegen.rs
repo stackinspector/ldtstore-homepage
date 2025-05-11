@@ -540,7 +540,6 @@ impl CrossType {
 
 fn tool_plain(Tool { name, title, description, notice, links, .. }: Tool, cross: CrossType, has_title: bool) -> Vec<Node> {
     let is_cross = cross.is_cross();
-    let cross_sign = cross.cross_sign();
     vec_ext![
         @if (has_title) {
             Element(E_H3, id!(name.clone()), vec_ext![
@@ -551,7 +550,7 @@ fn tool_plain(Tool { name, title, description, notice, links, .. }: Tool, cross:
                     nbsp!()
                 },
                 @if (is_cross) {
-                    Element(E_I, class!("hint"), text!(s!(cross_sign)))
+                    Element(E_I, class!("hint"), text!(s!(cross.cross_sign())))
                 },
             ])
         },

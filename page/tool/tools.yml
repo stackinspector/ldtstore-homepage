@@ -303,7 +303,7 @@
       title: SuperPi
       category: [benchmark]
       keywords: 圆周率稳定单核性能单线程
-      website:
+      websites:
         tpu: TechPowerUp下载页面
       mirror: locked
       description: >
