@@ -1,11 +1,12 @@
 - list:
     - name: tbtool
       title: 图吧工具箱
-      category: [hardware, other-toolbox]
-      keywords: 集合图拉丁
+      category: [hardware, info, other-toolbox]
+      cross: [info]
+      keywords: 集合图拉丁硬件检测
       website: 1
       description: >
-        起源于图吧，由DIY爱好者创造并维护的工具箱。集合了本站大部分工具，方便使用。
+        起源于图吧，由DIY爱好者创造并维护的工具箱。内置硬件检测功能，集合了本站大部分工具，方便使用。
       notice: >
         内含系统激活工具，可能导致部分杀毒软件（尤其是Windows Defender）误报，详情见官网说明。如有疑虑可以不予理会或者不使用激活工具。其他工具不受影响。
 - list:
@@ -126,7 +127,6 @@
     - name: rank-p-supergsg
       title: Supergsg电源天梯
       websites:
-        v1: 较旧版本
         v2: 较新版本
       description: >
         著名的PC电源天梯图，停更已久。
@@ -195,12 +195,6 @@
 - name: info
   title: 配置检测与监控
   list:
-    - name: tbinfo
-      title: 图拉丁硬件检测
-      category: [hardware, info]
-      website: 1
-      description: >
-        图吧工具箱衍生的硬件检测工具。完美的避开所有国产软件常见的弊端。
     - name: aida64
       title: AIDA64
       category: [hardware, info]
@@ -309,17 +303,17 @@
       title: SuperPi
       category: [benchmark]
       keywords: 圆周率稳定单核性能单线程
-      website: 1
+      website:
+        tpu: TechPowerUp下载页面
       mirror: locked
       description: >
-        基于计算圆周率的CPU单线程基准测试。常用于CPU性能与稳定性测试。
+        基于计算圆周率的CPU单线程基准测试。常用于CPU性能与稳定性测试。官网已不存在。
     - name: wprime
       title: wPrime
       category: [benchmark]
-      website: 1
       mirror: locked
       description: >
-        基于计算质数的CPU多线程基准测试。常用于CPU性能与稳定性测试。
+        基于计算质数的CPU多线程基准测试。常用于CPU性能与稳定性测试。官网已不存在。
     - name: geekbench
       title: Geekbench
       category: [benchmark]
