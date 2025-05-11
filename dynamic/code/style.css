@@ -84,13 +84,17 @@ a.tile-link {
     z-index: 1;
 }
 
-#header span {
+#header span /*, #header a */ {
     display: inline-block;
     font-size: 2em;
     line-height: 2em;
     vertical-align: middle;
     transition: opacity .5s;
 }
+
+/* #header a {
+    color: white;
+} */
 
 #header span.light {
     font-size: 1.5em;
