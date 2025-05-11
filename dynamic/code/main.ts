@@ -33,19 +33,17 @@ type GlobalData = {
 type MajorId = "tiles" | "category"
 
 declare global {
-    interface Window {
-        __DATA__?: GlobalData;
-        copy?: typeof copy;
-        side?: typeof sideClick;
-        tool?: typeof toolSideClick;
-        category?: typeof categorySideClick;
-        detail?: typeof showDetail;
-    }
+    var __DATA__: GlobalData | undefined;
+    var copy: typeof copyText;
+    var side: typeof sideClick;
+    var tool: typeof toolSideClick;
+    var category: typeof categorySideClick;
+    var detail: typeof showDetail;
 }
 
 // 本地化常量和数据 防止注入
-const DATA = window.__DATA__!;
-delete window.__DATA__;
+const DATA = globalThis.__DATA__!;
+delete globalThis.__DATA__;
 
 // all
 const body = document.body;
@@ -64,7 +62,7 @@ const clear = (el: Element) => {
     }
 };
 
-const copy = (text: string) => {
+const copyText = (text: string) => {
     navigator.clipboard.writeText(text);
 };
 
@@ -98,11 +96,11 @@ const MajorState = {
 // 左滑返回
 let touchX = 0;
 let touchY = 0;
-window.ontouchstart = (e: TouchEvent) => {
+body.ontouchstart = (e: TouchEvent) => {
     touchX = e.touches[0].clientX;
     touchY = e.touches[0].clientY;
 };
-window.ontouchend = (e: TouchEvent) => {
+body.ontouchend = (e: TouchEvent) => {
     const x = e.changedTouches[0].clientX;
     const y = e.changedTouches[0].clientY;
     if (touchX - x < -40 && (Math.abs((touchY - y) / (touchX - x)) < .2)) {
@@ -131,7 +129,7 @@ if (DATA.page_type === "tool") {
     back!.onclick = (e: MouseEvent) => {
         // 用来阻止冒泡
         e.stopPropagation();
-        window.open("//ldt.pc.wiki/", "_blank");
+        globalThis.open("//ldt.pc.wiki/", "_blank");
     };
 
     changeMajor!.onclick = (e: MouseEvent) => {
@@ -408,7 +406,7 @@ const layout = () => {
     }
 };
 
-window.onresize = () => {
+body.onresize = () => {
     layout();
 };
 
@@ -508,12 +506,12 @@ const setBackground = (url: string, blur = false) => {
 
 const defaultBackground = () => `{{ASSERT}}/image/bg/${randomIndex(7)}.webp`;
 
-window.copy = copy;
-window.side = sideClick;
-window.tool = toolSideClick;
-window.category = categorySideClick;
+globalThis.copy = copy;
+globalThis.side = sideClick;
+globalThis.tool = toolSideClick;
+globalThis.category = categorySideClick;
 if (DATA.page_type === "tool") {
-    window.detail = showDetail;
+    globalThis.detail = showDetail;
     renderToolMajor("tiles");
 }
 

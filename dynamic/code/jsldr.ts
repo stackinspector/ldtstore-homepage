@@ -1,9 +1,7 @@
 export {};
 
 declare global {
-    interface Window {
-        __BOOT__?: string;
-    }
+    var __BOOT__: string | undefined;
 }
 
 type Resource = {
@@ -24,8 +22,8 @@ type Boot = {
 
 (async () => {
     document.body.innerText = "loading";
-    const boot_url = window.__BOOT__!;
-    delete window.__BOOT__;
+    const boot_url = globalThis.__BOOT__!;
+    delete globalThis.__BOOT__;
     const boot_resp = await fetch(boot_url);
     if (!boot_resp.ok) {
         document.body.innerText = "error";
@@ -52,7 +50,7 @@ type Boot = {
     }
     document.body.innerHTML = boot.body;
     for (const [key, data] of Object.entries(boot.includes)) {
-        window[key] = data;
+        (globalThis as Record<string, unknown>)[key] = data;
     }
     for (const js of boot.minified_js) {
         const el = document.createElement("script");
