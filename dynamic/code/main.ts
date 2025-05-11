@@ -507,7 +507,7 @@ const setBackground = (url: string, blur = false) => {
 
 const defaultBackground = () => `{{ASSERT}}/image/bg/${randomIndex(7)}.webp`;
 
-globalThis.copy = copy;
+globalThis.copy = copyText;
 globalThis.side = sideClick;
 globalThis.tool = toolSideClick;
 globalThis.category = categorySideClick;
