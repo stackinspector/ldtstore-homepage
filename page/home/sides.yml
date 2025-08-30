@@ -72,8 +72,6 @@
     目前没有任何开放的硬件讨论群。核心群开放事宜日后择机考虑。
 - name: outer
   title: 站外官方账号
-  text: >
-    <p><a n class="link" href="//r.ldt.pc.wiki/r/ops-top-1">关于站外官方账号</a></p>
   templated:
     template:
       tile: s notext
