@@ -514,14 +514,16 @@ const renderToolMajor = (id: MajorId) => {
     MajorState.id = id;
 }
 
-const randomIndex = (length: number) => Math.floor(Math.random() * length);
+// const randomIndex = (length: number) => Math.floor(Math.random() * length);
+
+const weekIndex = () => new Date().getDay();
 
 const setBackground = (url: string, blur = false) => {
     background.style.backgroundImage = `url(${url})`;
     background.style.filter = blur ? "blur(5px)" : "unset";
 };
 
-const defaultBackground = () => `{{ASSERT}}/image/bg/${randomIndex(7)}.webp`;
+const defaultBackground = () => `{{ASSERT}}/image/bg/${weekIndex()}.webp`;
 
 globalThis.copy = copyText;
 globalThis.side = sideClick;
