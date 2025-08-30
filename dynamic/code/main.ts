@@ -73,25 +73,41 @@ const enum LayoutMode {
     Phone,
 }
 
-const LayoutState = {
-    mode: LayoutMode.PC,
+type LayoutStateType = {
+    mode: LayoutMode,
     /** side的位置 */
-    sidePosition: 0,
+    sidePosition: number,
     /** 打开侧边栏时需要移动的距离 */
-    distance: 300,
+    distance: number,
     /** 侧边栏居中模式（居中时主栏隐藏） */
+    center: boolean,
+}
+
+const LayoutState: LayoutStateType = {
+    mode: LayoutMode.PC,
+    sidePosition: 0,
+    distance: 300,
     center: false,
 };
 
-const SideState = {
+type SideStateType = {
     /** 侧边栏是否打开 */
-    on: false,
+    on: boolean,
     /** 侧边栏当前id */
-    id: null as string | null,
+    id: string | null,
 };
 
-const MajorState = {
-    id: "tiles" as MajorId,
+const SideState: SideStateType = {
+    on: false,
+    id: null,
+};
+
+type MajorStateType = {
+    id: MajorId,
+};
+
+const MajorState: MajorStateType = {
+    id: "tiles",
 };
 
 // 左滑返回
