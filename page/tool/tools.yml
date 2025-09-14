@@ -703,11 +703,8 @@
       category: [os-install]
       keywords: U盘启动镜像
       website: 1
-      downloads_groups:
-        开源镜像站下载直链:
-          bfsu-windows: Windows
-          bfsu-linux: Linux
-          bfsu-livecd: LiveCD
+      websites:
+        bfsu: 开源镜像站下载页面
       description: >
         直接从镜像启动，支持多种格式，添加系统无需格式化。
     - name: winnt-setup
@@ -1035,8 +1032,7 @@
       website: 2
       websites:
         msstore: 微软应用商店
-      downloads:
-        bfsu: 开源镜像站下载直链
+        bfsu: 开源镜像站下载页面
       description: >
         基于7-Zip，适配现代Windows体验的多用途压缩软件。
       notice: >
@@ -1104,12 +1100,8 @@
       title: PowerToys
       category: [other-convenience]
       website: 1
-      downloads_groups:
-        开源镜像站下载直链:
-          bfsu-x64-user: 用户安装模式
-          bfsu-x64-system: 系统安装模式
-          bfsu-arm64-user: 用户安装模式（ARM64）
-          bfsu-arm64-system: 系统安装模式（ARM64）
+      websites:
+        bfsu: 开源镜像站下载页面
       description: >
         微软官方推出的Windows实用工具集。包含窗口置顶、批量重命名、键盘管理等实用功能。
     - name: autoruns
